@@ -11,6 +11,7 @@ func RunMigrations(db *sql.DB) error {
 		email TEXT UNIQUE NOT NULL,
 		password_hash TEXT NOT NULL,
 		stripe_id TEXT DEFAULT '',
+		role TEXT DEFAULT 'client',
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 	`
