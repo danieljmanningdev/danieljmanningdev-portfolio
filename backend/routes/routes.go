@@ -31,6 +31,9 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	// Protected client portal route
 	mux.Handle("GET /portal", middleware.RequireAuth(handlers.PortalHandler(db)))
 
+	// Protected Stripe billing checkout route
+	mux.Handle("GET /portal/billing", middleware.RequireAuth(http.HandlerFunc(handlers.HandleCreateCheckout)))
+
 	// Handle calculate route
 	mux.HandleFunc("POST /calculate", handlers.CalculateHandler)
 
