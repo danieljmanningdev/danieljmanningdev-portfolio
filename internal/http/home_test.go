@@ -8,7 +8,9 @@ import (
 	"testing"
 )
 
-func TestHomeHandler(t *testing.T) {
+func createTestTemplates(t *testing.T) string {
+	t.Helper()
+
 	templateDir := t.TempDir()
 
 	for _, dir := range []string{
@@ -22,10 +24,17 @@ func TestHomeHandler(t *testing.T) {
 	}
 
 	files := map[string]string{
-		"layouts/base.html":          `{{define "base"}}{{template "home" .}}{{end}}`,
-		"components/navigation.html": `{{define "navigation"}}nav{{end}}`,
-		"components/footer.html":     `{{define "footer"}}footer{{end}}`,
-		"pages/home.html":            `{{define "home"}}Daniel Manning{{end}}`,
+		"layouts/base.html": `{{define "base"}}
+{{template "header" .}}
+{{template "home" .}}
+{{template "footer" .}}
+{{end}}`,
+
+		"components/header.html": `{{define "header"}}header{{end}}`,
+
+		"components/footer.html": `{{define "footer"}}footer{{end}}`,
+
+		"pages/home.html": `{{define "home"}}Daniel Manning{{end}}`,
 	}
 
 	for name, contents := range files {
@@ -35,6 +44,12 @@ func TestHomeHandler(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+
+	return templateDir
+}
+
+func TestHomeHandler(t *testing.T) {
+	templateDir := createTestTemplates(t)
 
 	handler, err := NewHomeHandler(templateDir)
 	if err != nil {
@@ -54,38 +69,13 @@ func TestHomeHandler(t *testing.T) {
 		t.Fatalf("expected HTML content type, got %q", contentType)
 	}
 
-	if body := rec.Body.String(); body != "Daniel Manning" {
+	if body := rec.Body.String(); body != "\nheader\nDaniel Manning\nfooter\n" {
 		t.Fatalf("expected homepage content, got %q", body)
 	}
 }
 
 func TestHomeHandlerRejectsNonGet(t *testing.T) {
-	templateDir := t.TempDir()
-
-	for _, dir := range []string{
-		"layouts",
-		"components",
-		"pages",
-	} {
-		if err := os.MkdirAll(filepath.Join(templateDir, dir), 0755); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	files := map[string]string{
-		"layouts/base.html":          `{{define "base"}}{{template "home" .}}{{end}}`,
-		"components/navigation.html": `{{define "navigation"}}nav{{end}}`,
-		"components/footer.html":     `{{define "footer"}}footer{{end}}`,
-		"pages/home.html":            `{{define "home"}}home{{end}}`,
-	}
-
-	for name, contents := range files {
-		path := filepath.Join(templateDir, name)
-
-		if err := os.WriteFile(path, []byte(contents), 0644); err != nil {
-			t.Fatal(err)
-		}
-	}
+	templateDir := createTestTemplates(t)
 
 	handler, err := NewHomeHandler(templateDir)
 	if err != nil {

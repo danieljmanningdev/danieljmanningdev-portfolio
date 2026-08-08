@@ -11,7 +11,7 @@ type HomeHandler struct {
 }
 
 func NewHomeHandler(templateDir string) (*HomeHandler, error) {
-	tmpl, err := template.ParseFiles(
+	tmpl, err := template.New("base").ParseFiles(
 		filepath.Join(templateDir, "layouts", "base.html"),
 		filepath.Join(templateDir, "components", "header.html"),
 		filepath.Join(templateDir, "components", "footer.html"),
