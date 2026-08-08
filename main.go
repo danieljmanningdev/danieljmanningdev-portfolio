@@ -9,10 +9,14 @@ import (
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/db"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/routes"
+	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
+	// 0. Load .env file if present (ignores error if missing so standard env vars still work)
+	_ = godotenv.Load()
+
 	// 1. Initialize Database & Run Migrations
 	database, err := db.InitDB("app.db")
 	if err != nil {
