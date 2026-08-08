@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Login | Daniel Manning</title>
+    <script src="/static/js/htmx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+    
+    <!-- Top Nav / Back Link -->
+    <header class="w-full max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="font-bold tracking-tight text-lg text-white hover:text-cyan-400 transition">Daniel Manning</a>
+        <a href="/" class="text-xs font-mono text-zinc-400 hover:text-white transition">&larr; Back to portfolio</a>
+    </header>
+
+    <!-- Main Login Card -->
+    <main class="flex-grow flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-md border border-zinc-800/80 bg-zinc-900/40 p-8 rounded-xl shadow-2xl backdrop-blur">
+            
+            <div class="mb-8 text-center">
+                <h1 class="text-2xl font-extrabold tracking-tight text-white mb-2">Client Portal Access</h1>
+                <p class="text-zinc-400 text-sm">Sign in to manage your active projects and billing.</p>
+            </div>
+
+            <!-- Login Form (Intercepted by HTMX) -->
+            <form hx-post="/login" hx-target="#error-message" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">Email Address</label>
+                    <input type="email" name="email" required autocomplete="email"
+                           class="w-full bg-zinc-950 border border-zinc-800 rounded-md px-4 py-2.5 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 transition text-sm"
+                           placeholder="you@company.com">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">Password</label>
+                    <input type="password" name="password" required autocomplete="current-password"
+                           class="w-full bg-zinc-950 border border-zinc-800 rounded-md px-4 py-2.5 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 transition text-sm"
+                           placeholder="••••••••">
+                </div>
+
+                <!-- Error feedback target for HTMX if auth fails -->
+                <div id="error-message" class="text-xs text-red-400 font-mono empty:hidden"></div>
+
+                <button type="submit" 
+                        class="w-full bg-cyan-600 text-white font-medium py-2.5 rounded-md hover:bg-cyan-500 transition text-sm shadow-sm cursor-pointer">
+                    Sign In
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800/80 py-6 text-center text-xs text-zinc-500">
+        <p>&copy; 2026 Daniel Manning. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
