@@ -26,10 +26,7 @@ func main() {
 	)
 	defer stop()
 
-	db, err := database.Open(
-		ctx,
-		cfg.DatabasePath,
-	)
+	db, err := database.Open(ctx, cfg.DatabasePath)
 	if err != nil {
 		log.Fatalf("open database: %v", err)
 	}
@@ -40,18 +37,18 @@ func main() {
 		}
 	}()
 
-	if err := database.RunMigrations(
-		db.SQL,
-		"migrations",
-	); err != nil {
+	if err := database.RunMigrations(db.SQL, "migrations"); err != nil {
 		log.Fatalf("run migrations: %v", err)
 	}
 
-	homeHandler, err := apphttp.NewHomeHandler(
-		cfg.TemplateDir,
-	)
+	homeHandler, err := apphttp.NewHomeHandler(cfg.TemplateDir)
 	if err != nil {
 		log.Fatalf("create home handler: %v", err)
+	}
+
+	dashboardHandler, err := apphttp.NewDashboardHandler(cfg.TemplateDir)
+	if err != nil {
+		log.Fatalf("create dashboard handler: %v", err)
 	}
 
 	clientsHandler, err := apphttp.NewClientsHandler(
@@ -59,44 +56,30 @@ func main() {
 		cfg.TemplateDir,
 	)
 	if err != nil {
-		log.Fatalf(
-			"create clients handler: %v",
-			err,
-		)
+		log.Fatalf("create clients handler: %v", err)
 	}
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc(
-		"/health",
-		apphttp.HealthHandler,
-	)
+	mux.HandleFunc("/health", apphttp.HealthHandler)
 
-	mux.Handle(
-		"/dashboard/clients",
-		clientsHandler,
-	)
+	mux.Handle("/dashboard/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.URL.Path == "/dashboard/":
+			dashboardHandler.ServeHTTP(w, r)
 
-	mux.Handle(
-		"/dashboard/clients/",
-		clientsHandler,
-	)
+		default:
+			clientsHandler.ServeHTTP(w, r)
+		}
+	}))
 
-	mux.Handle(
-		"/",
-		homeHandler,
-	)
+	mux.Handle("/", homeHandler)
 
-	fileServer := http.FileServer(
-		http.Dir("web/static"),
-	)
+	fileServer := http.FileServer(http.Dir("web/static"))
 
 	mux.Handle(
 		"/static/",
-		http.StripPrefix(
-			"/static/",
-			fileServer,
-		),
+		http.StripPrefix("/static/", fileServer),
 	)
 
 	server := &http.Server{
@@ -114,10 +97,7 @@ func main() {
 
 		if err := server.ListenAndServe(); err != nil &&
 			!errors.Is(err, http.ErrServerClosed) {
-			log.Printf(
-				"server error: %v",
-				err,
-			)
+			log.Printf("server error: %v", err)
 			stop()
 		}
 	}()
@@ -132,12 +112,7 @@ func main() {
 	)
 	defer cancel()
 
-	if err := server.Shutdown(
-		shutdownCtx,
-	); err != nil {
-		log.Printf(
-			"server shutdown error: %v",
-			err,
-		)
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		log.Printf("server shutdown error: %v", err)
 	}
 }
