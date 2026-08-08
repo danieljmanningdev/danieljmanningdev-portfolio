@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/danieljmanningdev/saas-master-boilerplate/backend/services"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/services"
 )
 
 func HandleCreateCheckout(w http.ResponseWriter, r *http.Request) {
