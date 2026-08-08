@@ -7,5 +7,6 @@ type User struct {
 	Email        string    `db:"email"`
 	PasswordHash string    `db:"password_hash"`
 	StripeID     string    `db:"stripe_id"`
+	Role         string    `db:"role"` // admin/client
 	CreatedAt    time.Time `db:"created_at"`
 }
