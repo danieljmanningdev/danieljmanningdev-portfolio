@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/danieljmanningdev/saas-master-boilerplate/backend/db"
-	"github.com/danieljmanningdev/saas-master-boilerplate/backend/routes"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/db"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/routes"
 )
 
 func main() {
