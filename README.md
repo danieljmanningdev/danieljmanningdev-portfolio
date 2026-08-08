@@ -1,79 +1,60 @@
-# Go + HTMX Micro-SaaS Boilerplate
+# Daniel Manning Portfolio & Micro-SaaS Engine
 
-A zero-bloat, high-performance Go backend template featuring a clean architecture, local HTMX integration, SQLite database storage, built-in Authentication (`bcrypt`), and Stripe billing hooks. Designed for rapid micro-app development and deployment.
-
----
-
-## 🚀 Features
-
-* **Backend:** Go (Standard Library `net/http` multiplexer)
-* **Frontend:** Server-side rendered HTML templates powered locally by **HTMX** (zero Node.js or Tailwind compiler overhead)
-* **Database:** Embedded **SQLite** with automated migration setups
-* **Security & Auth:** Secure user registration & login flows using `bcrypt` password hashing
-* **Billing:** Pre-configured Stripe checkout session wrappers and webhook-ready billing routes
+A high-performance, minimalist personal portfolio and client portal built using Go, HTMX, and Tailwind CSS. Designed to showcase custom software engineering services with zero heavy JavaScript frameworks and zero unnecessary cloud bloat.
 
 ---
 
-## 🛠️ Project Structure
+## Architecture & Tech Stack
+
+* Backend: Go (Standard Library net/http router)
+* Frontend Interactivity: HTMX (hx-boost, reactive partial swaps)
+* Styling: Tailwind CSS v4 (CDN / Utility-first)
+* Database: SQLite (app.db) managed via native Go drivers and custom migrations
+* Content Engine: Flat-file Markdown parser (goldmark) with frontmatter extraction for engineering notes/blogs
+* Payments/Billing: Stripe integration stubbed for project scoping and deposits
+
+---
+
+## Project Structure
 
 ```text
 .
-├── backend/
-│   ├── db/            # Database connection & migration runners
-│   ├── handlers/      # HTTP request handlers (Auth, Billing, etc.)
-│   ├── middleware/    # Auth and request middleware
-│   ├── migrations/    # SQL database migration files
-│   ├── models/        # Data structs (User, etc.)
-│   ├── routes/        # Router configuration and path multiplexing
-│   ├── services/      # Third-party integrations (Stripe)
-│   ├── static/        # Local static assets (HTMX, CSS, JS)
-│   └── templates/     # HTML templates (index.html)
-├── .gitignore
-├── LICENSE
-├── Makefile
-├── main.go            # Application entrypoint
-└── setup.sh           # Automated project initialization script
+├── app.db                # SQLite database
+├── backend
+│   ├── db                # Database connection & migration scripts
+│   ├── handlers          # HTTP handlers (Auth, Billing, Blog)
+│   ├── middleware        # Request middleware & auth guards
+│   ├── models            # Data structs (User, etc.)
+│   ├── routes            # Route definitions and multiplexer wiring
+│   ├── services          # Third-party integrations (Stripe)
+│   ├── static            # Static assets (HTMX, scripts)
+│   └── templates         # HTML templates (Index, Blog, Login, Portal)
+├── content               # Markdown blog posts & articles
+├── main.go               # Application entry point
+├── Makefile              # Build and run commands
+├── setup.sh              # Environment bootstrap script
+└── README.md
 ```
 
 ---
 
-## ⚡ Getting Started (New Project Setup)
+## Getting Setup & Running
 
-When creating a new repository from this template, follow these steps to initialize your project:
+### Prerequisites
+* Go 1.22+ installed locally.
 
-### 1. Remove the Old Module File (If Present)
-If the template repository contains an older `go.mod` file from testing, make sure to delete it before running the setup script so it doesn't conflict with your new module path:
-```bash
-rm -f go.mod go.sum
-```
+### Local Development Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/danieljmanningdev/danieljmanningdev-portfolio.git
+   cd danieljmanningdev-portfolio
+   ```
 
-### 2. Grant Permissions to the Setup Script
-Make the automated setup script executable in your terminal:
-```bash
-chmod +x setup.sh
-```
+2. Run the server:
+   ```bash
+   make run
+   ```
+   (Or run via Go directly: go run main.go)
 
-### 3. Run the Setup Script
-Execute the script to initialize your Go module, create the full folder hierarchy, download a local copy of HTMX, and install all essential dependencies (SQLite, Bcrypt, Stripe):
-```bash
-./setup.sh
-```
-*(You will be prompted to enter your module path, e.g., `github.com/yourusername/your-new-app`)*
-
-### 4. Run the Application
-Start your development server:
-```bash
-go run main.go
-```
-Your app will be live at `http://localhost:8080`.
-
----
-
-## 💳 Environment Variables
-
-To use Stripe checkout features, ensure you set your environment variables before running the application:
-
-```bash
-export STRIPE_SECRET_KEY="your_stripe_secret_key"
-export STRIPE_PRICE_ID="your_stripe_price_id"
-```
+3. Open in your browser:
+   Navigate to http://localhost:8080 to view the portfolio, interactive project estimator, and markdown blog engine.
