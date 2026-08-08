@@ -40,5 +40,16 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	mux.HandleFunc("GET /login", handlers.HandleLogin(db))
 	mux.HandleFunc("POST /login", handlers.HandleLogin(db))
 
+	// Register logout route to clear the session cookie and redirect back to login
+	mux.HandleFunc("GET /logout", func(w http.ResponseWriter, r *http.Request) {
+		http.SetCookie(w, &http.Cookie{
+			Name:   "session_token",
+			Value:  "",
+			Path:   "/",
+			MaxAge: -1, // Deletes the cookie immediately
+		})
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	})
+
 	return mux
 }
