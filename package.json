@@ -1,0 +1,30 @@
+{
+  "name": "danieljmanningdev-portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:css": "tailwindcss -i ./web/static/css/input.css -o ./web/static/css/app.css --watch",
+    "build:css": "tailwindcss -i ./web/static/css/input.css -o ./web/static/css/app.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieljmanningdev/danieljmanningdev-portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/danieljmanningdev/danieljmanningdev-portfolio/issues"
+  },
+  "homepage": "https://github.com/danieljmanningdev/danieljmanningdev-portfolio#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
