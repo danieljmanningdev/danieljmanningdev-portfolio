@@ -7,3 +7,5 @@ require (
 	github.com/stripe/stripe-go/v76 v76.25.0
 	golang.org/x/crypto v0.54.0
 )
+
+require github.com/yuin/goldmark v1.8.5
