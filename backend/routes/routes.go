@@ -13,12 +13,23 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	// Home page route
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+		// Catch accidental sub-paths
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)
 			return
 		}
 		http.ServeFile(w, r, "backend/templates/index.html")
+	})
+
+	// Handle blog route
+	mux.HandleFunc("GET /blog", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "backend/templates/blog.html")
+	})
+
+	// Handle portal route (TODO: Wrap with backend/middleware/auth.go later)
+	mux.HandleFunc("GET /portal", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "backend/templates/portal.html")
 	})
 
 	return mux
