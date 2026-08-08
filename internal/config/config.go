@@ -9,14 +9,21 @@ type Config struct {
 	Environment  string
 	Port         int
 	DatabasePath string
+	TemplateDir  string
 }
 
 func Load() Config {
+	templateDir := os.Getenv("TEMPLATE_DIR")
+	if templateDir == "" {
+		templateDir = "web/templates"
+	}
 	return Config{
 		Environment:  getEnv("APP_ENV", "development"),
 		Port:         getEnvInt("APP_PORT", 8080),
 		DatabasePath: getEnv("DATABASE_PATH", "./data/app.db"),
+		TemplateDir:  templateDir,
 	}
+
 }
 
 func getEnv(key, fallback string) string {

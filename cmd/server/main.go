@@ -40,14 +40,22 @@ func main() {
 		log.Fatalf("run migrations: %v", err)
 	}
 
+	homeHandler, err := apphttp.NewHomeHandler(cfg.TemplateDir)
+	if err != nil {
+		log.Fatalf("create home handler: %v", err)
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", apphttp.HealthHandler)
-
+	mux.Handle("/", homeHandler)
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(cfg.Port),
 		Handler:           mux,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
+
+	fileServer := http.FileServer(http.Dir("web/static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	go func() {
 		log.Printf(
