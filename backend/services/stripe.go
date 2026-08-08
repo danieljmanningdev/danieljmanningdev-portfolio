@@ -11,7 +11,7 @@ func InitStripe() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 }
 
-func CreateCheckoutSession(priceID string, successURL string, cancelURL string) (string, error) {
+func CreateCheckoutSession(priceID string, clientEmail string, successURL string, cancelURL string) (string, error) {
 	InitStripe()
 
 	params := &stripe.CheckoutSessionParams{
@@ -22,8 +22,9 @@ func CreateCheckoutSession(priceID string, successURL string, cancelURL string) 
 				Quantity: stripe.Int64(1),
 			},
 		},
-		SuccessURL: stripe.String(successURL),
-		CancelURL:  stripe.String(cancelURL),
+		CustomerEmail: stripe.String(clientEmail),
+		SuccessURL:    stripe.String(successURL),
+		CancelURL:     stripe.String(cancelURL),
 	}
 
 	s, err := session.New(params)
