@@ -1,13 +1,57 @@
 {{define "header"}}
-<header>
-    <nav>
-        <a href="/">Daniel Manning</a>
 
-        <div>
-            <a href="/#about">About</a>
-            <a href="/#work">Work</a>
-            <a href="/#contact">Contact</a>
+<header class="sticky top-0 z-50 border-b border-blue-400/10 bg-[#050B18]/90 backdrop-blur-xl">
+
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
+
+        <a
+            href="/"
+            class="text-sm font-semibold tracking-[0.25em] text-white"
+        >
+            DANIEL J. MANNING
+        </a>
+
+        <div class="hidden items-center gap-8 md:flex">
+
+            <a
+                href="/#work"
+                class="text-sm text-blue-100/60 transition hover:text-white"
+            >
+                Work
+            </a>
+
+            <a
+                href="/#about"
+                class="text-sm text-blue-100/60 transition hover:text-white"
+            >
+                About
+            </a>
+
+            <a
+                href="/#services"
+                class="text-sm text-blue-100/60 transition hover:text-white"
+            >
+                Services
+            </a>
+
+            <a
+                href="/#contact"
+                class="text-sm text-blue-100/60 transition hover:text-white"
+            >
+                Contact
+            </a>
+
         </div>
+
+        <a
+            href="/#contact"
+            class="rounded-full border border-blue-400/30 px-5 py-2.5 text-sm text-white transition hover:border-blue-400 hover:bg-blue-400 hover:text-[#050B18]"
+        >
+            Let's talk
+        </a>
+
     </nav>
+
 </header>
+
 {{end}}

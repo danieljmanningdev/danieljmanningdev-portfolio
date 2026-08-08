@@ -4,17 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Manning — Full-Stack UI/UX Developer</title>
+
+    <title>{{.Title}}</title>
+
     <link rel="stylesheet" href="/static/css/app.css">
 </head>
-<body>
+
+<body class="min-h-screen bg-[#050B18] text-white antialiased">
+
     {{template "header" .}}
 
-    <main>
-        {{template "home" .}}
-    </main>
+    {{template "content" .}}
 
     {{template "footer" .}}
+
 </body>
 </html>
 {{end}}

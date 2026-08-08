@@ -1,46 +1,465 @@
-{{define "home"}}
-<section>
-    <p>Full-Stack UI/UX Developer</p>
+{{define "content"}}
 
-    <h1>
-        I design and build digital products with purpose.
-    </h1>
+<main class="overflow-hidden">
 
-    <p>
-        I combine UI/UX design with full-stack development
-        to turn ideas into fast, purposeful software.
-    </p>
+    <!-- HERO -->
 
-    <div>
-        <a href="#about">Learn about me</a>
-        <a href="#work">View my work</a>
-    </div>
-</section>
+    <section class="relative">
 
-<section id="about">
-    <h2>I like building things that become real.</h2>
+        <div
+            class="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-blue-600/20 blur-[120px]"
+        ></div>
 
-    <p>
-        I enjoy working across the entire product — shaping
-        the experience, designing the interface, building the
-        frontend and developing the systems behind it.
-    </p>
-</section>
+        <div
+            class="pointer-events-none absolute right-0 top-40 h-80 w-80 rounded-full bg-cyan-400/10 blur-[100px]"
+        ></div>
 
-<section id="work">
-    <h2>Featured Work</h2>
+        <div class="relative mx-auto flex min-h-[85vh] max-w-7xl items-center px-6 py-24 lg:px-8">
 
-    <h3>Client &amp; Project Management Platform</h3>
+            <div class="max-w-5xl">
 
-    <p>
-        A full-stack platform designed to bring client
-        relationships, projects and day-to-day work into one place.
-    </p>
-</section>
+                <div class="mb-8 flex items-center gap-4">
 
-<section id="contact">
-    <h2>Let's build something.</h2>
+                    <span class="h-px w-10 bg-blue-400"></span>
 
-    <a href="mailto:hello@example.com">Get in touch</a>
-</section>
+                    <p class="text-xs uppercase tracking-[0.3em] text-blue-300/70">
+                        UI/UX Designer &amp; Full-Stack Developer
+                    </p>
+
+                </div>
+
+                <h1 class="text-6xl font-medium leading-[0.95] tracking-[-0.04em] sm:text-7xl lg:text-9xl">
+
+                    <span class="block">
+                        Building
+                    </span>
+
+                    <span class="block text-blue-400">
+                        digital products
+                    </span>
+
+                    <span class="block">
+                        that matter.
+                    </span>
+
+                </h1>
+
+                <div class="mt-12 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+
+                    <p class="max-w-xl text-lg leading-relaxed text-blue-100/50">
+                        I design and build fast, purposeful digital products,
+                        combining thoughtful UI/UX with full-stack development.
+                    </p>
+
+                    <a
+                        href="#work"
+                        class="group flex shrink-0 items-center gap-4 text-sm text-white"
+                    >
+
+                        <span
+                            class="flex h-12 w-12 items-center justify-center rounded-full border border-blue-400/30 transition group-hover:border-blue-400 group-hover:bg-blue-400 group-hover:text-[#050B18]"
+                        >
+                            ↓
+                        </span>
+
+                        <span>
+                            View my work
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WORK -->
+
+    <section
+        id="work"
+        class="border-y border-blue-400/10"
+    >
+
+        <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+            <div class="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+
+                <div>
+
+                    <p class="mb-5 text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                        01 / Selected Work
+                    </p>
+
+                    <h2 class="text-4xl font-medium tracking-tight sm:text-5xl">
+                        Things I've built.
+                    </h2>
+
+                </div>
+
+                <p class="max-w-md text-sm leading-relaxed text-blue-100/40">
+                    A selection of digital products spanning UI/UX design,
+                    full-stack development and product engineering.
+                </p>
+
+            </div>
+
+
+            <!-- FEATURED PROJECT -->
+
+            <article
+                class="group overflow-hidden rounded-3xl border border-blue-400/10 bg-blue-950/20 transition hover:border-blue-400/30"
+            >
+
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+
+                    <div class="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-gradient-to-br from-blue-900 via-blue-950 to-[#050B18]">
+
+                        <div class="absolute h-64 w-64 rounded-full bg-blue-500/20 blur-[100px]"></div>
+
+                        <div class="relative text-center">
+
+                            <p class="text-xs uppercase tracking-[0.4em] text-blue-300/50">
+                                Featured Project
+                            </p>
+
+                            <h3 class="mt-5 text-6xl font-medium tracking-[-0.04em]">
+                                SYMPTIC
+                            </h3>
+
+                            <p class="mt-4 text-sm text-blue-100/40">
+                                Healthcare technology
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex flex-col justify-between p-8 lg:p-12">
+
+                        <div>
+
+                            <div class="flex items-center justify-between">
+
+                                <span class="text-xs uppercase tracking-[0.2em] text-blue-300/50">
+                                    2026
+                                </span>
+
+                                <span class="text-blue-400 transition group-hover:translate-x-1 group-hover:-translate-y-1">
+                                    ↗
+                                </span>
+
+                            </div>
+
+                            <h3 class="mt-16 text-4xl font-medium tracking-tight">
+                                Symptic
+                            </h3>
+
+                            <p class="mt-6 max-w-md leading-relaxed text-blue-100/50">
+                                A healthcare technology platform designed to
+                                turn complex workflows into practical,
+                                secure digital experiences.
+                            </p>
+
+                        </div>
+
+                        <div class="mt-12 flex flex-wrap gap-2">
+
+                            <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
+                                Go
+                            </span>
+
+                            <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
+                                PostgreSQL
+                            </span>
+
+                            <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
+                                REST API
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- SECONDARY PROJECTS -->
+
+            <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                <article
+                    class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition hover:border-blue-400/30"
+                >
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs uppercase tracking-[0.2em] text-blue-300/50">
+                            02
+                        </span>
+
+                        <span class="text-blue-400 transition group-hover:translate-x-1 group-hover:-translate-y-1">
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <h3 class="mt-16 text-3xl font-medium">
+                        Portfolio
+                    </h3>
+
+                    <p class="mt-4 max-w-md leading-relaxed text-blue-100/50">
+                        A personal portfolio designed and built as a
+                        full-stack application, combining product design,
+                        frontend development and backend engineering.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-2">
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            Go
+                        </span>
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            HTMX
+                        </span>
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            Tailwind
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition hover:border-blue-400/30"
+                >
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs uppercase tracking-[0.2em] text-blue-300/50">
+                            03
+                        </span>
+
+                        <span class="text-blue-400 transition group-hover:translate-x-1 group-hover:-translate-y-1">
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <h3 class="mt-16 text-3xl font-medium">
+                        Experiments
+                    </h3>
+
+                    <p class="mt-4 max-w-md leading-relaxed text-blue-100/50">
+                        Smaller products, prototypes and technical experiments
+                        exploring new ideas, technologies and interaction patterns.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-2">
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            Go
+                        </span>
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            HTML
+                        </span>
+
+                        <span class="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-200/60">
+                            JavaScript
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 py-32 lg:grid-cols-12 lg:px-8">
+
+            <div class="lg:col-span-4">
+
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    02 / About
+                </p>
+
+            </div>
+
+            <div class="lg:col-span-8">
+
+                <h2 class="max-w-4xl text-4xl font-medium leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                    I like building complicated things that feel simple.
+                </h2>
+
+                <div class="mt-10 grid grid-cols-1 gap-8 text-blue-100/50 md:grid-cols-2">
+
+                    <p class="leading-relaxed">
+                        I enjoy taking an idea from the first rough concept
+                        through interface design and into working software.
+                        Seeing something move from an idea into a real product
+                        is what keeps me interested in development.
+                    </p>
+
+                    <p class="leading-relaxed">
+                        My work combines UI/UX design with full-stack
+                        engineering, with a strong focus on performance,
+                        simplicity and maintainable systems.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICES -->
+
+    <section
+        id="services"
+        class="border-y border-blue-400/10 bg-blue-950/10"
+    >
+
+        <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+            <div class="mb-16">
+
+                <p class="mb-5 text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    03 / Capabilities
+                </p>
+
+                <h2 class="text-4xl font-medium tracking-tight sm:text-5xl">
+                    What I work with.
+                </h2>
+
+            </div>
+
+            <div class="grid grid-cols-1 gap-px overflow-hidden rounded-3xl border border-blue-400/10 bg-blue-400/10 md:grid-cols-3">
+
+                <div class="bg-[#071124] p-8 lg:p-10">
+
+                    <span class="text-sm text-blue-400">
+                        01
+                    </span>
+
+                    <h3 class="mt-16 text-2xl font-medium">
+                        UI/UX Design
+                    </h3>
+
+                    <p class="mt-5 leading-relaxed text-blue-100/40">
+                        Interfaces and product experiences designed around
+                        clarity, usability and the people using them.
+                    </p>
+
+                </div>
+
+
+                <div class="bg-[#071124] p-8 lg:p-10">
+
+                    <span class="text-sm text-blue-400">
+                        02
+                    </span>
+
+                    <h3 class="mt-16 text-2xl font-medium">
+                        Full-Stack Development
+                    </h3>
+
+                    <p class="mt-5 leading-relaxed text-blue-100/40">
+                        Frontend interfaces, APIs, databases and backend
+                        systems built with performance and maintainability
+                        in mind.
+                    </p>
+
+                </div>
+
+
+                <div class="bg-[#071124] p-8 lg:p-10">
+
+                    <span class="text-sm text-blue-400">
+                        03
+                    </span>
+
+                    <h3 class="mt-16 text-2xl font-medium">
+                        Product Development
+                    </h3>
+
+                    <p class="mt-5 leading-relaxed text-blue-100/40">
+                        Taking ideas from concept to working software while
+                        keeping the product focused, understandable and useful.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section id="contact">
+
+        <div class="relative mx-auto max-w-7xl overflow-hidden px-6 py-32 lg:px-8 lg:py-40">
+
+            <div
+                class="pointer-events-none absolute right-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-blue-600/10 blur-[120px]"
+            ></div>
+
+            <div class="relative">
+
+                <p class="mb-8 text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    04 / Contact
+                </p>
+
+                <h2 class="max-w-5xl text-6xl font-medium leading-[0.95] tracking-[-0.04em] sm:text-7xl lg:text-8xl">
+
+                    Have something
+                    <span class="text-blue-400">
+                        worth building?
+                    </span>
+
+                </h2>
+
+                <a
+                    href="mailto:hello@example.com"
+                    class="mt-12 inline-flex items-center gap-4 rounded-full bg-blue-500 px-7 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
+                >
+                    Start a conversation
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
 {{end}}
