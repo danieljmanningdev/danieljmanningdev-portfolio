@@ -13,7 +13,7 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	// Home page route
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 		// Catch accidental sub-paths
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)
