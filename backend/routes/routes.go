@@ -3,6 +3,8 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/handlers"
 )
 
 func SetupRouter(db *sql.DB) *http.ServeMux {
@@ -23,9 +25,7 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	})
 
 	// Handle blog route
-	mux.HandleFunc("GET /blog", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "backend/templates/blog.html")
-	})
+	mux.HandleFunc("GET /blog", handlers.BlogHandler)
 
 	// Handle portal route (TODO: Wrap with backend/middleware/auth.go later)
 	mux.HandleFunc("GET /portal", func(w http.ResponseWriter, r *http.Request) {
