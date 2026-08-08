@@ -1,0 +1,102 @@
+{{define "content"}}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Client — Daniel J. Manning</title>
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+
+<body class="min-h-screen bg-[#050B18] text-white">
+    <main class="mx-auto max-w-3xl px-6 py-16 lg:px-8">
+
+        <a
+            href="/dashboard/clients"
+            class="text-sm text-blue-300/60 hover:text-white"
+        >
+            ← Back to clients
+        </a>
+
+        <h1 class="mt-10 text-5xl font-medium tracking-tight">
+            Add client
+        </h1>
+
+        {{if .Error}}
+            <div class="mt-8 rounded-2xl border border-red-400/20 bg-red-400/5 p-4 text-sm text-red-200">
+                {{.Error}}
+            </div>
+        {{end}}
+
+        <form
+            method="post"
+            action="/dashboard/clients/new"
+            class="mt-10 space-y-6"
+        >
+            <div>
+                <label class="text-sm text-blue-100/60" for="name">
+                    Name
+                </label>
+
+                <input
+                    id="name"
+                    name="name"
+                    value="{{.Name}}"
+                    required
+                    class="mt-2 w-full rounded-2xl border border-blue-400/10 bg-blue-950/20 px-4 py-3 text-white outline-none focus:border-blue-400/40"
+                >
+            </div>
+
+            <div>
+                <label class="text-sm text-blue-100/60" for="email">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value="{{.Email}}"
+                    required
+                    class="mt-2 w-full rounded-2xl border border-blue-400/10 bg-blue-950/20 px-4 py-3 text-white outline-none focus:border-blue-400/40"
+                >
+            </div>
+
+            <div>
+                <label class="text-sm text-blue-100/60" for="company">
+                    Company
+                </label>
+
+                <input
+                    id="company"
+                    name="company"
+                    value="{{.Company}}"
+                    class="mt-2 w-full rounded-2xl border border-blue-400/10 bg-blue-950/20 px-4 py-3 text-white outline-none focus:border-blue-400/40"
+                >
+            </div>
+
+            <div>
+                <label class="text-sm text-blue-100/60" for="notes">
+                    Notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    name="notes"
+                    rows="5"
+                    class="mt-2 w-full rounded-2xl border border-blue-400/10 bg-blue-950/20 px-4 py-3 text-white outline-none focus:border-blue-400/40"
+                >{{.Notes}}</textarea>
+            </div>
+
+            <button
+                type="submit"
+                class="rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
+            >
+                Create client
+            </button>
+        </form>
+
+    </main>
+</body>
+</html>
+{{end}}

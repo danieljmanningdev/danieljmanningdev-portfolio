@@ -1,0 +1,131 @@
+{{define "clients"}}
+
+<main class="mx-auto max-w-7xl px-6 pb-20 pt-16 lg:px-8 lg:pt-20">
+
+    <div class="flex flex-col gap-8 border-b border-blue-400/10 pb-10 sm:flex-row sm:items-end sm:justify-between">
+
+        <div>
+            <p class="text-xs font-medium uppercase tracking-[0.3em] text-blue-300/50">
+                Dashboard
+            </p>
+
+            <h1 class="mt-4 text-4xl font-medium tracking-tight text-white sm:text-5xl">
+                Clients
+            </h1>
+
+            <p class="mt-4 max-w-xl text-sm leading-6 text-blue-100/50 sm:text-base">
+                Manage your client relationships, contact details, and notes.
+            </p>
+        </div>
+
+        <a
+            href="/dashboard/clients/new"
+            class="inline-flex shrink-0 items-center justify-center rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
+        >
+            Add client
+            <span class="ml-2 text-base">+</span>
+        </a>
+
+    </div>
+
+
+    <div class="mt-10">
+
+        {{if .Clients}}
+
+            <div class="overflow-hidden rounded-3xl border border-blue-400/10 bg-[#071225] shadow-2xl shadow-black/10">
+
+                <div class="hidden grid-cols-[1fr_1fr_160px_80px] gap-6 border-b border-blue-400/10 bg-blue-400/[0.03] px-7 py-4 text-xs font-medium uppercase tracking-[0.18em] text-blue-100/30 md:grid">
+                    <span>Client</span>
+                    <span>Email</span>
+                    <span>Company</span>
+                    <span>Status</span>
+                </div>
+
+                <div class="divide-y divide-blue-400/10">
+
+                    {{range .Clients}}
+
+                        <a
+                            href="/dashboard/clients/{{.ID}}"
+                            class="group block px-6 py-6 transition hover:bg-blue-400/[0.04] sm:px-7"
+                        >
+
+                            <div class="grid gap-5 md:grid-cols-[1fr_1fr_160px_80px] md:items-center md:gap-6">
+
+                                <div class="min-w-0">
+                                    <p class="truncate text-base font-medium text-white transition group-hover:text-blue-300">
+                                        {{.Name}}
+                                    </p>
+
+                                    <p class="mt-1 text-sm text-blue-100/35 md:hidden">
+                                        {{.Email}}
+                                    </p>
+                                </div>
+
+                                <div class="hidden min-w-0 md:block">
+                                    <p class="truncate text-sm text-blue-100/55">
+                                        {{.Email}}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    {{if .Company}}
+                                        <p class="truncate text-sm text-blue-100/45">
+                                            {{.Company}}
+                                        </p>
+                                    {{else}}
+                                        <p class="text-sm text-blue-100/20">
+                                            —
+                                        </p>
+                                    {{end}}
+                                </div>
+
+                                <div>
+                                    <span class="inline-flex rounded-full border border-blue-400/15 bg-blue-400/[0.06] px-3 py-1 text-xs text-blue-200/60">
+                                        {{.Status}}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </a>
+
+                    {{end}}
+
+                </div>
+
+            </div>
+
+        {{else}}
+
+            <div class="rounded-3xl border border-dashed border-blue-400/15 bg-[#071225] px-6 py-16 text-center">
+
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-400/10 bg-blue-400/[0.05] text-xl text-blue-300/50">
+                    +
+                </div>
+
+                <h2 class="mt-6 text-lg font-medium text-white">
+                    No clients yet
+                </h2>
+
+                <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-blue-100/40">
+                    Add your first client to start managing relationships from your dashboard.
+                </p>
+
+                <a
+                    href="/dashboard/clients/new"
+                    class="mt-7 inline-flex rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
+                >
+                    Add your first client
+                </a>
+
+            </div>
+
+        {{end}}
+
+    </div>
+
+</main>
+
+{{end}}

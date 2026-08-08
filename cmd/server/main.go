@@ -26,36 +26,84 @@ func main() {
 	)
 	defer stop()
 
-	db, err := database.Open(ctx, cfg.DatabasePath)
+	db, err := database.Open(
+		ctx,
+		cfg.DatabasePath,
+	)
 	if err != nil {
 		log.Fatalf("open database: %v", err)
 	}
+
 	defer func() {
 		if err := db.Close(); err != nil {
 			log.Printf("close database: %v", err)
 		}
 	}()
 
-	if err := database.RunMigrations(db.SQL, "migrations"); err != nil {
+	if err := database.RunMigrations(
+		db.SQL,
+		"migrations",
+	); err != nil {
 		log.Fatalf("run migrations: %v", err)
 	}
 
-	homeHandler, err := apphttp.NewHomeHandler(cfg.TemplateDir)
+	homeHandler, err := apphttp.NewHomeHandler(
+		cfg.TemplateDir,
+	)
 	if err != nil {
 		log.Fatalf("create home handler: %v", err)
 	}
 
+	clientsHandler, err := apphttp.NewClientsHandler(
+		db.SQL,
+		cfg.TemplateDir,
+	)
+	if err != nil {
+		log.Fatalf(
+			"create clients handler: %v",
+			err,
+		)
+	}
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("/health", apphttp.HealthHandler)
-	mux.Handle("/", homeHandler)
+
+	mux.HandleFunc(
+		"/health",
+		apphttp.HealthHandler,
+	)
+
+	mux.Handle(
+		"/dashboard/clients",
+		clientsHandler,
+	)
+
+	mux.Handle(
+		"/dashboard/clients/",
+		clientsHandler,
+	)
+
+	mux.Handle(
+		"/",
+		homeHandler,
+	)
+
+	fileServer := http.FileServer(
+		http.Dir("web/static"),
+	)
+
+	mux.Handle(
+		"/static/",
+		http.StripPrefix(
+			"/static/",
+			fileServer,
+		),
+	)
+
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(cfg.Port),
 		Handler:           mux,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
-
-	fileServer := http.FileServer(http.Dir("web/static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	go func() {
 		log.Printf(
@@ -66,7 +114,10 @@ func main() {
 
 		if err := server.ListenAndServe(); err != nil &&
 			!errors.Is(err, http.ErrServerClosed) {
-			log.Printf("server error: %v", err)
+			log.Printf(
+				"server error: %v",
+				err,
+			)
 			stop()
 		}
 	}()
@@ -81,7 +132,12 @@ func main() {
 	)
 	defer cancel()
 
-	if err := server.Shutdown(shutdownCtx); err != nil {
-		log.Printf("server shutdown error: %v", err)
+	if err := server.Shutdown(
+		shutdownCtx,
+	); err != nil {
+		log.Printf(
+			"server shutdown error: %v",
+			err,
+		)
 	}
 }

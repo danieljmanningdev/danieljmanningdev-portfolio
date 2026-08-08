@@ -1,0 +1,79 @@
+{{define "client"}}
+
+<main class="mx-auto max-w-7xl px-6 pb-20 pt-16 lg:px-8 lg:pt-20">
+
+    <a
+        href="/dashboard/clients"
+        class="inline-flex items-center text-sm text-blue-300/50 transition hover:text-white"
+    >
+        <span class="mr-2">←</span>
+        Back to clients
+    </a>
+
+
+    <div class="mt-12 flex flex-col gap-6 border-b border-blue-400/10 pb-10 sm:flex-row sm:items-end sm:justify-between">
+
+        <div>
+
+            <p class="text-xs font-medium uppercase tracking-[0.3em] text-blue-300/50">
+                Client
+            </p>
+
+            <h1 class="mt-4 text-4xl font-medium tracking-tight text-white sm:text-5xl">
+                {{.Client.Name}}
+            </h1>
+
+            {{if .Client.Company}}
+                <p class="mt-3 text-sm text-blue-100/40">
+                    {{.Client.Company}}
+                </p>
+            {{end}}
+
+        </div>
+
+        <span class="inline-flex w-fit rounded-full border border-blue-400/15 bg-blue-400/[0.06] px-4 py-2 text-xs text-blue-200/60">
+            {{.Client.Status}}
+        </span>
+
+    </div>
+
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+
+        <div class="rounded-3xl border border-blue-400/10 bg-[#071225] p-7 sm:p-8">
+
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-blue-300/40">
+                Contact
+            </p>
+
+            <a
+                href="mailto:{{.Client.Email}}"
+                class="mt-5 block break-all text-base text-blue-300 transition hover:text-white sm:text-lg"
+            >
+                {{.Client.Email}}
+            </a>
+
+        </div>
+
+
+        <div class="rounded-3xl border border-blue-400/10 bg-[#071225] p-7 sm:p-8">
+
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-blue-300/40">
+                Notes
+            </p>
+
+            <p class="mt-5 whitespace-pre-line text-sm leading-7 text-blue-100/50">
+                {{if .Client.Notes}}
+                    {{.Client.Notes}}
+                {{else}}
+                    No notes yet.
+                {{end}}
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+{{end}}
