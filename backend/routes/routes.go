@@ -35,5 +35,8 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	// Handle calculate route
 	mux.HandleFunc("POST /calculate", handlers.CalculateHandler)
 
+	// Handle login
+	mux.HandleFunc("GET /login", handlers.HandleLogin(db))
+
 	return mux
 }
