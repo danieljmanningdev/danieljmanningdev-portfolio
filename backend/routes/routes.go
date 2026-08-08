@@ -29,9 +29,7 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	mux.HandleFunc("GET /blog", handlers.BlogHandler)
 
 	// Protected client portal route
-	mux.Handle("GET /portal", middleware.RequireAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "backend/templates/portal.html")
-	})))
+	mux.Handle("GET /portal", middleware.RequireAuth(http.HandlerFunc(handlers.PortalHandler(db))))
 
 	// Handle calculate route
 	mux.HandleFunc("POST /calculate", handlers.CalculateHandler)
