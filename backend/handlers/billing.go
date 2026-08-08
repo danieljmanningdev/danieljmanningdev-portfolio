@@ -9,13 +9,21 @@ import (
 )
 
 func HandleCreateCheckout(w http.ResponseWriter, r *http.Request) {
-	priceID := os.Getenv("STRIPE_PRICE_ID") // Your recurring product price ID
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	clientEmail := cookie.Value // Now actually used!
+
+	priceID := os.Getenv("STRIPE_PRICE_ID")
 	domain := "http://localhost:8080"
 
 	checkoutURL, err := services.CreateCheckoutSession(
 		priceID,
-		domain+"/success?session_id={CHECKOUT_SESSION_ID}",
-		domain+"/cancel",
+		clientEmail, // Passed here
+		domain+"/portal?payment=success&session_id={CHECKOUT_SESSION_ID}",
+		domain+"/portal?payment=cancelled",
 	)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
