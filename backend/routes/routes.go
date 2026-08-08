@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/handlers"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/middleware"
 )
 
 func SetupRouter(db *sql.DB) *http.ServeMux {
@@ -27,16 +28,17 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 	// Handle blog route
 	mux.HandleFunc("GET /blog", handlers.BlogHandler)
 
-	// Handle portal route (TODO: Wrap with backend/middleware/auth.go later)
-	mux.HandleFunc("GET /portal", func(w http.ResponseWriter, r *http.Request) {
+	// Protected client portal route
+	mux.Handle("GET /portal", middleware.RequireAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "backend/templates/portal.html")
-	})
+	})))
 
 	// Handle calculate route
 	mux.HandleFunc("POST /calculate", handlers.CalculateHandler)
 
 	// Handle login
 	mux.HandleFunc("GET /login", handlers.HandleLogin(db))
+	mux.HandleFunc("POST /login", handlers.HandleLogin(db))
 
 	return mux
 }
