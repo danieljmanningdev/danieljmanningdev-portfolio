@@ -36,6 +36,10 @@ func main() {
 		}
 	}()
 
+	if err := database.RunMigrations(db.SQL, "migrations"); err != nil {
+		log.Fatalf("run migrations: %v", err)
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", apphttp.HealthHandler)
 
