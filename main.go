@@ -1,11 +1,14 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/db"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/backend/routes"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
@@ -25,4 +28,21 @@ func main() {
 	if err := http.ListenAndServe(port, mux); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
+}
+
+func CreateClient(db *sql.DB, email, rawPassword string) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(rawPassword), bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatalf("Failed to hash password: %v", err)
+	}
+
+	_, err = db.Exec(
+		"INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, ?, datetime('now'))",
+		email, string(hashedPassword), "client",
+	)
+	if err != nil {
+		log.Fatalf("Failed to insert client: %v", err)
+	}
+
+	fmt.Printf("Successfully created client account for: %s\n", email)
 }
