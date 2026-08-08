@@ -32,5 +32,8 @@ func SetupRouter(db *sql.DB) *http.ServeMux {
 		http.ServeFile(w, r, "backend/templates/portal.html")
 	})
 
+	// Handle calculate route
+	mux.HandleFunc("POST /calculate", handlers.CalculateHandler)
+
 	return mux
 }
