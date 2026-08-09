@@ -1,13 +1,27 @@
 {{define "base"}}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <script
+        src="https://unpkg.com/htmx.org@2.0.6"
+    ></script>
 
     <title>{{.Title}}</title>
 
-    <link rel="stylesheet" href="/static/css/app.css">
+    <link
+        rel="stylesheet"
+        href="/static/css/app.css"
+    >
+
 </head>
 
 <body class="min-h-screen bg-[#050B18] text-white antialiased">
@@ -19,5 +33,6 @@
     {{template "footer" .}}
 
 </body>
+
 </html>
 {{end}}

@@ -150,3 +150,33 @@ func (r *ClientRepository) Delete(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (r *ClientRepository) Update(
+	ctx context.Context,
+	id int64,
+	name string,
+	email string,
+	company string,
+	status string,
+	notes string,
+) error {
+	result, err := r.db.ExecContext(ctx, `
+		UPDATE clients
+		SET name = ?, email = ?, company = ?, status = ?, notes = ?
+		WHERE id = ?
+	`, name, email, company, status, notes, id)
+	if err != nil {
+		return fmt.Errorf("update client %d: %w", id, err)
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("check updated client %d: %w", id, err)
+	}
+
+	if rows == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
