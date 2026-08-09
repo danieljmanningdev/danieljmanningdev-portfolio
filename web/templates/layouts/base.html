@@ -1,0 +1,23 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{.Title}}</title>
+
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+
+<body class="min-h-screen bg-[#050B18] text-white antialiased">
+
+    {{template "header" .}}
+
+    {{template "content" .}}
+
+    {{template "footer" .}}
+
+</body>
+</html>
+{{end}}

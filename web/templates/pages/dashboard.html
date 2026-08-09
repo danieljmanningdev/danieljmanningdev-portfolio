@@ -1,0 +1,228 @@
+{{define "content"}}
+
+<div class="mx-auto max-w-7xl">
+
+    <!-- ==================== DASHBOARD HERO ==================== -->
+
+    <section class="pt-10 sm:pt-14 lg:pt-16">
+
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+
+            <div class="max-w-3xl">
+
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    Workspace
+                </p>
+
+                <h1 class="mt-5 text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
+                    Dashboard
+                </h1>
+
+                <p class="mt-5 max-w-2xl text-base leading-7 text-blue-100/50 sm:text-lg">
+                    Keep track of your clients, projects, contracts, messages, and time.
+                </p>
+
+            </div>
+
+            <a
+                href="/dashboard/clients/new"
+                class="inline-flex w-fit shrink-0 items-center justify-center rounded-full bg-blue-500 px-6 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
+            >
+                Add client
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================== WORKSPACE CARDS ==================== -->
+
+    <section class="mt-16 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+
+        <a
+            href="/dashboard/clients"
+            class="group min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30"
+        >
+
+            <div class="flex items-center justify-between">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Clients
+                </p>
+
+                <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
+                    →
+                </span>
+
+            </div>
+
+            <p class="mt-8 text-3xl font-medium text-white">
+                View
+            </p>
+
+            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
+                Manage your client relationships.
+            </p>
+
+        </a>
+
+
+        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
+
+            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                Projects
+            </p>
+
+            <p class="mt-8 text-3xl font-medium text-white">
+                —
+            </p>
+
+            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
+                Project management coming next.
+            </p>
+
+        </div>
+
+
+        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
+
+            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                Contracts
+            </p>
+
+            <p class="mt-8 text-3xl font-medium text-white">
+                —
+            </p>
+
+            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
+                Contract management coming next.
+            </p>
+
+        </div>
+
+
+        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
+
+            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                Time
+            </p>
+
+            <p class="mt-8 text-3xl font-medium text-white">
+                —
+            </p>
+
+            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
+                Time tracking coming next.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================== QUICK ACTIONS ==================== -->
+
+    <section class="mt-16">
+
+        <div class="mb-6">
+
+            <p class="text-xs uppercase tracking-[0.3em] text-blue-300/40">
+                Quick actions
+            </p>
+
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2">
+
+            <a
+                href="/dashboard/clients"
+                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30"
+            >
+
+                <div class="flex items-start justify-between gap-8">
+
+                    <div>
+
+                        <p class="text-lg font-medium text-white">
+                            Manage clients
+                        </p>
+
+                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
+                            View existing clients, open their profiles, or add a new client.
+                        </p>
+
+                    </div>
+
+                    <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
+                        →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="/dashboard/clients/new"
+                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30"
+            >
+
+                <div class="flex items-start justify-between gap-8">
+
+                    <div>
+
+                        <p class="text-lg font-medium text-white">
+                            Add a client
+                        </p>
+
+                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
+                            Create a new client record with contact details and notes.
+                        </p>
+
+                    </div>
+
+                    <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
+                        →
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================== WORKSPACE NOTE ==================== -->
+
+    <section class="mt-16 pb-12">
+
+        <div class="rounded-3xl border border-blue-400/10 bg-blue-950/10 p-8 sm:p-10 lg:p-12">
+
+            <div class="max-w-2xl">
+
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/40">
+                    Workspace
+                </p>
+
+                <h2 class="mt-5 text-2xl font-medium tracking-tight text-white sm:text-3xl">
+                    Your workspace starts here.
+                </h2>
+
+                <p class="mt-5 text-sm leading-7 text-blue-100/40">
+                    Clients are the first part of the portal. Projects, contracts,
+                    messaging, and time tracking can be layered into this workspace
+                    without changing the core dashboard structure.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{{end}}

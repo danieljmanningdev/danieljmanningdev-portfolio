@@ -30,3 +30,15 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Node / Tailwind
+node_modules/
+web/static/css/app.css
+
+# macOS
+.DS_Store

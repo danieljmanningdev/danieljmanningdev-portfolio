@@ -1,0 +1,97 @@
+{{define "content"}}
+
+<div class="mx-auto max-w-7xl">
+
+    <!-- ==================== CLIENT HEADER ==================== -->
+
+    <section class="pt-10 sm:pt-14 lg:pt-16">
+
+        <a
+            href="/dashboard/clients"
+            class="inline-flex items-center text-sm text-blue-300/50 transition hover:text-white"
+        >
+            ← Back to clients
+        </a>
+
+        <div class="mt-10 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
+
+            <div>
+
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    Client
+                </p>
+
+                <h1 class="mt-5 text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
+                    {{.Client.Name}}
+                </h1>
+
+                {{if .Client.Company}}
+                    <p class="mt-4 text-base text-blue-100/40">
+                        {{.Client.Company}}
+                    </p>
+                {{end}}
+
+            </div>
+
+            <span class="inline-flex w-fit shrink-0 rounded-full bg-blue-400/10 px-4 py-2 text-xs text-blue-200/60">
+                {{.Client.Status}}
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================== CLIENT INFORMATION ==================== -->
+
+    <section class="mt-14 pb-16">
+
+        <div class="grid gap-6 lg:grid-cols-2">
+
+            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Contact
+                </p>
+
+                <h2 class="mt-5 text-lg font-medium text-white">
+                    Email address
+                </h2>
+
+                <a
+                    href="mailto:{{.Client.Email}}"
+                    class="mt-3 block break-all text-base leading-7 text-blue-300 transition hover:text-white"
+                >
+                    {{.Client.Email}}
+                </a>
+
+            </div>
+
+
+            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Notes
+                </p>
+
+                <h2 class="mt-5 text-lg font-medium text-white">
+                    Client notes
+                </h2>
+
+                <p class="mt-3 whitespace-pre-line text-base leading-7 text-blue-100/50">
+                    {{if .Client.Notes}}
+                        {{.Client.Notes}}
+                    {{else}}
+                        No notes yet.
+                    {{end}}
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{{end}}
