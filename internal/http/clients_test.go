@@ -49,14 +49,26 @@ func newTestClientsHandler(t *testing.T) (*ClientsHandler, *sql.DB) {
 	errorTemplate := template.Must(
 		template.New("base").Parse(`
 			{{define "base"}}
-			{{.Error}}
+			{{.Errors.General}}
+			{{.Errors.Name}}
+			{{.Errors.Email}}
+			{{.Errors.Company}}
+			{{.Errors.Status}}
+			{{.Errors.Notes}}
+			{{.Form.ID}}
+			{{.Form.Name}}
+			{{.Form.Email}}
+			{{.Form.Company}}
+			{{.Form.Status}}
+			{{.Form.Notes}}
 			{{end}}
 		`),
 	)
 
 	handler := &ClientsHandler{
-		repository:         repository.NewClientRepository(db.SQL),
-		newClientTemplates: errorTemplate,
+		repository:          repository.NewClientRepository(db.SQL),
+		newClientTemplates:  errorTemplate,
+		editClientTemplates: errorTemplate,
 	}
 
 	return handler, db.SQL
