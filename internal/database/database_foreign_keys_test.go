@@ -20,7 +20,10 @@ func TestOpenEnablesForeignKeyEnforcement(t *testing.T) {
 		ctx,
 		"PRAGMA foreign_keys",
 	).Scan(&enabled); err != nil {
-		t.Fatalf("query foreign key setting: %v", err)
+		t.Fatalf(
+			"query foreign key setting: %v",
+			err,
+		)
 	}
 
 	if enabled != 1 {
@@ -38,7 +41,8 @@ func TestOpenEnablesForeignKeyEnforcement(t *testing.T) {
 		CREATE TABLE children (
 			id INTEGER PRIMARY KEY,
 			parent_id INTEGER NOT NULL,
-			FOREIGN KEY (parent_id) REFERENCES parents(id)
+			FOREIGN KEY (parent_id)
+				REFERENCES parents(id)
 		);
 	`)
 	if err != nil {
