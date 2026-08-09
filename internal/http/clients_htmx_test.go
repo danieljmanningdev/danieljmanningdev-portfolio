@@ -9,6 +9,7 @@ import (
 
 func TestClientsDeleteHTMXRedirect(t *testing.T) {
 	handler, db := newTestClientsHandler(t)
+
 	id := createTestClient(t, db)
 
 	req := httptest.NewRequest(
@@ -29,9 +30,9 @@ func TestClientsDeleteHTMXRedirect(t *testing.T) {
 		)
 	}
 
-	if redirect := rec.Header().Get(
-		"HX-Redirect",
-	); redirect != "/dashboard/clients" {
+	redirect := rec.Header().Get("HX-Redirect")
+
+	if redirect != "/dashboard/clients" {
 		t.Fatalf(
 			"expected HX-Redirect %q, got %q",
 			"/dashboard/clients",
@@ -39,10 +40,21 @@ func TestClientsDeleteHTMXRedirect(t *testing.T) {
 		)
 	}
 
+	if location := rec.Header().Get("Location"); location != "" {
+		t.Fatalf(
+			"expected no normal Location header, got %q",
+			location,
+		)
+	}
+
 	var count int
 
 	if err := db.QueryRow(
-		"SELECT COUNT(*) FROM clients WHERE id = ?",
+		`
+			SELECT COUNT(*)
+			FROM clients
+			WHERE id = ?
+		`,
 		id,
 	).Scan(&count); err != nil {
 		t.Fatalf("check deleted client: %v", err)

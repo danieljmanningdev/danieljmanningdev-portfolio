@@ -20,7 +20,10 @@ func Open(ctx context.Context, path string) (*Database, error) {
 		dir := filepath.Dir(path)
 
 		if err := os.MkdirAll(dir, 0o755); err != nil {
-			return nil, fmt.Errorf("create database directory: %w", err)
+			return nil, fmt.Errorf(
+				"create database directory: %w",
+				err,
+			)
 		}
 	}
 
@@ -35,15 +38,22 @@ func Open(ctx context.Context, path string) (*Database, error) {
 	}
 
 	if path == ":memory:" {
-		// SQLite in-memory databases exist per physical connection.
-		// Keeping one connection ensures every query sees the same database.
+		/*
+			SQLite in-memory databases exist per physical
+			connection. Limiting the pool to one connection
+			ensures every test query sees the same database.
+		*/
 		db.SetMaxOpenConns(1)
 		db.SetMaxIdleConns(1)
 	}
 
 	if err := db.PingContext(ctx); err != nil {
 		_ = db.Close()
-		return nil, fmt.Errorf("ping database: %w", err)
+
+		return nil, fmt.Errorf(
+			"ping database: %w",
+			err,
+		)
 	}
 
 	var foreignKeysEnabled int
@@ -62,7 +72,10 @@ func Open(ctx context.Context, path string) (*Database, error) {
 
 	if foreignKeysEnabled != 1 {
 		_ = db.Close()
-		return nil, fmt.Errorf("foreign key enforcement is disabled")
+
+		return nil, fmt.Errorf(
+			"foreign key enforcement is disabled",
+		)
 	}
 
 	return &Database{
@@ -77,7 +90,10 @@ func sqliteDSN(path string) (string, error) {
 
 	absolutePath, err := filepath.Abs(path)
 	if err != nil {
-		return "", fmt.Errorf("resolve database path: %w", err)
+		return "", fmt.Errorf(
+			"resolve database path: %w",
+			err,
+		)
 	}
 
 	dsn := &url.URL{
