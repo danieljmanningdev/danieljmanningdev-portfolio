@@ -7,6 +7,7 @@ The public website presents my UI/UX design and full-stack development work. Beh
 ## Current Features
 
 ### Public portfolio
+![Daniel J. Manning's portfolio home screen](web/static/images/djmdev-homescreen.png)
 
 - Responsive portfolio homepage
 - Selected-work section
@@ -16,6 +17,7 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - Tailwind CSS visual system
 
 ### Internal workspace
+![Daniel J. Manning's portfolio home screen](web/static/images/internal-workspace.png)
 
 - Dashboard overview
 - Client listing
@@ -69,3 +71,4 @@ The application deliberately avoids a heavy frontend framework. Most pages are r
 ├── package-lock.json
 ├── LICENSE
 └── README.md
+```
