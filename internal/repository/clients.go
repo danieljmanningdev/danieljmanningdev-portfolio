@@ -18,7 +18,9 @@ func NewClientRepository(db *sql.DB) *ClientRepository {
 	}
 }
 
-func (r *ClientRepository) List(ctx context.Context) ([]models.Client, error) {
+func (r *ClientRepository) List(
+	ctx context.Context,
+) ([]models.Client, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT
 			id,
@@ -65,7 +67,10 @@ func (r *ClientRepository) List(ctx context.Context) ([]models.Client, error) {
 	return clients, nil
 }
 
-func (r *ClientRepository) GetByID(ctx context.Context, id int64) (models.Client, error) {
+func (r *ClientRepository) GetByID(
+	ctx context.Context,
+	id int64,
+) (models.Client, error) {
 	var client models.Client
 
 	err := r.db.QueryRowContext(ctx, `
@@ -90,13 +95,16 @@ func (r *ClientRepository) GetByID(ctx context.Context, id int64) (models.Client
 		&client.CreatedAt,
 		&client.UpdatedAt,
 	)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return models.Client{}, sql.ErrNoRows
 		}
 
-		return models.Client{}, fmt.Errorf("get client %d: %w", id, err)
+		return models.Client{}, fmt.Errorf(
+			"get client %d: %w",
+			id,
+			err,
+		)
 	}
 
 	return client, nil
@@ -124,31 +132,13 @@ func (r *ClientRepository) Create(
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return 0, fmt.Errorf("get created client id: %w", err)
+		return 0, fmt.Errorf(
+			"get created client id: %w",
+			err,
+		)
 	}
 
 	return id, nil
-}
-
-func (r *ClientRepository) Delete(ctx context.Context, id int64) error {
-	result, err := r.db.ExecContext(ctx, `
-		DELETE FROM clients
-		WHERE id = ?
-	`, id)
-	if err != nil {
-		return fmt.Errorf("delete client %d: %w", id, err)
-	}
-
-	rows, err := result.RowsAffected()
-	if err != nil {
-		return fmt.Errorf("check deleted client %d: %w", id, err)
-	}
-
-	if rows == 0 {
-		return sql.ErrNoRows
-	}
-
-	return nil
 }
 
 func (r *ClientRepository) Update(
@@ -162,16 +152,62 @@ func (r *ClientRepository) Update(
 ) error {
 	result, err := r.db.ExecContext(ctx, `
 		UPDATE clients
-		SET name = ?, email = ?, company = ?, status = ?, notes = ?
+		SET
+			name = ?,
+			email = ?,
+			company = ?,
+			status = ?,
+			notes = ?,
+			updated_at = CURRENT_TIMESTAMP
 		WHERE id = ?
 	`, name, email, company, status, notes, id)
 	if err != nil {
-		return fmt.Errorf("update client %d: %w", id, err)
+		return fmt.Errorf(
+			"update client %d: %w",
+			id,
+			err,
+		)
 	}
 
 	rows, err := result.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("check updated client %d: %w", id, err)
+		return fmt.Errorf(
+			"check updated client %d: %w",
+			id,
+			err,
+		)
+	}
+
+	if rows == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
+
+func (r *ClientRepository) Delete(
+	ctx context.Context,
+	id int64,
+) error {
+	result, err := r.db.ExecContext(ctx, `
+		DELETE FROM clients
+		WHERE id = ?
+	`, id)
+	if err != nil {
+		return fmt.Errorf(
+			"delete client %d: %w",
+			id,
+			err,
+		)
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf(
+			"check deleted client %d: %w",
+			id,
+			err,
+		)
 	}
 
 	if rows == 0 {
