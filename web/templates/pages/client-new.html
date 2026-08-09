@@ -32,6 +32,15 @@
 
     <section class="mt-12 pb-16">
 
+        {{if .Errors.General}}
+            <div
+                role="alert"
+                class="mb-6 rounded-2xl border border-red-400/20 bg-red-500/10 px-5 py-4 text-sm text-red-200"
+            >
+                {{.Errors.General}}
+            </div>
+        {{end}}
+
         <form
             method="post"
             action="/dashboard/clients/new"
@@ -40,8 +49,9 @@
 
             <div class="space-y-8">
 
-                <div>
+                <!-- NAME -->
 
+                <div>
                     <label
                         for="name"
                         class="block text-sm font-medium text-blue-100/70"
@@ -53,18 +63,30 @@
                         id="name"
                         name="name"
                         type="text"
-                        value="{{.Name}}"
+                        value="{{.Form.Name}}"
                         required
+                        maxlength="100"
                         autocomplete="name"
-                        class="mt-3 block w-full rounded-2xl border border-blue-400/10 bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
+                        aria-invalid="{{if .Errors.Name}}true{{else}}false{{end}}"
+                        {{if .Errors.Name}}aria-describedby="name-error"{{end}}
+                        class="mt-3 block w-full rounded-2xl border {{if .Errors.Name}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
                         placeholder="Client name"
                     >
 
+                    {{if .Errors.Name}}
+                        <p
+                            id="name-error"
+                            class="mt-2 text-sm text-red-300"
+                        >
+                            {{.Errors.Name}}
+                        </p>
+                    {{end}}
                 </div>
 
 
-                <div>
+                <!-- EMAIL -->
 
+                <div>
                     <label
                         for="email"
                         class="block text-sm font-medium text-blue-100/70"
@@ -76,18 +98,30 @@
                         id="email"
                         name="email"
                         type="email"
-                        value="{{.Email}}"
+                        value="{{.Form.Email}}"
                         required
+                        maxlength="254"
                         autocomplete="email"
-                        class="mt-3 block w-full rounded-2xl border border-blue-400/10 bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
+                        aria-invalid="{{if .Errors.Email}}true{{else}}false{{end}}"
+                        {{if .Errors.Email}}aria-describedby="email-error"{{end}}
+                        class="mt-3 block w-full rounded-2xl border {{if .Errors.Email}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
                         placeholder="client@example.com"
                     >
 
+                    {{if .Errors.Email}}
+                        <p
+                            id="email-error"
+                            class="mt-2 text-sm text-red-300"
+                        >
+                            {{.Errors.Email}}
+                        </p>
+                    {{end}}
                 </div>
 
 
-                <div>
+                <!-- COMPANY -->
 
+                <div>
                     <label
                         for="company"
                         class="block text-sm font-medium text-blue-100/70"
@@ -99,17 +133,29 @@
                         id="company"
                         name="company"
                         type="text"
-                        value="{{.Company}}"
+                        value="{{.Form.Company}}"
+                        maxlength="150"
                         autocomplete="organization"
-                        class="mt-3 block w-full rounded-2xl border border-blue-400/10 bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
+                        aria-invalid="{{if .Errors.Company}}true{{else}}false{{end}}"
+                        {{if .Errors.Company}}aria-describedby="company-error"{{end}}
+                        class="mt-3 block w-full rounded-2xl border {{if .Errors.Company}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
                         placeholder="Company name"
                     >
 
+                    {{if .Errors.Company}}
+                        <p
+                            id="company-error"
+                            class="mt-2 text-sm text-red-300"
+                        >
+                            {{.Errors.Company}}
+                        </p>
+                    {{end}}
                 </div>
 
 
-                <div>
+                <!-- NOTES -->
 
+                <div>
                     <label
                         for="notes"
                         class="block text-sm font-medium text-blue-100/70"
@@ -121,14 +167,27 @@
                         id="notes"
                         name="notes"
                         rows="7"
-                        class="mt-3 block w-full resize-y rounded-2xl border border-blue-400/10 bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
+                        maxlength="5000"
+                        aria-invalid="{{if .Errors.Notes}}true{{else}}false{{end}}"
+                        {{if .Errors.Notes}}aria-describedby="notes-error"{{end}}
+                        class="mt-3 block w-full resize-y rounded-2xl border {{if .Errors.Notes}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
                         placeholder="Anything useful about this client..."
-                    >{{.Notes}}</textarea>
+                    >{{.Form.Notes}}</textarea>
 
+                    {{if .Errors.Notes}}
+                        <p
+                            id="notes-error"
+                            class="mt-2 text-sm text-red-300"
+                        >
+                            {{.Errors.Notes}}
+                        </p>
+                    {{end}}
                 </div>
 
             </div>
 
+
+            <!-- ACTIONS -->
 
             <div class="mt-9 flex flex-col-reverse gap-3 border-t border-blue-400/10 pt-7 sm:flex-row sm:items-center sm:justify-end">
 
