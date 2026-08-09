@@ -2,8 +2,10 @@ package http
 
 import (
 	"database/sql"
+	"errors"
 	"html/template"
 	"net/http"
+	"net/mail"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -14,9 +16,10 @@ import (
 type ClientsHandler struct {
 	repository *repository.ClientRepository
 
-	clientsTemplates   *template.Template
-	newClientTemplates *template.Template
-	clientTemplates    *template.Template
+	clientsTemplates    *template.Template
+	newClientTemplates  *template.Template
+	clientTemplates     *template.Template
+	editClientTemplates *template.Template
 }
 
 func NewClientsHandler(
@@ -49,11 +52,20 @@ func NewClientsHandler(
 		return nil, err
 	}
 
+	editClientTemplates, err := loadPageTemplate(
+		templateDir,
+		"client-edit.html",
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return &ClientsHandler{
-		repository:         repo,
-		clientsTemplates:   clientsTemplates,
-		newClientTemplates: newClientTemplates,
-		clientTemplates:    clientTemplates,
+		repository:          repo,
+		clientsTemplates:    clientsTemplates,
+		newClientTemplates:  newClientTemplates,
+		clientTemplates:     clientTemplates,
+		editClientTemplates: editClientTemplates,
 	}, nil
 }
 
@@ -79,6 +91,9 @@ func (h *ClientsHandler) ServeHTTP(
 
 	case http.MethodPost:
 		h.handlePOST(w, r)
+
+	case http.MethodDelete:
+		h.handleDELETE(w, r)
 
 	default:
 		http.Error(
@@ -110,6 +125,23 @@ func (h *ClientsHandler) handleGET(
 		return
 	}
 
+	// GET /dashboard/clients/:id/edit
+	if strings.HasSuffix(path, "/edit") {
+		idString := strings.TrimSuffix(
+			strings.TrimPrefix(path, "/"),
+			"/edit",
+		)
+
+		id, err := strconv.ParseInt(idString, 10, 64)
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+
+		h.editClient(w, r, id)
+		return
+	}
+
 	// GET /dashboard/clients/:id
 	idString := strings.TrimPrefix(path, "/")
 
@@ -136,11 +168,33 @@ func (h *ClientsHandler) handlePOST(
 		"/dashboard/clients",
 	)
 
-	if path != "/new" {
+	// POST /dashboard/clients/new
+	if path == "/new" {
+		h.createClient(w, r)
+		return
+	}
+
+	// POST /dashboard/clients/:id
+	idString := strings.TrimPrefix(path, "/")
+
+	if idString == "" || strings.Contains(idString, "/") {
 		http.NotFound(w, r)
 		return
 	}
 
+	id, err := strconv.ParseInt(idString, 10, 64)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	h.updateClient(w, r, id)
+}
+
+func (h *ClientsHandler) createClient(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 	if err := r.ParseForm(); err != nil {
 		h.renderNewClient(
 			w,
@@ -150,18 +204,10 @@ func (h *ClientsHandler) handlePOST(
 		return
 	}
 
-	name := strings.TrimSpace(
-		r.FormValue("name"),
-	)
-	email := strings.TrimSpace(
-		r.FormValue("email"),
-	)
-	company := strings.TrimSpace(
-		r.FormValue("company"),
-	)
-	notes := strings.TrimSpace(
-		r.FormValue("notes"),
-	)
+	name := strings.TrimSpace(r.FormValue("name"))
+	email := strings.TrimSpace(r.FormValue("email"))
+	company := strings.TrimSpace(r.FormValue("company"))
+	notes := strings.TrimSpace(r.FormValue("notes"))
 
 	if name == "" {
 		h.renderNewClient(
@@ -181,6 +227,16 @@ func (h *ClientsHandler) handlePOST(
 		return
 	}
 
+	parsedEmail, err := mail.ParseAddress(email)
+	if err != nil || parsedEmail.Address != email {
+		h.renderNewClient(
+			w,
+			r,
+			"Please enter a valid email address.",
+		)
+		return
+	}
+
 	id, err := h.repository.Create(
 		r.Context(),
 		name,
@@ -192,6 +248,98 @@ func (h *ClientsHandler) handlePOST(
 		http.Error(
 			w,
 			"failed to create client",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	http.Redirect(
+		w,
+		r,
+		"/dashboard/clients/"+strconv.FormatInt(id, 10),
+		http.StatusSeeOther,
+	)
+}
+
+func (h *ClientsHandler) updateClient(
+	w http.ResponseWriter,
+	r *http.Request,
+	id int64,
+) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(
+			w,
+			"invalid form submission",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	name := strings.TrimSpace(r.FormValue("name"))
+	email := strings.TrimSpace(r.FormValue("email"))
+	company := strings.TrimSpace(r.FormValue("company"))
+	status := strings.TrimSpace(r.FormValue("status"))
+	notes := strings.TrimSpace(r.FormValue("notes"))
+
+	if name == "" {
+		http.Error(
+			w,
+			"Name is required.",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if email == "" {
+		http.Error(
+			w,
+			"Email is required.",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	parsedEmail, err := mail.ParseAddress(email)
+	if err != nil || parsedEmail.Address != email {
+		http.Error(
+			w,
+			"Please enter a valid email address.",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if status == "" {
+		status = "active"
+	}
+
+	if status != "active" && status != "inactive" {
+		http.Error(
+			w,
+			"Invalid client status.",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	err = h.repository.Update(
+		r.Context(),
+		id,
+		name,
+		email,
+		company,
+		status,
+		notes,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.NotFound(w, r)
+			return
+		}
+
+		http.Error(
+			w,
+			"failed to update client",
 			http.StatusInternalServerError,
 		)
 		return
@@ -278,7 +426,7 @@ func (h *ClientsHandler) showClient(
 		id,
 	)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			http.NotFound(w, r)
 			return
 		}
@@ -327,4 +475,113 @@ func (h *ClientsHandler) render(
 			http.StatusInternalServerError,
 		)
 	}
+}
+
+func (h *ClientsHandler) handleDELETE(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	path := strings.TrimPrefix(
+		r.URL.Path,
+		"/dashboard/clients",
+	)
+
+	idString := strings.TrimPrefix(path, "/")
+
+	if idString == "" || strings.Contains(idString, "/") {
+		http.NotFound(w, r)
+		return
+	}
+
+	id, err := strconv.ParseInt(idString, 10, 64)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	h.handleDeleteClient(w, r, id)
+}
+
+func (h *ClientsHandler) handleDeleteClient(
+	w http.ResponseWriter,
+	r *http.Request,
+	id int64,
+) {
+	err := h.repository.Delete(
+		r.Context(),
+		id,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.NotFound(w, r)
+			return
+		}
+
+		http.Error(
+			w,
+			"failed to delete client",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	// HTMX requests need an HX-Redirect response instead of
+	// a normal HTTP redirect. This prevents HTMX from taking
+	// the entire clients page and inserting it into the
+	// Delete button.
+	if r.Header.Get("HX-Request") == "true" {
+		w.Header().Set(
+			"HX-Redirect",
+			"/dashboard/clients",
+		)
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Normal non-HTMX DELETE requests still use a standard redirect.
+	http.Redirect(
+		w,
+		r,
+		"/dashboard/clients",
+		http.StatusSeeOther,
+	)
+}
+
+func (h *ClientsHandler) editClient(
+	w http.ResponseWriter,
+	r *http.Request,
+	id int64,
+) {
+	client, err := h.repository.GetByID(
+		r.Context(),
+		id,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.NotFound(w, r)
+			return
+		}
+
+		http.Error(
+			w,
+			"failed to load client",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	data := struct {
+		Title  string
+		Error  string
+		Client any
+	}{
+		Title:  "Edit Client — Daniel J. Manning",
+		Client: client,
+	}
+
+	h.render(
+		w,
+		h.editClientTemplates,
+		data,
+	)
 }
