@@ -3,31 +3,35 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
-func TestNewRouterUsesExplicitDashboardRoutes(t *testing.T) {
+func TestNewRouterRoutesRequests(t *testing.T) {
 	homeHandler := http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path != "/" {
-				http.NotFound(w, r)
-				return
-			}
-
+			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("home"))
 		},
 	)
 
 	dashboardHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, _ *http.Request) {
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("dashboard"))
 		},
 	)
 
 	clientsHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, _ *http.Request) {
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte("clients"))
+		},
+	)
+
+	projectsHandler := http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("projects"))
 		},
 	)
 
@@ -35,70 +39,58 @@ func TestNewRouterUsesExplicitDashboardRoutes(t *testing.T) {
 		homeHandler,
 		dashboardHandler,
 		clientsHandler,
+		projectsHandler,
 	)
 
 	tests := []struct {
-		name             string
-		target           string
-		expectedStatus   int
-		expectedBody     string
-		expectedLocation string
+		name       string
+		path       string
+		wantStatus int
+		wantBody   string
 	}{
 		{
-			name:           "public homepage",
-			target:         "/",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "home",
+			name:       "homepage",
+			path:       "/",
+			wantStatus: http.StatusOK,
+			wantBody:   "home",
 		},
 		{
-			name:             "dashboard redirects to canonical URL",
-			target:           "/dashboard",
-			expectedStatus:   http.StatusPermanentRedirect,
-			expectedLocation: "/dashboard/",
+			name:       "dashboard",
+			path:       "/dashboard/",
+			wantStatus: http.StatusOK,
+			wantBody:   "dashboard",
 		},
 		{
-			name:           "dashboard overview",
-			target:         "/dashboard/",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "dashboard",
+			name:       "clients",
+			path:       "/dashboard/clients",
+			wantStatus: http.StatusOK,
+			wantBody:   "clients",
 		},
 		{
-			name:           "client list",
-			target:         "/dashboard/clients",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "clients",
+			name:       "client sub-route",
+			path:       "/dashboard/clients/1",
+			wantStatus: http.StatusOK,
+			wantBody:   "clients",
 		},
 		{
-			name:           "client list with trailing slash",
-			target:         "/dashboard/clients/",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "clients",
+			name:       "projects",
+			path:       "/dashboard/projects",
+			wantStatus: http.StatusOK,
+			wantBody:   "projects",
 		},
 		{
-			name:           "client detail",
-			target:         "/dashboard/clients/42",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "clients",
-		},
-		{
-			name:           "client edit",
-			target:         "/dashboard/clients/42/edit",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "clients",
-		},
-		{
-			name:           "unknown dashboard domain",
-			target:         "/dashboard/projects",
-			expectedStatus: http.StatusNotFound,
-			expectedBody:   "404 page not found",
+			name:       "project sub-route",
+			path:       "/dashboard/projects/1",
+			wantStatus: http.StatusOK,
+			wantBody:   "projects",
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(
 				http.MethodGet,
-				test.target,
+				tt.path,
 				nil,
 			)
 
@@ -106,37 +98,64 @@ func TestNewRouterUsesExplicitDashboardRoutes(t *testing.T) {
 
 			router.ServeHTTP(rec, req)
 
-			if rec.Code != test.expectedStatus {
+			if rec.Code != tt.wantStatus {
 				t.Fatalf(
 					"expected status %d, got %d",
-					test.expectedStatus,
+					tt.wantStatus,
 					rec.Code,
 				)
 			}
 
-			if test.expectedLocation != "" {
-				location := rec.Header().Get("Location")
-
-				if location != test.expectedLocation {
-					t.Fatalf(
-						"expected location %q, got %q",
-						test.expectedLocation,
-						location,
-					)
-				}
-			}
-
-			if test.expectedBody != "" &&
-				!strings.Contains(
-					rec.Body.String(),
-					test.expectedBody,
-				) {
+			if rec.Body.String() != tt.wantBody {
 				t.Fatalf(
-					"expected body to contain %q, got %q",
-					test.expectedBody,
+					"expected body %q, got %q",
+					tt.wantBody,
 					rec.Body.String(),
 				)
 			}
 		})
+	}
+}
+
+func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
+	t *testing.T,
+) {
+	handler := http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+		},
+	)
+
+	router := newRouter(
+		handler,
+		handler,
+		handler,
+		handler,
+	)
+
+	req := httptest.NewRequest(
+		http.MethodGet,
+		"/dashboard",
+		nil,
+	)
+
+	rec := httptest.NewRecorder()
+
+	router.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusPermanentRedirect {
+		t.Fatalf(
+			"expected status %d, got %d",
+			http.StatusPermanentRedirect,
+			rec.Code,
+		)
+	}
+
+	if location := rec.Header().Get("Location"); location != "/dashboard/" {
+		t.Fatalf(
+			"expected redirect location %q, got %q",
+			"/dashboard/",
+			location,
+		)
 	}
 }

@@ -20,6 +20,7 @@ func newRouter(
 	homeHandler http.Handler,
 	dashboardHandler http.Handler,
 	clientsHandler http.Handler,
+	projectsHandler http.Handler,
 ) http.Handler {
 	mux := http.NewServeMux()
 
@@ -50,6 +51,17 @@ func newRouter(
 	mux.Handle(
 		"/dashboard/clients/",
 		clientsHandler,
+	)
+
+	// Match the project list and every project sub-route.
+	mux.Handle(
+		"/dashboard/projects",
+		projectsHandler,
+	)
+
+	mux.Handle(
+		"/dashboard/projects/",
+		projectsHandler,
 	)
 
 	// Static files.
@@ -158,10 +170,23 @@ func main() {
 		os.Exit(1)
 	}
 
+	projectsHandler, err := apphttp.NewProjectsHandler(
+		db.SQL,
+		cfg.TemplateDir,
+	)
+	if err != nil {
+		logger.Error(
+			"failed to create projects handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	router := newRouter(
 		homeHandler,
 		dashboardHandler,
 		clientsHandler,
+		projectsHandler,
 	)
 
 	server := &http.Server{
