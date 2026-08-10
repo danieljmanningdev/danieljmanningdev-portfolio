@@ -35,11 +35,19 @@ func TestNewRouterRoutesRequests(t *testing.T) {
 		},
 	)
 
+	contractsHandler := http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("contracts"))
+		},
+	)
+
 	router := newRouter(
 		homeHandler,
 		dashboardHandler,
 		clientsHandler,
 		projectsHandler,
+		contractsHandler,
 	)
 
 	tests := []struct {
@@ -84,6 +92,18 @@ func TestNewRouterRoutesRequests(t *testing.T) {
 			wantStatus: http.StatusOK,
 			wantBody:   "projects",
 		},
+		{
+			name:       "contracts",
+			path:       "/dashboard/contracts",
+			wantStatus: http.StatusOK,
+			wantBody:   "contracts",
+		},
+		{
+			name:       "contract sub-route",
+			path:       "/dashboard/contracts/1",
+			wantStatus: http.StatusOK,
+			wantBody:   "contracts",
+		},
 	}
 
 	for _, tt := range tests {
@@ -127,6 +147,7 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 	)
 
 	router := newRouter(
+		handler,
 		handler,
 		handler,
 		handler,

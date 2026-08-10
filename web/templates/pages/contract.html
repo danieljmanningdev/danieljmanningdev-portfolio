@@ -1,0 +1,218 @@
+{{define "content"}}
+
+<main class="mx-auto max-w-7xl px-6 lg:px-8">
+
+    <!-- ==================== CONTRACT HEADER ==================== -->
+
+    <section class="pt-10 sm:pt-14 lg:pt-16">
+
+        <a
+            href="/dashboard/contracts"
+            class="inline-flex items-center text-sm text-blue-300/50 transition hover:text-white"
+        >
+            ← Back to contracts
+        </a>
+
+        <div class="mt-10 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
+
+            <div>
+
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
+                    Contract
+                </p>
+
+                <h1 class="mt-5 text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
+                    {{.Contract.Title}}
+                </h1>
+
+                <p class="mt-4 text-base text-blue-100/40">
+                    {{.Contract.ClientName}}
+                </p>
+
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+
+                <span
+                    class="inline-flex w-fit shrink-0 rounded-full bg-blue-400/10 px-4 py-2 text-xs text-blue-200/60"
+                >
+                    {{.Contract.Status}}
+                </span>
+
+                <a
+                    href="/dashboard/contracts/{{.Contract.ID}}/edit"
+                    class="inline-flex items-center justify-center rounded-full border border-blue-400/20 px-5 py-2.5 text-sm font-medium text-blue-100/70 transition hover:border-blue-400/40 hover:text-white"
+                >
+                    Edit
+                </a>
+
+                {{if ne .Contract.Status "cancelled"}}
+                    <form
+                        method="post"
+                        action="/dashboard/contracts/{{.Contract.ID}}/cancel"
+                    >
+                        <button
+                            type="submit"
+                            class="inline-flex items-center justify-center rounded-full border border-red-400/20 px-5 py-2.5 text-sm font-medium text-red-200/70 transition hover:border-red-400/40 hover:bg-red-400/10 hover:text-red-100"
+                        >
+                            Cancel contract
+                        </button>
+                    </form>
+                {{end}}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================== CONTRACT INFORMATION ==================== -->
+
+    <section class="mt-14 pb-16">
+
+        <div class="grid gap-6 lg:grid-cols-2">
+
+            <!-- RELATIONSHIP -->
+
+            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Relationship
+                </p>
+
+                <div class="mt-6 space-y-6">
+
+                    <div>
+                        <p class="text-sm text-blue-100/30">
+                            Client
+                        </p>
+
+                        <a
+                            href="/dashboard/clients/{{.Contract.ClientID}}"
+                            class="mt-2 inline-flex text-base text-blue-300 transition hover:text-white"
+                        >
+                            {{.Contract.ClientName}}
+                        </a>
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-blue-100/30">
+                            Project
+                        </p>
+
+                        {{if .Contract.ProjectID}}
+                            <a
+                                href="/dashboard/projects/{{.Contract.ProjectID}}"
+                                class="mt-2 inline-flex text-base text-blue-300 transition hover:text-white"
+                            >
+                                {{.Contract.ProjectName}}
+                            </a>
+                        {{else}}
+                            <p class="mt-2 text-base text-blue-100/50">
+                                No project associated.
+                            </p>
+                        {{end}}
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-blue-100/30">
+                            Status
+                        </p>
+
+                        <p class="mt-2 text-base text-blue-100/70">
+                            {{.Contract.Status}}
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TERMS -->
+
+            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Terms
+                </p>
+
+                <div class="mt-6 space-y-6">
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+
+                        <div>
+                            <p class="text-sm text-blue-100/30">
+                                Start date
+                            </p>
+
+                            <p class="mt-2 text-base text-blue-100/70">
+                                {{if .Contract.StartDate}}
+                                    {{.Contract.StartDate.Format "02 Jan 2006"}}
+                                {{else}}
+                                    Not set
+                                {{end}}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-sm text-blue-100/30">
+                                End date
+                            </p>
+
+                            <p class="mt-2 text-base text-blue-100/70">
+                                {{if .Contract.EndDate}}
+                                    {{.Contract.EndDate.Format "02 Jan 2006"}}
+                                {{else}}
+                                    Not set
+                                {{end}}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <p class="text-sm text-blue-100/30">
+                            Contract value
+                        </p>
+
+                        <p class="mt-2 text-base text-blue-100/70">
+                            {{if .DisplayValue}}
+                                {{.DisplayValue}}
+                            {{else}}
+                                Not set
+                            {{end}}
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="mt-6 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
+
+            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                Notes
+            </p>
+
+            <p class="mt-5 whitespace-pre-line text-base leading-7 text-blue-100/50">
+                {{if .Contract.Notes}}
+                    {{.Contract.Notes}}
+                {{else}}
+                    No notes yet.
+                {{end}}
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+{{end}}

@@ -21,6 +21,7 @@ func newRouter(
 	dashboardHandler http.Handler,
 	clientsHandler http.Handler,
 	projectsHandler http.Handler,
+	contractsHandler http.Handler,
 ) http.Handler {
 	mux := http.NewServeMux()
 
@@ -62,6 +63,17 @@ func newRouter(
 	mux.Handle(
 		"/dashboard/projects/",
 		projectsHandler,
+	)
+
+	// Match the contract list and every contract sub-route.
+	mux.Handle(
+		"/dashboard/contracts",
+		contractsHandler,
+	)
+
+	mux.Handle(
+		"/dashboard/contracts/",
+		contractsHandler,
 	)
 
 	// Static files.
@@ -182,11 +194,24 @@ func main() {
 		os.Exit(1)
 	}
 
+	contractsHandler, err := apphttp.NewContractsHandler(
+		db.SQL,
+		cfg.TemplateDir,
+	)
+	if err != nil {
+		logger.Error(
+			"failed to create contracts handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	router := newRouter(
 		homeHandler,
 		dashboardHandler,
 		clientsHandler,
 		projectsHandler,
+		contractsHandler,
 	)
 
 	server := &http.Server{
