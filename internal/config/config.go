@@ -8,6 +8,7 @@ import (
 type Config struct {
 	Environment  string
 	Port         int
+	LogLevel     string
 	DatabasePath string
 	TemplateDir  string
 }

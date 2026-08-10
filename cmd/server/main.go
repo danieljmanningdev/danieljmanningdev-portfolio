@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +13,7 @@ import (
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/config"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/database"
 	apphttp "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/http"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/logging"
 )
 
 func newRouter(
@@ -75,6 +75,16 @@ func newRouter(
 func main() {
 	cfg := config.Load()
 
+	logger := logging.New(
+		cfg.Environment,
+		cfg.LogLevel,
+	)
+
+	logger.Info(
+		"starting application",
+		"environment", cfg.Environment,
+	)
+
 	ctx, stop := signal.NotifyContext(
 		context.Background(),
 		os.Interrupt,
@@ -87,12 +97,19 @@ func main() {
 		cfg.DatabasePath,
 	)
 	if err != nil {
-		log.Fatalf("open database: %v", err)
+		logger.Error(
+			"failed to open database",
+			"error", err,
+		)
+		os.Exit(1)
 	}
 
 	defer func() {
 		if err := db.Close(); err != nil {
-			log.Printf("close database: %v", err)
+			logger.Error(
+				"failed to close database",
+				"error", err,
+			)
 		}
 	}()
 
@@ -100,21 +117,33 @@ func main() {
 		db.SQL,
 		"migrations",
 	); err != nil {
-		log.Fatalf("run migrations: %v", err)
+		logger.Error(
+			"failed to run migrations",
+			"error", err,
+		)
+		os.Exit(1)
 	}
 
 	homeHandler, err := apphttp.NewHomeHandler(
 		cfg.TemplateDir,
 	)
 	if err != nil {
-		log.Fatalf("create home handler: %v", err)
+		logger.Error(
+			"failed to create home handler",
+			"error", err,
+		)
+		os.Exit(1)
 	}
 
 	dashboardHandler, err := apphttp.NewDashboardHandler(
 		cfg.TemplateDir,
 	)
 	if err != nil {
-		log.Fatalf("create dashboard handler: %v", err)
+		logger.Error(
+			"failed to create dashboard handler",
+			"error", err,
+		)
+		os.Exit(1)
 	}
 
 	clientsHandler, err := apphttp.NewClientsHandler(
@@ -122,7 +151,11 @@ func main() {
 		cfg.TemplateDir,
 	)
 	if err != nil {
-		log.Fatalf("create clients handler: %v", err)
+		logger.Error(
+			"failed to create clients handler",
+			"error", err,
+		)
+		os.Exit(1)
 	}
 
 	router := newRouter(
@@ -138,22 +171,25 @@ func main() {
 	}
 
 	go func() {
-		log.Printf(
-			"server starting on http://localhost:%d (%s)",
-			cfg.Port,
-			cfg.Environment,
+		logger.Info(
+			"server starting",
+			"url", "http://localhost:"+strconv.Itoa(cfg.Port),
+			"environment", cfg.Environment,
 		)
 
 		if err := server.ListenAndServe(); err != nil &&
 			!errors.Is(err, http.ErrServerClosed) {
-			log.Printf("server error: %v", err)
+			logger.Error(
+				"server error",
+				"error", err,
+			)
 			stop()
 		}
 	}()
 
 	<-ctx.Done()
 
-	log.Println("shutting down server")
+	logger.Info("shutting down server")
 
 	shutdownCtx, cancel := context.WithTimeout(
 		context.Background(),
@@ -162,9 +198,9 @@ func main() {
 	defer cancel()
 
 	if err := server.Shutdown(shutdownCtx); err != nil {
-		log.Printf(
-			"server shutdown error: %v",
-			err,
+		logger.Error(
+			"server shutdown error",
+			"error", err,
 		)
 	}
 }
