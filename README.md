@@ -2,7 +2,7 @@
 
 A fast, server-rendered developer portfolio and internal client workspace built with Go, HTMX, Tailwind CSS and SQLite.
 
-The public website presents my UI/UX design and full-stack development work. Behind it, the application includes an internal workspace for managing clients and projects without duplicating broader operational tools such as scheduling, team communication or time tracking.
+The public website presents my UI/UX design and full-stack development work. Behind it, the application includes an internal workspace for managing clients, projects and contracts without duplicating broader operational tools such as scheduling, team communication or time tracking.
 
 ## Screenshots
 
@@ -29,20 +29,25 @@ The public website presents my UI/UX design and full-stack development work. Beh
 ### Internal workspace
 
 - Dashboard overview
-- Client listing
-- Client detail pages
-- Create clients
-- Edit clients
+- Client listing and detail pages
+- Create and edit clients
 - Delete clients with HTMX confirmation
 - Active and inactive client statuses
-- Project listing
-- Project detail pages
-- Create projects
-- Edit projects
+- Project listing and detail pages
+- Create and edit projects
 - Archive projects
 - Associate projects with clients
 - Planned, active, completed and archived project statuses
 - Optional project start and due dates
+- Contract listing and detail pages
+- Create and edit contracts
+- Cancel contracts while preserving the record
+- Associate contracts with clients
+- Optional project association for contracts
+- Draft, sent, accepted, completed and cancelled contract statuses
+- Contract start and end dates
+- Contract values stored as integer currency amounts
+- Contract notes
 - Server-side form validation
 - SQLite persistence with foreign-key enforcement
 - Automatic database migrations
@@ -134,6 +139,20 @@ Each layer has a specific responsibility:
 - `web/templates` contains page, layout and shared component templates.
 - `web/static` contains Tailwind source files and repository screenshots.
 
+The core commercial relationship is:
+
+```text
+Client
+  ↓
+Project
+  ↓
+Contract
+```
+
+A contract always belongs to a client and may optionally belong to a project.
+
+This keeps the application focused on client and commercial records while operational workflows such as scheduling and time tracking remain outside the application.
+
 ### Example client-update flow
 
 ```text
@@ -155,15 +174,31 @@ UPDATE clients
 ```text
 POST /dashboard/projects/new
       ↓
-ProjectsHandler.handleProjectPOST
+ProjectsHandler
       ↓
-ProjectsHandler.createProject
+createProject
       ↓
 ProjectRepository.Create
       ↓
 INSERT INTO projects
       ↓
 303 redirect to /dashboard/projects/{id}
+```
+
+### Example contract-create flow
+
+```text
+POST /dashboard/contracts/new
+      ↓
+ContractsHandler
+      ↓
+createContract
+      ↓
+ContractRepository.Create
+      ↓
+INSERT INTO contracts
+      ↓
+303 redirect to /dashboard/contracts/{id}
 ```
 
 ### Example request-logging flow
@@ -183,7 +218,7 @@ Structured log entry
 Example development log:
 
 ```text
-level=INFO msg="http request" method=GET path=/dashboard/projects status=200 duration=705µs
+level=INFO msg="http request" method=GET path=/dashboard/contracts status=200 duration=596µs
 ```
 
 ## Local Development
@@ -261,6 +296,11 @@ http://localhost:8080
 | `/dashboard/projects/{id}` | Project detail page |
 | `/dashboard/projects/{id}/edit` | Edit-project form |
 | `/dashboard/projects/{id}/archive` | Archive project |
+| `/dashboard/contracts` | Contract listing |
+| `/dashboard/contracts/new` | Create-contract form |
+| `/dashboard/contracts/{id}` | Contract detail page |
+| `/dashboard/contracts/{id}/edit` | Edit-contract form |
+| `/dashboard/contracts/{id}/cancel` | Cancel contract |
 
 ## Configuration
 
@@ -304,10 +344,13 @@ The currently implemented application domains are:
 
 - Clients
 - Projects
+- Contracts
+
+Relationships between these records are protected using SQLite foreign keys.
+
+Contracts require a client relationship. Their project relationship is optional, allowing both project-specific contracts and broader client agreements.
 
 The initial schema also contains some earlier foundation tables that may be removed or deferred as the workspace remains intentionally focused.
-
-Relationships between records are protected using SQLite foreign keys.
 
 ### Inspect the development database
 
@@ -319,10 +362,14 @@ Useful SQLite commands:
 
 ```sql
 .tables
+
 .schema clients
 .schema projects
+.schema contracts
+
 SELECT * FROM clients;
 SELECT * FROM projects;
+SELECT * FROM contracts;
 SELECT * FROM schema_migrations;
 ```
 
@@ -440,6 +487,88 @@ completed
 archived
 ```
 
+## Contract Management
+
+Contracts represent commercial agreements with clients.
+
+Every contract belongs to a client and may optionally be associated with a project.
+
+The contract feature supports:
+
+```text
+Create
+Read
+Update
+Cancel
+```
+
+Contracts are cancelled rather than deleted so commercial records remain available.
+
+### Repository operations
+
+```go
+List()
+ListByClientID()
+GetByID()
+Create()
+Update()
+Cancel()
+```
+
+### HTTP operations
+
+```text
+GET   /dashboard/contracts
+GET   /dashboard/contracts/new
+POST  /dashboard/contracts/new
+GET   /dashboard/contracts/{id}
+GET   /dashboard/contracts/{id}/edit
+POST  /dashboard/contracts/{id}
+POST  /dashboard/contracts/{id}/cancel
+```
+
+### Contract data
+
+Contracts currently support:
+
+- Client association
+- Optional project association
+- Contract title
+- Status
+- Start date
+- End date
+- Contract value
+- Notes
+- Created and updated timestamps
+
+Contract values are persisted as integer minor currency units rather than floating-point database values.
+
+### Current validation
+
+Contract forms validate:
+
+- Required client
+- Required contract title
+- Maximum title length
+- Maximum notes length
+- Allowed contract statuses
+- Optional project association
+- Optional start and end dates
+- `YYYY-MM-DD` date format
+- End date cannot be earlier than start date
+- Non-negative contract values
+- Whitespace trimming
+
+Valid statuses are:
+
+```text
+draft
+sent
+accepted
+completed
+cancelled
+```
+
 ## Logging
 
 The application uses structured logging through Go's `log/slog`.
@@ -456,7 +585,7 @@ HTTP request middleware records:
 Example:
 
 ```text
-time=2026-08-10T12:40:49+01:00 level=INFO msg="http request" method=GET path=/ status=200 duration=596µs
+time=2026-08-10T12:40:49+01:00 level=INFO msg="http request" method=GET path=/dashboard/contracts status=200 duration=596µs
 ```
 
 ## Testing
@@ -523,6 +652,14 @@ The test suite currently covers areas including:
 - Project repository create/read/update/archive flows
 - Project form parsing and validation
 - Project date handling
+- Contract repository create/read/update/cancel flows
+- Contract listing and client filtering
+- Optional contract project relationships
+- Contract foreign-key behaviour
+- Contract form parsing and validation
+- Contract date validation
+- Contract value parsing
+- Contract model-to-form conversion
 - HTTP router behaviour
 - HTTP request logging
 - Response-status capture
@@ -536,6 +673,10 @@ The test suite currently covers areas including:
 - [x] Public portfolio
 - [x] Client management
 - [x] Project management
+- [x] Contract management
+- [x] Client → project relationships
+- [x] Client → contract relationships
+- [x] Optional project → contract relationships
 - [x] SQLite persistence
 - [x] Repository layer
 - [x] Server-side validation
@@ -549,9 +690,24 @@ The test suite currently covers areas including:
 - [ ] Client status filtering
 - [ ] Prefer client archiving over permanent deletion
 - [ ] Improve project filtering and sorting
-- [ ] Add selected project summaries to the dashboard
+- [ ] Improve contract filtering and sorting
+- [ ] Add selected workspace summaries to the dashboard
 - [ ] Improve validation feedback and form polish
 - [ ] Review and remove unused legacy schema tables
+
+### Future commercial workflow
+
+Potential future additions may include:
+
+- Contract document generation
+- Contract acceptance or electronic signing
+- Invoicing
+- Payment status
+- Payment processing
+- Client deliverables
+- Secure client access
+
+These features should extend the existing client → project → contract relationship rather than duplicate operational tools used for scheduling, tasks or time tracking.
 
 ### Security before public dashboard deployment
 
@@ -577,8 +733,9 @@ This project is built around a small set of principles:
 - Use small, understandable layers.
 - Use structured logging for observable application behaviour.
 - Build fast interfaces without unnecessary frontend bloat.
-- Keep the internal workspace focused on client and project records.
+- Keep the internal workspace focused on clients, projects and commercial agreements.
 - Avoid rebuilding scheduling, team communication and time-tracking tools that already exist elsewhere.
+- Preserve important commercial records rather than deleting them unnecessarily.
 - Add abstractions only when repeated application behaviour justifies them.
 - Keep the public portfolio polished while building the internal workspace incrementally.
 
