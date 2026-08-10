@@ -166,7 +166,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(cfg.Port),
-		Handler:           router,
+		Handler:           apphttp.RequestLogger(logger, router),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
