@@ -19,16 +19,16 @@
                 </h1>
 
                 <p class="mt-5 max-w-2xl text-base leading-7 text-blue-100/50 sm:text-lg">
-                    Keep your clients and projects organised in one focused workspace.
+                    Keep your clients, projects and contracts organised in one focused workspace.
                 </p>
 
             </div>
 
             <a
-                href="/dashboard/projects/new"
+                href="/dashboard/contracts/new"
                 class="inline-flex w-fit shrink-0 items-center justify-center rounded-full bg-blue-500 px-6 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
             >
-                Add project
+                Add contract
             </a>
 
         </div>
@@ -38,7 +38,7 @@
 
     <!-- ==================== WORKSPACE CARDS ==================== -->
 
-    <section class="mt-16 grid gap-5 md:grid-cols-2">
+    <section class="mt-16 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
 
         <!-- CLIENTS -->
 
@@ -99,6 +99,36 @@
 
         </a>
 
+
+        <!-- CONTRACTS -->
+
+        <a
+            href="/dashboard/contracts"
+            class="group min-h-[210px] rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8"
+        >
+
+            <div class="flex items-center justify-between">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Contracts
+                </p>
+
+                <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
+                    →
+                </span>
+
+            </div>
+
+            <p class="mt-9 text-3xl font-medium text-white">
+                View
+            </p>
+
+            <p class="mt-3 max-w-[22rem] text-sm leading-6 text-blue-100/40">
+                Manage agreements, values, dates and contract status.
+            </p>
+
+        </a>
+
     </section>
 
 
@@ -114,7 +144,7 @@
 
         </div>
 
-        <div class="grid gap-5 md:grid-cols-2">
+        <div class="grid gap-5 md:grid-cols-3">
 
             <a
                 href="/dashboard/clients/new"
@@ -130,7 +160,7 @@
                         </p>
 
                         <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            Create a new client record with their contact details and notes.
+                            Create a new client record with contact details and notes.
                         </p>
 
                     </div>
@@ -171,6 +201,34 @@
 
             </a>
 
+
+            <a
+                href="/dashboard/contracts/new"
+                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30"
+            >
+
+                <div class="flex items-start justify-between gap-8">
+
+                    <div>
+
+                        <p class="text-lg font-medium text-white">
+                            Add a contract
+                        </p>
+
+                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
+                            Create an agreement and associate it with a client and project.
+                        </p>
+
+                    </div>
+
+                    <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
+                        →
+                    </span>
+
+                </div>
+
+            </a>
+
         </div>
 
     </section>
@@ -189,13 +247,13 @@
                 </p>
 
                 <h2 class="mt-5 text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                    A focused view of your client work.
+                    Your client work in one place.
                 </h2>
 
                 <p class="mt-5 text-sm leading-7 text-blue-100/40">
-                    Keep client records and project details together here while
-                    day-to-day scheduling, tasks and operational workflows remain
-                    in the tools built for them.
+                    Keep client records, project details and commercial agreements together
+                    while scheduling, tasks, team communication and time tracking remain in
+                    tools built specifically for day-to-day operations.
                 </p>
 
             </div>
