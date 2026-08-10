@@ -6,19 +6,51 @@ import (
 	"time"
 )
 
+type statusRecorder struct {
+	http.ResponseWriter
+	status int
+}
+
+func (r *statusRecorder) WriteHeader(status int) {
+	r.status = status
+	r.ResponseWriter.WriteHeader(status)
+}
+
+func (r *statusRecorder) Write(body []byte) (int, error) {
+	if r.status == 0 {
+		r.status = http.StatusOK
+	}
+
+	return r.ResponseWriter.Write(body)
+}
+
 func RequestLogger(
 	logger *slog.Logger,
 	next http.Handler,
 ) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(
+		w http.ResponseWriter,
+		r *http.Request,
+	) {
 		start := time.Now()
 
-		next.ServeHTTP(w, r)
+		recorder := &statusRecorder{
+			ResponseWriter: w,
+		}
+
+		next.ServeHTTP(recorder, r)
+
+		status := recorder.status
+
+		if status == 0 {
+			status = http.StatusOK
+		}
 
 		logger.Info(
 			"http request",
 			"method", r.Method,
 			"path", r.URL.Path,
+			"status", status,
 			"duration", time.Since(start),
 		)
 	})
