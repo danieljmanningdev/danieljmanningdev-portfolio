@@ -19,16 +19,16 @@
                 </h1>
 
                 <p class="mt-5 max-w-2xl text-base leading-7 text-blue-100/50 sm:text-lg">
-                    Keep track of your clients, projects, contracts, messages, and time.
+                    Keep your clients and projects organised in one focused workspace.
                 </p>
 
             </div>
 
             <a
-                href="/dashboard/clients/new"
+                href="/dashboard/projects/new"
                 class="inline-flex w-fit shrink-0 items-center justify-center rounded-full bg-blue-500 px-6 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
             >
-                Add client
+                Add project
             </a>
 
         </div>
@@ -38,11 +38,13 @@
 
     <!-- ==================== WORKSPACE CARDS ==================== -->
 
-    <section class="mt-16 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <section class="mt-16 grid gap-5 md:grid-cols-2">
+
+        <!-- CLIENTS -->
 
         <a
             href="/dashboard/clients"
-            class="group min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30"
+            class="group min-h-[210px] rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8"
         >
 
             <div class="flex items-center justify-between">
@@ -57,66 +59,45 @@
 
             </div>
 
-            <p class="mt-8 text-3xl font-medium text-white">
+            <p class="mt-9 text-3xl font-medium text-white">
                 View
             </p>
 
-            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
-                Manage your client relationships.
+            <p class="mt-3 max-w-[22rem] text-sm leading-6 text-blue-100/40">
+                Manage client relationships, contact details and internal notes.
             </p>
 
         </a>
 
 
-        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
+        <!-- PROJECTS -->
 
-            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                Projects
+        <a
+            href="/dashboard/projects"
+            class="group min-h-[210px] rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8"
+        >
+
+            <div class="flex items-center justify-between">
+
+                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
+                    Projects
+                </p>
+
+                <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
+                    →
+                </span>
+
+            </div>
+
+            <p class="mt-9 text-3xl font-medium text-white">
+                View
             </p>
 
-            <p class="mt-8 text-3xl font-medium text-white">
-                —
+            <p class="mt-3 max-w-[22rem] text-sm leading-6 text-blue-100/40">
+                Manage client projects, timelines and current status.
             </p>
 
-            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
-                Project management coming next.
-            </p>
-
-        </div>
-
-
-        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
-
-            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                Contracts
-            </p>
-
-            <p class="mt-8 text-3xl font-medium text-white">
-                —
-            </p>
-
-            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
-                Contract management coming next.
-            </p>
-
-        </div>
-
-
-        <div class="min-h-[190px] rounded-3xl border border-blue-400/10 bg-blue-950/10 p-7">
-
-            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                Time
-            </p>
-
-            <p class="mt-8 text-3xl font-medium text-white">
-                —
-            </p>
-
-            <p class="mt-3 max-w-[18rem] text-sm leading-6 text-blue-100/40">
-                Time tracking coming next.
-            </p>
-
-        </div>
+        </a>
 
     </section>
 
@@ -136,7 +117,7 @@
         <div class="grid gap-5 md:grid-cols-2">
 
             <a
-                href="/dashboard/clients"
+                href="/dashboard/clients/new"
                 class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30"
             >
 
@@ -145,11 +126,11 @@
                     <div>
 
                         <p class="text-lg font-medium text-white">
-                            Manage clients
+                            Add a client
                         </p>
 
                         <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            View existing clients, open their profiles, or add a new client.
+                            Create a new client record with their contact details and notes.
                         </p>
 
                     </div>
@@ -164,7 +145,7 @@
 
 
             <a
-                href="/dashboard/clients/new"
+                href="/dashboard/projects/new"
                 class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30"
             >
 
@@ -173,11 +154,11 @@
                     <div>
 
                         <p class="text-lg font-medium text-white">
-                            Add a client
+                            Add a project
                         </p>
 
                         <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            Create a new client record with contact details and notes.
+                            Create a project, assign its client and set its timeline.
                         </p>
 
                     </div>
@@ -208,13 +189,13 @@
                 </p>
 
                 <h2 class="mt-5 text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                    Your workspace starts here.
+                    A focused view of your client work.
                 </h2>
 
                 <p class="mt-5 text-sm leading-7 text-blue-100/40">
-                    Clients are the first part of the portal. Projects, contracts,
-                    messaging, and time tracking can be layered into this workspace
-                    without changing the core dashboard structure.
+                    Keep client records and project details together here while
+                    day-to-day scheduling, tasks and operational workflows remain
+                    in the tools built for them.
                 </p>
 
             </div>
