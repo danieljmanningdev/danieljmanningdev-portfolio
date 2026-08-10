@@ -1,8 +1,8 @@
 # Daniel J. Manning — Portfolio & Client Workspace
 
-A fast, server-rendered developer portfolio and internal client-management workspace built with Go, HTMX, Tailwind CSS and SQLite.
+A fast, server-rendered developer portfolio and internal client workspace built with Go, HTMX, Tailwind CSS and SQLite.
 
-The public website presents my UI/UX design and full-stack development work. Behind it, the application includes an internal workspace for managing clients and is being expanded to support projects, contracts, messaging, time tracking and an invitation-only customer portal.
+The public website presents my UI/UX design and full-stack development work. Behind it, the application includes an internal workspace for managing clients and projects without duplicating broader operational tools such as scheduling, team communication or time tracking.
 
 ## Screenshots
 
@@ -10,9 +10,9 @@ The public website presents my UI/UX design and full-stack development work. Beh
 
 ![Daniel J. Manning's portfolio home screen](web/static/images/djmdev-homescreen.png)
 
-### Internal client workspace
+### Internal workspace
 
-![Daniel J. Manning's internal client workspace](web/static/images/internal-workspace.png)
+![Daniel J. Manning's internal workspace](web/static/images/internal-workspace.png)
 
 ## Current Features
 
@@ -35,11 +35,21 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - Edit clients
 - Delete clients with HTMX confirmation
 - Active and inactive client statuses
+- Project listing
+- Project detail pages
+- Create projects
+- Edit projects
+- Archive projects
+- Associate projects with clients
+- Planned, active, completed and archived project statuses
+- Optional project start and due dates
 - Server-side form validation
 - SQLite persistence with foreign-key enforcement
 - Automatic database migrations
+- Structured application logging
+- HTTP request logging with response status and duration
 - Automated HTTP, database and repository tests
-- HTMX-aware redirect handling after client deletion
+- HTMX-aware redirects
 
 ## Technology
 
@@ -48,10 +58,11 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - **Interactivity:** HTMX
 - **Styling:** Tailwind CSS v4
 - **Database:** SQLite using `modernc.org/sqlite`
+- **Logging:** Go `log/slog`
 - **Architecture:** HTTP handler → repository → SQLite
 - **Testing:** Go `testing`, `httptest` and in-memory SQLite databases
 
-The application deliberately avoids a heavy frontend framework. Most pages are rendered on the server, while HTMX is used for focused interactions such as deleting clients and redirecting back to the client-management page.
+The application deliberately avoids a heavy frontend framework. Most pages are rendered on the server, while HTMX is used for focused interactions where it provides a clear benefit.
 
 ## Project Structure
 
@@ -59,11 +70,13 @@ The application deliberately avoids a heavy frontend framework. Most pages are r
 .
 ├── cmd
 │   └── server
-│       └── main.go
+│       ├── main.go
+│       └── main_test.go
 ├── internal
 │   ├── config
 │   ├── database
 │   ├── http
+│   ├── logging
 │   ├── models
 │   └── repository
 ├── migrations
@@ -94,6 +107,8 @@ The application is intentionally organised into small, understandable layers.
 ```text
 Browser request
       ↓
+HTTP middleware
+      ↓
 HTTP handler
       ↓
 Repository
@@ -110,11 +125,12 @@ Browser response
 Each layer has a specific responsibility:
 
 - `cmd/server` opens the database, constructs handlers, registers routes and starts the server.
-- `internal/http` handles HTTP methods, paths, forms, validation, responses and template rendering.
+- `internal/http` handles routing, HTTP methods, forms, validation, responses, middleware and template rendering.
 - `internal/repository` contains parameterised SQL queries and persistence logic.
 - `internal/models` defines the Go data structures used by the application.
 - `internal/database` opens SQLite, enables foreign keys and runs migrations.
 - `internal/config` loads application configuration from environment variables.
+- `internal/logging` configures structured application logging.
 - `web/templates` contains page, layout and shared component templates.
 - `web/static` contains Tailwind source files and repository screenshots.
 
@@ -134,20 +150,40 @@ UPDATE clients
 303 redirect to /dashboard/clients/5
 ```
 
-### Example HTMX deletion flow
+### Example project-create flow
 
 ```text
-Delete button
+POST /dashboard/projects/new
       ↓
-HTMX DELETE /dashboard/clients/5
+ProjectsHandler.handleProjectPOST
       ↓
-ClientsHandler.handleDeleteClient
+ProjectsHandler.createProject
       ↓
-ClientRepository.Delete
+ProjectRepository.Create
       ↓
-HX-Redirect: /dashboard/clients
+INSERT INTO projects
       ↓
-Browser loads the client list
+303 redirect to /dashboard/projects/{id}
+```
+
+### Example request-logging flow
+
+```text
+HTTP request
+      ↓
+RequestLogger middleware
+      ↓
+Application handler
+      ↓
+Response status captured
+      ↓
+Structured log entry
+```
+
+Example development log:
+
+```text
+level=INFO msg="http request" method=GET path=/dashboard/projects status=200 duration=705µs
 ```
 
 ## Local Development
@@ -209,7 +245,7 @@ The development server starts at:
 http://localhost:8080
 ```
 
-### Useful Routes
+## Useful Routes
 
 | Route | Purpose |
 |---|---|
@@ -220,6 +256,11 @@ http://localhost:8080
 | `/dashboard/clients/new` | Create-client form |
 | `/dashboard/clients/{id}` | Client detail page |
 | `/dashboard/clients/{id}/edit` | Edit-client form |
+| `/dashboard/projects` | Project listing |
+| `/dashboard/projects/new` | Create-project form |
+| `/dashboard/projects/{id}` | Project detail page |
+| `/dashboard/projects/{id}/edit` | Edit-project form |
+| `/dashboard/projects/{id}/archive` | Archive project |
 
 ## Configuration
 
@@ -231,6 +272,7 @@ The application reads configuration from environment variables and falls back to
 | `APP_PORT` | `8080` | HTTP server port |
 | `DATABASE_PATH` | `./data/app.db` | SQLite database path |
 | `TEMPLATE_DIR` | `web/templates` | Go template directory |
+| `LOG_LEVEL` | `info` | Structured log level |
 
 Example:
 
@@ -239,6 +281,7 @@ APP_ENV=development \
 APP_PORT=9090 \
 DATABASE_PATH=./data/development.db \
 TEMPLATE_DIR=web/templates \
+LOG_LEVEL=debug \
 go run ./cmd/server
 ```
 
@@ -257,15 +300,14 @@ The database layer:
 - Runs versioned SQL migrations when the application starts
 - Tracks applied migrations in `schema_migrations`
 
-The current schema contains foundations for:
+The currently implemented application domains are:
 
 - Clients
 - Projects
-- Contracts
-- Messages
-- Time entries
 
-Relationships between these records are protected using SQLite foreign keys.
+The initial schema also contains some earlier foundation tables that may be removed or deferred as the workspace remains intentionally focused.
+
+Relationships between records are protected using SQLite foreign keys.
 
 ### Inspect the development database
 
@@ -278,7 +320,9 @@ Useful SQLite commands:
 ```sql
 .tables
 .schema clients
+.schema projects
 SELECT * FROM clients;
+SELECT * FROM projects;
 SELECT * FROM schema_migrations;
 ```
 
@@ -290,7 +334,7 @@ Exit SQLite with:
 
 ## Client Management
 
-The current client feature supports the complete basic CRUD lifecycle:
+The client feature supports the basic CRUD lifecycle:
 
 ```text
 Create
@@ -323,7 +367,7 @@ DELETE  /dashboard/clients/{id}
 
 ### Current validation
 
-Client forms currently validate:
+Client forms validate:
 
 - Required name
 - Required email
@@ -331,11 +375,88 @@ Client forms currently validate:
 - Allowed client statuses
 - Whitespace trimming
 
-Valid statuses are currently:
+Valid statuses are:
 
 ```text
 active
 inactive
+```
+
+## Project Management
+
+Projects belong to clients and are intentionally focused on project records rather than full operational task management.
+
+The project feature supports:
+
+```text
+Create
+Read
+Update
+Archive
+```
+
+### Repository operations
+
+```go
+List()
+ListByClientID()
+GetByID()
+Create()
+Update()
+Archive()
+```
+
+### HTTP operations
+
+```text
+GET   /dashboard/projects
+GET   /dashboard/projects/new
+POST  /dashboard/projects/new
+GET   /dashboard/projects/{id}
+GET   /dashboard/projects/{id}/edit
+POST  /dashboard/projects/{id}
+POST  /dashboard/projects/{id}/archive
+```
+
+### Current validation
+
+Project forms validate:
+
+- Required client
+- Required project name
+- Maximum name and description lengths
+- Allowed project statuses
+- Optional start and due dates
+- `YYYY-MM-DD` date format
+- Due dates cannot be earlier than start dates
+- Whitespace trimming
+
+Valid statuses are:
+
+```text
+planned
+active
+completed
+archived
+```
+
+## Logging
+
+The application uses structured logging through Go's `log/slog`.
+
+Development uses human-readable text logs, while production can use JSON output.
+
+HTTP request middleware records:
+
+- Request method
+- Request path
+- Response status
+- Request duration
+
+Example:
+
+```text
+time=2026-08-10T12:40:49+01:00 level=INFO msg="http request" method=GET path=/ status=200 duration=596µs
 ```
 
 ## Testing
@@ -388,7 +509,7 @@ npm run build:css
 git diff --check
 ```
 
-The test suite currently covers:
+The test suite currently covers areas including:
 
 - Configuration defaults and environment overrides
 - Database opening and connectivity
@@ -396,114 +517,54 @@ The test suite currently covers:
 - Migration ordering and idempotency
 - Failed migration handling
 - SQLite foreign-key enforcement
-- Client creation
+- Client creation, updates and deletion
 - Client validation
-- Client updates
-- Client `updated_at` behaviour
-- Missing-client responses
-- Client deletion
 - HTMX deletion redirects
+- Project repository create/read/update/archive flows
+- Project form parsing and validation
+- Project date handling
+- HTTP router behaviour
+- HTTP request logging
+- Response-status capture
 - Health endpoint behaviour
 - Homepage rendering
 
 ## Roadmap
 
-### Client management
+### Completed foundation
 
-- [x] List clients
-- [x] View client details
-- [x] Create clients
-- [x] Edit clients
-- [x] Delete clients
-- [x] Validate client input
-- [x] Support active and inactive statuses
-- [x] Test create, update and delete flows
-- [x] Add HTMX deletion confirmation and redirects
-- [ ] Add styled edit-form validation errors
-- [ ] Add client search
-- [ ] Add status filtering
-- [ ] Add client archiving
-- [ ] Prefer archiving over permanent deletion for real client records
-- [ ] Add client activity summaries
+- [x] Public portfolio
+- [x] Client management
+- [x] Project management
+- [x] SQLite persistence
+- [x] Repository layer
+- [x] Server-side validation
+- [x] Structured application logging
+- [x] HTTP request middleware
+- [x] Automated tests
 
-### Project management
+### Near-term improvements
 
-- [ ] Project listing
-- [ ] Project detail pages
-- [ ] Create projects
-- [ ] Edit projects
-- [ ] Archive projects
-- [ ] Associate projects with clients
-- [ ] Project statuses
-- [ ] Start dates and due dates
-- [ ] Project activity history
+- [ ] Client search
+- [ ] Client status filtering
+- [ ] Prefer client archiving over permanent deletion
+- [ ] Improve project filtering and sorting
+- [ ] Add selected project summaries to the dashboard
+- [ ] Improve validation feedback and form polish
+- [ ] Review and remove unused legacy schema tables
 
-### Contract management
-
-- [ ] Contract listing
-- [ ] Associate contracts with clients
-- [ ] Associate contracts with projects
-- [ ] Draft, sent, signed and completed statuses
-- [ ] Contract values
-- [ ] Contract start and end dates
-- [ ] Document delivery
-- [ ] Electronic signing workflow
-
-### Messaging
-
-- [ ] Client conversations
-- [ ] Project-specific conversations
-- [ ] Read and unread states
-- [ ] Message notifications
-- [ ] Internal and client-facing messages
-
-### Time tracking
-
-- [ ] Manual time entries
-- [ ] Start and stop timer
-- [ ] Billable and non-billable time
-- [ ] Project totals
-- [ ] Client totals
-- [ ] Time reports
-
-### Files and billing
-
-- [ ] Project files
-- [ ] Client deliverables
-- [ ] Invoices
-- [ ] Payment statuses
-- [ ] Stripe billing integration
-
-### Security and portal access
+### Security before public dashboard deployment
 
 - [ ] Admin authentication
 - [ ] Secure server-side sessions
 - [ ] HTTP-only secure cookies
 - [ ] CSRF protection
 - [ ] Authorization middleware
-- [ ] Role and permission checks
-- [ ] Invitation-only customer portal
-- [ ] Portal users linked to client records
-- [ ] Client-scoped data access
+- [ ] Production security headers
+- [ ] Appropriate production server timeouts
+- [ ] Persistent deployment storage for SQLite
 
-There will be no public customer-registration flow.
-
-Clients will be accepted and created internally before receiving invitation-only access to their workspace.
-
-## Deployment Status
-
-The public portfolio can be prepared for deployment, but the internal dashboard is currently intended for local development.
-
-The dashboard must not be exposed publicly until the following are implemented:
-
-- Admin authentication
-- Session management
-- Authorization
-- CSRF protection
-- Secure cookies
-- Production security headers
-- Appropriate server timeouts
-- Persistent deployment storage for SQLite
+The internal dashboard is currently intended for local/private use until those security controls are implemented.
 
 ## Design Philosophy
 
@@ -514,58 +575,16 @@ This project is built around a small set of principles:
 - Keep SQL and persistence logic out of HTTP handlers.
 - Keep HTTP concerns out of repositories.
 - Use small, understandable layers.
+- Use structured logging for observable application behaviour.
 - Build fast interfaces without unnecessary frontend bloat.
-- Treat clients as the centre of future projects, contracts, messages and time tracking.
+- Keep the internal workspace focused on client and project records.
+- Avoid rebuilding scheduling, team communication and time-tracking tools that already exist elsewhere.
 - Add abstractions only when repeated application behaviour justifies them.
-- Keep the public portfolio polished while building the internal system incrementally.
+- Keep the public portfolio polished while building the internal workspace incrementally.
 
-## Planned Request Flow
+## Deployment Status
 
-Future application domains will follow the same vertical structure:
-
-```text
-Model
-  ↓
-Migration
-  ↓
-Repository
-  ↓
-Service or validation layer
-  ↓
-HTTP handler
-  ↓
-Template
-  ↓
-Automated tests
-```
-
-Projects will be the next major domain and will belong to clients.
-
-Contracts, messages and time entries will then connect to projects and client records.
-
-## Customer Portal Direction
-
-The eventual customer portal will be invitation-only.
-
-The intended workflow is:
-
-```text
-Potential client contacts Daniel
-        ↓
-Client is qualified and accepted
-        ↓
-Daniel creates the client record
-        ↓
-Projects and contracts are created
-        ↓
-Portal access is enabled
-        ↓
-Client receives a secure invitation
-        ↓
-Client can access only their own workspace
-```
-
-The public website will not contain a customer sign-up form.
+The public portfolio can be prepared for deployment, but the internal dashboard should remain private until authentication and related security controls are implemented.
 
 ## Licence
 
