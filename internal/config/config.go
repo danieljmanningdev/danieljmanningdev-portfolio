@@ -18,13 +18,14 @@ func Load() Config {
 	if templateDir == "" {
 		templateDir = "web/templates"
 	}
+
 	return Config{
 		Environment:  getEnv("APP_ENV", "development"),
 		Port:         getEnvInt("APP_PORT", 8080),
+		LogLevel:     getEnv("LOG_LEVEL", "info"),
 		DatabasePath: getEnv("DATABASE_PATH", "./data/app.db"),
 		TemplateDir:  templateDir,
 	}
-
 }
 
 func getEnv(key, fallback string) string {
