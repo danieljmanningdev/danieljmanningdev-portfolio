@@ -29,6 +29,22 @@ func (h *ContractsHandler) createContract(
 
 	formErrors := validateContractForm(form)
 
+	if !formErrors.Any() {
+		formErrors, err = h.validateContractRelationships(
+			r.Context(),
+			form,
+			formErrors,
+		)
+		if err != nil {
+			http.Error(
+				w,
+				"failed to validate contract relationships",
+				http.StatusInternalServerError,
+			)
+			return
+		}
+	}
+
 	if formErrors.Any() {
 		h.renderNewContract(
 			w,
@@ -118,6 +134,22 @@ func (h *ContractsHandler) updateContract(
 	}
 
 	formErrors := validateContractForm(form)
+
+	if !formErrors.Any() {
+		formErrors, err = h.validateContractRelationships(
+			r.Context(),
+			form,
+			formErrors,
+		)
+		if err != nil {
+			http.Error(
+				w,
+				"failed to validate contract relationships",
+				http.StatusInternalServerError,
+			)
+			return
+		}
+	}
 
 	if formErrors.Any() {
 		h.renderEditContract(
