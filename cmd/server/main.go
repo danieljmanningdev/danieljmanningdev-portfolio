@@ -107,6 +107,7 @@ func main() {
 	logger.Info(
 		"starting application",
 		"environment", cfg.Environment,
+		"log_level", cfg.LogLevel,
 	)
 
 	ctx, stop := signal.NotifyContext(
@@ -214,10 +215,32 @@ func main() {
 		contractsHandler,
 	)
 
+	/*
+		CrossOriginProtection rejects unsafe cross-origin browser
+		requests before they reach the application router.
+
+		RequestLogger remains the outer middleware so rejected
+		requests are still recorded in the application logs.
+	*/
+	crossOriginProtection := http.NewCrossOriginProtection()
+
+	protectedRouter := crossOriginProtection.Handler(
+		router,
+	)
+
+	applicationHandler := apphttp.RequestLogger(
+		logger,
+		protectedRouter,
+	)
+
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(cfg.Port),
-		Handler:           apphttp.RequestLogger(logger, router),
+		Handler:           applicationHandler,
 		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
+		MaxHeaderBytes:    1 << 20,
 	}
 
 	go func() {
@@ -233,6 +256,7 @@ func main() {
 				"server error",
 				"error", err,
 			)
+
 			stop()
 		}
 	}()
