@@ -1,0 +1,150 @@
+package auth
+
+import (
+	"errors"
+	"strings"
+	"testing"
+)
+
+func TestHashPasswordAndVerify(
+	t *testing.T,
+) {
+	password := "a-secure-test-password"
+
+	hash, err := HashPassword(password)
+	if err != nil {
+		t.Fatalf("hash password: %v", err)
+	}
+
+	if hash == password {
+		t.Fatal("expected password hash to differ from plaintext")
+	}
+
+	if !VerifyPassword(hash, password) {
+		t.Fatal("expected correct password to verify")
+	}
+
+	if VerifyPassword(
+		hash,
+		"wrong-password",
+	) {
+		t.Fatal("expected incorrect password to fail")
+	}
+}
+
+func TestHashPasswordUsesUniqueSalt(
+	t *testing.T,
+) {
+	password := "same-password"
+
+	firstHash, err := HashPassword(password)
+	if err != nil {
+		t.Fatalf("hash first password: %v", err)
+	}
+
+	secondHash, err := HashPassword(password)
+	if err != nil {
+		t.Fatalf("hash second password: %v", err)
+	}
+
+	if firstHash == secondHash {
+		t.Fatal(
+			"expected bcrypt hashes to differ because of unique salts",
+		)
+	}
+
+	if !VerifyPassword(
+		firstHash,
+		password,
+	) {
+		t.Fatal("expected first hash to verify")
+	}
+
+	if !VerifyPassword(
+		secondHash,
+		password,
+	) {
+		t.Fatal("expected second hash to verify")
+	}
+}
+
+func TestHashPasswordRejectsEmptyPassword(
+	t *testing.T,
+) {
+	_, err := HashPassword("")
+
+	if !errors.Is(
+		err,
+		ErrPasswordEmpty,
+	) {
+		t.Fatalf(
+			"expected ErrPasswordEmpty, got %v",
+			err,
+		)
+	}
+}
+
+func TestHashPasswordRejectsMoreThan72Bytes(
+	t *testing.T,
+) {
+	password := strings.Repeat(
+		"a",
+		73,
+	)
+
+	_, err := HashPassword(password)
+
+	if !errors.Is(
+		err,
+		ErrPasswordTooLong,
+	) {
+		t.Fatalf(
+			"expected ErrPasswordTooLong, got %v",
+			err,
+		)
+	}
+}
+
+func TestHashPasswordCountsBytesNotCharacters(
+	t *testing.T,
+) {
+	password := strings.Repeat(
+		"£",
+		37,
+	)
+
+	_, err := HashPassword(password)
+
+	if !errors.Is(
+		err,
+		ErrPasswordTooLong,
+	) {
+		t.Fatalf(
+			"expected multibyte password to exceed bcrypt byte limit, got %v",
+			err,
+		)
+	}
+}
+
+func TestVerifyPasswordRejectsEmptyValues(
+	t *testing.T,
+) {
+	if VerifyPassword(
+		"",
+		"password",
+	) {
+		t.Fatal("expected empty hash to fail")
+	}
+
+	hash, err := HashPassword("password")
+	if err != nil {
+		t.Fatalf("hash password: %v", err)
+	}
+
+	if VerifyPassword(
+		hash,
+		"",
+	) {
+		t.Fatal("expected empty password to fail")
+	}
+}

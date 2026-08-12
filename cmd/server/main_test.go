@@ -1,148 +1,265 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
+	"runtime"
 	"testing"
+
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/database"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
-func TestNewRouterRoutesRequests(t *testing.T) {
+func newRouterTestSessionService(
+	t *testing.T,
+) *auth.SessionService {
+	t.Helper()
+
+	db, err := database.Open(
+		context.Background(),
+		":memory:",
+	)
+	if err != nil {
+		t.Fatalf(
+			"open test database: %v",
+			err,
+		)
+	}
+
+	t.Cleanup(func() {
+		_ = db.Close()
+	})
+
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("resolve test path")
+	}
+
+	migrationsDir := filepath.Join(
+		filepath.Dir(filename),
+		"..",
+		"..",
+		"migrations",
+	)
+
+	if err := database.RunMigrations(
+		db.SQL,
+		migrationsDir,
+	); err != nil {
+		t.Fatalf(
+			"run migrations: %v",
+			err,
+		)
+	}
+
+	return auth.NewSessionService(
+		repository.NewAdminRepository(
+			db.SQL,
+		),
+		repository.NewAdminSessionRepository(
+			db.SQL,
+		),
+	)
+}
+
+func TestNewRouterPublicRoutes(
+	t *testing.T,
+) {
+	sessionService :=
+		newRouterTestSessionService(t)
+
 	homeHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("home"))
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			_, _ = w.Write(
+				[]byte("home"),
+			)
 		},
 	)
 
-	dashboardHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("dashboard"))
+	authHandler := http.HandlerFunc(
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			_, _ = w.Write(
+				[]byte("auth"),
+			)
 		},
 	)
 
-	clientsHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("clients"))
-		},
-	)
-
-	projectsHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("projects"))
-		},
-	)
-
-	contractsHandler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("contracts"))
+	protectedHandler := http.HandlerFunc(
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			_, _ = w.Write(
+				[]byte("protected"),
+			)
 		},
 	)
 
 	router := newRouter(
 		homeHandler,
-		dashboardHandler,
-		clientsHandler,
-		projectsHandler,
-		contractsHandler,
+		authHandler,
+		protectedHandler,
+		protectedHandler,
+		protectedHandler,
+		protectedHandler,
+		sessionService,
 	)
 
 	tests := []struct {
-		name       string
-		path       string
-		wantStatus int
-		wantBody   string
+		path     string
+		wantBody string
 	}{
 		{
-			name:       "homepage",
-			path:       "/",
-			wantStatus: http.StatusOK,
-			wantBody:   "home",
+			path:     "/",
+			wantBody: "home",
 		},
 		{
-			name:       "dashboard",
-			path:       "/dashboard/",
-			wantStatus: http.StatusOK,
-			wantBody:   "dashboard",
+			path:     "/login",
+			wantBody: "auth",
 		},
 		{
-			name:       "clients",
-			path:       "/dashboard/clients",
-			wantStatus: http.StatusOK,
-			wantBody:   "clients",
-		},
-		{
-			name:       "client sub-route",
-			path:       "/dashboard/clients/1",
-			wantStatus: http.StatusOK,
-			wantBody:   "clients",
-		},
-		{
-			name:       "projects",
-			path:       "/dashboard/projects",
-			wantStatus: http.StatusOK,
-			wantBody:   "projects",
-		},
-		{
-			name:       "project sub-route",
-			path:       "/dashboard/projects/1",
-			wantStatus: http.StatusOK,
-			wantBody:   "projects",
-		},
-		{
-			name:       "contracts",
-			path:       "/dashboard/contracts",
-			wantStatus: http.StatusOK,
-			wantBody:   "contracts",
-		},
-		{
-			name:       "contract sub-route",
-			path:       "/dashboard/contracts/1",
-			wantStatus: http.StatusOK,
-			wantBody:   "contracts",
+			path:     "/logout",
+			wantBody: "auth",
 		},
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			req := httptest.NewRequest(
-				http.MethodGet,
-				tt.path,
-				nil,
+		t.Run(
+			tt.path,
+			func(t *testing.T) {
+				req := httptest.NewRequest(
+					http.MethodGet,
+					tt.path,
+					nil,
+				)
+
+				rec := httptest.NewRecorder()
+
+				router.ServeHTTP(
+					rec,
+					req,
+				)
+
+				if rec.Code !=
+					http.StatusOK {
+					t.Fatalf(
+						"expected 200, got %d",
+						rec.Code,
+					)
+				}
+
+				if rec.Body.String() !=
+					tt.wantBody {
+					t.Fatalf(
+						"expected body %q, got %q",
+						tt.wantBody,
+						rec.Body.String(),
+					)
+				}
+			},
+		)
+	}
+}
+
+func TestNewRouterProtectsDashboardRoutes(
+	t *testing.T,
+) {
+	sessionService :=
+		newRouterTestSessionService(t)
+
+	handler := http.HandlerFunc(
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			_, _ = w.Write(
+				[]byte("protected"),
 			)
+		},
+	)
 
-			rec := httptest.NewRecorder()
+	router := newRouter(
+		handler,
+		handler,
+		handler,
+		handler,
+		handler,
+		handler,
+		sessionService,
+	)
 
-			router.ServeHTTP(rec, req)
+	protectedPaths := []string{
+		"/dashboard/",
+		"/dashboard/clients",
+		"/dashboard/clients/1",
+		"/dashboard/projects",
+		"/dashboard/projects/1",
+		"/dashboard/contracts",
+		"/dashboard/contracts/1",
+	}
 
-			if rec.Code != tt.wantStatus {
-				t.Fatalf(
-					"expected status %d, got %d",
-					tt.wantStatus,
-					rec.Code,
+	for _, path := range protectedPaths {
+		t.Run(
+			path,
+			func(t *testing.T) {
+				req := httptest.NewRequest(
+					http.MethodGet,
+					path,
+					nil,
 				)
-			}
 
-			if rec.Body.String() != tt.wantBody {
-				t.Fatalf(
-					"expected body %q, got %q",
-					tt.wantBody,
-					rec.Body.String(),
+				rec := httptest.NewRecorder()
+
+				router.ServeHTTP(
+					rec,
+					req,
 				)
-			}
-		})
+
+				if rec.Code !=
+					http.StatusSeeOther {
+					t.Fatalf(
+						"expected 303, got %d",
+						rec.Code,
+					)
+				}
+
+				if location :=
+					rec.Header().Get(
+						"Location",
+					); location != "/login" {
+					t.Fatalf(
+						"expected /login redirect, got %q",
+						location,
+					)
+				}
+			},
+		)
 	}
 }
 
 func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 	t *testing.T,
 ) {
+	sessionService :=
+		newRouterTestSessionService(t)
+
 	handler := http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			w.WriteHeader(
+				http.StatusOK,
+			)
 		},
 	)
 
@@ -152,6 +269,8 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 		handler,
 		handler,
 		handler,
+		handler,
+		sessionService,
 	)
 
 	req := httptest.NewRequest(
@@ -162,20 +281,25 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 
 	rec := httptest.NewRecorder()
 
-	router.ServeHTTP(rec, req)
+	router.ServeHTTP(
+		rec,
+		req,
+	)
 
-	if rec.Code != http.StatusPermanentRedirect {
+	if rec.Code !=
+		http.StatusPermanentRedirect {
 		t.Fatalf(
-			"expected status %d, got %d",
-			http.StatusPermanentRedirect,
+			"expected 308, got %d",
 			rec.Code,
 		)
 	}
 
-	if location := rec.Header().Get("Location"); location != "/dashboard/" {
+	if location :=
+		rec.Header().Get(
+			"Location",
+		); location != "/dashboard/" {
 		t.Fatalf(
-			"expected redirect location %q, got %q",
-			"/dashboard/",
+			"expected /dashboard/ redirect, got %q",
 			location,
 		)
 	}
