@@ -1,31 +1,31 @@
 {{define "content"}}
-<main class="relative min-h-[75vh] overflow-hidden">
+<main class="relative overflow-hidden">
     <div
-        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_45%)]"
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.14),_transparent_48%)]"
     ></div>
 
     <section
-        class="relative mx-auto flex min-h-[75vh] w-full max-w-7xl items-center justify-center px-6 py-20 lg:px-8"
+        class="relative mx-auto flex min-h-[calc(100vh-9rem)] w-full max-w-7xl items-center justify-center px-6 py-16 lg:px-8"
     >
-        <div class="w-full max-w-md">
+        <div class="w-full max-w-xl">
             <div
-                class="rounded-3xl border border-blue-400/10 bg-white/[0.035] p-8 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-10"
+                class="rounded-[2rem] border border-blue-400/10 bg-white/[0.035] p-8 shadow-2xl shadow-black/25 backdrop-blur-xl sm:p-12"
             >
-                <div class="mb-8">
+                <div class="mb-10">
                     <p
-                        class="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-blue-300"
+                        class="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-blue-300"
                     >
                         Private workspace
                     </p>
 
                     <h1
-                        class="text-3xl font-semibold tracking-tight text-white"
+                        class="text-4xl font-semibold tracking-tight text-white sm:text-5xl"
                     >
                         Admin sign in
                     </h1>
 
                     <p
-                        class="mt-3 text-sm leading-6 text-slate-400"
+                        class="mt-4 max-w-lg text-base leading-7 text-slate-400"
                     >
                         Sign in to access the internal client, project and contract workspace.
                     </p>
@@ -34,7 +34,7 @@
                 {{if .Error}}
                 <div
                     role="alert"
-                    class="mb-6 rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+                    class="mb-7 rounded-2xl border border-red-400/20 bg-red-400/10 px-5 py-4 text-sm text-red-200"
                 >
                     {{.Error}}
                 </div>
@@ -43,12 +43,12 @@
                 <form
                     action="/login"
                     method="post"
-                    class="space-y-6"
+                    class="space-y-7"
                 >
                     <div>
                         <label
                             for="email"
-                            class="mb-2 block text-sm font-medium text-slate-200"
+                            class="mb-2.5 block text-sm font-medium text-slate-200"
                         >
                             Email
                         </label>
@@ -60,7 +60,7 @@
                             autocomplete="username"
                             required
                             value="{{.Email}}"
-                            class="w-full rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/10"
+                            class="w-full rounded-2xl border border-white/10 bg-white/[0.045] px-5 py-4 text-base text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/10"
                             placeholder="you@example.com"
                         >
                     </div>
@@ -68,7 +68,7 @@
                     <div>
                         <label
                             for="password"
-                            class="mb-2 block text-sm font-medium text-slate-200"
+                            class="mb-2.5 block text-sm font-medium text-slate-200"
                         >
                             Password
                         </label>
@@ -79,24 +79,28 @@
                             type="password"
                             autocomplete="current-password"
                             required
-                            class="w-full rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/10"
+                            class="w-full rounded-2xl border border-white/10 bg-white/[0.045] px-5 py-4 text-base text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/10"
                             placeholder="Your password"
                         >
                     </div>
 
                     <button
                         type="submit"
-                        class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+                        class="inline-flex w-full items-center justify-center rounded-2xl bg-blue-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
                     >
                         Sign in
                     </button>
                 </form>
 
-                <p
-                    class="mt-6 text-center text-xs leading-5 text-slate-500"
+                <div
+                    class="mt-8 border-t border-white/5 pt-6"
                 >
-                    This workspace is restricted to authorised administrative access.
-                </p>
+                    <p
+                        class="text-center text-sm leading-6 text-slate-500"
+                    >
+                        Restricted to authorised administrative access.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
