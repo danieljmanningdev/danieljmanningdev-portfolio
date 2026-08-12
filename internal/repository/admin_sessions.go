@@ -25,6 +25,7 @@ func (r *AdminSessionRepository) Create(
 	adminID int64,
 	tokenHash string,
 	expiresAt time.Time,
+	lastSeenAt time.Time,
 ) (int64, error) {
 	result, err := r.db.ExecContext(
 		ctx,
@@ -32,13 +33,15 @@ func (r *AdminSessionRepository) Create(
 			INSERT INTO admin_sessions (
 				admin_id,
 				token_hash,
-				expires_at
+				expires_at,
+				last_seen_at
 			)
-			VALUES (?, ?, ?)
+			VALUES (?, ?, ?, ?)
 		`,
 		adminID,
 		tokenHash,
 		expiresAt.UTC(),
+		lastSeenAt.UTC(),
 	)
 	if err != nil {
 		return 0, err
