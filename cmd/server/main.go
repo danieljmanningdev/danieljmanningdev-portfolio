@@ -43,24 +43,32 @@ func newRouter(
 	)
 
 	// All dashboard routes require a valid admin session.
-	protectedDashboard := apphttp.RequireAdmin(
-		sessionService,
-		dashboardHandler,
+	protectedDashboard := apphttp.NoStore(
+		apphttp.RequireAdmin(
+			sessionService,
+			dashboardHandler,
+		),
 	)
 
-	protectedClients := apphttp.RequireAdmin(
-		sessionService,
-		clientsHandler,
+	protectedClients := apphttp.NoStore(
+		apphttp.RequireAdmin(
+			sessionService,
+			clientsHandler,
+		),
 	)
 
-	protectedProjects := apphttp.RequireAdmin(
-		sessionService,
-		projectsHandler,
+	protectedProjects := apphttp.NoStore(
+		apphttp.RequireAdmin(
+			sessionService,
+			projectsHandler,
+		),
 	)
 
-	protectedContracts := apphttp.RequireAdmin(
-		sessionService,
-		contractsHandler,
+	protectedContracts := apphttp.NoStore(
+		apphttp.RequireAdmin(
+			sessionService,
+			contractsHandler,
+		),
 	)
 
 	// Redirect the dashboard path to its canonical trailing-slash URL.
@@ -292,10 +300,15 @@ func main() {
 			router,
 		)
 
+	securityHeaders := apphttp.SecurityHeaders(
+		cfg.Environment == "production",
+		protectedRouter,
+	)
+
 	applicationHandler :=
 		apphttp.RequestLogger(
 			logger,
-			protectedRouter,
+			securityHeaders,
 		)
 
 	server := &http.Server{
