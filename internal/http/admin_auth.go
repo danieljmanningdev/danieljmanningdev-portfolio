@@ -1,0 +1,393 @@
+package http
+
+import (
+	"bytes"
+	"database/sql"
+	"errors"
+	"html/template"
+	"net/http"
+	"strings"
+	"time"
+
+	authservice "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
+)
+
+const (
+	adminSessionCookieName = "djm_admin_session"
+	loginPath              = "/login"
+	logoutPath             = "/logout"
+)
+
+type adminLoginPageData struct {
+	Title string
+	Email string
+	Error string
+}
+
+type AdminAuthHandler struct {
+	adminRepository *repository.AdminRepository
+	sessionService  *authservice.SessionService
+	loginTemplates  *template.Template
+	secureCookies   bool
+	dummyHash       string
+}
+
+func NewAdminAuthHandler(
+	db *sql.DB,
+	templateDir string,
+	secureCookies bool,
+) (*AdminAuthHandler, error) {
+	adminRepository := repository.NewAdminRepository(db)
+
+	sessionRepository :=
+		repository.NewAdminSessionRepository(db)
+
+	sessionService := authservice.NewSessionService(
+		adminRepository,
+		sessionRepository,
+	)
+
+	loginTemplates, err := loadPageTemplate(
+		templateDir,
+		"login.html",
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	/*
+		The dummy bcrypt hash lets failed logins for unknown email
+		addresses still perform a bcrypt comparison.
+
+		This helps avoid making "email exists" noticeably cheaper
+		than "wrong password".
+	*/
+	dummyHash, err := authservice.HashPassword(
+		"invalid-login-placeholder",
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &AdminAuthHandler{
+		adminRepository: adminRepository,
+		sessionService:  sessionService,
+		loginTemplates:  loginTemplates,
+		secureCookies:   secureCookies,
+		dummyHash:       dummyHash,
+	}, nil
+}
+
+func (h *AdminAuthHandler) ServeHTTP(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	switch r.URL.Path {
+	case loginPath:
+		h.handleLogin(w, r)
+
+	case logoutPath:
+		h.handleLogout(w, r)
+
+	default:
+		http.NotFound(w, r)
+	}
+}
+
+func (h *AdminAuthHandler) handleLogin(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	switch r.Method {
+	case http.MethodGet:
+		h.showLogin(w, r)
+
+	case http.MethodPost:
+		h.submitLogin(w, r)
+
+	default:
+		http.Error(
+			w,
+			http.StatusText(http.StatusMethodNotAllowed),
+			http.StatusMethodNotAllowed,
+		)
+	}
+}
+
+func (h *AdminAuthHandler) showLogin(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	if h.requestHasValidAdminSession(r) {
+		http.Redirect(
+			w,
+			r,
+			"/dashboard/",
+			http.StatusSeeOther,
+		)
+		return
+	}
+
+	h.renderLogin(
+		w,
+		adminLoginPageData{
+			Title: "Admin Login — Daniel J. Manning",
+		},
+		http.StatusOK,
+	)
+}
+
+func (h *AdminAuthHandler) submitLogin(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	if err := r.ParseForm(); err != nil {
+		h.renderLogin(
+			w,
+			adminLoginPageData{
+				Title: "Admin Login — Daniel J. Manning",
+				Error: "Invalid email or password.",
+			},
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	email := strings.ToLower(
+		strings.TrimSpace(
+			r.FormValue("email"),
+		),
+	)
+
+	password := r.FormValue("password")
+
+	if email == "" || password == "" {
+		h.renderInvalidLogin(
+			w,
+			email,
+		)
+		return
+	}
+
+	admin, err := h.adminRepository.GetByEmail(
+		r.Context(),
+		email,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			/*
+				Still perform bcrypt work when the email does
+				not exist so the two failure cases behave more
+				similarly.
+			*/
+			_ = authservice.VerifyPassword(
+				h.dummyHash,
+				password,
+			)
+
+			h.renderInvalidLogin(
+				w,
+				email,
+			)
+			return
+		}
+
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	if !admin.IsActive ||
+		!authservice.VerifyPassword(
+			admin.PasswordHash,
+			password,
+		) {
+		h.renderInvalidLogin(
+			w,
+			email,
+		)
+		return
+	}
+
+	/*
+		Remove any existing browser session before issuing a new
+		one. This also gives successful authentication a freshly
+		generated session token.
+	*/
+	if existingCookie, err := r.Cookie(
+		adminSessionCookieName,
+	); err == nil {
+		_ = h.sessionService.RevokeSession(
+			r.Context(),
+			existingCookie.Value,
+		)
+	}
+
+	rawToken, expiresAt, err :=
+		h.sessionService.CreateSession(
+			r.Context(),
+			admin.ID,
+		)
+	if err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	h.setSessionCookie(
+		w,
+		rawToken,
+		expiresAt,
+	)
+
+	http.Redirect(
+		w,
+		r,
+		"/dashboard/",
+		http.StatusSeeOther,
+	)
+}
+
+func (h *AdminAuthHandler) handleLogout(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	if r.Method != http.MethodPost {
+		http.Error(
+			w,
+			http.StatusText(http.StatusMethodNotAllowed),
+			http.StatusMethodNotAllowed,
+		)
+		return
+	}
+
+	if cookie, err := r.Cookie(
+		adminSessionCookieName,
+	); err == nil {
+		_ = h.sessionService.RevokeSession(
+			r.Context(),
+			cookie.Value,
+		)
+	}
+
+	h.clearSessionCookie(w)
+
+	http.Redirect(
+		w,
+		r,
+		loginPath,
+		http.StatusSeeOther,
+	)
+}
+
+func (h *AdminAuthHandler) requestHasValidAdminSession(
+	r *http.Request,
+) bool {
+	cookie, err := r.Cookie(
+		adminSessionCookieName,
+	)
+	if err != nil {
+		return false
+	}
+
+	_, err = h.sessionService.Authenticate(
+		r.Context(),
+		cookie.Value,
+	)
+
+	return err == nil
+}
+
+func (h *AdminAuthHandler) renderInvalidLogin(
+	w http.ResponseWriter,
+	email string,
+) {
+	h.renderLogin(
+		w,
+		adminLoginPageData{
+			Title: "Admin Login — Daniel J. Manning",
+			Email: email,
+			Error: "Invalid email or password.",
+		},
+		http.StatusUnauthorized,
+	)
+}
+
+func (h *AdminAuthHandler) renderLogin(
+	w http.ResponseWriter,
+	data adminLoginPageData,
+	status int,
+) {
+	var body bytes.Buffer
+
+	if err := h.loginTemplates.ExecuteTemplate(
+		&body,
+		"base",
+		data,
+	); err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"text/html; charset=utf-8",
+	)
+
+	w.Header().Set(
+		"Cache-Control",
+		"no-store",
+	)
+
+	w.WriteHeader(status)
+
+	_, _ = body.WriteTo(w)
+}
+
+func (h *AdminAuthHandler) setSessionCookie(
+	w http.ResponseWriter,
+	rawToken string,
+	expiresAt time.Time,
+) {
+	http.SetCookie(
+		w,
+		&http.Cookie{
+			Name:     adminSessionCookieName,
+			Value:    rawToken,
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   h.secureCookies,
+			SameSite: http.SameSiteLaxMode,
+			Expires:  expiresAt,
+		},
+	)
+}
+
+func (h *AdminAuthHandler) clearSessionCookie(
+	w http.ResponseWriter,
+) {
+	http.SetCookie(
+		w,
+		&http.Cookie{
+			Name:     adminSessionCookieName,
+			Value:    "",
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   h.secureCookies,
+			SameSite: http.SameSiteLaxMode,
+			MaxAge:   -1,
+			Expires:  time.Unix(1, 0).UTC(),
+		},
+	)
+}
