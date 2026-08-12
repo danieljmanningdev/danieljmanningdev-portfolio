@@ -10,23 +10,58 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/config"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/database"
 	apphttp "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/http"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/logging"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
 func newRouter(
 	homeHandler http.Handler,
+	adminAuthHandler http.Handler,
 	dashboardHandler http.Handler,
 	clientsHandler http.Handler,
 	projectsHandler http.Handler,
 	contractsHandler http.Handler,
+	sessionService *auth.SessionService,
 ) http.Handler {
 	mux := http.NewServeMux()
 
 	// Public application routes.
 	mux.HandleFunc("/health", apphttp.HealthHandler)
+
+	mux.Handle(
+		"/login",
+		adminAuthHandler,
+	)
+
+	mux.Handle(
+		"/logout",
+		adminAuthHandler,
+	)
+
+	// All dashboard routes require a valid admin session.
+	protectedDashboard := apphttp.RequireAdmin(
+		sessionService,
+		dashboardHandler,
+	)
+
+	protectedClients := apphttp.RequireAdmin(
+		sessionService,
+		clientsHandler,
+	)
+
+	protectedProjects := apphttp.RequireAdmin(
+		sessionService,
+		projectsHandler,
+	)
+
+	protectedContracts := apphttp.RequireAdmin(
+		sessionService,
+		contractsHandler,
+	)
 
 	// Redirect the dashboard path to its canonical trailing-slash URL.
 	mux.Handle(
@@ -40,43 +75,43 @@ func newRouter(
 	// Match only the dashboard overview itself.
 	mux.Handle(
 		"/dashboard/{$}",
-		dashboardHandler,
+		protectedDashboard,
 	)
 
 	// Match the client list and every client sub-route.
 	mux.Handle(
 		"/dashboard/clients",
-		clientsHandler,
+		protectedClients,
 	)
 
 	mux.Handle(
 		"/dashboard/clients/",
-		clientsHandler,
+		protectedClients,
 	)
 
 	// Match the project list and every project sub-route.
 	mux.Handle(
 		"/dashboard/projects",
-		projectsHandler,
+		protectedProjects,
 	)
 
 	mux.Handle(
 		"/dashboard/projects/",
-		projectsHandler,
+		protectedProjects,
 	)
 
 	// Match the contract list and every contract sub-route.
 	mux.Handle(
 		"/dashboard/contracts",
-		contractsHandler,
+		protectedContracts,
 	)
 
 	mux.Handle(
 		"/dashboard/contracts/",
-		contractsHandler,
+		protectedContracts,
 	)
 
-	// Static files.
+	// Static files remain public.
 	fileServer := http.FileServer(
 		http.Dir("web/static"),
 	)
@@ -90,7 +125,6 @@ func newRouter(
 	)
 
 	// The public homepage remains the final fallback.
-	// HomeHandler returns 404 for paths other than "/".
 	mux.Handle("/", homeHandler)
 
 	return mux
@@ -207,12 +241,47 @@ func main() {
 		os.Exit(1)
 	}
 
+	secureCookies :=
+		cfg.Environment == "production"
+
+	adminAuthHandler, err :=
+		apphttp.NewAdminAuthHandler(
+			db.SQL,
+			cfg.TemplateDir,
+			secureCookies,
+		)
+	if err != nil {
+		logger.Error(
+			"failed to create admin auth handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
+	adminRepository :=
+		repository.NewAdminRepository(
+			db.SQL,
+		)
+
+	sessionRepository :=
+		repository.NewAdminSessionRepository(
+			db.SQL,
+		)
+
+	sessionService :=
+		auth.NewSessionService(
+			adminRepository,
+			sessionRepository,
+		)
+
 	router := newRouter(
 		homeHandler,
+		adminAuthHandler,
 		dashboardHandler,
 		clientsHandler,
 		projectsHandler,
 		contractsHandler,
+		sessionService,
 	)
 
 	/*
