@@ -2,6 +2,7 @@ package auth
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
 )
@@ -42,4 +43,23 @@ func VerifyCSRFToken(
 		expectedBytes,
 		providedBytes,
 	) == 1
+}
+
+func LogoutCSRFToken(
+	sessionToken string,
+) string {
+	if sessionToken == "" {
+		return ""
+	}
+
+	sum := sha256.Sum256(
+		[]byte(
+			"admin-logout-csrf:" +
+				sessionToken,
+		),
+	)
+
+	return base64.RawURLEncoding.EncodeToString(
+		sum[:],
+	)
 }

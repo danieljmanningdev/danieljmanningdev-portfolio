@@ -700,10 +700,26 @@ func TestAdminLogoutRevokesSession(
 		)
 	}
 
+	values := url.Values{}
+
+	values.Set(
+		"csrf_token",
+		authservice.LogoutCSRFToken(
+			rawToken,
+		),
+	)
+
 	req := httptest.NewRequest(
 		http.MethodPost,
 		logoutPath,
-		nil,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
 	)
 
 	req.AddCookie(
@@ -761,6 +777,156 @@ func TestAdminLogoutRevokesSession(
 	if !foundClearedCookie {
 		t.Fatal(
 			"expected browser session cookie to be cleared",
+		)
+	}
+}
+
+func TestAdminLogoutRejectsMissingCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		sessionRepository,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	adminID := createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	rawToken, _, err :=
+		handler.sessionService.CreateSession(
+			context.Background(),
+			adminID,
+		)
+	if err != nil {
+		t.Fatalf(
+			"create session: %v",
+			err,
+		)
+	}
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		logoutPath,
+		nil,
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminSessionCookieName,
+			Value: rawToken,
+		},
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+
+	_, err = sessionRepository.GetByTokenHash(
+		context.Background(),
+		authservice.HashSessionToken(
+			rawToken,
+		),
+	)
+	if err != nil {
+		t.Fatalf(
+			"expected session to remain after rejected logout: %v",
+			err,
+		)
+	}
+}
+
+func TestAdminLogoutRejectsIncorrectCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		sessionRepository,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	adminID := createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	rawToken, _, err :=
+		handler.sessionService.CreateSession(
+			context.Background(),
+			adminID,
+		)
+	if err != nil {
+		t.Fatalf(
+			"create session: %v",
+			err,
+		)
+	}
+
+	values := url.Values{}
+
+	values.Set(
+		"csrf_token",
+		"incorrect-token",
+	)
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		logoutPath,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminSessionCookieName,
+			Value: rawToken,
+		},
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+
+	_, err = sessionRepository.GetByTokenHash(
+		context.Background(),
+		authservice.HashSessionToken(
+			rawToken,
+		),
+	)
+	if err != nil {
+		t.Fatalf(
+			"expected session to remain after rejected logout: %v",
+			err,
 		)
 	}
 }
@@ -894,6 +1060,28 @@ func TestRequireAdminProvidesAdminContext(
 						"expected admin ID %d, got %d",
 						adminID,
 						admin.ID,
+					)
+				}
+
+				logoutCSRFToken, ok :=
+					AdminLogoutCSRFTokenFromContext(
+						r.Context(),
+					)
+				if !ok {
+					t.Fatal(
+						"expected logout CSRF token in context",
+					)
+				}
+
+				expectedCSRFToken :=
+					authservice.LogoutCSRFToken(
+						rawToken,
+					)
+
+				if logoutCSRFToken !=
+					expectedCSRFToken {
+					t.Fatal(
+						"unexpected logout CSRF token",
 					)
 				}
 

@@ -11,6 +11,8 @@ import (
 
 type adminContextKey struct{}
 
+type adminLogoutCSRFContextKey struct{}
+
 func AdminFromContext(
 	ctx context.Context,
 ) (models.Admin, bool) {
@@ -19,6 +21,16 @@ func AdminFromContext(
 	).(models.Admin)
 
 	return admin, ok
+}
+
+func AdminLogoutCSRFTokenFromContext(
+	ctx context.Context,
+) (string, bool) {
+	token, ok := ctx.Value(
+		adminLogoutCSRFContextKey{},
+	).(string)
+
+	return token, ok && token != ""
 }
 
 func RequireAdmin(
@@ -87,6 +99,14 @@ func RequireAdmin(
 				r.Context(),
 				adminContextKey{},
 				admin,
+			)
+
+			ctx = context.WithValue(
+				ctx,
+				adminLogoutCSRFContextKey{},
+				authservice.LogoutCSRFToken(
+					cookie.Value,
+				),
 			)
 
 			next.ServeHTTP(

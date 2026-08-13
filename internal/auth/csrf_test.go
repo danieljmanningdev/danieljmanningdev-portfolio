@@ -106,3 +106,46 @@ func TestVerifyCSRFTokenRejectsEmptyValues(
 		)
 	}
 }
+
+func TestLogoutCSRFTokenIsSessionBound(
+	t *testing.T,
+) {
+	first := LogoutCSRFToken(
+		"first-session-token",
+	)
+
+	second := LogoutCSRFToken(
+		"second-session-token",
+	)
+
+	if first == "" {
+		t.Fatal(
+			"expected non-empty logout CSRF token",
+		)
+	}
+
+	if first == second {
+		t.Fatal(
+			"expected different sessions to produce different logout CSRF tokens",
+		)
+	}
+
+	if first != LogoutCSRFToken(
+		"first-session-token",
+	) {
+		t.Fatal(
+			"expected logout CSRF token to be deterministic for a session",
+		)
+	}
+}
+
+func TestLogoutCSRFTokenRejectsEmptySession(
+	t *testing.T,
+) {
+	if token := LogoutCSRFToken(""); token != "" {
+		t.Fatalf(
+			"expected empty token, got %q",
+			token,
+		)
+	}
+}

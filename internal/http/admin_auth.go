@@ -303,14 +303,48 @@ func (h *AdminAuthHandler) handleLogout(
 		return
 	}
 
-	if cookie, err := r.Cookie(
+	if err := r.ParseForm(); err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusBadRequest),
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	cookie, err := r.Cookie(
 		adminSessionCookieName,
-	); err == nil {
-		_ = h.sessionService.RevokeSession(
-			r.Context(),
+	)
+	if err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusForbidden),
+			http.StatusForbidden,
+		)
+		return
+	}
+
+	expectedCSRFToken :=
+		authservice.LogoutCSRFToken(
 			cookie.Value,
 		)
+
+	if !authservice.VerifyCSRFToken(
+		expectedCSRFToken,
+		r.FormValue("csrf_token"),
+	) {
+		http.Error(
+			w,
+			http.StatusText(http.StatusForbidden),
+			http.StatusForbidden,
+		)
+		return
 	}
+
+	_ = h.sessionService.RevokeSession(
+		r.Context(),
+		cookie.Value,
+	)
 
 	h.clearSessionCookie(w)
 
