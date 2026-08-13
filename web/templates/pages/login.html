@@ -45,6 +45,11 @@
                     method="post"
                     class="space-y-7"
                 >
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{.CSRFToken}}"
+                    >
                     <div>
                         <label
                             for="email"

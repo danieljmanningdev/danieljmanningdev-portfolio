@@ -15,14 +15,18 @@ import (
 
 const (
 	adminSessionCookieName = "djm_admin_session"
+	adminLoginCSRFCookie   = "djm_login_csrf"
 	loginPath              = "/login"
 	logoutPath             = "/logout"
+
+	loginCSRFLifetime = 10 * time.Minute
 )
 
 type adminLoginPageData struct {
-	Title string
-	Email string
-	Error string
+	Title     string
+	Email     string
+	Error     string
+	CSRFToken string
 }
 
 type AdminAuthHandler struct {
@@ -129,10 +133,26 @@ func (h *AdminAuthHandler) showLogin(
 		return
 	}
 
+	csrfToken, err := authservice.GenerateCSRFToken()
+	if err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	h.setLoginCSRFCookie(
+		w,
+		csrfToken,
+	)
+
 	h.renderLogin(
 		w,
 		adminLoginPageData{
-			Title: "Admin Login — Daniel J. Manning",
+			Title:     "Admin Login — Daniel J. Manning",
+			CSRFToken: csrfToken,
 		},
 		http.StatusOK,
 	)
@@ -143,13 +163,26 @@ func (h *AdminAuthHandler) submitLogin(
 	r *http.Request,
 ) {
 	if err := r.ParseForm(); err != nil {
-		h.renderLogin(
+		http.Error(
 			w,
-			adminLoginPageData{
-				Title: "Admin Login — Daniel J. Manning",
-				Error: "Invalid email or password.",
-			},
+			http.StatusText(http.StatusBadRequest),
 			http.StatusBadRequest,
+		)
+		return
+	}
+
+	csrfCookie, err := r.Cookie(
+		adminLoginCSRFCookie,
+	)
+	if err != nil ||
+		!authservice.VerifyCSRFToken(
+			csrfCookie.Value,
+			r.FormValue("csrf_token"),
+		) {
+		http.Error(
+			w,
+			http.StatusText(http.StatusForbidden),
+			http.StatusForbidden,
 		)
 		return
 	}
@@ -247,6 +280,8 @@ func (h *AdminAuthHandler) submitLogin(
 		expiresAt,
 	)
 
+	h.clearLoginCSRFCookie(w)
+
 	http.Redirect(
 		w,
 		r,
@@ -309,12 +344,28 @@ func (h *AdminAuthHandler) renderInvalidLogin(
 	w http.ResponseWriter,
 	email string,
 ) {
+	csrfToken, err := authservice.GenerateCSRFToken()
+	if err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	h.setLoginCSRFCookie(
+		w,
+		csrfToken,
+	)
+
 	h.renderLogin(
 		w,
 		adminLoginPageData{
-			Title: "Admin Login — Daniel J. Manning",
-			Email: email,
-			Error: "Invalid email or password.",
+			Title:     "Admin Login — Daniel J. Manning",
+			Email:     email,
+			Error:     "Invalid email or password.",
+			CSRFToken: csrfToken,
 		},
 		http.StatusUnauthorized,
 	)
@@ -386,6 +437,42 @@ func (h *AdminAuthHandler) clearSessionCookie(
 			HttpOnly: true,
 			Secure:   h.secureCookies,
 			SameSite: http.SameSiteLaxMode,
+			MaxAge:   -1,
+			Expires:  time.Unix(1, 0).UTC(),
+		},
+	)
+}
+
+func (h *AdminAuthHandler) setLoginCSRFCookie(
+	w http.ResponseWriter,
+	token string,
+) {
+	http.SetCookie(
+		w,
+		&http.Cookie{
+			Name:     adminLoginCSRFCookie,
+			Value:    token,
+			Path:     loginPath,
+			HttpOnly: true,
+			Secure:   h.secureCookies,
+			SameSite: http.SameSiteStrictMode,
+			MaxAge:   int(loginCSRFLifetime.Seconds()),
+		},
+	)
+}
+
+func (h *AdminAuthHandler) clearLoginCSRFCookie(
+	w http.ResponseWriter,
+) {
+	http.SetCookie(
+		w,
+		&http.Cookie{
+			Name:     adminLoginCSRFCookie,
+			Value:    "",
+			Path:     loginPath,
+			HttpOnly: true,
+			Secure:   h.secureCookies,
+			SameSite: http.SameSiteStrictMode,
 			MaxAge:   -1,
 			Expires:  time.Unix(1, 0).UTC(),
 		},

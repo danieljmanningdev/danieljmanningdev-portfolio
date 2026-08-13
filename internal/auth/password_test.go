@@ -35,7 +35,7 @@ func TestHashPasswordAndVerify(
 func TestHashPasswordUsesUniqueSalt(
 	t *testing.T,
 ) {
-	password := "same-password"
+	password := "same-password-that-is-long"
 
 	firstHash, err := HashPassword(password)
 	if err != nil {
@@ -80,6 +80,47 @@ func TestHashPasswordRejectsEmptyPassword(
 		t.Fatalf(
 			"expected ErrPasswordEmpty, got %v",
 			err,
+		)
+	}
+}
+
+func TestHashPasswordRejectsFewerThan15Characters(
+	t *testing.T,
+) {
+	_, err := HashPassword(
+		"short-password",
+	)
+
+	if !errors.Is(
+		err,
+		ErrPasswordTooShort,
+	) {
+		t.Fatalf(
+			"expected ErrPasswordTooShort, got %v",
+			err,
+		)
+	}
+}
+
+func TestHashPasswordAccepts15Characters(
+	t *testing.T,
+) {
+	password := "123456789012345"
+
+	hash, err := HashPassword(password)
+	if err != nil {
+		t.Fatalf(
+			"expected 15-character password to be accepted: %v",
+			err,
+		)
+	}
+
+	if !VerifyPassword(
+		hash,
+		password,
+	) {
+		t.Fatal(
+			"expected accepted password to verify",
 		)
 	}
 }
@@ -136,7 +177,7 @@ func TestVerifyPasswordRejectsEmptyValues(
 		t.Fatal("expected empty hash to fail")
 	}
 
-	hash, err := HashPassword("password")
+	hash, err := HashPassword("password-long-enough")
 	if err != nil {
 		t.Fatalf("hash password: %v", err)
 	}
