@@ -104,8 +104,20 @@ func TestNewRouterPublicRoutes(
 		},
 	)
 
+	caseStudyHandler := http.HandlerFunc(
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			_, _ = w.Write(
+				[]byte("case-study"),
+			)
+		},
+	)
+
 	router := newRouter(
 		homeHandler,
+		caseStudyHandler,
 		authHandler,
 		protectedHandler,
 		protectedHandler,
@@ -121,6 +133,10 @@ func TestNewRouterPublicRoutes(
 		{
 			path:     "/",
 			wantBody: "home",
+		},
+		{
+			path:     "/work/portfolio",
+			wantBody: "case-study",
 		},
 		{
 			path:     "/login",
@@ -188,6 +204,7 @@ func TestNewRouterProtectsDashboardRoutes(
 	)
 
 	router := newRouter(
+		handler,
 		handler,
 		handler,
 		handler,
@@ -264,6 +281,7 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 	)
 
 	router := newRouter(
+		handler,
 		handler,
 		handler,
 		handler,

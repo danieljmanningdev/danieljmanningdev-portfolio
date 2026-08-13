@@ -20,6 +20,7 @@ import (
 
 func newRouter(
 	homeHandler http.Handler,
+	portfolioCaseStudyHandler http.Handler,
 	adminAuthHandler http.Handler,
 	dashboardHandler http.Handler,
 	clientsHandler http.Handler,
@@ -31,6 +32,11 @@ func newRouter(
 
 	// Public application routes.
 	mux.HandleFunc("/health", apphttp.HealthHandler)
+
+	mux.Handle(
+		"/work/portfolio",
+		portfolioCaseStudyHandler,
+	)
 
 	mux.Handle(
 		"/login",
@@ -202,6 +208,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	portfolioCaseStudyHandler, err :=
+		apphttp.NewPortfolioCaseStudyHandler(
+			cfg.TemplateDir,
+		)
+	if err != nil {
+		logger.Error(
+			"failed to create portfolio case study handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	dashboardHandler, err := apphttp.NewDashboardHandler(
 		cfg.TemplateDir,
 	)
@@ -284,6 +302,7 @@ func main() {
 
 	router := newRouter(
 		homeHandler,
+		portfolioCaseStudyHandler,
 		adminAuthHandler,
 		dashboardHandler,
 		clientsHandler,
