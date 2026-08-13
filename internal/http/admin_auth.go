@@ -5,7 +5,10 @@ import (
 	"database/sql"
 	"errors"
 	"html/template"
+	"math"
+	"net"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -32,6 +35,7 @@ type adminLoginPageData struct {
 type AdminAuthHandler struct {
 	adminRepository *repository.AdminRepository
 	sessionService  *authservice.SessionService
+	loginLimiter    *authservice.LoginLimiter
 	loginTemplates  *template.Template
 	secureCookies   bool
 	dummyHash       string
@@ -77,6 +81,7 @@ func NewAdminAuthHandler(
 	return &AdminAuthHandler{
 		adminRepository: adminRepository,
 		sessionService:  sessionService,
+		loginLimiter:    authservice.NewLoginLimiter(),
 		loginTemplates:  loginTemplates,
 		secureCookies:   secureCookies,
 		dummyHash:       dummyHash,
@@ -195,9 +200,24 @@ func (h *AdminAuthHandler) submitLogin(
 
 	password := r.FormValue("password")
 
-	if email == "" || password == "" {
-		h.renderInvalidLogin(
+	clientIP := loginClientIP(r)
+
+	if allowed, retryAfter :=
+		h.loginLimiter.Check(
+			clientIP,
+			email,
+		); !allowed {
+		h.renderLoginThrottled(
 			w,
+			retryAfter,
+		)
+		return
+	}
+
+	if email == "" || password == "" {
+		h.rejectInvalidLogin(
+			w,
+			clientIP,
 			email,
 		)
 		return
@@ -219,8 +239,9 @@ func (h *AdminAuthHandler) submitLogin(
 				password,
 			)
 
-			h.renderInvalidLogin(
+			h.rejectInvalidLogin(
 				w,
+				clientIP,
 				email,
 			)
 			return
@@ -239,8 +260,9 @@ func (h *AdminAuthHandler) submitLogin(
 			admin.PasswordHash,
 			password,
 		) {
-		h.renderInvalidLogin(
+		h.rejectInvalidLogin(
 			w,
+			clientIP,
 			email,
 		)
 		return
@@ -273,6 +295,11 @@ func (h *AdminAuthHandler) submitLogin(
 		)
 		return
 	}
+
+	h.loginLimiter.ResetCredential(
+		clientIP,
+		email,
+	)
 
 	h.setSessionCookie(
 		w,
@@ -372,6 +399,70 @@ func (h *AdminAuthHandler) requestHasValidAdminSession(
 	)
 
 	return err == nil
+}
+
+func (h *AdminAuthHandler) rejectInvalidLogin(
+	w http.ResponseWriter,
+	clientIP string,
+	email string,
+) {
+	h.loginLimiter.RecordFailure(
+		clientIP,
+		email,
+	)
+
+	h.renderInvalidLogin(
+		w,
+		email,
+	)
+}
+
+func (h *AdminAuthHandler) renderLoginThrottled(
+	w http.ResponseWriter,
+	retryAfter time.Duration,
+) {
+	retryAfterSeconds := int(
+		math.Ceil(
+			retryAfter.Seconds(),
+		),
+	)
+
+	if retryAfterSeconds < 1 {
+		retryAfterSeconds = 1
+	}
+
+	w.Header().Set(
+		"Retry-After",
+		strconv.Itoa(
+			retryAfterSeconds,
+		),
+	)
+
+	h.renderLogin(
+		w,
+		adminLoginPageData{
+			Title: "Admin Login — Daniel J. Manning",
+			Error: "Too many login attempts. Please try again later.",
+		},
+		http.StatusTooManyRequests,
+	)
+}
+
+func loginClientIP(
+	r *http.Request,
+) string {
+	host, _, err := net.SplitHostPort(
+		r.RemoteAddr,
+	)
+	if err == nil && host != "" {
+		return host
+	}
+
+	if r.RemoteAddr != "" {
+		return r.RemoteAddr
+	}
+
+	return "unknown"
 }
 
 func (h *AdminAuthHandler) renderInvalidLogin(

@@ -92,6 +92,7 @@ func newAdminAuthHTTPTest(
 	handler := &AdminAuthHandler{
 		adminRepository: adminRepository,
 		sessionService:  sessionService,
+		loginLimiter:    authservice.NewLoginLimiter(),
 		loginTemplates:  loginTemplate,
 		secureCookies:   secureCookies,
 		dummyHash:       dummyHash,
@@ -665,6 +666,161 @@ func TestAdminLoginInactiveAdminUsesGenericError(
 	) {
 		t.Fatalf(
 			"unexpected body %q",
+			rec.Body.String(),
+		)
+	}
+}
+
+func TestAdminLoginThrottlesRepeatedFailures(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	for i := 0; i < 5; i++ {
+		req := loginFormRequest(
+			"admin@example.com",
+			"wrong-password",
+		)
+
+		req.RemoteAddr =
+			"192.0.2.10:12345"
+
+		rec := httptest.NewRecorder()
+
+		handler.ServeHTTP(
+			rec,
+			req,
+		)
+
+		if rec.Code !=
+			http.StatusUnauthorized {
+			t.Fatalf(
+				"attempt %d: expected 401, got %d",
+				i+1,
+				rec.Code,
+			)
+		}
+	}
+
+	req := loginFormRequest(
+		"admin@example.com",
+		"correct-password",
+	)
+
+	req.RemoteAddr =
+		"192.0.2.10:12345"
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(
+		rec,
+		req,
+	)
+
+	if rec.Code !=
+		http.StatusTooManyRequests {
+		t.Fatalf(
+			"expected 429 after repeated failures, got %d",
+			rec.Code,
+		)
+	}
+
+	if rec.Header().Get(
+		"Retry-After",
+	) == "" {
+		t.Fatal(
+			"expected Retry-After header",
+		)
+	}
+
+	if !strings.Contains(
+		rec.Body.String(),
+		"Too many login attempts.",
+	) {
+		t.Fatalf(
+			"unexpected throttled response %q",
+			rec.Body.String(),
+		)
+	}
+}
+
+func TestAdminLoginThrottleIsScopedByIP(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	for i := 0; i < 5; i++ {
+		req := loginFormRequest(
+			"admin@example.com",
+			"wrong-password",
+		)
+
+		req.RemoteAddr =
+			"192.0.2.10:12345"
+
+		rec := httptest.NewRecorder()
+
+		handler.ServeHTTP(
+			rec,
+			req,
+		)
+
+		if rec.Code !=
+			http.StatusUnauthorized {
+			t.Fatalf(
+				"attempt %d: expected 401, got %d",
+				i+1,
+				rec.Code,
+			)
+		}
+	}
+
+	req := loginFormRequest(
+		"admin@example.com",
+		"correct-password",
+	)
+
+	req.RemoteAddr =
+		"192.0.2.11:12345"
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(
+		rec,
+		req,
+	)
+
+	if rec.Code !=
+		http.StatusSeeOther {
+		t.Fatalf(
+			"expected different IP to remain allowed, got %d: %s",
+			rec.Code,
 			rec.Body.String(),
 		)
 	}
