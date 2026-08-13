@@ -101,7 +101,7 @@ func TestLoginLimiterBlocksCredentialAfterFailures(
 func TestLoginLimiterAllowsCredentialAfterWindow(
 	t *testing.T,
 ) {
-	now := time.Date(
+	start := time.Date(
 		2026,
 		time.August,
 		13,
@@ -112,7 +112,7 @@ func TestLoginLimiterAllowsCredentialAfterWindow(
 		time.UTC,
 	)
 
-	currentTime := now
+	currentTime := start
 
 	limiter := NewLoginLimiter()
 
@@ -127,7 +127,7 @@ func TestLoginLimiterAllowsCredentialAfterWindow(
 		)
 	}
 
-	currentTime = now.Add(
+	currentTime = start.Add(
 		loginFailureWindow,
 	)
 
