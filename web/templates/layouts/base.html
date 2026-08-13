@@ -11,11 +11,53 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <title>{{.Title}}</title>
+
+    {{if .Description}}
+    <meta
+        name="description"
+        content="{{.Description}}"
+    >
+
+    <meta
+        property="og:description"
+        content="{{.Description}}"
+    >
+    {{end}}
+
+    {{if .OGTitle}}
+    <meta
+        property="og:title"
+        content="{{.OGTitle}}"
+    >
+    {{end}}
+
+    {{if .OGType}}
+    <meta
+        property="og:type"
+        content="{{.OGType}}"
+    >
+    {{end}}
+
+    <meta
+        name="twitter:card"
+        content="summary_large_image"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050B18"
+    >
+
+    <link
+        rel="icon"
+        href="/static/favicon.svg"
+        type="image/svg+xml"
+    >
+
     <script
         src="https://unpkg.com/htmx.org@2.0.6"
     ></script>
-
-    <title>{{.Title}}</title>
 
     <link
         rel="stylesheet"

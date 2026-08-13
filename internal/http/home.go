@@ -10,12 +10,30 @@ type HomeHandler struct {
 	template *template.Template
 }
 
-func NewHomeHandler(templateDir string) (*HomeHandler, error) {
+func NewHomeHandler(
+	templateDir string,
+) (*HomeHandler, error) {
 	tmpl, err := template.New("base").ParseFiles(
-		filepath.Join(templateDir, "layouts", "base.html"),
-		filepath.Join(templateDir, "components", "header.html"),
-		filepath.Join(templateDir, "components", "footer.html"),
-		filepath.Join(templateDir, "pages", "home.html"),
+		filepath.Join(
+			templateDir,
+			"layouts",
+			"base.html",
+		),
+		filepath.Join(
+			templateDir,
+			"components",
+			"header.html",
+		),
+		filepath.Join(
+			templateDir,
+			"components",
+			"footer.html",
+		),
+		filepath.Join(
+			templateDir,
+			"pages",
+			"home.html",
+		),
 	)
 	if err != nil {
 		return nil, err
@@ -26,7 +44,10 @@ func NewHomeHandler(templateDir string) (*HomeHandler, error) {
 	}, nil
 }
 
-func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *HomeHandler) ServeHTTP(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -35,18 +56,36 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(
 			w,
-			http.StatusText(http.StatusMethodNotAllowed),
+			http.StatusText(
+				http.StatusMethodNotAllowed,
+			),
 			http.StatusMethodNotAllowed,
 		)
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	data := publicPageData{
+		Title:       "Daniel J. Manning — Digital Product Designer & Engineer",
+		Description: "Digital product design and full-stack engineering focused on fast, purposeful software, thoughtful user experiences and maintainable systems.",
+		OGTitle:     "Daniel J. Manning — Digital Product Designer & Engineer",
+		OGType:      "website",
+	}
 
-	if err := h.template.ExecuteTemplate(w, "base", nil); err != nil {
+	w.Header().Set(
+		"Content-Type",
+		"text/html; charset=utf-8",
+	)
+
+	if err := h.template.ExecuteTemplate(
+		w,
+		"base",
+		data,
+	); err != nil {
 		http.Error(
 			w,
-			http.StatusText(http.StatusInternalServerError),
+			http.StatusText(
+				http.StatusInternalServerError,
+			),
 			http.StatusInternalServerError,
 		)
 	}
