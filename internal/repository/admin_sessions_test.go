@@ -37,7 +37,7 @@ func TestAdminSessionRepositoryCreateAndGet(
 		"token-hash",
 		expiresAt,
 
-		time.Now().UTC(),	)
+		time.Now().UTC())
 	if err != nil {
 		t.Fatalf("create session: %v", err)
 	}
@@ -98,7 +98,7 @@ func TestAdminSessionRepositoryTouch(
 		"token-hash",
 		time.Now().UTC().Add(time.Hour),
 
-		time.Now().UTC(),	)
+		time.Now().UTC())
 	if err != nil {
 		t.Fatalf("create session: %v", err)
 	}
@@ -161,7 +161,7 @@ func TestAdminSessionRepositoryDeleteExpired(
 		"expired-token",
 		now.Add(-time.Hour),
 
-		now,	); err != nil {
+		now); err != nil {
 		t.Fatalf("create expired session: %v", err)
 	}
 
@@ -171,7 +171,7 @@ func TestAdminSessionRepositoryDeleteExpired(
 		"active-token",
 		now.Add(time.Hour),
 
-		now,	); err != nil {
+		now); err != nil {
 		t.Fatalf("create active session: %v", err)
 	}
 
@@ -229,7 +229,7 @@ func TestAdminSessionRepositoryCascadeDelete(
 		"token-hash",
 		time.Now().UTC().Add(time.Hour),
 
-		time.Now().UTC(),	); err != nil {
+		time.Now().UTC()); err != nil {
 		t.Fatalf("create session: %v", err)
 	}
 
