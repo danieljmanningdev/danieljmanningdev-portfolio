@@ -26,7 +26,8 @@ const (
 )
 
 type adminLoginPageData struct {
-	Title     string
+	publicPageData
+
 	Email     string
 	Error     string
 	CSRFToken string
@@ -156,8 +157,8 @@ func (h *AdminAuthHandler) showLogin(
 	h.renderLogin(
 		w,
 		adminLoginPageData{
-			Title:     "Admin Login — Daniel J. Manning",
-			CSRFToken: csrfToken,
+			publicPageData: adminLoginMetadata(),
+			CSRFToken:      csrfToken,
 		},
 		http.StatusOK,
 	)
@@ -438,11 +439,27 @@ func (h *AdminAuthHandler) renderLoginThrottled(
 		),
 	)
 
+	csrfToken, err := authservice.GenerateCSRFToken()
+	if err != nil {
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	h.setLoginCSRFCookie(
+		w,
+		csrfToken,
+	)
+
 	h.renderLogin(
 		w,
 		adminLoginPageData{
-			Title: "Admin Login — Daniel J. Manning",
-			Error: "Too many login attempts. Please try again later.",
+			publicPageData: adminLoginMetadata(),
+			Error:          "Too many login attempts. Please try again later.",
+			CSRFToken:      csrfToken,
 		},
 		http.StatusTooManyRequests,
 	)
@@ -487,13 +504,22 @@ func (h *AdminAuthHandler) renderInvalidLogin(
 	h.renderLogin(
 		w,
 		adminLoginPageData{
-			Title:     "Admin Login — Daniel J. Manning",
-			Email:     email,
-			Error:     "Invalid email or password.",
-			CSRFToken: csrfToken,
+			publicPageData: adminLoginMetadata(),
+			Email:          email,
+			Error:          "Invalid email or password.",
+			CSRFToken:      csrfToken,
 		},
 		http.StatusUnauthorized,
 	)
+}
+
+func adminLoginMetadata() publicPageData {
+	return publicPageData{
+		Title:       "Admin Login — Daniel J. Manning",
+		Description: "Secure administrative access to the Daniel J. Manning client workspace.",
+		OGTitle:     "Admin Login — Daniel J. Manning",
+		OGType:      "website",
+	}
 }
 
 func (h *AdminAuthHandler) renderLogin(
