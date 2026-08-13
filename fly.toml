@@ -1,0 +1,14 @@
+app = "danieljmanningdev-portfolio"
+primary_region = "lhr"
+
+[env]
+  PORT = "8080"
+  ENVIRONMENT = "production"
+  DATABASE_PATH = "/data/portfolio.db"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
