@@ -92,6 +92,7 @@ func newAdminAuthHTTPTest(
 	handler := &AdminAuthHandler{
 		adminRepository: adminRepository,
 		sessionService:  sessionService,
+		loginLimiter:    authservice.NewLoginLimiter(),
 		loginTemplates:  loginTemplate,
 		secureCookies:   secureCookies,
 		dummyHash:       dummyHash,
@@ -134,10 +135,16 @@ func loginFormRequest(
 	email string,
 	password string,
 ) *http.Request {
+	csrfToken, err := authservice.GenerateCSRFToken()
+	if err != nil {
+		panic("generate test CSRF token: " + err.Error())
+	}
+
 	values := url.Values{}
 
 	values.Set("email", email)
 	values.Set("password", password)
+	values.Set("csrf_token", csrfToken)
 
 	req := httptest.NewRequest(
 		http.MethodPost,
@@ -150,6 +157,13 @@ func loginFormRequest(
 	req.Header.Set(
 		"Content-Type",
 		"application/x-www-form-urlencoded",
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminLoginCSRFCookie,
+			Value: csrfToken,
+		},
 	)
 
 	return req
@@ -195,6 +209,173 @@ func TestAdminLoginPage(t *testing.T) {
 		t.Fatalf(
 			"expected Cache-Control no-store, got %q",
 			cacheControl,
+		)
+	}
+}
+
+func TestAdminLoginRejectsMissingCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	values := url.Values{}
+
+	values.Set(
+		"email",
+		"admin@example.com",
+	)
+
+	values.Set(
+		"password",
+		"correct-password",
+	)
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		loginPath,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+}
+
+func TestAdminLoginRejectsIncorrectCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	values := url.Values{}
+
+	values.Set(
+		"email",
+		"admin@example.com",
+	)
+
+	values.Set(
+		"password",
+		"correct-password",
+	)
+
+	values.Set(
+		"csrf_token",
+		"submitted-token",
+	)
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		loginPath,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminLoginCSRFCookie,
+			Value: "different-cookie-token",
+		},
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+}
+
+func TestAdminLoginAcceptsMatchingCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	req := loginFormRequest(
+		"admin@example.com",
+		"correct-password",
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusSeeOther {
+		t.Fatalf(
+			"expected 303, got %d: %s",
+			rec.Code,
+			rec.Body.String(),
+		)
+	}
+
+	if location := rec.Header().Get(
+		"Location",
+	); location != "/dashboard/" {
+		t.Fatalf(
+			"expected dashboard redirect, got %q",
+			location,
 		)
 	}
 }
@@ -490,6 +671,161 @@ func TestAdminLoginInactiveAdminUsesGenericError(
 	}
 }
 
+func TestAdminLoginThrottlesRepeatedFailures(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	for i := 0; i < 5; i++ {
+		req := loginFormRequest(
+			"admin@example.com",
+			"wrong-password",
+		)
+
+		req.RemoteAddr =
+			"192.0.2.10:12345"
+
+		rec := httptest.NewRecorder()
+
+		handler.ServeHTTP(
+			rec,
+			req,
+		)
+
+		if rec.Code !=
+			http.StatusUnauthorized {
+			t.Fatalf(
+				"attempt %d: expected 401, got %d",
+				i+1,
+				rec.Code,
+			)
+		}
+	}
+
+	req := loginFormRequest(
+		"admin@example.com",
+		"correct-password",
+	)
+
+	req.RemoteAddr =
+		"192.0.2.10:12345"
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(
+		rec,
+		req,
+	)
+
+	if rec.Code !=
+		http.StatusTooManyRequests {
+		t.Fatalf(
+			"expected 429 after repeated failures, got %d",
+			rec.Code,
+		)
+	}
+
+	if rec.Header().Get(
+		"Retry-After",
+	) == "" {
+		t.Fatal(
+			"expected Retry-After header",
+		)
+	}
+
+	if !strings.Contains(
+		rec.Body.String(),
+		"Too many login attempts.",
+	) {
+		t.Fatalf(
+			"unexpected throttled response %q",
+			rec.Body.String(),
+		)
+	}
+}
+
+func TestAdminLoginThrottleIsScopedByIP(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		_,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	for i := 0; i < 5; i++ {
+		req := loginFormRequest(
+			"admin@example.com",
+			"wrong-password",
+		)
+
+		req.RemoteAddr =
+			"192.0.2.10:12345"
+
+		rec := httptest.NewRecorder()
+
+		handler.ServeHTTP(
+			rec,
+			req,
+		)
+
+		if rec.Code !=
+			http.StatusUnauthorized {
+			t.Fatalf(
+				"attempt %d: expected 401, got %d",
+				i+1,
+				rec.Code,
+			)
+		}
+	}
+
+	req := loginFormRequest(
+		"admin@example.com",
+		"correct-password",
+	)
+
+	req.RemoteAddr =
+		"192.0.2.11:12345"
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(
+		rec,
+		req,
+	)
+
+	if rec.Code !=
+		http.StatusSeeOther {
+		t.Fatalf(
+			"expected different IP to remain allowed, got %d: %s",
+			rec.Code,
+			rec.Body.String(),
+		)
+	}
+}
+
 func TestAdminLogoutRevokesSession(
 	t *testing.T,
 ) {
@@ -520,10 +856,26 @@ func TestAdminLogoutRevokesSession(
 		)
 	}
 
+	values := url.Values{}
+
+	values.Set(
+		"csrf_token",
+		authservice.LogoutCSRFToken(
+			rawToken,
+		),
+	)
+
 	req := httptest.NewRequest(
 		http.MethodPost,
 		logoutPath,
-		nil,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
 	)
 
 	req.AddCookie(
@@ -581,6 +933,156 @@ func TestAdminLogoutRevokesSession(
 	if !foundClearedCookie {
 		t.Fatal(
 			"expected browser session cookie to be cleared",
+		)
+	}
+}
+
+func TestAdminLogoutRejectsMissingCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		sessionRepository,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	adminID := createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	rawToken, _, err :=
+		handler.sessionService.CreateSession(
+			context.Background(),
+			adminID,
+		)
+	if err != nil {
+		t.Fatalf(
+			"create session: %v",
+			err,
+		)
+	}
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		logoutPath,
+		nil,
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminSessionCookieName,
+			Value: rawToken,
+		},
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+
+	_, err = sessionRepository.GetByTokenHash(
+		context.Background(),
+		authservice.HashSessionToken(
+			rawToken,
+		),
+	)
+	if err != nil {
+		t.Fatalf(
+			"expected session to remain after rejected logout: %v",
+			err,
+		)
+	}
+}
+
+func TestAdminLogoutRejectsIncorrectCSRF(
+	t *testing.T,
+) {
+	handler,
+		adminRepository,
+		sessionRepository,
+		_ := newAdminAuthHTTPTest(
+		t,
+		false,
+	)
+
+	adminID := createAdminAuthTestAdmin(
+		t,
+		adminRepository,
+		"admin@example.com",
+		"correct-password",
+	)
+
+	rawToken, _, err :=
+		handler.sessionService.CreateSession(
+			context.Background(),
+			adminID,
+		)
+	if err != nil {
+		t.Fatalf(
+			"create session: %v",
+			err,
+		)
+	}
+
+	values := url.Values{}
+
+	values.Set(
+		"csrf_token",
+		"incorrect-token",
+	)
+
+	req := httptest.NewRequest(
+		http.MethodPost,
+		logoutPath,
+		strings.NewReader(
+			values.Encode(),
+		),
+	)
+
+	req.Header.Set(
+		"Content-Type",
+		"application/x-www-form-urlencoded",
+	)
+
+	req.AddCookie(
+		&http.Cookie{
+			Name:  adminSessionCookieName,
+			Value: rawToken,
+		},
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf(
+			"expected 403, got %d",
+			rec.Code,
+		)
+	}
+
+	_, err = sessionRepository.GetByTokenHash(
+		context.Background(),
+		authservice.HashSessionToken(
+			rawToken,
+		),
+	)
+	if err != nil {
+		t.Fatalf(
+			"expected session to remain after rejected logout: %v",
+			err,
 		)
 	}
 }
@@ -714,6 +1216,28 @@ func TestRequireAdminProvidesAdminContext(
 						"expected admin ID %d, got %d",
 						adminID,
 						admin.ID,
+					)
+				}
+
+				logoutCSRFToken, ok :=
+					AdminLogoutCSRFTokenFromContext(
+						r.Context(),
+					)
+				if !ok {
+					t.Fatal(
+						"expected logout CSRF token in context",
+					)
+				}
+
+				expectedCSRFToken :=
+					authservice.LogoutCSRFToken(
+						rawToken,
+					)
+
+				if logoutCSRFToken !=
+					expectedCSRFToken {
+					t.Fatal(
+						"unexpected logout CSRF token",
 					)
 				}
 

@@ -9,12 +9,14 @@ import (
 
 const (
 	bcryptCost       = 12
+	minPasswordChars = 15
 	maxPasswordBytes = 72
 )
 
 var (
-	ErrPasswordEmpty   = errors.New("password is required")
-	ErrPasswordTooLong = errors.New("password exceeds bcrypt 72-byte limit")
+	ErrPasswordEmpty    = errors.New("password is required")
+	ErrPasswordTooShort = errors.New("password must be at least 15 characters")
+	ErrPasswordTooLong  = errors.New("password exceeds bcrypt 72-byte limit")
 )
 
 func HashPassword(password string) (string, error) {
@@ -22,12 +24,16 @@ func HashPassword(password string) (string, error) {
 		return "", ErrPasswordEmpty
 	}
 
-	if len([]byte(password)) > maxPasswordBytes {
-		return "", ErrPasswordTooLong
-	}
-
 	if !utf8.ValidString(password) {
 		return "", errors.New("password is not valid UTF-8")
+	}
+
+	if utf8.RuneCountInString(password) < minPasswordChars {
+		return "", ErrPasswordTooShort
+	}
+
+	if len([]byte(password)) > maxPasswordBytes {
+		return "", ErrPasswordTooLong
 	}
 
 	hash, err := bcrypt.GenerateFromPassword(
