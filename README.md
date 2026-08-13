@@ -1,8 +1,8 @@
 # Daniel J. Manning — Portfolio & Client Workspace
 
-A fast, server-rendered developer portfolio and internal client workspace built with Go, HTMX, Tailwind CSS and SQLite.
+A fast, server-rendered developer portfolio and authenticated internal client workspace built with Go, HTMX, Tailwind CSS and SQLite.
 
-The public website presents my UI/UX design and full-stack development work. Behind it, the application includes an internal workspace for managing clients, projects and contracts without duplicating broader operational tools such as scheduling, team communication or time tracking.
+The public website presents my UI/UX design and full-stack development work. Behind it, the application includes a private administrative workspace for managing clients, projects and contracts without duplicating broader operational tools such as scheduling, team communication or time tracking.
 
 ## Screenshots
 
@@ -28,7 +28,18 @@ The public website presents my UI/UX design and full-stack development work. Beh
 
 ### Internal workspace
 
-- Dashboard overview
+- Authenticated administrative dashboard
+- Admin login and logout
+- Server-side session persistence
+- Session idle and absolute expiry
+- HttpOnly session cookies
+- Secure cookies in production
+- Protected `/dashboard/*` routes
+- No-store caching policy for authenticated pages
+- Cross-origin request protection
+- Central HTTP security headers
+- Production-only HSTS
+- Hardened HTTP server timeouts and header limits
 - Client listing and detail pages
 - Create and edit clients
 - Delete clients with HTMX confirmation
@@ -44,6 +55,7 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - Cancel contracts while preserving the record
 - Associate contracts with clients
 - Optional project association for contracts
+- Contract-to-project ownership validation
 - Draft, sent, accepted, completed and cancelled contract statuses
 - Contract start and end dates
 - Contract values stored as integer currency amounts
@@ -53,7 +65,7 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - Automatic database migrations
 - Structured application logging
 - HTTP request logging with response status and duration
-- Automated HTTP, database and repository tests
+- Automated HTTP, auth, database and repository tests
 - HTMX-aware redirects
 
 ## Technology
@@ -63,6 +75,7 @@ The public website presents my UI/UX design and full-stack development work. Beh
 - **Interactivity:** HTMX
 - **Styling:** Tailwind CSS v4
 - **Database:** SQLite using `modernc.org/sqlite`
+- **Authentication:** bcrypt passwords and server-side sessions
 - **Logging:** Go `log/slog`
 - **Architecture:** HTTP handler → repository → SQLite
 - **Testing:** Go `testing`, `httptest` and in-memory SQLite databases
@@ -74,10 +87,13 @@ The application deliberately avoids a heavy frontend framework. Most pages are r
 ```text
 .
 ├── cmd
+│   ├── adminctl
+│   │   └── main.go
 │   └── server
 │       ├── main.go
 │       └── main_test.go
 ├── internal
+│   ├── auth
 │   ├── config
 │   ├── database
 │   ├── http
@@ -85,7 +101,8 @@ The application deliberately avoids a heavy frontend framework. Most pages are r
 │   ├── models
 │   └── repository
 ├── migrations
-│   └── 001_initial.sql
+│   ├── 001_initial.sql
+│   └── 002_auth.sql
 ├── web
 │   ├── static
 │   │   ├── css
@@ -112,7 +129,15 @@ The application is intentionally organised into small, understandable layers.
 ```text
 Browser request
       ↓
-HTTP middleware
+Request logging
+      ↓
+Security headers
+      ↓
+Cross-origin protection
+      ↓
+Router
+      ↓
+Authentication middleware
       ↓
 HTTP handler
       ↓
@@ -129,8 +154,10 @@ Browser response
 
 Each layer has a specific responsibility:
 
-- `cmd/server` opens the database, constructs handlers, registers routes and starts the server.
-- `internal/http` handles routing, HTTP methods, forms, validation, responses, middleware and template rendering.
+- `cmd/server` opens the database, constructs handlers, registers routes and starts the HTTP server.
+- `cmd/adminctl` provides an explicit local command for creating administrative accounts.
+- `internal/auth` contains password hashing, token generation and session-service logic.
+- `internal/http` handles routing, HTTP methods, forms, validation, responses, authentication middleware, security middleware and template rendering.
 - `internal/repository` contains parameterised SQL queries and persistence logic.
 - `internal/models` defines the Go data structures used by the application.
 - `internal/database` opens SQLite, enables foreign keys and runs migrations.
@@ -151,75 +178,79 @@ Contract
 
 A contract always belongs to a client and may optionally belong to a project.
 
+When a project is selected for a contract, the application validates that the project belongs to the same client as the contract.
+
 This keeps the application focused on client and commercial records while operational workflows such as scheduling and time tracking remain outside the application.
 
-### Example client-update flow
+## Authentication Flow
 
 ```text
-POST /dashboard/clients/5
+GET /dashboard/
       ↓
-ClientsHandler.handlePOST
+RequireAdmin middleware
       ↓
-ClientsHandler.updateClient
+No valid session
       ↓
-ClientRepository.Update
-      ↓
-UPDATE clients
-      ↓
-303 redirect to /dashboard/clients/5
+303 /login
 ```
 
-### Example project-create flow
+Successful login:
 
 ```text
-POST /dashboard/projects/new
+POST /login
       ↓
-ProjectsHandler
+Admin lookup
       ↓
-createProject
+bcrypt password verification
       ↓
-ProjectRepository.Create
+cryptographically random session token
       ↓
-INSERT INTO projects
+SHA-256 token hash stored in SQLite
       ↓
-303 redirect to /dashboard/projects/{id}
+HttpOnly session cookie
+      ↓
+303 /dashboard/
 ```
 
-### Example contract-create flow
+Session behaviour:
 
-```text
-POST /dashboard/contracts/new
-      ↓
-ContractsHandler
-      ↓
-createContract
-      ↓
-ContractRepository.Create
-      ↓
-INSERT INTO contracts
-      ↓
-303 redirect to /dashboard/contracts/{id}
-```
+- Raw session tokens are not stored in SQLite.
+- Only SHA-256 hashes of session tokens are persisted.
+- Sessions have a 24-hour absolute lifetime.
+- Sessions expire after 30 minutes of inactivity.
+- Activity timestamps are periodically refreshed.
+- Sessions are revoked when an admin becomes inactive.
+- Logout revokes the server-side session and clears the browser cookie.
+- Production cookies use the `Secure` flag.
+- Authenticated dashboard responses use `Cache-Control: no-store`.
 
-### Example request-logging flow
+## Security
 
-```text
-HTTP request
-      ↓
-RequestLogger middleware
-      ↓
-Application handler
-      ↓
-Response status captured
-      ↓
-Structured log entry
-```
+The application currently includes:
 
-Example development log:
+- bcrypt password hashing
+- Generic login failure messages
+- Server-side session persistence
+- Hashed session tokens
+- Session idle expiry
+- Session absolute expiry
+- Admin deactivation checks
+- HttpOnly cookies
+- SameSite cookies
+- Secure production cookies
+- Authorization middleware for all `/dashboard/*` routes
+- Go `CrossOriginProtection`
+- `Cache-Control: no-store` for authenticated workspace responses
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `Content-Security-Policy: frame-ancestors 'none'`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- Restricted `Permissions-Policy`
+- Production-only `Strict-Transport-Security`
+- Request-header, read, write and idle server limits
+- Contract client/project ownership validation
 
-```text
-level=INFO msg="http request" method=GET path=/dashboard/contracts status=200 duration=596µs
-```
+The CSP is intentionally limited to framing protection for now. A broader CSP should be introduced after the public site's external asset requirements are reviewed.
 
 ## Local Development
 
@@ -266,8 +297,6 @@ Run this in a separate terminal:
 npm run dev:css
 ```
 
-Tailwind will rebuild the stylesheet when template classes change.
-
 ### Start the Go server
 
 ```bash
@@ -280,27 +309,51 @@ The development server starts at:
 http://localhost:8080
 ```
 
+## Create the First Admin
+
+There is no public registration route.
+
+Administrative accounts are created explicitly using `adminctl`:
+
+```bash
+go run ./cmd/adminctl \
+  -email "admin@example.com" \
+  -name "Daniel Manning"
+```
+
+The command prompts for the password without echoing it to the terminal.
+
+```text
+Password:
+Confirm password:
+Admin created successfully
+```
+
+Only the bcrypt password hash is stored in SQLite.
+
 ## Useful Routes
 
-| Route | Purpose |
-|---|---|
-| `/` | Public portfolio |
-| `/health` | JSON health check |
-| `/dashboard/` | Internal workspace overview |
-| `/dashboard/clients` | Client listing |
-| `/dashboard/clients/new` | Create-client form |
-| `/dashboard/clients/{id}` | Client detail page |
-| `/dashboard/clients/{id}/edit` | Edit-client form |
-| `/dashboard/projects` | Project listing |
-| `/dashboard/projects/new` | Create-project form |
-| `/dashboard/projects/{id}` | Project detail page |
-| `/dashboard/projects/{id}/edit` | Edit-project form |
-| `/dashboard/projects/{id}/archive` | Archive project |
-| `/dashboard/contracts` | Contract listing |
-| `/dashboard/contracts/new` | Create-contract form |
-| `/dashboard/contracts/{id}` | Contract detail page |
-| `/dashboard/contracts/{id}/edit` | Edit-contract form |
-| `/dashboard/contracts/{id}/cancel` | Cancel contract |
+| Route | Purpose | Access |
+|---|---|---|
+| `/` | Public portfolio | Public |
+| `/health` | JSON health check | Public |
+| `/login` | Admin login | Public |
+| `/logout` | Revoke admin session | Authenticated POST |
+| `/dashboard/` | Internal workspace overview | Admin |
+| `/dashboard/clients` | Client listing | Admin |
+| `/dashboard/clients/new` | Create-client form | Admin |
+| `/dashboard/clients/{id}` | Client detail page | Admin |
+| `/dashboard/clients/{id}/edit` | Edit-client form | Admin |
+| `/dashboard/projects` | Project listing | Admin |
+| `/dashboard/projects/new` | Create-project form | Admin |
+| `/dashboard/projects/{id}` | Project detail page | Admin |
+| `/dashboard/projects/{id}/edit` | Edit-project form | Admin |
+| `/dashboard/projects/{id}/archive` | Archive project | Admin |
+| `/dashboard/contracts` | Contract listing | Admin |
+| `/dashboard/contracts/new` | Create-contract form | Admin |
+| `/dashboard/contracts/{id}` | Contract detail page | Admin |
+| `/dashboard/contracts/{id}/edit` | Edit-contract form | Admin |
+| `/dashboard/contracts/{id}/cancel` | Cancel contract | Admin |
 
 ## Configuration
 
@@ -340,17 +393,31 @@ The database layer:
 - Runs versioned SQL migrations when the application starts
 - Tracks applied migrations in `schema_migrations`
 
+Current migrations:
+
+```text
+001_initial.sql
+    clients
+    projects
+    contracts
+    earlier foundation tables
+
+002_auth.sql
+    admins
+    admin_sessions
+```
+
 The currently implemented application domains are:
 
 - Clients
 - Projects
 - Contracts
-
-Relationships between these records are protected using SQLite foreign keys.
+- Admin authentication
+- Admin sessions
 
 Contracts require a client relationship. Their project relationship is optional, allowing both project-specific contracts and broader client agreements.
 
-The initial schema also contains some earlier foundation tables that may be removed or deferred as the workspace remains intentionally focused.
+Application-level validation also ensures a selected project belongs to the contract's selected client.
 
 ### Inspect the development database
 
@@ -366,22 +433,22 @@ Useful SQLite commands:
 .schema clients
 .schema projects
 .schema contracts
+.schema admins
+.schema admin_sessions
 
 SELECT * FROM clients;
 SELECT * FROM projects;
 SELECT * FROM contracts;
+SELECT id, email, display_name, is_active FROM admins;
+SELECT id, admin_id, expires_at, last_seen_at FROM admin_sessions;
 SELECT * FROM schema_migrations;
 ```
 
-Exit SQLite with:
-
-```text
-.quit
-```
+Never expose password hashes or session-token hashes unnecessarily when inspecting or logging authentication data.
 
 ## Client Management
 
-The client feature supports the basic CRUD lifecycle:
+The client feature supports:
 
 ```text
 Create
@@ -390,39 +457,16 @@ Update
 Delete
 ```
 
-### Repository operations
-
-```go
-List()
-GetByID()
-Create()
-Update()
-Delete()
-```
-
-### HTTP operations
-
-```text
-GET     /dashboard/clients
-GET     /dashboard/clients/new
-POST    /dashboard/clients/new
-GET     /dashboard/clients/{id}
-GET     /dashboard/clients/{id}/edit
-POST    /dashboard/clients/{id}
-DELETE  /dashboard/clients/{id}
-```
-
-### Current validation
-
 Client forms validate:
 
 - Required name
 - Required email
 - Valid email format
 - Allowed client statuses
+- Maximum field lengths
 - Whitespace trimming
 
-Valid statuses are:
+Valid statuses:
 
 ```text
 active
@@ -431,7 +475,7 @@ inactive
 
 ## Project Management
 
-Projects belong to clients and are intentionally focused on project records rather than full operational task management.
+Projects belong to clients.
 
 The project feature supports:
 
@@ -441,31 +485,6 @@ Read
 Update
 Archive
 ```
-
-### Repository operations
-
-```go
-List()
-ListByClientID()
-GetByID()
-Create()
-Update()
-Archive()
-```
-
-### HTTP operations
-
-```text
-GET   /dashboard/projects
-GET   /dashboard/projects/new
-POST  /dashboard/projects/new
-GET   /dashboard/projects/{id}
-GET   /dashboard/projects/{id}/edit
-POST  /dashboard/projects/{id}
-POST  /dashboard/projects/{id}/archive
-```
-
-### Current validation
 
 Project forms validate:
 
@@ -478,7 +497,7 @@ Project forms validate:
 - Due dates cannot be earlier than start dates
 - Whitespace trimming
 
-Valid statuses are:
+Valid statuses:
 
 ```text
 planned
@@ -504,47 +523,6 @@ Cancel
 
 Contracts are cancelled rather than deleted so commercial records remain available.
 
-### Repository operations
-
-```go
-List()
-ListByClientID()
-GetByID()
-Create()
-Update()
-Cancel()
-```
-
-### HTTP operations
-
-```text
-GET   /dashboard/contracts
-GET   /dashboard/contracts/new
-POST  /dashboard/contracts/new
-GET   /dashboard/contracts/{id}
-GET   /dashboard/contracts/{id}/edit
-POST  /dashboard/contracts/{id}
-POST  /dashboard/contracts/{id}/cancel
-```
-
-### Contract data
-
-Contracts currently support:
-
-- Client association
-- Optional project association
-- Contract title
-- Status
-- Start date
-- End date
-- Contract value
-- Notes
-- Created and updated timestamps
-
-Contract values are persisted as integer minor currency units rather than floating-point database values.
-
-### Current validation
-
 Contract forms validate:
 
 - Required client
@@ -553,13 +531,14 @@ Contract forms validate:
 - Maximum notes length
 - Allowed contract statuses
 - Optional project association
+- Selected project ownership
 - Optional start and end dates
 - `YYYY-MM-DD` date format
 - End date cannot be earlier than start date
 - Non-negative contract values
 - Whitespace trimming
 
-Valid statuses are:
+Valid statuses:
 
 ```text
 draft
@@ -585,8 +564,10 @@ HTTP request middleware records:
 Example:
 
 ```text
-time=2026-08-10T12:40:49+01:00 level=INFO msg="http request" method=GET path=/dashboard/contracts status=200 duration=596µs
+time=2026-08-12T13:49:25+01:00 level=INFO msg="http request" method=POST path=/login status=303 duration=269ms
 ```
+
+Authentication credentials, raw session tokens and password hashes should never be logged.
 
 ## Testing
 
@@ -605,9 +586,11 @@ go test -v ./...
 ### Run package-specific tests
 
 ```bash
+go test ./internal/auth
 go test ./internal/database
 go test ./internal/repository
 go test ./internal/http
+go test ./cmd/server
 ```
 
 ### Run static analysis
@@ -619,7 +602,7 @@ go vet ./...
 ### Check formatting
 
 ```bash
-gofmt -w .
+gofmt -w cmd internal
 ```
 
 ### Check for whitespace errors
@@ -631,16 +614,17 @@ git diff --check
 ### Full local verification
 
 ```bash
-gofmt -w .
+gofmt -w cmd internal
 go test ./...
 go vet ./...
 npm run build:css
 git diff --check
 ```
 
-The test suite currently covers areas including:
+The test suite covers areas including:
 
 - Configuration defaults and environment overrides
+- Log-level configuration
 - Database opening and connectivity
 - Automatic database-directory creation
 - Migration ordering and idempotency
@@ -654,12 +638,28 @@ The test suite currently covers areas including:
 - Project date handling
 - Contract repository create/read/update/cancel flows
 - Contract listing and client filtering
-- Optional contract project relationships
-- Contract foreign-key behaviour
+- Contract project/client ownership
+- Missing contract clients and projects
 - Contract form parsing and validation
 - Contract date validation
 - Contract value parsing
-- Contract model-to-form conversion
+- Admin repository behaviour
+- Admin session repository behaviour
+- bcrypt password hashing and verification
+- Session-token generation and hashing
+- Absolute session expiry
+- Idle session expiry
+- Session activity updates
+- Inactive-admin rejection
+- Session revocation
+- Login success and failure
+- Secure-cookie behaviour
+- Logout revocation
+- Authenticated admin context
+- Protected dashboard routing
+- Security headers
+- No-store cache behaviour
+- Cross-origin protection
 - HTTP router behaviour
 - HTTP request logging
 - Response-status capture
@@ -670,21 +670,47 @@ The test suite currently covers areas including:
 
 ### Completed foundation
 
-- [x] Public portfolio
+- [x] Public portfolio foundation
 - [x] Client management
 - [x] Project management
 - [x] Contract management
 - [x] Client → project relationships
 - [x] Client → contract relationships
 - [x] Optional project → contract relationships
+- [x] Contract project ownership validation
 - [x] SQLite persistence
 - [x] Repository layer
 - [x] Server-side validation
 - [x] Structured application logging
 - [x] HTTP request middleware
+- [x] Admin authentication
+- [x] Secure server-side sessions
+- [x] HttpOnly session cookies
+- [x] Secure production cookies
+- [x] Authorization middleware
+- [x] Cross-origin protection
+- [x] Security headers
+- [x] Authenticated-page no-store policy
+- [x] HTTP server timeouts and header limits
 - [x] Automated tests
 
-### Near-term improvements
+### Next launch work
+
+- [ ] Decide whether the client portal is required for initial launch
+- [ ] Public portfolio content polish
+- [ ] Case-study pages
+- [ ] Real contact and social links
+- [ ] SEO and Open Graph metadata
+- [ ] Custom 404 page
+- [ ] Accessibility review
+- [ ] Responsive/browser QA
+- [ ] Production deployment
+- [ ] Persistent SQLite storage
+- [ ] Automated database backups
+- [ ] Backup restoration test
+- [ ] Production smoke test
+
+### Future workspace improvements
 
 - [ ] Client search
 - [ ] Client status filtering
@@ -692,35 +718,21 @@ The test suite currently covers areas including:
 - [ ] Improve project filtering and sorting
 - [ ] Improve contract filtering and sorting
 - [ ] Add selected workspace summaries to the dashboard
-- [ ] Improve validation feedback and form polish
 - [ ] Review and remove unused legacy schema tables
 
 ### Future commercial workflow
 
 Potential future additions may include:
 
+- Invitation-only client access
+- Client deliverables
 - Contract document generation
 - Contract acceptance or electronic signing
 - Invoicing
 - Payment status
 - Payment processing
-- Client deliverables
-- Secure client access
 
 These features should extend the existing client → project → contract relationship rather than duplicate operational tools used for scheduling, tasks or time tracking.
-
-### Security before public dashboard deployment
-
-- [ ] Admin authentication
-- [ ] Secure server-side sessions
-- [ ] HTTP-only secure cookies
-- [ ] CSRF protection
-- [ ] Authorization middleware
-- [ ] Production security headers
-- [ ] Appropriate production server timeouts
-- [ ] Persistent deployment storage for SQLite
-
-The internal dashboard is currently intended for local/private use until those security controls are implemented.
 
 ## Design Philosophy
 
@@ -736,12 +748,26 @@ This project is built around a small set of principles:
 - Keep the internal workspace focused on clients, projects and commercial agreements.
 - Avoid rebuilding scheduling, team communication and time-tracking tools that already exist elsewhere.
 - Preserve important commercial records rather than deleting them unnecessarily.
+- Treat authentication and authorization as server-side concerns.
+- Store session-token hashes rather than raw session credentials.
 - Add abstractions only when repeated application behaviour justifies them.
 - Keep the public portfolio polished while building the internal workspace incrementally.
 
 ## Deployment Status
 
-The public portfolio can be prepared for deployment, but the internal dashboard should remain private until authentication and related security controls are implemented.
+The application now includes the core authentication and HTTP security controls required to protect the internal administrative workspace.
+
+Production launch still requires:
+
+- persistent SQLite storage
+- backup automation
+- backup restoration testing
+- HTTPS deployment
+- production environment configuration
+- final security verification
+- public-site QA
+
+The internal workspace should not be considered production-ready until those deployment controls are also verified.
 
 ## Licence
 
