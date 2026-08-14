@@ -81,6 +81,7 @@ func (h *DashboardHandler) ServeHTTP(
 		"Content-Type",
 		"text/html; charset=utf-8",
 	)
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
 	if err := h.templates.ExecuteTemplate(
 		w,
