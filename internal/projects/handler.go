@@ -32,7 +32,7 @@ func NewProjectsHandler(
 
 	projectsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"projects.html",
+		"admin/projects/index.html",
 	)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func NewProjectsHandler(
 
 	newProjectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"project-new.html",
+		"admin/projects/new.html",
 	)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func NewProjectsHandler(
 
 	projectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"project.html",
+		"admin/projects/show.html",
 	)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func NewProjectsHandler(
 
 	editProjectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"project-edit.html",
+		"admin/projects/edit.html",
 	)
 	if err != nil {
 		return nil, err

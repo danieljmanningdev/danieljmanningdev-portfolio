@@ -32,7 +32,7 @@ func NewPortfolioCaseStudyHandler(
 		filepath.Join(
 			templateDir,
 			"pages",
-			"portfolio-case-study.html",
+			"public/portfolio.html",
 		),
 	)
 	if err != nil {

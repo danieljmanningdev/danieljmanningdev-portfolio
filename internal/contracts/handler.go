@@ -34,7 +34,7 @@ func NewContractsHandler(
 
 	contractsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"contracts.html",
+		"admin/contracts/index.html",
 	)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func NewContractsHandler(
 
 	newContractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"contract-new.html",
+		"admin/contracts/new.html",
 	)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func NewContractsHandler(
 
 	contractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"contract.html",
+		"admin/contracts/show.html",
 	)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func NewContractsHandler(
 
 	editContractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"contract-edit.html",
+		"admin/contracts/edit.html",
 	)
 	if err != nil {
 		return nil, err

@@ -37,7 +37,7 @@ func NewDashboardHandler(
 		filepath.Join(
 			templateDir,
 			"pages",
-			"dashboard.html",
+			"admin/dashboard.html",
 		),
 	)
 	if err != nil {
