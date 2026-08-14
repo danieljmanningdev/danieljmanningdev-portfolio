@@ -1,4 +1,4 @@
-package http
+package clients
 
 import (
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"

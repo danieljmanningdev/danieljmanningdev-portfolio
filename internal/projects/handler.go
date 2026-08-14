@@ -1,4 +1,4 @@
-package http
+package projects
 
 import (
 	"database/sql"
@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -29,7 +30,7 @@ func NewProjectsHandler(
 	projectRepo := repository.NewProjectRepository(db)
 	clientRepo := repository.NewClientRepository(db)
 
-	projectsTemplates, err := loadPageTemplate(
+	projectsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"projects.html",
 	)
@@ -37,7 +38,7 @@ func NewProjectsHandler(
 		return nil, err
 	}
 
-	newProjectTemplates, err := loadPageTemplate(
+	newProjectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"project-new.html",
 	)
@@ -45,7 +46,7 @@ func NewProjectsHandler(
 		return nil, err
 	}
 
-	projectTemplates, err := loadPageTemplate(
+	projectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"project.html",
 	)
@@ -53,7 +54,7 @@ func NewProjectsHandler(
 		return nil, err
 	}
 
-	editProjectTemplates, err := loadPageTemplate(
+	editProjectTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"project-edit.html",
 	)

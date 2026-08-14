@@ -1,4 +1,4 @@
-package http
+package contracts
 
 import (
 	"database/sql"
@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -31,7 +32,7 @@ func NewContractsHandler(
 	clientRepo := repository.NewClientRepository(db)
 	projectRepo := repository.NewProjectRepository(db)
 
-	contractsTemplates, err := loadPageTemplate(
+	contractsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"contracts.html",
 	)
@@ -39,7 +40,7 @@ func NewContractsHandler(
 		return nil, err
 	}
 
-	newContractTemplates, err := loadPageTemplate(
+	newContractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"contract-new.html",
 	)
@@ -47,7 +48,7 @@ func NewContractsHandler(
 		return nil, err
 	}
 
-	contractTemplates, err := loadPageTemplate(
+	contractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"contract.html",
 	)
@@ -55,7 +56,7 @@ func NewContractsHandler(
 		return nil, err
 	}
 
-	editContractTemplates, err := loadPageTemplate(
+	editContractTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"contract-edit.html",
 	)

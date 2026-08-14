@@ -1,4 +1,4 @@
-package http
+package contracts
 
 import (
 	"context"
@@ -140,7 +140,7 @@ func createContractRelationshipProject(
 		clientID,
 		name,
 		"",
-		projectStatusActive,
+		"active",
 	)
 	if err != nil {
 		t.Fatalf("insert test project: %v", err)

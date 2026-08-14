@@ -1,13 +1,13 @@
-package http
+package clients
 
 import (
 	"database/sql"
 	"html/template"
 	"net/http"
-	"path/filepath"
 	"strconv"
 	"strings"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -28,7 +28,7 @@ func NewClientsHandler(
 ) (*ClientsHandler, error) {
 	repo := repository.NewClientRepository(db)
 
-	clientsTemplates, err := loadPageTemplate(
+	clientsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"clients.html",
 	)
@@ -36,7 +36,7 @@ func NewClientsHandler(
 		return nil, err
 	}
 
-	newClientTemplates, err := loadPageTemplate(
+	newClientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"client-new.html",
 	)
@@ -44,7 +44,7 @@ func NewClientsHandler(
 		return nil, err
 	}
 
-	clientTemplates, err := loadPageTemplate(
+	clientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"client.html",
 	)
@@ -52,7 +52,7 @@ func NewClientsHandler(
 		return nil, err
 	}
 
-	editClientTemplates, err := loadPageTemplate(
+	editClientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"client-edit.html",
 	)
@@ -67,34 +67,6 @@ func NewClientsHandler(
 		clientTemplates:     clientTemplates,
 		editClientTemplates: editClientTemplates,
 	}, nil
-}
-
-func loadPageTemplate(
-	templateDir string,
-	page string,
-) (*template.Template, error) {
-	return template.New("base").ParseFiles(
-		filepath.Join(
-			templateDir,
-			"layouts",
-			"base.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"header.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"footer.html",
-		),
-		filepath.Join(
-			templateDir,
-			"pages",
-			page,
-		),
-	)
 }
 
 func (h *ClientsHandler) ServeHTTP(

@@ -1,4 +1,4 @@
-package http
+package projects
 
 import (
 	"database/sql"
@@ -7,18 +7,19 @@ import (
 	"strconv"
 )
 
-func (h *ClientsHandler) createClient(
+func (h *ProjectsHandler) createProject(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	form, err := parseClientForm(r)
+	form, err := parseProjectForm(r)
 	if err != nil {
-		h.renderNewClient(
+		h.renderNewProject(
 			w,
-			clientForm{
-				Status: clientStatusActive,
+			r,
+			projectForm{
+				Status: projectStatusPlanned,
 			},
-			clientFormErrors{
+			projectFormErrors{
 				General: "Invalid form submission.",
 			},
 			http.StatusBadRequest,
@@ -26,35 +27,46 @@ func (h *ClientsHandler) createClient(
 		return
 	}
 
-	/*
-		New clients always begin as active. The create form does
-		not accept a client-controlled status value.
-	*/
-	form.Status = clientStatusActive
-
-	formErrors := validateClientForm(form)
+	formErrors := validateProjectForm(form)
 
 	if formErrors.Any() {
-		h.renderNewClient(
+		h.renderNewProject(
 			w,
+			r,
 			form,
 			formErrors,
-			http.StatusOK,
+			http.StatusBadRequest,
 		)
 		return
 	}
 
-	id, err := h.repository.Create(
+	startDate, dueDate, err := projectFormDateValues(form)
+	if err != nil {
+		h.renderNewProject(
+			w,
+			r,
+			form,
+			projectFormErrors{
+				General: "Invalid project dates.",
+			},
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	id, err := h.projectRepository.Create(
 		r.Context(),
+		form.ClientID,
 		form.Name,
-		form.Email,
-		form.Company,
-		form.Notes,
+		form.Description,
+		form.Status,
+		startDate,
+		dueDate,
 	)
 	if err != nil {
 		http.Error(
 			w,
-			"failed to create client",
+			"failed to create project",
 			http.StatusInternalServerError,
 		)
 		return
@@ -63,24 +75,25 @@ func (h *ClientsHandler) createClient(
 	http.Redirect(
 		w,
 		r,
-		clientsBasePath+"/"+strconv.FormatInt(id, 10),
+		projectsBasePath+"/"+strconv.FormatInt(id, 10),
 		http.StatusSeeOther,
 	)
 }
 
-func (h *ClientsHandler) updateClient(
+func (h *ProjectsHandler) updateProject(
 	w http.ResponseWriter,
 	r *http.Request,
 	id int64,
 ) {
-	form, err := parseClientForm(r)
+	form, err := parseProjectForm(r)
 	form.ID = id
 
 	if err != nil {
-		h.renderEditClient(
+		h.renderEditProject(
 			w,
+			r,
 			form,
-			clientFormErrors{
+			projectFormErrors{
 				General: "Invalid form submission.",
 			},
 			http.StatusBadRequest,
@@ -88,11 +101,12 @@ func (h *ClientsHandler) updateClient(
 		return
 	}
 
-	formErrors := validateClientForm(form)
+	formErrors := validateProjectForm(form)
 
 	if formErrors.Any() {
-		h.renderEditClient(
+		h.renderEditProject(
 			w,
+			r,
 			form,
 			formErrors,
 			http.StatusBadRequest,
@@ -100,14 +114,29 @@ func (h *ClientsHandler) updateClient(
 		return
 	}
 
-	err = h.repository.Update(
+	startDate, dueDate, err := projectFormDateValues(form)
+	if err != nil {
+		h.renderEditProject(
+			w,
+			r,
+			form,
+			projectFormErrors{
+				General: "Invalid project dates.",
+			},
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	err = h.projectRepository.Update(
 		r.Context(),
 		id,
+		form.ClientID,
 		form.Name,
-		form.Email,
-		form.Company,
+		form.Description,
 		form.Status,
-		form.Notes,
+		startDate,
+		dueDate,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -117,7 +146,7 @@ func (h *ClientsHandler) updateClient(
 
 		http.Error(
 			w,
-			"failed to update client",
+			"failed to update project",
 			http.StatusInternalServerError,
 		)
 		return
@@ -126,17 +155,17 @@ func (h *ClientsHandler) updateClient(
 	http.Redirect(
 		w,
 		r,
-		clientsBasePath+"/"+strconv.FormatInt(id, 10),
+		projectsBasePath+"/"+strconv.FormatInt(id, 10),
 		http.StatusSeeOther,
 	)
 }
 
-func (h *ClientsHandler) handleDeleteClient(
+func (h *ProjectsHandler) archiveProject(
 	w http.ResponseWriter,
 	r *http.Request,
 	id int64,
 ) {
-	err := h.repository.Delete(
+	err := h.projectRepository.Archive(
 		r.Context(),
 		id,
 	)
@@ -148,7 +177,7 @@ func (h *ClientsHandler) handleDeleteClient(
 
 		http.Error(
 			w,
-			"failed to delete client",
+			"failed to archive project",
 			http.StatusInternalServerError,
 		)
 		return
@@ -157,7 +186,7 @@ func (h *ClientsHandler) handleDeleteClient(
 	if r.Header.Get("HX-Request") == "true" {
 		w.Header().Set(
 			"HX-Redirect",
-			clientsBasePath,
+			projectsBasePath,
 		)
 
 		w.WriteHeader(http.StatusOK)
@@ -167,7 +196,7 @@ func (h *ClientsHandler) handleDeleteClient(
 	http.Redirect(
 		w,
 		r,
-		clientsBasePath,
+		projectsBasePath,
 		http.StatusSeeOther,
 	)
 }
