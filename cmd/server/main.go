@@ -11,10 +11,13 @@ import (
 	"time"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/clients"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/config"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/contracts"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/database"
 	apphttp "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/http"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/logging"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/projects"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -231,7 +234,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	clientsHandler, err := apphttp.NewClientsHandler(
+	clientsHandler, err := clients.NewClientsHandler(
 		db.SQL,
 		cfg.TemplateDir,
 	)
@@ -243,7 +246,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	projectsHandler, err := apphttp.NewProjectsHandler(
+	projectsHandler, err := projects.NewProjectsHandler(
 		db.SQL,
 		cfg.TemplateDir,
 	)
@@ -255,7 +258,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	contractsHandler, err := apphttp.NewContractsHandler(
+	contractsHandler, err := contracts.NewContractsHandler(
 		db.SQL,
 		cfg.TemplateDir,
 	)

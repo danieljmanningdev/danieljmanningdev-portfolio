@@ -13,6 +13,7 @@ import (
 	"time"
 
 	authservice "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -57,7 +58,7 @@ func NewAdminAuthHandler(
 		sessionRepository,
 	)
 
-	loginTemplates, err := loadPageTemplate(
+	loginTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
 		"login.html",
 	)

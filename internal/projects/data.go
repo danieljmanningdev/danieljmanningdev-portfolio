@@ -1,4 +1,4 @@
-package http
+package projects
 
 import (
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"
