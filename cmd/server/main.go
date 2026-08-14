@@ -41,51 +41,65 @@ func newRouter(
 		portfolioCaseStudyHandler,
 	)
 
+	noIndexAdminAuth := apphttp.NoIndex(
+		adminAuthHandler,
+	)
+
 	mux.Handle(
 		"/login",
-		adminAuthHandler,
+		noIndexAdminAuth,
 	)
 
 	mux.Handle(
 		"/logout",
-		adminAuthHandler,
+		noIndexAdminAuth,
 	)
 
 	// All dashboard routes require a valid admin session.
-	protectedDashboard := apphttp.NoStore(
-		apphttp.RequireAdmin(
-			sessionService,
-			dashboardHandler,
+	protectedDashboard := apphttp.NoIndex(
+		apphttp.NoStore(
+			apphttp.RequireAdmin(
+				sessionService,
+				dashboardHandler,
+			),
 		),
 	)
 
-	protectedClients := apphttp.NoStore(
-		apphttp.RequireAdmin(
-			sessionService,
-			clientsHandler,
+	protectedClients := apphttp.NoIndex(
+		apphttp.NoStore(
+			apphttp.RequireAdmin(
+				sessionService,
+				clientsHandler,
+			),
 		),
 	)
 
-	protectedProjects := apphttp.NoStore(
-		apphttp.RequireAdmin(
-			sessionService,
-			projectsHandler,
+	protectedProjects := apphttp.NoIndex(
+		apphttp.NoStore(
+			apphttp.RequireAdmin(
+				sessionService,
+				projectsHandler,
+			),
 		),
 	)
 
-	protectedContracts := apphttp.NoStore(
-		apphttp.RequireAdmin(
-			sessionService,
-			contractsHandler,
+	protectedContracts := apphttp.NoIndex(
+		apphttp.NoStore(
+			apphttp.RequireAdmin(
+				sessionService,
+				contractsHandler,
+			),
 		),
 	)
 
 	// Redirect the dashboard path to its canonical trailing-slash URL.
 	mux.Handle(
 		"/dashboard",
-		http.RedirectHandler(
-			"/dashboard/",
-			http.StatusPermanentRedirect,
+		apphttp.NoIndex(
+			http.RedirectHandler(
+				"/dashboard/",
+				http.StatusPermanentRedirect,
+			),
 		),
 	)
 

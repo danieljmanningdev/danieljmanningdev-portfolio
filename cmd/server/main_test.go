@@ -322,3 +322,111 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 		)
 	}
 }
+
+func TestNewRouterNoIndexPolicy(
+	t *testing.T,
+) {
+	sessionService :=
+		newRouterTestSessionService(t)
+
+	handler := http.HandlerFunc(
+		func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			w.WriteHeader(http.StatusOK)
+		},
+	)
+
+	router := newRouter(
+		handler,
+		handler,
+		handler,
+		handler,
+		handler,
+		handler,
+		handler,
+		sessionService,
+	)
+
+	tests := []struct {
+		path        string
+		wantNoIndex bool
+	}{
+		{
+			path:        "/",
+			wantNoIndex: false,
+		},
+		{
+			path:        "/work/portfolio",
+			wantNoIndex: false,
+		},
+		{
+			path:        "/login",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/logout",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/clients",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/projects",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/contracts",
+			wantNoIndex: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(
+			tt.path,
+			func(t *testing.T) {
+				req := httptest.NewRequest(
+					http.MethodGet,
+					tt.path,
+					nil,
+				)
+
+				rec := httptest.NewRecorder()
+
+				router.ServeHTTP(rec, req)
+
+				got := rec.Header().Get(
+					"X-Robots-Tag",
+				)
+
+				if tt.wantNoIndex {
+					if got != "noindex, nofollow" {
+						t.Fatalf(
+							"expected noindex header, got %q",
+							got,
+						)
+					}
+
+					return
+				}
+
+				if got != "" {
+					t.Fatalf(
+						"expected no X-Robots-Tag, got %q",
+						got,
+					)
+				}
+			},
+		)
+	}
+}
