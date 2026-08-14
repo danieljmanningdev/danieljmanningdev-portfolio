@@ -30,7 +30,7 @@ func NewClientsHandler(
 
 	clientsTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"clients.html",
+		"admin/clients/index.html",
 	)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func NewClientsHandler(
 
 	newClientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"client-new.html",
+		"admin/clients/new.html",
 	)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func NewClientsHandler(
 
 	clientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"client.html",
+		"admin/clients/show.html",
 	)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func NewClientsHandler(
 
 	editClientTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"client-edit.html",
+		"admin/clients/edit.html",
 	)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ func NewHomeHandler(
 		filepath.Join(
 			templateDir,
 			"pages",
-			"home.html",
+			"public/home.html",
 		),
 	)
 	if err != nil {

@@ -60,7 +60,7 @@ func NewAdminAuthHandler(
 
 	loginTemplates, err := rendering.LoadPageTemplate(
 		templateDir,
-		"login.html",
+		"admin/login.html",
 	)
 	if err != nil {
 		return nil, err

@@ -20,6 +20,7 @@ func createPortfolioCaseStudyTestTemplates(
 		"layouts",
 		"components",
 		"pages",
+		"pages/public",
 	} {
 		if err := os.MkdirAll(
 			filepath.Join(
@@ -45,7 +46,7 @@ func createPortfolioCaseStudyTestTemplates(
 
 		"components/footer.html": `{{define "footer"}}footer{{end}}`,
 
-		"pages/portfolio-case-study.html": `{{define "content"}}
+		"pages/public/portfolio.html": `{{define "content"}}
 Portfolio & Client Workspace
 {{end}}`,
 	}

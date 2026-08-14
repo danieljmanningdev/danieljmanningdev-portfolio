@@ -20,6 +20,7 @@ func createTestTemplates(
 		"layouts",
 		"components",
 		"pages",
+		"pages/public",
 	} {
 		if err := os.MkdirAll(
 			filepath.Join(
@@ -45,7 +46,7 @@ func createTestTemplates(
 
 		"components/footer.html": `{{define "footer"}}footer{{end}}`,
 
-		"pages/home.html": `{{define "home"}}Daniel Manning{{end}}`,
+		"pages/public/home.html": `{{define "home"}}Daniel Manning{{end}}`,
 	}
 
 	for name, contents := range files {
