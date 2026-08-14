@@ -75,6 +75,10 @@ func (h *HomeHandler) ServeHTTP(
 		"Content-Type",
 		"text/html; charset=utf-8",
 	)
+	w.Header().Set(
+		"Link",
+		`<https://danieljmanningdev.com/>; rel="canonical"`,
+	)
 
 	if err := h.template.ExecuteTemplate(
 		w,

@@ -74,6 +74,11 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 		"text/html; charset=utf-8",
 	)
 
+	w.Header().Set(
+		"Link",
+		`<https://danieljmanningdev.com/work/portfolio>; rel="canonical"`,
+	)
+
 	if err := h.template.ExecuteTemplate(
 		w,
 		"base",
