@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 760 180"
+   width="760"
+   height="180"
+   role="img"
+   aria-label="DJM DEV logo"
+   version="1.1"
+   id="svg43"
+   sodipodi:docname="djmdev-horizontal-dark.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview43"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <defs
+     id="defs32">
+    <linearGradient
+       id="blueLeft"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#38BDF8"
+         id="stop1" />
+      <stop
+         offset="0.42"
+         stop-color="#168BFF"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#0757F8"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="blueRight"
+       x1="0"
+       y1="0"
+       x2="0.75"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#2AA7FF"
+         id="stop4" />
+      <stop
+         offset="0.48"
+         stop-color="#1677FF"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-color="#123AD6"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="blueFoot"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#24A6FF"
+         id="stop7" />
+      <stop
+         offset="1"
+         stop-color="#0C57F8"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="silverUpperL"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#FFFFFF"
+         id="stop9" />
+      <stop
+         offset="0.54"
+         stop-color="#F3F4F6"
+         id="stop10" />
+      <stop
+         offset="1"
+         stop-color="#B8BBC3"
+         id="stop11" />
+    </linearGradient>
+    <linearGradient
+       id="silverLowerL"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#F8FAFC"
+         id="stop12" />
+      <stop
+         offset="0.5"
+         stop-color="#D4D7DE"
+         id="stop13" />
+      <stop
+         offset="1"
+         stop-color="#858A96"
+         id="stop14" />
+    </linearGradient>
+    <linearGradient
+       id="silverUpperR"
+       x1="1"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#FFFFFF"
+         id="stop15" />
+      <stop
+         offset="0.54"
+         stop-color="#F3F4F6"
+         id="stop16" />
+      <stop
+         offset="1"
+         stop-color="#B8BBC3"
+         id="stop17" />
+    </linearGradient>
+    <linearGradient
+       id="silverLowerR"
+       x1="1"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#F8FAFC"
+         id="stop18" />
+      <stop
+         offset="0.5"
+         stop-color="#D4D7DE"
+         id="stop19" />
+      <stop
+         offset="1"
+         stop-color="#858A96"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="silverLightUpperL"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#F4F5F7"
+         id="stop21" />
+      <stop
+         offset="0.55"
+         stop-color="#E6E7EB"
+         id="stop22" />
+      <stop
+         offset="1"
+         stop-color="#B9BCC4"
+         id="stop23" />
+    </linearGradient>
+    <linearGradient
+       id="silverLightLowerL"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#E4E6EB"
+         id="stop24" />
+      <stop
+         offset="0.55"
+         stop-color="#C9CBD2"
+         id="stop25" />
+      <stop
+         offset="1"
+         stop-color="#8D929C"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       id="silverLightUpperR"
+       x1="1"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#F4F5F7"
+         id="stop27" />
+      <stop
+         offset="0.55"
+         stop-color="#E6E7EB"
+         id="stop28" />
+      <stop
+         offset="1"
+         stop-color="#B9BCC4"
+         id="stop29" />
+    </linearGradient>
+    <linearGradient
+       id="silverLightLowerR"
+       x1="1"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#E4E6EB"
+         id="stop30" />
+      <stop
+         offset="0.55"
+         stop-color="#C9CBD2"
+         id="stop31" />
+      <stop
+         offset="1"
+         stop-color="#8D929C"
+         id="stop32" />
+    </linearGradient>
+    <filter
+       id="softShadow"
+       x="-20%"
+       y="-20%"
+       width="140%"
+       height="140%">
+      <feDropShadow
+         dx="0"
+         dy="12"
+         stdDeviation="18"
+         flood-color="#000000"
+         flood-opacity="0.18" />
+    </filter>
+  </defs>
+  <g
+     transform="translate(20 20) scale(0.31)"
+     id="g43">
+    <g
+       aria-label="DJM DEV mark"
+       id="g42">
+      <path
+         d="M58 250 L236 72 L236 151 L140 250 Z"
+         fill="url(#silverUpperL)"
+         id="path32" />
+      <path
+         d="M58 250 L140 250 L191 301 L126 367 Z"
+         fill="url(#silverLowerL)"
+         id="path33" />
+      <path
+         d="M582 250 L404 72 L404 151 L500 250 Z"
+         fill="url(#silverUpperR)"
+         id="path34" />
+      <path
+         d="M582 250 L500 250 L449 301 L514 367 Z"
+         fill="url(#silverLowerR)"
+         id="path35" />
+      <path
+         d="M241 68 L316 148 L316 336 L241 300 Z"
+         fill="url(#blueLeft)"
+         id="path36" />
+      <path
+         d="M241 300 L316 336 L226 431 L170 371 Z"
+         fill="url(#blueFoot)"
+         id="path37" />
+      <path
+         d="M324 148 L399 68 L399 431 L324 336 Z"
+         fill="url(#blueRight)"
+         id="path38" />
+      <path
+         d="M236 72 L241 68 L241 300 L236 294 Z"
+         fill="#7DD3FC"
+         opacity="0.62"
+         id="path39" />
+      <path
+         d="M399 68 L404 72 L404 151 L399 146 Z"
+         fill="#64B5FF"
+         opacity="0.48"
+         id="path40" />
+      <path
+         d="M316 148 L324 148 L324 336 L316 336 Z"
+         fill="#001C66"
+         opacity="0.25"
+         id="path41" />
+      <path
+         d="M241 300 L316 336 L306 347 L232 312 Z"
+         fill="#0048D8"
+         opacity="0.52"
+         id="path42" />
+    </g>
+  </g>
+  <g
+     id="text43"
+     style="font-size:58px;font-family:Inter, Arial, sans-serif;letter-spacing:12;fill:#f8fafc"
+     aria-label="DJM / DEV">
+    <path
+       d="m 268.2666,116 c 12.85742,0 20.13574,-7.98633 20.13574,-21.183594 0,-13.083984 -7.27832,-21.013672 -19.59765,-21.013672 H 255.09766 V 116 Z m -7.78808,-4.75781 V 78.560547 h 7.958 c 9.77051,0 14.75489,6.117187 14.75489,16.255859 0,10.251954 -4.98438,16.425784 -15.26465,16.425784 z m 58.81347,5.32422 c 7.44824,0 12.57422,-4.53125 12.57422,-12.63086 V 73.802734 h -5.38086 v 30.132816 c 0,5.15429 -2.88867,7.90136 -7.19336,7.90136 -4.33301,0 -7.22168,-2.74707 -7.22168,-7.90136 v -2.26563 h -5.38086 v 2.26563 c 0,8.09961 5.1543,12.63086 12.60254,12.63086 z M 354.06152,116 h 5.12598 V 91.899414 c 0,-3.256836 -0.11328,-8.241211 -0.19824,-12.262695 1.6709,4.956054 3.31347,9.883789 4.24804,12.262695 L 372.80957,116 h 4.67285 l 9.43067,-24.100586 c 0.96289,-2.463867 2.71875,-7.533203 4.24804,-12.347656 -0.11328,4.389648 -0.19824,9.232422 -0.19824,12.347656 V 116 h 5.2959 V 73.802734 h -7.67481 l -10.25195,26.621096 c -0.82129,2.12402 -2.12402,6.28711 -3.11523,9.60058 -0.99121,-3.42675 -2.32227,-7.56152 -3.11524,-9.60058 L 361.70801,73.802734 h -7.64649 z"
+       id="path43" />
+    <path
+       style="fill:#1f73ff"
+       d="m 461.2666,71.820312 h -4.70117 l -13.59375,50.523438 h 4.70117 z"
+       id="path44" />
+    <path
+       d="m 521.14844,116 c 12.85742,0 20.13574,-7.98633 20.13574,-21.183594 0,-13.083984 -7.27832,-21.013672 -19.59766,-21.013672 H 507.97949 V 116 Z m -7.78809,-4.75781 V 78.560547 h 7.95801 c 9.77051,0 14.75488,6.117187 14.75488,16.255859 0,10.251954 -4.98437,16.425784 -15.26465,16.425784 z M 561.83691,116 h 25.96973 v -4.75781 H 567.21777 V 97.082031 h 18.94629 V 92.324219 H 567.21777 V 78.560547 h 20.33399 v -4.757813 h -25.71485 z m 58.75684,0 h 6.20215 l 15.34961,-42.197266 h -5.72071 l -8.69433,25.035157 c -0.90625,2.605469 -2.23731,6.626949 -4.02149,12.800779 -1.75586,-6.03222 -3.11523,-10.19531 -4.0498,-12.800779 l -8.9209,-25.035157 h -5.66406 z"
+       id="path45" />
+  </g>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" role="img" aria-label="DJM DEV logo">
+
+<defs>
+  <linearGradient id="blueLeft" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#38BDF8"/>
+    <stop offset="0.42" stop-color="#168BFF"/>
+    <stop offset="1" stop-color="#0757F8"/>
+  </linearGradient>
+  <linearGradient id="blueRight" x1="0" y1="0" x2="0.75" y2="1">
+    <stop offset="0" stop-color="#2AA7FF"/>
+    <stop offset="0.48" stop-color="#1677FF"/>
+    <stop offset="1" stop-color="#123AD6"/>
+  </linearGradient>
+  <linearGradient id="blueFoot" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#24A6FF"/>
+    <stop offset="1" stop-color="#0C57F8"/>
+  </linearGradient>
+  <linearGradient id="silverUpperL" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.54" stop-color="#F3F4F6"/>
+    <stop offset="1" stop-color="#B8BBC3"/>
+  </linearGradient>
+  <linearGradient id="silverLowerL" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F8FAFC"/>
+    <stop offset="0.5" stop-color="#D4D7DE"/>
+    <stop offset="1" stop-color="#858A96"/>
+  </linearGradient>
+  <linearGradient id="silverUpperR" x1="1" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.54" stop-color="#F3F4F6"/>
+    <stop offset="1" stop-color="#B8BBC3"/>
+  </linearGradient>
+  <linearGradient id="silverLowerR" x1="1" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F8FAFC"/>
+    <stop offset="0.5" stop-color="#D4D7DE"/>
+    <stop offset="1" stop-color="#858A96"/>
+  </linearGradient>
+  <linearGradient id="silverLightUpperL" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F4F5F7"/>
+    <stop offset="0.55" stop-color="#E6E7EB"/>
+    <stop offset="1" stop-color="#B9BCC4"/>
+  </linearGradient>
+  <linearGradient id="silverLightLowerL" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#E4E6EB"/>
+    <stop offset="0.55" stop-color="#C9CBD2"/>
+    <stop offset="1" stop-color="#8D929C"/>
+  </linearGradient>
+  <linearGradient id="silverLightUpperR" x1="1" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F4F5F7"/>
+    <stop offset="0.55" stop-color="#E6E7EB"/>
+    <stop offset="1" stop-color="#B9BCC4"/>
+  </linearGradient>
+  <linearGradient id="silverLightLowerR" x1="1" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#E4E6EB"/>
+    <stop offset="0.55" stop-color="#C9CBD2"/>
+    <stop offset="1" stop-color="#8D929C"/>
+  </linearGradient>
+  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000000" flood-opacity="0.18"/>
+  </filter>
+</defs>
+<rect width="100%" height="100%" fill="#F8F9FB"/>
+<g transform="translate(180 215) scale(1.31)">
+<g aria-label="DJM DEV mark">
+  <path d="M58 250 L236 72 L236 151 L140 250 Z" fill="url(#silverLightUpperL)"/>
+  <path d="M58 250 L140 250 L191 301 L126 367 Z" fill="url(#silverLightLowerL)"/>
+  <path d="M582 250 L404 72 L404 151 L500 250 Z" fill="url(#silverLightUpperR)"/>
+  <path d="M582 250 L500 250 L449 301 L514 367 Z" fill="url(#silverLightLowerR)"/>
+
+  <path d="M241 68 L316 148 L316 336 L241 300 Z" fill="url(#blueLeft)"/>
+  <path d="M241 300 L316 336 L226 431 L170 371 Z" fill="url(#blueFoot)"/>
+  <path d="M324 148 L399 68 L399 431 L324 336 Z" fill="url(#blueRight)"/>
+
+  <path d="M236 72 L241 68 L241 300 L236 294 Z" fill="#7DD3FC" opacity="0.62"/>
+  <path d="M399 68 L404 72 L404 151 L399 146 Z" fill="#64B5FF" opacity="0.48"/>
+  <path d="M316 148 L324 148 L324 336 L316 336 Z" fill="#001C66" opacity="0.25"/>
+  <path d="M241 300 L316 336 L306 347 L232 312 Z" fill="#0048D8" opacity="0.52"/>
+</g>
+</g>
+</svg>
