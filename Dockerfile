@@ -22,7 +22,7 @@ RUN go mod download && go mod verify
 COPY . .
 
 RUN CGO_ENABLED=1 go build -v -o /run-app ./cmd/server
-
+RUN CGO_ENABLED=1 go build -v -o /adminctl ./cmd/adminctl
 
 # Production image
 FROM debian:bookworm
@@ -30,6 +30,7 @@ FROM debian:bookworm
 WORKDIR /app
 
 COPY --from=go-builder /run-app /run-app
+COPY --from=go-builder /adminctl /adminctl
 
 # Copy web files INCLUDING the Tailwind-generated app.css
 COPY --from=css-builder /src/web /app/web
