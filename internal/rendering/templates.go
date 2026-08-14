@@ -13,7 +13,7 @@ func LoadPageTemplate(
 		filepath.Join(
 			templateDir,
 			"layouts",
-			"base.html",
+			"admin-base.html",
 		),
 		filepath.Join(
 			templateDir,

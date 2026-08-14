@@ -1,0 +1,48 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{.Title}}</title>
+
+    <meta
+        name="theme-color"
+        content="#050B18"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/css/app.css"
+    >
+
+    <script
+        src="/static/scripts/min.htmx.js"
+    ></script>
+
+    <link
+        rel="icon"
+        href="/static/favicon.svg?v=3"
+        type="image/svg+xml"
+        sizes="any"
+    >
+</head>
+
+<body class="min-h-screen bg-[#050B18] text-white antialiased">
+
+    {{template "header" .}}
+
+    {{template "content" .}}
+
+    {{template "footer" .}}
+
+</body>
+
+</html>
+{{end}}
