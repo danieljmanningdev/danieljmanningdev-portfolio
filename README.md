@@ -6,12 +6,12 @@ The public website presents my UI/UX design and full-stack development work. Beh
 
 ## What this demonstrates
 
-• Production-style Go application architecture
-• Authentication and secure server-side sessions
-• SQLite persistence and migrations
-• HTMX server-rendered interfaces
-• Automated testing
-• Security-focused middleware
+- Production-style Go application architecture
+- Authentication and secure server-side sessions
+- SQLite persistence and migrations
+- HTMX server-rendered interfaces
+- Automated testing
+- Security-focused middleware
 
 ## Screenshots
 
