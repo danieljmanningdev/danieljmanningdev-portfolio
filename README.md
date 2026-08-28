@@ -4,6 +4,15 @@ A fast, server-rendered developer portfolio and authenticated internal client wo
 
 The public website presents my UI/UX design and full-stack development work. Behind it, the application includes a private administrative workspace for managing clients, projects and contracts without duplicating broader operational tools such as scheduling, team communication or time tracking.
 
+## What this demonstrates
+
+• Production-style Go application architecture
+• Authentication and secure server-side sessions
+• SQLite persistence and migrations
+• HTMX server-rendered interfaces
+• Automated testing
+• Security-focused middleware
+
 ## Screenshots
 
 ### Public portfolio
