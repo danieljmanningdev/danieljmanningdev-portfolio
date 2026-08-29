@@ -3,7 +3,8 @@ package http
 import (
 	"html/template"
 	"net/http"
-	"path/filepath"
+
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 )
 
 type dashboardPageData struct {
@@ -18,27 +19,9 @@ type DashboardHandler struct {
 func NewDashboardHandler(
 	templateDir string,
 ) (*DashboardHandler, error) {
-	templates, err := template.New("base").ParseFiles(
-		filepath.Join(
-			templateDir,
-			"layouts",
-			"admin-base.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"header.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"footer.html",
-		),
-		filepath.Join(
-			templateDir,
-			"pages",
-			"admin/dashboard.html",
-		),
+	templates, err := rendering.LoadPageTemplate(
+		templateDir,
+		"admin/dashboard.html",
 	)
 	if err != nil {
 		return nil, err
@@ -89,9 +72,7 @@ func (h *DashboardHandler) ServeHTTP(
 	); err != nil {
 		http.Error(
 			w,
-			http.StatusText(
-				http.StatusInternalServerError,
-			),
+			http.StatusText(http.StatusInternalServerError),
 			http.StatusInternalServerError,
 		)
 	}

@@ -38,7 +38,7 @@ func createTestTemplates(
 <title>{{.Title}}</title>
 <meta name="description" content="{{.Description}}">
 {{template "header" .}}
-{{template "home" .}}
+{{template "content" .}}
 {{template "footer" .}}
 {{end}}`,
 
@@ -46,7 +46,9 @@ func createTestTemplates(
 
 		"components/footer.html": `{{define "footer"}}footer{{end}}`,
 
-		"pages/public/home.html": `{{define "home"}}Daniel Manning{{end}}`,
+		"pages/public/home.html": `{{define "content"}}Daniel Manning{{end}}`,
+
+		"pages/public/404.html": `{{define "content"}}Page not found: {{.Path}}{{end}}`,
 	}
 
 	for name, contents := range files {
@@ -130,6 +132,61 @@ func TestHomeHandler(
 				body,
 			)
 		}
+	}
+}
+
+func TestHomeHandlerRendersNotFoundPage(
+	t *testing.T,
+) {
+	templateDir := createTestTemplates(t)
+
+	handler, err := NewHomeHandler(
+		templateDir,
+	)
+	if err != nil {
+		t.Fatalf(
+			"create home handler: %v",
+			err,
+		)
+	}
+
+	req := httptest.NewRequest(
+		http.MethodGet,
+		"/missing-page",
+		nil,
+	)
+
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(
+		rec,
+		req,
+	)
+
+	if rec.Code != http.StatusNotFound {
+		t.Fatalf(
+			"expected status 404, got %d",
+			rec.Code,
+		)
+	}
+
+	if !strings.Contains(
+		rec.Body.String(),
+		"Page not found: /missing-page",
+	) {
+		t.Fatalf(
+			"unexpected not-found page %q",
+			rec.Body.String(),
+		)
+	}
+
+	if robots := rec.Header().Get(
+		"X-Robots-Tag",
+	); robots != "noindex, nofollow" {
+		t.Fatalf(
+			"expected noindex header, got %q",
+			robots,
+		)
 	}
 }
 

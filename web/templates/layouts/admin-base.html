@@ -1,50 +1,39 @@
 {{define "base"}}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="bg-ink-950">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#050b18">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>{{.Title}}</title>
 
-    <meta
-        name="theme-color"
-        content="#050B18"
-    >
-
-    <link
-        rel="stylesheet"
-        href="/static/css/app.css?v=2"
-    >
-
-    <script
-        src="/static/scripts/min.htmx.js"
-    ></script>
-
-    <link
-        rel="icon"
-        href="/static/favicon.svg?v=3"
-        type="image/svg+xml"
-        sizes="any"
-    >
+    <link rel="stylesheet" href="/static/css/app.css?v=4">
+    <script src="/static/scripts/min.htmx.js" defer></script>
+    <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
 </head>
 
-<body class="min-h-screen flex flex-col bg-[#050B18] text-white antialiased">
+<body
+    class="admin-shell flex min-h-dvh flex-col overflow-x-clip bg-ink-950 text-mist-50 antialiased"
+    hx-indicator="#page-progress"
+>
+    <a href="#main-content" class="skip-link">Skip to workspace</a>
+
+    <div
+        id="page-progress"
+        class="htmx-indicator fixed inset-x-0 top-0 z-[100] h-0.5 origin-left bg-signal-300 shadow-[0_0_22px_rgba(96,165,250,0.68)]"
+        aria-hidden="true"
+    ></div>
 
     {{template "header" .}}
 
-    <div class="flex-1">
+    <div id="main-content" class="admin-canvas flex-1" tabindex="-1">
         {{template "content" .}}
     </div>
 
     {{template "footer" .}}
-
 </body>
-
 </html>
 {{end}}

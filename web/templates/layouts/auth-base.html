@@ -1,0 +1,29 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en" class="bg-ink-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#050b18">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{{.Title}}</title>
+
+    {{if .Description}}
+    <meta name="description" content="{{.Description}}">
+    {{end}}
+
+    <link rel="stylesheet" href="/static/css/app.css?v=4">
+    <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
+</head>
+
+<body class="auth-shell min-h-dvh overflow-x-clip bg-ink-950 text-mist-50 antialiased">
+    <a href="#main-content" class="skip-link">Skip to sign in</a>
+
+    <div id="main-content" tabindex="-1">
+        {{template "content" .}}
+    </div>
+</body>
+</html>
+{{end}}

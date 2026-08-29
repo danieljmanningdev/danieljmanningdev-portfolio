@@ -1,525 +1,156 @@
 {{define "content"}}
-<main class="overflow-hidden">
+<main class="overflow-clip">
+    <section class="relative border-b border-white/8 py-20 sm:py-28 lg:py-36">
+        <div class="pointer-events-none absolute left-1/3 top-0 size-[34rem] rounded-full bg-signal-500/12 blur-3xl" aria-hidden="true"></div>
 
-    <section class="relative border-b border-blue-400/10">
-        <div
-            class="pointer-events-none absolute left-1/3 top-20 h-96 w-96 rounded-full bg-blue-600/15 blur-[120px]"
-        ></div>
+        <div class="site-container relative">
+            <a href="/#work" class="button-quiet -ml-4 min-h-10 px-4">← Selected work</a>
 
-        <div class="relative mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
-
-            <a
-                href="/#work"
-                class="inline-flex items-center gap-3 text-sm text-blue-300/60 transition hover:text-blue-300"
-            >
-                <span>←</span>
-                <span>Back to selected work</span>
-            </a>
-
-            <div class="mt-16 max-w-5xl">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    Case study / 2026
-                </p>
-
-                <h1 class="mt-6 text-6xl font-medium leading-[0.95] tracking-[-0.04em] sm:text-7xl lg:text-8xl">
-                    Portfolio &
-                    <span class="text-blue-400">
-                        Client Workspace
-                    </span>
-                </h1>
-
-                <p class="mt-10 max-w-3xl text-lg leading-8 text-blue-100/50">
-                    A portfolio designed as more than a marketing page:
-                    a fast public site paired with a secure private workspace
-                    for managing clients, projects and commercial agreements.
-                </p>
-
-                <div class="mt-12 flex flex-wrap gap-2">
-                    <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
-                        Go
-                    </span>
-                    <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
-                        HTMX
-                    </span>
-                    <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
-                        Tailwind CSS
-                    </span>
-                    <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
-                        SQLite
-                    </span>
-                    <span class="rounded-full border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs text-blue-200/70">
-                        Product Design
-                    </span>
+            <div class="mt-12 grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+                <div>
+                    <p class="eyebrow">Case study / 2026</p>
+                    <h1 class="mt-8 text-balance text-[clamp(3.7rem,8vw,8rem)] font-medium leading-[0.88] tracking-[-0.065em] text-mist-50">
+                        Portfolio &amp;
+                        <span class="block bg-linear-to-r from-signal-300 via-electric-300 to-signal-400 bg-clip-text text-transparent">Client Workspace</span>
+                    </h1>
                 </div>
 
+                <div>
+                    <p class="text-lg leading-8 text-mist-300">A public portfolio and secure personal workspace designed as one coherent product — clear in public, focused in private and deliberately lightweight throughout.</p>
+                    <div class="mt-8 flex flex-wrap gap-2 text-xs text-mist-300">
+                        <span class="rounded-full border border-white/9 px-3 py-1.5">Product design</span>
+                        <span class="rounded-full border border-white/9 px-3 py-1.5">Go</span>
+                        <span class="rounded-full border border-white/9 px-3 py-1.5">HTMX</span>
+                        <span class="rounded-full border border-white/9 px-3 py-1.5">Security</span>
+                    </div>
+                </div>
             </div>
 
+            <dl class="mt-14 grid gap-px overflow-hidden rounded-4xl border border-white/8 bg-white/8 sm:grid-cols-3">
+                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Public side</dt><dd class="mt-3 text-lg font-semibold text-mist-50">Clear positioning</dd></div>
+                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Private side</dt><dd class="mt-3 text-lg font-semibold text-mist-50">Focused management</dd></div>
+                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Experience</dt><dd class="mt-3 text-lg font-semibold text-mist-50">One visual language</dd></div>
+            </dl>
         </div>
     </section>
 
+    <section class="border-b border-white/8 py-20 sm:py-28">
+        <div class="site-container">
+            <div class="relative mx-auto max-w-6xl overflow-hidden rounded-5xl border border-white/9 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/6 p-5 sm:p-8 lg:p-10">
+                <div class="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full bg-blue-400/14 blur-3xl" aria-hidden="true"></div>
 
-    <section class="border-b border-blue-400/10">
-        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-12 lg:px-8">
+                <div class="relative grid gap-5 lg:grid-cols-[0.36fr_1fr]">
+                    <aside class="rounded-4xl border border-white/8 bg-[#050b18]/82 p-5">
+                        <div class="flex items-center gap-3 border-b border-white/8 pb-5">
+                            <img src="/static/djmdev-svg-assets/djmdev-mark-dark.svg" alt="" class="size-10 object-contain" width="40" height="40">
+                            <div><p class="text-xs font-bold tracking-[0.18em] text-mist-100">WORKSPACE</p><p class="mt-1 text-xs text-mist-700">Personal overview</p></div>
+                        </div>
+                        <div class="mt-6 space-y-2">
+                            <div class="rounded-2xl bg-blue-400/12 px-4 py-3 text-sm font-semibold text-blue-100">Overview</div>
+                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Clients</div>
+                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Projects</div>
+                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Contracts</div>
+                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Journal</div>
+                        </div>
+                    </aside>
 
-            <div class="lg:col-span-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    01 / The problem
-                </p>
-            </div>
-
-            <div class="lg:col-span-8">
-                <h2 class="max-w-4xl text-4xl font-medium tracking-tight sm:text-5xl">
-                    One system for the public story and the private client relationship.
-                </h2>
-
-                <div class="mt-10 grid gap-8 text-blue-100/50 md:grid-cols-2">
-                    <p class="leading-7">
-                        A normal portfolio can show finished work, but it does
-                        little to support the relationship once a client actually
-                        starts working with you.
-                    </p>
-
-                    <p class="leading-7">
-                        The goal was to create a lightweight foundation where
-                        client records, projects and contracts live together,
-                        without introducing the complexity of a large SPA or
-                        rebuilding operational tools that already exist elsewhere.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-
-    <section class="border-b border-blue-400/10 bg-blue-950/10">
-        <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-
-            <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                02 / Product approach
-            </p>
-
-            <div class="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-3xl border border-blue-400/10 bg-blue-400/10 md:grid-cols-3">
-
-                <div class="bg-[#071124] p-8 lg:p-10">
-                    <span class="text-sm text-blue-400">
-                        01
-                    </span>
-
-                    <h3 class="mt-16 text-2xl font-medium">
-                        Public portfolio
-                    </h3>
-
-                    <p class="mt-5 leading-7 text-blue-100/40">
-                        A responsive server-rendered public site focused on
-                        product design, engineering capability and selected work.
-                    </p>
-                </div>
-
-                <div class="bg-[#071124] p-8 lg:p-10">
-                    <span class="text-sm text-blue-400">
-                        02
-                    </span>
-
-                    <h3 class="mt-16 text-2xl font-medium">
-                        Admin workspace
-                    </h3>
-
-                    <p class="mt-5 leading-7 text-blue-100/40">
-                        A private workspace for managing clients, projects,
-                        contracts and the relationships between them.
-                    </p>
-                </div>
-
-                <div class="bg-[#071124] p-8 lg:p-10">
-                    <span class="text-sm text-blue-400">
-                        03
-                    </span>
-
-                    <h3 class="mt-16 text-2xl font-medium">
-                        Secure foundation
-                    </h3>
-
-                    <p class="mt-5 leading-7 text-blue-100/40">
-                        Authentication, server-side sessions, CSRF protection,
-                        throttling and security middleware were treated as
-                        product requirements rather than afterthoughts.
-                    </p>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-<section class="border-b border-blue-400/10">
-    <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
-
-            <div class="lg:col-span-4">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    Product in practice
-                </p>
-
-                <h2 class="mt-6 text-4xl font-medium tracking-tight sm:text-5xl">
-                    Two sides of the same product.
-                </h2>
-
-                <p class="mt-6 max-w-md leading-7 text-blue-100/50">
-                    The public portfolio communicates the work.
-                    The private workspace supports the client
-                    relationship behind it.
-                </p>
-
-            </div>
-
-
-            <div class="space-y-8 lg:col-span-8">
-
-                <figure
-                    class="overflow-hidden rounded-3xl border border-blue-400/10 bg-[#071124]"
-                >
-
-                    <div
-                        class="flex items-center justify-between border-b border-blue-400/10 px-6 py-5"
-                    >
-                        <div>
-                            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                                01 / Public
-                            </p>
-
-                            <h3 class="mt-2 text-lg font-medium">
-                                Portfolio experience
-                            </h3>
+                    <div class="rounded-4xl border border-white/8 bg-[#050b18]/82 p-5 sm:p-7">
+                        <div class="flex flex-col gap-5 border-b border-white/8 pb-6 sm:flex-row sm:items-end sm:justify-between">
+                            <div><p class="metric-label">Workspace</p><h2 class="mt-3 text-3xl font-medium tracking-[-0.04em] text-mist-50">Everything important, without the noise.</h2></div>
+                            <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-xs font-semibold text-blue-200">Personal access</span>
                         </div>
 
-                        <span class="text-sm text-blue-400/50">
-                            danieljmanningdev.com
-                        </span>
-                    </div>
-
-                    <div class="bg-blue-950/20 p-3 sm:p-5">
-
-                        <img
-                            src="/static/images/djmdev-homescreen.png"
-                            alt="Daniel J. Manning portfolio homepage"
-                            class="aspect-16/10 w-full rounded-2xl object-cover object-top"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                    </div>
-
-                </figure>
-
-
-                <figure
-                    class="overflow-hidden rounded-3xl border border-blue-400/10 bg-[#071124]"
-                >
-
-                    <div
-                        class="flex items-center justify-between border-b border-blue-400/10 px-6 py-5"
-                    >
-                        <div>
-                            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                                02 / Private
-                            </p>
-
-                            <h3 class="mt-2 text-lg font-medium">
-                                Client workspace
-                            </h3>
+                        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Clients</p><p class="mt-8 text-2xl font-medium text-mist-50">Relationships</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-3/4 rounded-full bg-blue-400/55"></div></div></div>
+                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Projects</p><p class="mt-8 text-2xl font-medium text-mist-50">Delivery</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-1/2 rounded-full bg-cyan-400/50"></div></div></div>
+                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Contracts</p><p class="mt-8 text-2xl font-medium text-mist-50">Commercial</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-2/3 rounded-full bg-indigo-400/45"></div></div></div>
+                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Journal</p><p class="mt-8 text-2xl font-medium text-mist-50">Publishing</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-4/5 rounded-full bg-blue-300/55"></div></div></div>
                         </div>
-
-                        <span class="text-sm text-blue-400/50">
-                            Authenticated
-                        </span>
                     </div>
-
-                    <div class="bg-blue-950/20 p-3 sm:p-5">
-
-                        <img
-                            src="/static/images/internal-workspace.png"
-                            alt="Private client workspace dashboard"
-                            class="aspect-16/10 w-full rounded-2xl object-cover object-top"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                    </div>
-
-                </figure>
-
+                </div>
             </div>
-
         </div>
+    </section>
 
-    </div>
-</section>
-
-    <section class="border-b border-blue-400/10">
-        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-12 lg:px-8">
-
-            <div class="lg:col-span-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    03 / Architecture
-                </p>
-            </div>
-
+    <section class="border-b border-white/8 py-24 sm:py-30">
+        <div class="site-container grid gap-14 lg:grid-cols-12">
+            <div class="lg:col-span-4"><p class="eyebrow">01 / The problem</p></div>
             <div class="lg:col-span-8">
-
-                <h2 class="text-4xl font-medium tracking-tight sm:text-5xl">
-                    Small layers with clear responsibilities.
-                </h2>
-
-                <div class="mt-10 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-10">
-
-                    <div class="space-y-4 font-mono text-sm text-blue-100/60">
-                        <p>HTTP request</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>security + request middleware</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>handler</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>repository</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>SQLite</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>Go model + template</p>
-                        <p class="pl-5 text-blue-400">↓</p>
-                        <p>HTML response</p>
-                    </div>
-
+                <h2 class="text-balance text-4xl font-medium leading-[1.04] tracking-[-0.045em] text-mist-50 sm:text-6xl">A portfolio usually stops exactly where the working relationship starts.</h2>
+                <div class="mt-10 grid gap-8 text-lg leading-8 text-mist-500 md:grid-cols-2">
+                    <p>The public site needed to communicate design and engineering capability without becoming another decorative agency page.</p>
+                    <p>The private side needed a clear place for clients, projects, contracts and publishing without the weight of a large business platform.</p>
                 </div>
-
-                <p class="mt-8 max-w-3xl leading-7 text-blue-100/50">
-                    Business and persistence logic stay out of the HTTP layer.
-                    The application remains easy to reason about while retaining
-                    enough structure to grow without turning every feature into
-                    a framework exercise.
-                </p>
-
             </div>
-
         </div>
     </section>
 
-
-    <section class="border-b border-blue-400/10 bg-blue-950/10">
-        <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-
-            <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                04 / Core functionality
-            </p>
-
-            <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-
-                <article class="rounded-3xl border border-blue-400/10 bg-[#071124] p-8">
-                    <p class="text-sm text-blue-400">
-                        Clients
-                    </p>
-
-                    <h3 class="mt-8 text-2xl font-medium">
-                        Client records
-                    </h3>
-
-                    <p class="mt-4 leading-7 text-blue-100/40">
-                        Create, view, edit and manage client relationships from
-                        a dedicated private workspace.
-                    </p>
-                </article>
-
-                <article class="rounded-3xl border border-blue-400/10 bg-[#071124] p-8">
-                    <p class="text-sm text-blue-400">
-                        Projects
-                    </p>
-
-                    <h3 class="mt-8 text-2xl font-medium">
-                        Project tracking
-                    </h3>
-
-                    <p class="mt-4 leading-7 text-blue-100/40">
-                        Projects belong to clients and carry lifecycle states,
-                        dates and descriptions without duplicating task systems.
-                    </p>
-                </article>
-
-                <article class="rounded-3xl border border-blue-400/10 bg-[#071124] p-8">
-                    <p class="text-sm text-blue-400">
-                        Contracts
-                    </p>
-
-                    <h3 class="mt-8 text-2xl font-medium">
-                        Commercial records
-                    </h3>
-
-                    <p class="mt-4 leading-7 text-blue-100/40">
-                        Contracts remain attached to the correct client and can
-                        optionally reference that client's project.
-                    </p>
-                </article>
-
+    <section class="border-b border-white/8 bg-white/2 py-24 sm:py-30">
+        <div class="site-container">
+            <p class="eyebrow">02 / Product model</p>
+            <div class="mt-12 grid gap-4 lg:grid-cols-3">
+                <article class="interactive-card rounded-4xl p-7 sm:min-h-80"><p class="font-mono text-sm text-blue-300">01</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Public story</h3><p class="mt-5 leading-7 text-mist-500">Selected work, capabilities, technical writing and a clear route to start a conversation.</p></article>
+                <article class="interactive-card rounded-4xl p-7 sm:min-h-80 lg:translate-y-8"><p class="font-mono text-sm text-cyan-300">02</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Personal workspace</h3><p class="mt-5 leading-7 text-mist-500">A private place to manage current client work and publish journal entries.</p></article>
+                <article class="interactive-card rounded-4xl p-7 sm:min-h-80"><p class="font-mono text-sm text-blue-300">03</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Shared quality</h3><p class="mt-5 leading-7 text-mist-500">Consistent interaction, visual hierarchy and dependable server-rendered performance.</p></article>
             </div>
-
         </div>
     </section>
 
-
-    <section class="border-b border-blue-400/10">
-        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-12 lg:px-8">
-
-            <div class="lg:col-span-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    05 / Security
-                </p>
+    <section class="border-b border-white/8 py-24 sm:py-30">
+        <div class="site-container grid gap-14 lg:grid-cols-[0.78fr_1.22fr]">
+            <div>
+                <p class="eyebrow">03 / Architecture</p>
+                <h2 class="mt-7 text-balance text-4xl font-medium tracking-[-0.045em] text-mist-50 sm:text-6xl">Small layers. Clear responsibilities.</h2>
+                <p class="mt-7 max-w-xl leading-7 text-mist-500">The application stays explicit enough to understand, test and extend without turning ordinary product work into a framework exercise.</p>
             </div>
 
+            <div class="glass-panel rounded-5xl p-7 font-mono text-sm leading-7 text-mist-300 sm:p-10">
+                <p><span class="text-cyan-300">HTTP request</span></p>
+                <p class="pl-5 text-mist-700">↓ security + request middleware</p>
+                <p>handler</p>
+                <p class="pl-5 text-mist-700">↓ domain validation</p>
+                <p>repository</p>
+                <p class="pl-5 text-mist-700">↓ parameterised persistence</p>
+                <p>data store</p>
+                <p class="pl-5 text-mist-700">↓ Go model + template</p>
+                <p><span class="text-blue-300">HTML response</span></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-b border-white/8 py-24 sm:py-30">
+        <div class="site-container grid gap-14 lg:grid-cols-12">
+            <div class="lg:col-span-4"><p class="eyebrow">04 / Trust</p></div>
             <div class="lg:col-span-8">
-
-                <h2 class="text-4xl font-medium tracking-tight sm:text-5xl">
-                    Protecting the private workspace.
-                </h2>
-
-                <div class="mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        bcrypt password hashing
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        server-side hashed sessions
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        login and logout CSRF protection
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        login attempt throttling
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        cross-origin request protection
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        secure cookie controls
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        security response headers
-                    </p>
-                    <p class="border-b border-blue-400/10 pb-5 text-blue-100/50">
-                        authenticated no-store responses
-                    </p>
+                <h2 class="text-balance text-4xl font-medium tracking-[-0.045em] text-mist-50 sm:text-6xl">Security treated as product quality.</h2>
+                <div class="mt-10 grid gap-x-10 sm:grid-cols-2">
+                    <p class="border-b border-white/9 py-5 text-mist-500">bcrypt password hashing</p>
+                    <p class="border-b border-white/9 py-5 text-mist-500">hashed server-side sessions</p>
+                    <p class="border-b border-white/9 py-5 text-mist-500">CSRF and cross-origin controls</p>
+                    <p class="border-b border-white/9 py-5 text-mist-500">login attempt throttling</p>
+                    <p class="border-b border-white/9 py-5 text-mist-500">secure cookie policy</p>
+                    <p class="border-b border-white/9 py-5 text-mist-500">no-store admin responses</p>
                 </div>
-
             </div>
-
         </div>
     </section>
 
-
-    <section class="border-b border-blue-400/10 bg-blue-950/10">
-        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-12 lg:px-8">
-
-            <div class="lg:col-span-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    06 / Engineering choices
-                </p>
-            </div>
-
-            <div class="lg:col-span-8">
-
-                <h2 class="text-4xl font-medium tracking-tight sm:text-5xl">
-                    Deliberately lightweight.
-                </h2>
-
-                <div class="mt-10 space-y-8 text-blue-100/50">
-
+    <section class="py-24 sm:py-32">
+        <div class="site-container">
+            <div class="relative overflow-hidden rounded-5xl border border-white/9 bg-linear-to-br from-white/6 to-blue-400/7 p-8 sm:p-12 lg:p-16">
+                <div class="pointer-events-none absolute -right-28 -top-28 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
+                <div class="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
                     <div>
-                        <h3 class="text-lg font-medium text-white">
-                            Server-rendered Go
-                        </h3>
-                        <p class="mt-3 max-w-3xl leading-7">
-                            HTML is rendered on the server instead of shipping a
-                            large JavaScript application for screens that do not
-                            need one.
-                        </p>
+                        <p class="eyebrow">Outcome</p>
+                        <h2 class="mt-7 max-w-4xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                            A portfolio that proves the product thinking by
+                            <span class="text-blue-300">being the product.</span>
+                        </h2>
                     </div>
-
-                    <div>
-                        <h3 class="text-lg font-medium text-white">
-                            HTMX where interaction adds value
-                        </h3>
-                        <p class="mt-3 max-w-3xl leading-7">
-                            Focused interactions remain lightweight while the
-                            application keeps ordinary browser behaviour and
-                            server-side routing.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg font-medium text-white">
-                            SQLite as the foundation
-                        </h3>
-                        <p class="mt-3 max-w-3xl leading-7">
-                            The application stays operationally simple while
-                            retaining relational constraints, migrations and a
-                            tested repository layer.
-                        </p>
-                    </div>
-
+                    <a href="mailto:daniel@danieljmanningdev.com" class="button-primary w-fit">Discuss a project <span aria-hidden="true">↗</span></a>
                 </div>
-
             </div>
-
         </div>
     </section>
-
-
-    <section>
-        <div class="mx-auto max-w-7xl px-6 py-28 lg:px-8 lg:py-36">
-
-            <div class="max-w-5xl">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    07 / Result
-                </p>
-
-                <h2 class="mt-6 text-5xl font-medium leading-tight tracking-tight sm:text-6xl">
-                    A portfolio that also demonstrates
-                    <span class="text-blue-400">
-                        how I build products.
-                    </span>
-                </h2>
-
-                <p class="mt-8 max-w-3xl text-lg leading-8 text-blue-100/50">
-                    The result is a working product rather than a static mockup:
-                    a public-facing portfolio backed by a tested, authenticated
-                    client-management system that can continue evolving as real
-                    client requirements emerge.
-                </p>
-
-                <div class="mt-12 flex flex-wrap gap-4">
-
-                    <a
-                        href="https://github.com/danieljmanningdev/danieljmanningdev-portfolio"
-                        class="inline-flex items-center gap-3 rounded-full bg-blue-500 px-7 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
-                    >
-                        View source on GitHub
-                        <span>↗</span>
-                    </a>
-
-                    <a
-                        href="/#contact"
-                        class="inline-flex items-center gap-3 rounded-full border border-blue-400/20 px-7 py-3.5 text-sm text-blue-100/70 transition hover:border-blue-400/50 hover:text-white"
-                    >
-                        Start a conversation
-                        <span>→</span>
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
 </main>
 {{end}}
