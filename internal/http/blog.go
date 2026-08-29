@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/blog"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
@@ -54,8 +55,9 @@ type blogPageData struct {
 }
 
 type blogPostPageData struct {
-	Title string
-	Post  models.BlogPost
+	Title       string
+	Post        models.BlogPost
+	ContentHTML template.HTML
 }
 
 func (h *BlogHandler) List(
@@ -106,14 +108,26 @@ func (h *BlogHandler) Show(
 		return
 	}
 
+	contentHTML, err := blog.RenderMarkdown(post.Content)
+	if err != nil {
+		http.Error(
+			w,
+			"failed to render blog post",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
 	h.render(
 		w,
 		h.blogPostTemplates,
 		blogPostPageData{
-			Title: post.Title + " — Daniel J. Manning",
-			Post:  post,
+			Title:       post.Title + " — Daniel J. Manning",
+			Post:        post,
+			ContentHTML: contentHTML,
 		},
 	)
+
 }
 
 func (h *BlogHandler) render(
