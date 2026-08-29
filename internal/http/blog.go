@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"html/template"
 
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
@@ -42,4 +43,14 @@ func NewBlogHandler(
 		blogTemplates:     blogTemplates,
 		blogPostTemplates: blogPostTemplates,
 	}, nil
+}
+
+type blogPageData struct {
+	Title string
+	Posts []models.BlogPost
+}
+
+type blogPostPageData struct {
+	Title string
+	Post  models.BlogPost
 }
