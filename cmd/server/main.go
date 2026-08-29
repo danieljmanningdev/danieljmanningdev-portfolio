@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/blog"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/clients"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/config"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/contracts"
@@ -29,6 +30,7 @@ func newRouter(
 	clientsHandler http.Handler,
 	projectsHandler http.Handler,
 	contractsHandler http.Handler,
+	blogAdminHandler http.Handler,
 	sessionService *auth.SessionService,
 	blogHandler *apphttp.BlogHandler,
 ) http.Handler {
@@ -93,6 +95,15 @@ func newRouter(
 		),
 	)
 
+	protectedBlogAdmin := apphttp.NoIndex(
+		apphttp.NoStore(
+			apphttp.RequireAdmin(
+				sessionService,
+				blogAdminHandler,
+			),
+		),
+	)
+
 	// Redirect the dashboard path to its canonical trailing-slash URL.
 	mux.Handle(
 		"/dashboard",
@@ -141,6 +152,17 @@ func newRouter(
 	mux.Handle(
 		"/dashboard/contracts/",
 		protectedContracts,
+	)
+
+	// Match the blog admin list and every blog admin sub-route.
+	mux.Handle(
+		"/dashboard/blog",
+		protectedBlogAdmin,
+	)
+
+	mux.Handle(
+		"/dashboard/blog/",
+		protectedBlogAdmin,
 	)
 
 	// Static files remain public.
@@ -307,6 +329,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	blogAdminHandler, err := blog.NewAdminHandler(
+		db.SQL,
+		cfg.TemplateDir,
+	)
+	if err != nil {
+		logger.Error(
+			"failed to create blog admin handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	secureCookies :=
 		cfg.Environment == "production"
 
@@ -348,6 +382,7 @@ func main() {
 		clientsHandler,
 		projectsHandler,
 		contractsHandler,
+		blogAdminHandler,
 		sessionService,
 		blogHandler,
 	)
