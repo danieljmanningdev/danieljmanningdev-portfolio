@@ -1,0 +1,176 @@
+{{ define "content" }}
+
+<main class="mx-auto w-full max-w-4xl px-6 py-12 lg:px-8">
+
+    <div>
+        <a
+            href="/dashboard/blog"
+            class="text-sm text-blue-100/40 transition hover:text-white"
+        >
+            ← Back to blog
+        </a>
+
+        <h1 class="mt-6 text-3xl font-semibold text-white">
+            New blog post
+        </h1>
+
+        <p class="mt-3 text-sm text-blue-100/40">
+            Write the article in Markdown and publish it when you're ready.
+        </p>
+    </div>
+
+    <form
+        method="post"
+        action="/dashboard/blog/new"
+        class="mt-10 space-y-8"
+    >
+
+        <div>
+            <label
+                for="title"
+                class="block text-sm font-medium text-white"
+            >
+                Title
+            </label>
+
+            <input
+                id="title"
+                name="title"
+                type="text"
+                value="{{ .Form.Title }}"
+                class="mt-2 w-full rounded-lg border border-blue-300/10 bg-blue-300/5 px-4 py-3 text-white outline-none transition focus:border-blue-300/30"
+            >
+
+            {{ if .Errors.Title }}
+            <p class="mt-2 text-sm text-red-300">
+                {{ .Errors.Title }}
+            </p>
+            {{ end }}
+        </div>
+
+        <div>
+            <label
+                for="slug"
+                class="block text-sm font-medium text-white"
+            >
+                Slug
+            </label>
+
+            <input
+                id="slug"
+                name="slug"
+                type="text"
+                value="{{ .Form.Slug }}"
+                placeholder="building-a-blog-engine-in-go"
+                class="mt-2 w-full rounded-lg border border-blue-300/10 bg-blue-300/5 px-4 py-3 text-white outline-none transition focus:border-blue-300/30"
+            >
+
+            {{ if .Errors.Slug }}
+            <p class="mt-2 text-sm text-red-300">
+                {{ .Errors.Slug }}
+            </p>
+            {{ end }}
+        </div>
+
+        <div>
+            <label
+                for="excerpt"
+                class="block text-sm font-medium text-white"
+            >
+                Excerpt
+            </label>
+
+            <textarea
+                id="excerpt"
+                name="excerpt"
+                rows="3"
+                class="mt-2 w-full rounded-lg border border-blue-300/10 bg-blue-300/5 px-4 py-3 text-white outline-none transition focus:border-blue-300/30"
+            >{{ .Form.Excerpt }}</textarea>
+
+            {{ if .Errors.Excerpt }}
+            <p class="mt-2 text-sm text-red-300">
+                {{ .Errors.Excerpt }}
+            </p>
+            {{ end }}
+        </div>
+
+        <div>
+            <label
+                for="content"
+                class="block text-sm font-medium text-white"
+            >
+                Content
+            </label>
+
+            <textarea
+                id="content"
+                name="content"
+                rows="20"
+                class="mt-2 w-full rounded-lg border border-blue-300/10 bg-blue-300/5 px-4 py-3 font-mono text-sm leading-6 text-white outline-none transition focus:border-blue-300/30"
+            >{{ .Form.Content }}</textarea>
+
+            {{ if .Errors.Content }}
+            <p class="mt-2 text-sm text-red-300">
+                {{ .Errors.Content }}
+            </p>
+            {{ end }}
+        </div>
+
+        <div>
+            <label
+                for="status"
+                class="block text-sm font-medium text-white"
+            >
+                Status
+            </label>
+
+            <select
+                id="status"
+                name="status"
+                class="mt-2 w-full rounded-lg border border-blue-300/10 bg-[#050B18] px-4 py-3 text-white outline-none transition focus:border-blue-300/30"
+            >
+                <option
+                    value="draft"
+                    {{ if eq .Form.Status "draft" }}selected{{ end }}
+                >
+                    Draft
+                </option>
+
+                <option
+                    value="published"
+                    {{ if eq .Form.Status "published" }}selected{{ end }}
+                >
+                    Published
+                </option>
+            </select>
+
+            {{ if .Errors.Status }}
+            <p class="mt-2 text-sm text-red-300">
+                {{ .Errors.Status }}
+            </p>
+            {{ end }}
+        </div>
+
+        <div class="flex flex-wrap gap-3 border-t border-blue-300/10 pt-6">
+
+            <button
+                type="submit"
+                class="rounded-lg border border-blue-300/20 bg-blue-300/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-300/15"
+            >
+                Create post
+            </button>
+
+            <a
+                href="/dashboard/blog"
+                class="rounded-lg border border-blue-300/10 px-5 py-2.5 text-sm text-blue-100/50 transition hover:text-white"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</main>
+
+{{ end }}
