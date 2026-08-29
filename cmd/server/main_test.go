@@ -126,6 +126,7 @@ func TestNewRouterPublicRoutes(
 		protectedHandler,
 		protectedHandler,
 		protectedHandler,
+		protectedHandler,
 		sessionService,
 		blogHandler,
 	)
@@ -215,6 +216,7 @@ func TestNewRouterProtectsDashboardRoutes(
 		handler,
 		handler,
 		handler,
+		handler,
 		sessionService,
 		&apphttp.BlogHandler{},
 	)
@@ -227,6 +229,8 @@ func TestNewRouterProtectsDashboardRoutes(
 		"/dashboard/projects/1",
 		"/dashboard/contracts",
 		"/dashboard/contracts/1",
+		"/dashboard/blog",
+		"/dashboard/blog/1/edit",
 	}
 
 	for _, path := range protectedPaths {
@@ -293,6 +297,7 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 		handler,
 		handler,
 		handler,
+		handler,
 		sessionService,
 		&apphttp.BlogHandler{},
 	)
@@ -352,6 +357,7 @@ func TestNewRouterNoIndexPolicy(
 		handler,
 		handler,
 		handler,
+		handler,
 		sessionService,
 		&apphttp.BlogHandler{},
 	)
@@ -394,6 +400,10 @@ func TestNewRouterNoIndexPolicy(
 		},
 		{
 			path:        "/dashboard/contracts",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/blog",
 			wantNoIndex: true,
 		},
 	}

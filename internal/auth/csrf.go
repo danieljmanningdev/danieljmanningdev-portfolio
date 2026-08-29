@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
@@ -8,6 +9,29 @@ import (
 )
 
 const csrfTokenBytes = 32
+
+type adminCSRFContextKey struct{}
+
+func WithAdminCSRFToken(
+	ctx context.Context,
+	token string,
+) context.Context {
+	return context.WithValue(
+		ctx,
+		adminCSRFContextKey{},
+		token,
+	)
+}
+
+func AdminCSRFTokenFromContext(
+	ctx context.Context,
+) (string, bool) {
+	token, ok := ctx.Value(
+		adminCSRFContextKey{},
+	).(string)
+
+	return token, ok && token != ""
+}
 
 func GenerateCSRFToken() (string, error) {
 	tokenBytes := make(
@@ -55,6 +79,25 @@ func LogoutCSRFToken(
 	sum := sha256.Sum256(
 		[]byte(
 			"admin-logout-csrf:" +
+				sessionToken,
+		),
+	)
+
+	return base64.RawURLEncoding.EncodeToString(
+		sum[:],
+	)
+}
+
+func AdminCSRFToken(
+	sessionToken string,
+) string {
+	if sessionToken == "" {
+		return ""
+	}
+
+	sum := sha256.Sum256(
+		[]byte(
+			"admin-csrf:" +
 				sessionToken,
 		),
 	)

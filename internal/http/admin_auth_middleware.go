@@ -109,6 +109,13 @@ func RequireAdmin(
 				),
 			)
 
+			ctx = authservice.WithAdminCSRFToken(
+				ctx,
+				authservice.AdminCSRFToken(
+					cookie.Value,
+				),
+			)
+
 			next.ServeHTTP(
 				w,
 				r.WithContext(ctx),
