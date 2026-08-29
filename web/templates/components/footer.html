@@ -1,45 +1,41 @@
 {{define "footer"}}
+<footer class="relative z-10 mt-auto border-t border-white/8 bg-[#030814]/38">
+    <div class="site-container py-12 sm:py-16">
+        <div class="grid gap-10 border-b border-white/8 pb-12 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+                <p class="eyebrow">Available for thoughtful product work</p>
+                <p class="mt-6 max-w-4xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-5xl lg:text-6xl">
+                    Make the complex feel
+                    <span class="bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">effortless.</span>
+                </p>
+            </div>
 
-<footer class="mt-auto border-t border-blue-400/10">
-
-    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-
-        <div>
-
-            <p class="text-sm font-semibold tracking-[0.2em]">
-                DANIEL J. MANNING
-            </p>
-
-            <p class="mt-2 text-xs text-blue-100/30">
-                UI/UX Designer &amp; Full-Stack Developer
-            </p>
-
+            <a href="mailto:daniel@danieljmanningdev.com" class="button-primary w-fit">
+                Start a conversation
+                <span aria-hidden="true">↗</span>
+            </a>
         </div>
 
-        <div class="flex gap-8 text-sm text-blue-100/40">
-
-            <a
-                href="https://github.com/danieljmanningdev"
-                class="transition hover:text-white"
-            >
-                GitHub
+        <div class="grid gap-8 pt-8 text-sm text-mist-500 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto] lg:items-center">
+            <a href="/" class="inline-flex w-fit items-center" aria-label="Daniel J. Manning, homepage">
+                <img
+                    src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg"
+                    alt="Daniel J. Manning"
+                    class="h-9 w-auto"
+                    width="196"
+                    height="48"
+                    loading="lazy"
+                >
             </a>
 
-            <a
-                href="mailto:daniel@danieljmanningdev.com"
-                class="transition hover:text-white"
-            >
-                Email
-            </a>
+            <div class="flex flex-wrap gap-x-6 gap-y-3">
+                <a href="/blog/" class="transition hover:text-mist-50">Journal</a>
+                <a href="https://github.com/danieljmanningdev" class="transition hover:text-mist-50">GitHub</a>
+                <a href="mailto:daniel@danieljmanningdev.com" class="transition hover:text-mist-50">Email</a>
+            </div>
 
+            <p class="text-xs lg:text-right">© 2026 Daniel J. Manning</p>
         </div>
-
-        <p class="text-xs text-blue-100/30">
-            © 2026 Daniel J. Manning
-        </p>
-
     </div>
-
 </footer>
-
 {{end}}

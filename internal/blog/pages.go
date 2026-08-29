@@ -30,8 +30,9 @@ func (h *AdminHandler) listPosts(
 		w,
 		h.indexTemplates,
 		ListPageData{
-			Title: "Blog — Daniel J. Manning",
-			Posts: posts,
+			Title:     "Blog — Daniel J. Manning",
+			Posts:     posts,
+			CSRFToken: csrfTokenFromRequest(r),
 		},
 	)
 }

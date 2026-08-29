@@ -3,44 +3,37 @@ package http
 import (
 	"html/template"
 	"net/http"
-	"path/filepath"
+
+	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 )
 
 type HomeHandler struct {
-	template *template.Template
+	homeTemplate     *template.Template
+	notFoundTemplate *template.Template
 }
 
 func NewHomeHandler(
 	templateDir string,
 ) (*HomeHandler, error) {
-	tmpl, err := template.New("base").ParseFiles(
-		filepath.Join(
-			templateDir,
-			"layouts",
-			"base.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"header.html",
-		),
-		filepath.Join(
-			templateDir,
-			"components",
-			"footer.html",
-		),
-		filepath.Join(
-			templateDir,
-			"pages",
-			"public/home.html",
-		),
+	homeTemplate, err := rendering.LoadPageTemplate(
+		templateDir,
+		"public/home.html",
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	notFoundTemplate, err := rendering.LoadPageTemplate(
+		templateDir,
+		"public/404.html",
 	)
 	if err != nil {
 		return nil, err
 	}
 
 	return &HomeHandler{
-		template: tmpl,
+		homeTemplate:     homeTemplate,
+		notFoundTemplate: notFoundTemplate,
 	}, nil
 }
 
@@ -49,16 +42,18 @@ func (h *HomeHandler) ServeHTTP(
 	r *http.Request,
 ) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		renderNotFoundPage(
+			w,
+			h.notFoundTemplate,
+			r.URL.Path,
+		)
 		return
 	}
 
 	if r.Method != http.MethodGet {
 		http.Error(
 			w,
-			http.StatusText(
-				http.StatusMethodNotAllowed,
-			),
+			http.StatusText(http.StatusMethodNotAllowed),
 			http.StatusMethodNotAllowed,
 		)
 		return
@@ -80,16 +75,14 @@ func (h *HomeHandler) ServeHTTP(
 		`<https://danieljmanningdev.com/>; rel="canonical"`,
 	)
 
-	if err := h.template.ExecuteTemplate(
+	if err := h.homeTemplate.ExecuteTemplate(
 		w,
 		"base",
 		data,
 	); err != nil {
 		http.Error(
 			w,
-			http.StatusText(
-				http.StatusInternalServerError,
-			),
+			http.StatusText(http.StatusInternalServerError),
 			http.StatusInternalServerError,
 		)
 	}

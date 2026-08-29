@@ -1,312 +1,66 @@
 {{define "content"}}
+<main class="mx-auto max-w-7xl">
+    <section class="relative overflow-hidden rounded-5xl border border-white/8 bg-linear-to-br from-blue-500/9 via-white/3 to-cyan-400/5 p-7 sm:p-10 lg:p-12">
+        <div class="pointer-events-none absolute -right-20 -top-28 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
 
-<div class="mx-auto max-w-7xl">
-
-    <!-- Admin session controls -->
-    <div class="mb-6 flex justify-end">
-        <form action="/logout" method="post">
-            <input type="hidden" name="csrf_token" value="{{.LogoutCSRFToken}}">
-            <button type="submit"
-                class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/4 px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:border-red-400/30 hover:bg-red-400/10 hover:text-red-200 focus:outline-none focus:ring-2 focus:ring-red-400/30">
-                Sign out
-            </button>
-        </form>
-    </div>
-
-    <!-- ==================== DASHBOARD HERO ==================== -->
-
-    <section class="pt-10 sm:pt-14 lg:pt-16">
-
-        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-
-            <div class="max-w-3xl">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    Workspace
-                </p>
-
-                <h1 class="mt-5 text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
-                    Dashboard
+        <div class="relative flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+            <div class="max-w-4xl">
+                <p class="eyebrow">Workspace / Overview</p>
+                <h1 class="mt-7 text-balance text-5xl font-medium leading-[0.92] tracking-[-0.055em] text-mist-50 sm:text-7xl">
+                    Everything you need to manage
+                    <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">the work.</span>
                 </h1>
-
-                <p class="mt-5 max-w-2xl text-base leading-7 text-blue-100/50 sm:text-lg">
-                    Keep your clients, projects and contracts organised in one focused workspace.
-                </p>
-
+                <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">Keep clients, projects, contracts and journal posts organised in one private workspace.</p>
             </div>
 
-            <a href="/dashboard/contracts/new"
-                class="inline-flex w-fit shrink-0 items-center justify-center rounded-full bg-blue-500 px-6 py-3.5 text-sm font-medium text-[#050B18] transition hover:bg-blue-400">
-                Add contract
-            </a>
-
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="/dashboard/blog/new" class="button-primary">New journal post <span aria-hidden="true">＋</span></a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="csrf_token" value="{{.LogoutCSRFToken}}">
+                    <button type="submit" class="button-secondary text-mist-300 hover:border-red-300/30 hover:bg-red-300/8 hover:text-red-200">Sign out</button>
+                </form>
+            </div>
         </div>
-
     </section>
 
-
-    <!-- ==================== WORKSPACE CARDS ==================== -->
-
-    <section class="mt-16 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-
-        <!-- CLIENTS -->
-
-        <a href="/dashboard/clients"
-            class="group min-h-52.5 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8">
-
-            <div class="flex items-center justify-between">
-
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Clients
-                </p>
-
-                <span
-                    class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
-                    →
-                </span>
-
-            </div>
-
-            <p class="mt-9 text-3xl font-medium text-white">
-                View
-            </p>
-
-            <p class="mt-3 max-w-88 text-sm leading-6 text-blue-100/40">
-                Manage client relationships, contact details and internal notes.
-            </p>
-
+    <section class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-4" aria-label="Workspace areas">
+        <a href="/dashboard/clients" class="interactive-card group rounded-4xl p-7 sm:min-h-72">
+            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">01 / Clients</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
+            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Relationships</p>
+            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Contact details, organisations, status and internal notes.</p>
         </a>
 
-
-        <!-- PROJECTS -->
-
-        <a href="/dashboard/projects"
-            class="group min-h-52.5 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8">
-
-            <div class="flex items-center justify-between">
-
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Projects
-                </p>
-
-                <span
-                    class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
-                    →
-                </span>
-
-            </div>
-
-            <p class="mt-9 text-3xl font-medium text-white">
-                View
-            </p>
-
-            <p class="mt-3 max-w-88 text-sm leading-6 text-blue-100/40">
-                Manage client projects, timelines and current status.
-            </p>
-
+        <a href="/dashboard/projects" class="interactive-card group rounded-4xl p-7 sm:min-h-72 xl:translate-y-6">
+            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">02 / Projects</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
+            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Delivery</p>
+            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Current work, timelines, lifecycle and descriptions.</p>
         </a>
 
-
-        <!-- CONTRACTS -->
-
-        <a href="/dashboard/contracts"
-            class="group min-h-52.5 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8">
-
-            <div class="flex items-center justify-between">
-
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Contracts
-                </p>
-
-                <span
-                    class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
-                    →
-                </span>
-
-            </div>
-
-            <p class="mt-9 text-3xl font-medium text-white">
-                View
-            </p>
-
-            <p class="mt-3 max-w-88 text-sm leading-6 text-blue-100/40">
-                Manage agreements, values, dates and contract status.
-            </p>
-
+        <a href="/dashboard/contracts" class="interactive-card group rounded-4xl p-7 sm:min-h-72">
+            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">03 / Contracts</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
+            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Commercial</p>
+            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Agreements, values, dates and project relationships.</p>
         </a>
 
-        <!-- ADMIN BLOG -->
-        <a href="/dashboard/blog"
-            class="group min-h-52.5 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-7 transition duration-200 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-blue-950/30 sm:p-8">
-            <div class="flex items-center justify-between">
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Blog
-                </p>
-
-                <span
-                    class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300/70">
-                    →
-                </span>
-            </div>
-
-            <p class="mt-9 text-3xl font-medium text-white">
-                View
-            </p>
-
-            <p class="mt-3 max-w-88 text-sm leading-6 text-blue-100/40">
-                Create, edit, publish and manage journal articles.
-            </p>
+        <a href="/dashboard/blog" class="interactive-card group rounded-4xl p-7 sm:min-h-72 xl:translate-y-6">
+            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">04 / Journal</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
+            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Publishing</p>
+            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Write, edit and publish articles for the public journal.</p>
         </a>
-
     </section>
 
-
-    <!-- ==================== QUICK ACTIONS ==================== -->
-
-    <section class="mt-16">
-
-        <div class="mb-6">
-
-            <p class="text-xs uppercase tracking-[0.3em] text-blue-300/40">
-                Quick actions
-            </p>
-
+    <section class="mt-18 pb-4">
+        <div class="mb-7 max-w-2xl">
+            <p class="eyebrow">Quick actions</p>
+            <h2 class="mt-6 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">Start the next thing.</h2>
         </div>
 
-        <div class="grid gap-5 md:grid-cols-3">
-
-            <a href="/dashboard/clients/new"
-                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30">
-
-                <div class="flex items-start justify-between gap-8">
-
-                    <div>
-
-                        <p class="text-lg font-medium text-white">
-                            Add a client
-                        </p>
-
-                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            Create a new client record with contact details and notes.
-                        </p>
-
-                    </div>
-
-                    <span
-                        class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
-                        →
-                    </span>
-
-                </div>
-
-            </a>
-
-
-            <a href="/dashboard/projects/new"
-                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30">
-
-                <div class="flex items-start justify-between gap-8">
-
-                    <div>
-
-                        <p class="text-lg font-medium text-white">
-                            Add a project
-                        </p>
-
-                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            Create a project, assign its client and set its timeline.
-                        </p>
-
-                    </div>
-
-                    <span
-                        class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
-                        →
-                    </span>
-
-                </div>
-
-            </a>
-
-
-            <a href="/dashboard/contracts/new"
-                class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30">
-
-                <div class="flex items-start justify-between gap-8">
-
-                    <div>
-
-                        <p class="text-lg font-medium text-white">
-                            Add a contract
-                        </p>
-
-                        <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                            Create an agreement and associate it with a client and project.
-                        </p>
-
-                    </div>
-
-                    <span
-                        class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
-                        →
-                    </span>
-
-                </div>
-
-            </a>
-
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="/dashboard/clients/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a client</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Create a relationship record</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/projects/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a project</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Set up current work</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/contracts/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a contract</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Record an agreement</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/blog/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-blue-300/18 bg-blue-300/6 p-5 transition hover:border-blue-300/35 hover:bg-blue-300/10"><span class="text-sm font-semibold text-mist-100">Write a journal post</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-500">Create a draft or publish</span><span class="text-blue-300 transition group-hover:translate-x-1">→</span></span></a>
         </div>
-
-        <a href="/dashboard/blog/new"
-            class="group rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 transition duration-200 hover:border-blue-400/20 hover:bg-blue-950/30">
-            <div class="flex items-start justify-between gap-8">
-                <div>
-                    <p class="text-lg font-medium text-white">
-                        Add a blog post
-                    </p>
-
-                    <p class="mt-3 max-w-md text-sm leading-6 text-blue-100/40">
-                        Write a new journal article and save it as a draft or publish it.
-                    </p>
-                </div>
-
-                <span class="text-lg text-blue-300/30 transition group-hover:translate-x-1 group-hover:text-blue-300">
-                    →
-                </span>
-            </div>
-        </a>
-
     </section>
-
-
-    <!-- ==================== WORKSPACE NOTE ==================== -->
-
-    <section class="mt-16 pb-12">
-
-        <div class="rounded-3xl border border-blue-400/10 bg-blue-950/10 p-8 sm:p-10 lg:p-12">
-
-            <div class="max-w-2xl">
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/40">
-                    Workspace
-                </p>
-
-                <h2 class="mt-5 text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                    Your client work in one place.
-                </h2>
-
-                <p class="mt-5 text-sm leading-7 text-blue-100/40">
-                    Keep client records, project details and commercial agreements together
-                    while scheduling, tasks, team communication and time tracking remain in
-                    tools built specifically for day-to-day operations.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
+</main>
 {{end}}

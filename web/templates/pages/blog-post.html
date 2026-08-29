@@ -1,107 +1,64 @@
-{{ define "content" }}
-
-<main class="mx-auto w-full max-w-4xl px-6 py-20 sm:px-8 lg:py-24">
-
+{{define "content"}}
+<main class="overflow-clip">
     <article>
+        <header class="relative border-b border-white/8 py-18 sm:py-24 lg:py-28">
+            <div class="pointer-events-none absolute right-[12%] top-12 size-80 rounded-full bg-signal-400/8 blur-3xl" aria-hidden="true"></div>
 
-        <header class="border-b border-blue-400/10 pb-10">
+            <div class="site-container relative grid gap-10 lg:grid-cols-[0.32fr_1fr]">
+                <div>
+                    <a href="/blog/" class="button-quiet px-0">
+                        <span aria-hidden="true">←</span>
+                        Journal
+                    </a>
+                </div>
 
-            <a
-                href="/blog/"
-                class="text-sm text-blue-200/50 transition hover:text-white"
-            >
-                ← Back to journal
-            </a>
+                <div class="max-w-5xl">
+                    {{with .Post.PublishedAt}}
+                    <time class="eyebrow" datetime="{{.Format "2006-01-02"}}">{{.Format "02 January 2006"}}</time>
+                    {{end}}
 
-            {{ with .Post.PublishedAt }}
-            <time
-                class="mt-10 block text-xs uppercase tracking-[0.2em] text-blue-200/40"
-            >
-                {{ .Format "02 January 2006" }}
-            </time>
-            {{ end }}
+                    <h1 class="mt-8 text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em] text-mist-50">
+                        {{.Post.Title}}
+                    </h1>
 
-            <h1
-                class="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-                {{ .Post.Title }}
-            </h1>
+                    {{if .Post.Excerpt}}
+                    <p class="mt-8 max-w-3xl text-xl leading-9 text-mist-300">{{.Post.Excerpt}}</p>
+                    {{end}}
 
-            {{ if .Post.Excerpt }}
-            <p
-                class="mt-6 max-w-2xl text-lg leading-8 text-blue-100/50"
-            >
-                {{ .Post.Excerpt }}
-            </p>
-            {{ end }}
-
+                    <div class="mt-10 flex flex-wrap items-center gap-3 text-xs text-mist-500">
+                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Daniel J. Manning</span>
+                        <span aria-hidden="true">•</span>
+                        <span>Design, engineering &amp; security notes</span>
+                    </div>
+                </div>
+            </div>
         </header>
 
-        <div
-            class="
-                mt-12
-                max-w-3xl
-                text-base
-                leading-8
-                text-blue-50/80
+        <div class="site-container grid gap-12 py-18 sm:py-24 lg:grid-cols-[0.32fr_1fr] lg:py-30">
+            <aside class="hidden lg:block">
+                <div class="sticky top-28 border-l border-white/9 pl-5">
+                    <p class="metric-label">Article</p>
+                    <p class="mt-4 text-sm leading-6 text-mist-500">Written directly in the portfolio's own Markdown publishing system.</p>
+                    <a href="mailto:daniel@danieljmanningdev.com" class="mt-5 inline-flex text-xs font-bold text-signal-300 transition hover:text-signal-200">Discuss this idea ↗</a>
+                </div>
+            </aside>
 
-                [&_h1]:mt-12
-                [&_h1]:text-3xl
-                [&_h1]:font-semibold
-                [&_h1]:text-white
+            <div class="max-w-3xl">
+                <div class="article-prose">
+                    {{.ContentHTML}}
+                </div>
 
-                [&_h2]:mt-12
-                [&_h2]:text-2xl
-                [&_h2]:font-semibold
-                [&_h2]:text-white
-
-                [&_h3]:mt-10
-                [&_h3]:text-xl
-                [&_h3]:font-semibold
-                [&_h3]:text-white
-
-                [&_p]:mt-6
-
-                [&_ul]:mt-6
-                [&_ul]:list-disc
-                [&_ul]:space-y-2
-                [&_ul]:pl-6
-
-                [&_ol]:mt-6
-                [&_ol]:list-decimal
-                [&_ol]:space-y-2
-                [&_ol]:pl-6
-
-                [&_strong]:font-semibold
-                [&_strong]:text-white
-
-                [&_a]:text-blue-300
-                [&_a]:underline
-                [&_a]:underline-offset-4
-
-                [&_code]:rounded
-                [&_code]:bg-blue-400/10
-                [&_code]:px-1.5
-                [&_code]:py-0.5
-                [&_code]:text-sm
-
-                [&_pre]:mt-6
-                [&_pre]:overflow-x-auto
-                [&_pre]:rounded-lg
-                [&_pre]:border
-                [&_pre]:border-blue-400/10
-                [&_pre]:bg-blue-400/5
-                [&_pre]:p-5
-
-                [&_pre_code]:bg-transparent
-                [&_pre_code]:p-0
-            "
-        >
-            {{ .ContentHTML }}
+                <footer class="mt-18 border-t border-white/9 pt-8">
+                    <a href="/blog/" class="group flex items-center justify-between gap-6 rounded-4xl border border-white/9 bg-white/3 p-6 transition hover:border-signal-300/25 hover:bg-signal-300/5 sm:p-8">
+                        <div>
+                            <p class="metric-label">Continue reading</p>
+                            <p class="mt-3 text-xl font-medium text-mist-50">Return to the journal archive</p>
+                        </div>
+                        <span class="grid size-12 shrink-0 place-items-center rounded-full bg-signal-300 text-ink-950 transition group-hover:-rotate-12" aria-hidden="true">←</span>
+                    </a>
+                </footer>
+            </div>
         </div>
-
     </article>
-
 </main>
-
-{{ end }}
+{{end}}

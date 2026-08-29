@@ -18,6 +18,7 @@ type BlogHandler struct {
 
 	blogTemplates     *template.Template
 	blogPostTemplates *template.Template
+	notFoundTemplates *template.Template
 }
 
 func NewBlogHandler(
@@ -42,20 +43,29 @@ func NewBlogHandler(
 		return nil, err
 	}
 
+	notFoundTemplates, err := rendering.LoadPageTemplate(
+		templateDir,
+		"public/404.html",
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return &BlogHandler{
 		repository:        repo,
 		blogTemplates:     blogTemplates,
 		blogPostTemplates: blogPostTemplates,
+		notFoundTemplates: notFoundTemplates,
 	}, nil
 }
 
 type blogPageData struct {
-	Title string
+	publicPageData
 	Posts []models.BlogPost
 }
 
 type blogPostPageData struct {
-	Title       string
+	publicPageData
 	Post        models.BlogPost
 	ContentHTML template.HTML
 }
@@ -78,7 +88,12 @@ func (h *BlogHandler) List(
 		w,
 		h.blogTemplates,
 		blogPageData{
-			Title: "Blog — Daniel J. Manning",
+			publicPageData: publicPageData{
+				Title:       "Journal — Daniel J. Manning",
+				Description: "Articles and technical notes on digital product design, Go, HTMX, security and building maintainable software.",
+				OGTitle:     "Journal — Daniel J. Manning",
+				OGType:      "website",
+			},
 			Posts: posts,
 		},
 	)
@@ -96,7 +111,11 @@ func (h *BlogHandler) Show(
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			http.NotFound(w, r)
+			renderNotFoundPage(
+				w,
+				h.notFoundTemplates,
+				r.URL.Path,
+			)
 			return
 		}
 
@@ -118,16 +137,25 @@ func (h *BlogHandler) Show(
 		return
 	}
 
+	description := post.Excerpt
+	if description == "" {
+		description = "An article by Daniel J. Manning."
+	}
+
 	h.render(
 		w,
 		h.blogPostTemplates,
 		blogPostPageData{
-			Title:       post.Title + " — Daniel J. Manning",
+			publicPageData: publicPageData{
+				Title:       post.Title + " — Daniel J. Manning",
+				Description: description,
+				OGTitle:     post.Title + " — Daniel J. Manning",
+				OGType:      "article",
+			},
 			Post:        post,
 			ContentHTML: contentHTML,
 		},
 	)
-
 }
 
 func (h *BlogHandler) render(
