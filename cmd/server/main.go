@@ -30,6 +30,7 @@ func newRouter(
 	projectsHandler http.Handler,
 	contractsHandler http.Handler,
 	sessionService *auth.SessionService,
+	blogHandler *apphttp.BlogHandler,
 ) http.Handler {
 	mux := http.NewServeMux()
 
@@ -153,6 +154,16 @@ func newRouter(
 			"/static/",
 			fileServer,
 		),
+	)
+
+	mux.HandleFunc(
+		"GET /blog/{$}",
+		blogHandler.List,
+	)
+
+	mux.HandleFunc(
+		"GET /blog/{slug}",
+		blogHandler.Show,
 	)
 
 	// The public homepage remains the final fallback.
@@ -284,6 +295,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	blogHandler, err := apphttp.NewBlogHandler(
+		db.SQL,
+		cfg.TemplateDir,
+	)
+	if err != nil {
+		logger.Error(
+			"failed to create blog handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	secureCookies :=
 		cfg.Environment == "production"
 
@@ -326,6 +349,7 @@ func main() {
 		projectsHandler,
 		contractsHandler,
 		sessionService,
+		blogHandler,
 	)
 
 	crossOriginProtection :=

@@ -1,0 +1,13 @@
+{{ define "content" }}
+<article>
+	<h1>{{ .Post.Title }}</h1>
+
+	{{ with .Post.PublishedAt }}
+	<time>{{ .Format "2 January 2006" }}</time>
+	{{ end }}
+
+	<div>
+		{{ .Post.Content }}
+	</div>
+</article>
+{{ end }}

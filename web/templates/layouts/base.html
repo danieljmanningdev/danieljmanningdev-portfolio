@@ -50,10 +50,10 @@
         content="#050B18"
     >
 
-    <link rel="stylesheet" href="../../static/css/app.css">
+    <link rel="stylesheet" href="/static/css/app.css">
 
     <script
-        src="../../static/scripts/min.htmx.js"
+        src="/static/scripts/min.htmx.js"
     ></script>
 
     <link
@@ -64,11 +64,13 @@
 
 </head>
 
-<body class="min-h-screen bg-[#050B18] text-white antialiased">
+<body class="min-h-screen bg-[#050B18] text-white antialiased flex flex-col">
 
     {{template "header" .}}
 
-    {{template "content" .}}
+    <div class="flex-1">
+        {{template "content" .}}
+    </div>
 
     {{template "footer" .}}
 
