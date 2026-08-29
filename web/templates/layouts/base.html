@@ -64,11 +64,13 @@
 
 </head>
 
-<body class="min-h-screen bg-[#050B18] text-white antialiased">
+<body class="min-h-screen bg-[#050B18] text-white antialiased flex flex-col">
 
     {{template "header" .}}
 
-    {{template "content" .}}
+    <div class="flex-1">
+        {{template "content" .}}
+    </div>
 
     {{template "footer" .}}
 
