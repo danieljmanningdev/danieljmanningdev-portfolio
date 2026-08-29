@@ -41,6 +41,7 @@ func (h *AdminHandler) createPost(
 	if formErrors.Any() {
 		h.renderNewPost(
 			w,
+			r,
 			form,
 			formErrors,
 			http.StatusUnprocessableEntity,
@@ -99,6 +100,7 @@ func (h *AdminHandler) updatePost(
 	if formErrors.Any() {
 		h.renderEditPost(
 			w,
+			r,
 			id,
 			form,
 			formErrors,

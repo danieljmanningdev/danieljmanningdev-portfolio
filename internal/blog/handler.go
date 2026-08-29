@@ -101,6 +101,7 @@ func (h *AdminHandler) handleGET(
 	if path == "/new" {
 		h.renderNewPost(
 			w,
+			r,
 			Form{
 				Status: "draft",
 			},

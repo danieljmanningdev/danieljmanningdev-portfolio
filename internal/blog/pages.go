@@ -61,6 +61,7 @@ func (h *AdminHandler) editPost(
 
 	h.renderEditPost(
 		w,
+		r,
 		id,
 		FormFromPost(post),
 		FormErrors{},
@@ -70,6 +71,7 @@ func (h *AdminHandler) editPost(
 
 func (h *AdminHandler) renderNewPost(
 	w http.ResponseWriter,
+	r *http.Request,
 	form Form,
 	errors FormErrors,
 	status int,
@@ -82,9 +84,10 @@ func (h *AdminHandler) renderNewPost(
 		w,
 		h.newTemplates,
 		FormPageData{
-			Title:  "New Blog Post — Daniel J. Manning",
-			Form:   form,
-			Errors: errors,
+			Title:     "New Blog Post — Daniel J. Manning",
+			Form:      form,
+			Errors:    errors,
+			CSRFToken: csrfTokenFromRequest(r),
 		},
 		status,
 	)
@@ -92,6 +95,7 @@ func (h *AdminHandler) renderNewPost(
 
 func (h *AdminHandler) renderEditPost(
 	w http.ResponseWriter,
+	r *http.Request,
 	id int64,
 	form Form,
 	errors FormErrors,
@@ -105,10 +109,11 @@ func (h *AdminHandler) renderEditPost(
 		w,
 		h.editTemplates,
 		EditPageData{
-			Title:  "Edit Blog Post — Daniel J. Manning",
-			PostID: id,
-			Form:   form,
-			Errors: errors,
+			Title:     "Edit Blog Post — Daniel J. Manning",
+			PostID:    id,
+			Form:      form,
+			Errors:    errors,
+			CSRFToken: csrfTokenFromRequest(r),
 		},
 		status,
 	)
