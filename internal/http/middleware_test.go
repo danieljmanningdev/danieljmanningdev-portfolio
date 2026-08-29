@@ -44,6 +44,7 @@ func TestRequestLoggerLogsRequestDetails(t *testing.T) {
 
 	expectedValues := []string{
 		"msg=\"http request\"",
+		"request_id=",
 		"method=POST",
 		"path=/dashboard/projects",
 		"status=201",
@@ -58,6 +59,10 @@ func TestRequestLoggerLogsRequestDetails(t *testing.T) {
 				logOutput,
 			)
 		}
+	}
+
+	if rec.Header().Get(requestIDHeader) == "" {
+		t.Fatal("expected response request ID")
 	}
 }
 
@@ -142,5 +147,170 @@ func TestRequestLoggerPreservesResponseStatus(t *testing.T) {
 			http.StatusNotFound,
 			rec.Code,
 		)
+	}
+}
+
+func TestRequestLoggerUsesErrorLevelForServerErrors(
+	t *testing.T,
+) {
+	var output bytes.Buffer
+
+	logger := slog.New(
+		slog.NewTextHandler(
+			&output,
+			nil,
+		),
+	)
+
+	handler := RequestLogger(
+		logger,
+		http.HandlerFunc(func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			http.Error(
+				w,
+				"failed",
+				http.StatusInternalServerError,
+			)
+		}),
+	)
+
+	handler.ServeHTTP(
+		httptest.NewRecorder(),
+		httptest.NewRequest(
+			http.MethodGet,
+			"/failure",
+			nil,
+		),
+	)
+
+	logOutput := output.String()
+	if !strings.Contains(logOutput, "level=ERROR") ||
+		!strings.Contains(logOutput, "status=500") ||
+		!strings.Contains(logOutput, "msg=\"http request failed\"") {
+		t.Fatalf(
+			"expected structured server-error log, got %q",
+			logOutput,
+		)
+	}
+}
+
+func TestRequestIDPreservesValidIncomingValue(
+	t *testing.T,
+) {
+	const requestID = "external-request-123"
+
+	handler := RequestID(http.HandlerFunc(func(
+		w http.ResponseWriter,
+		r *http.Request,
+	) {
+		if got := RequestIDFromContext(r.Context()); got != requestID {
+			t.Fatalf(
+				"expected context request ID %q, got %q",
+				requestID,
+				got,
+			)
+		}
+	}))
+
+	req := httptest.NewRequest(
+		http.MethodGet,
+		"/",
+		nil,
+	)
+	req.Header.Set(requestIDHeader, requestID)
+
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+
+	if got := rec.Header().Get(requestIDHeader); got != requestID {
+		t.Fatalf(
+			"expected response request ID %q, got %q",
+			requestID,
+			got,
+		)
+	}
+}
+
+func TestRequestIDReplacesInvalidIncomingValue(
+	t *testing.T,
+) {
+	handler := RequestID(http.HandlerFunc(func(
+		w http.ResponseWriter,
+		r *http.Request,
+	) {
+		if RequestIDFromContext(r.Context()) == "" {
+			t.Fatal("expected generated request ID in context")
+		}
+	}))
+
+	req := httptest.NewRequest(
+		http.MethodGet,
+		"/",
+		nil,
+	)
+	req.Header.Set(requestIDHeader, "bad\nrequest")
+
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+
+	got := rec.Header().Get(requestIDHeader)
+	if got == "" || got == "bad\nrequest" {
+		t.Fatalf("expected safe generated request ID, got %q", got)
+	}
+}
+
+func TestRequestLoggerRecoversPanics(t *testing.T) {
+	var output bytes.Buffer
+
+	logger := slog.New(
+		slog.NewTextHandler(
+			&output,
+			nil,
+		),
+	)
+
+	handler := RequestLogger(
+		logger,
+		http.HandlerFunc(func(
+			w http.ResponseWriter,
+			r *http.Request,
+		) {
+			panic("test panic")
+		}),
+	)
+
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(
+		rec,
+		httptest.NewRequest(
+			http.MethodGet,
+			"/panic",
+			nil,
+		),
+	)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Fatalf(
+			"expected status 500, got %d",
+			rec.Code,
+		)
+	}
+
+	logOutput := output.String()
+	for _, expected := range []string{
+		"msg=\"panic recovered\"",
+		"panic=\"test panic\"",
+		"request_id=",
+		"msg=\"http request failed\"",
+	} {
+		if !strings.Contains(logOutput, expected) {
+			t.Fatalf(
+				"expected panic log to contain %q, got %q",
+				expected,
+				logOutput,
+			)
+		}
 	}
 }

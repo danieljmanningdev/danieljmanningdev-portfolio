@@ -223,6 +223,7 @@ func TestNewRouterProtectsDashboardRoutes(
 
 	protectedPaths := []string{
 		"/dashboard/",
+		"/dashboard/activity",
 		"/dashboard/clients",
 		"/dashboard/clients/1",
 		"/dashboard/projects",
@@ -388,6 +389,10 @@ func TestNewRouterNoIndexPolicy(
 		},
 		{
 			path:        "/dashboard/",
+			wantNoIndex: true,
+		},
+		{
+			path:        "/dashboard/activity",
 			wantNoIndex: true,
 		},
 		{

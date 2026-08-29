@@ -84,16 +84,37 @@ func (h *BlogHandler) List(
 		return
 	}
 
+	title := "Journal — Daniel J. Manning"
+	description := "Articles and technical notes on digital product design, Go, HTMX, security and building maintainable software."
+
+	w.Header().Set(
+		"Link",
+		`<https://danieljmanningdev.com/blog/>; rel="canonical"`,
+	)
+
 	h.render(
 		w,
 		h.blogTemplates,
 		blogPageData{
-			publicPageData: publicPageData{
-				Title:       "Journal — Daniel J. Manning",
-				Description: "Articles and technical notes on digital product design, Go, HTMX, security and building maintainable software.",
-				OGTitle:     "Journal — Daniel J. Manning",
-				OGType:      "website",
-			},
+			publicPageData: newPublicPageData(
+				title,
+				description,
+				"/blog/",
+				"website",
+				map[string]any{
+					"@context":    "https://schema.org",
+					"@type":       "Blog",
+					"name":        title,
+					"description": description,
+					"url":         publicSiteURL + "/blog/",
+					"image":       defaultOGImage,
+					"author": map[string]any{
+						"@type": "Person",
+						"name":  "Daniel J. Manning",
+						"url":   publicSiteURL,
+					},
+				},
+			).withRequest(r),
 			Posts: posts,
 		},
 	)
@@ -142,16 +163,50 @@ func (h *BlogHandler) Show(
 		description = "An article by Daniel J. Manning."
 	}
 
+	canonicalPath := "/blog/" + post.Slug
+	structuredData := map[string]any{
+		"@context":         "https://schema.org",
+		"@type":            "BlogPosting",
+		"headline":         post.Title,
+		"description":      description,
+		"url":              publicSiteURL + canonicalPath,
+		"mainEntityOfPage": publicSiteURL + canonicalPath,
+		"image":            defaultOGImage,
+		"dateModified":     post.UpdatedAt.UTC().Format("2006-01-02T15:04:05Z07:00"),
+		"author": map[string]any{
+			"@type": "Person",
+			"name":  "Daniel J. Manning",
+			"url":   publicSiteURL,
+		},
+		"publisher": map[string]any{
+			"@type": "Person",
+			"name":  "Daniel J. Manning",
+			"url":   publicSiteURL,
+		},
+	}
+
+	if post.PublishedAt != nil {
+		structuredData["datePublished"] = post.PublishedAt.UTC().Format(
+			"2006-01-02T15:04:05Z07:00",
+		)
+	}
+
+	w.Header().Set(
+		"Link",
+		"<"+publicSiteURL+canonicalPath+">; rel=\"canonical\"",
+	)
+
 	h.render(
 		w,
 		h.blogPostTemplates,
 		blogPostPageData{
-			publicPageData: publicPageData{
-				Title:       post.Title + " — Daniel J. Manning",
-				Description: description,
-				OGTitle:     post.Title + " — Daniel J. Manning",
-				OGType:      "article",
-			},
+			publicPageData: newPublicPageData(
+				post.Title+" — Daniel J. Manning",
+				description,
+				canonicalPath,
+				"article",
+				structuredData,
+			).withRequest(r),
 			Post:        post,
 			ContentHTML: contentHTML,
 		},

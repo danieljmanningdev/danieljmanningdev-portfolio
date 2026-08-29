@@ -32,6 +32,7 @@ go.work.sum
 # .vscode/
 
 data/
+backups/
 *.db
 *.db-shm
 *.db-wal
@@ -39,6 +40,10 @@ data/
 # Node / Tailwind
 node_modules/
 web/static/css/app.css
+
+# Lighthouse
+.lighthouseci/
+artifacts/
 
 # macOS
 .DS_Store

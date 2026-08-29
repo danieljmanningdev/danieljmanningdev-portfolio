@@ -59,12 +59,13 @@ func (h *HomeHandler) ServeHTTP(
 		return
 	}
 
-	data := publicPageData{
-		Title:       "Daniel J. Manning — Digital Product Designer & Engineer",
-		Description: "Digital product design and full-stack engineering focused on fast, purposeful software, thoughtful user experiences and maintainable systems.",
-		OGTitle:     "Daniel J. Manning — Digital Product Designer & Engineer",
-		OGType:      "website",
-	}
+	data := newPublicPageData(
+		"Daniel J. Manning — Digital Product Designer & Engineer",
+		"Digital product design and full-stack engineering focused on fast, purposeful software, thoughtful user experiences and maintainable systems.",
+		"/",
+		"website",
+		personStructuredData(),
+	).withRequest(r)
 
 	w.Header().Set(
 		"Content-Type",
