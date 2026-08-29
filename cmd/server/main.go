@@ -38,6 +38,8 @@ func newRouter(
 
 	// Public application routes.
 	mux.HandleFunc("/health", apphttp.HealthHandler)
+	mux.HandleFunc("GET /robots.txt", apphttp.RobotsHandler)
+	mux.HandleFunc("GET /sitemap.xml", blogHandler.Sitemap)
 
 	mux.Handle(
 		"/work/portfolio",
@@ -58,7 +60,7 @@ func newRouter(
 		noIndexAdminAuth,
 	)
 
-	// All dashboard routes require a valid admin session.
+	// All workspace routes require a valid admin session.
 	protectedDashboard := apphttp.NoIndex(
 		apphttp.NoStore(
 			apphttp.RequireAdmin(
@@ -115,13 +117,16 @@ func newRouter(
 		),
 	)
 
-	// Match only the dashboard overview itself.
 	mux.Handle(
 		"/dashboard/{$}",
 		protectedDashboard,
 	)
 
-	// Match the client list and every client sub-route.
+	mux.Handle(
+		"/dashboard/activity",
+		protectedDashboard,
+	)
+
 	mux.Handle(
 		"/dashboard/clients",
 		protectedClients,
@@ -132,7 +137,6 @@ func newRouter(
 		protectedClients,
 	)
 
-	// Match the project list and every project sub-route.
 	mux.Handle(
 		"/dashboard/projects",
 		protectedProjects,
@@ -143,7 +147,6 @@ func newRouter(
 		protectedProjects,
 	)
 
-	// Match the contract list and every contract sub-route.
 	mux.Handle(
 		"/dashboard/contracts",
 		protectedContracts,
@@ -154,7 +157,6 @@ func newRouter(
 		protectedContracts,
 	)
 
-	// Match the blog admin list and every blog admin sub-route.
 	mux.Handle(
 		"/dashboard/blog",
 		protectedBlogAdmin,
@@ -271,6 +273,7 @@ func main() {
 	}
 
 	dashboardHandler, err := apphttp.NewDashboardHandler(
+		db.SQL,
 		cfg.TemplateDir,
 	)
 	if err != nil {

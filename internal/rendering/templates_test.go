@@ -32,6 +32,7 @@ func TestLoadPageTemplateParsesApplicationPages(
 		"blog-post.html",
 		"admin/login.html",
 		"admin/dashboard.html",
+		"admin/activity.html",
 		"admin/blog/index.html",
 		"admin/blog/new.html",
 		"admin/blog/edit.html",

@@ -13,12 +13,13 @@ type notFoundPageData struct {
 
 func newNotFoundPageData(path string) notFoundPageData {
 	return notFoundPageData{
-		publicPageData: publicPageData{
-			Title:       "Page Not Found — Daniel J. Manning",
-			Description: "The requested page could not be found.",
-			OGTitle:     "Page Not Found — Daniel J. Manning",
-			OGType:      "website",
-		},
+		publicPageData: newPublicPageData(
+			"Page Not Found — Daniel J. Manning",
+			"The requested page could not be found.",
+			"",
+			"website",
+			nil,
+		),
 		Path: path,
 	}
 }

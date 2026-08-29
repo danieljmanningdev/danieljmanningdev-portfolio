@@ -2,9 +2,11 @@ app = "danieljmanningdev-portfolio"
 primary_region = "lhr"
 
 [env]
-  PORT = "8080"
-  ENVIRONMENT = "production"
+  APP_PORT = "8080"
+  APP_ENV = "production"
   DATABASE_PATH = "/data/portfolio.db"
+  TEMPLATE_DIR = "web/templates"
+  LOG_LEVEL = "info"
 
 [http_service]
   internal_port = 8080

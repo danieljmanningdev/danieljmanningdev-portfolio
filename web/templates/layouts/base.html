@@ -6,23 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
     <meta name="theme-color" content="#050b18">
+    <meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"selfRequestsOnly":true}'>
 
     <title>{{.Title}}</title>
 
     {{if .Description}}
     <meta name="description" content="{{.Description}}">
     <meta property="og:description" content="{{.Description}}">
+    <meta name="twitter:description" content="{{.Description}}">
+    {{end}}
+
+    {{if .CanonicalURL}}
+    <link rel="canonical" href="{{.CanonicalURL}}">
+    <meta property="og:url" content="{{.CanonicalURL}}">
     {{end}}
 
     {{if .OGTitle}}
     <meta property="og:title" content="{{.OGTitle}}">
+    <meta name="twitter:title" content="{{.OGTitle}}">
     {{end}}
 
     {{if .OGType}}
     <meta property="og:type" content="{{.OGType}}">
     {{end}}
 
+    {{if .OGImage}}
+    <meta property="og:image" content="{{.OGImage}}">
+    <meta property="og:image:secure_url" content="{{.OGImage}}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Daniel J. Manning — Digital Product Designer &amp; Engineer">
+    <meta name="twitter:image" content="{{.OGImage}}">
+    <meta name="twitter:image:alt" content="Daniel J. Manning — Digital Product Designer &amp; Engineer">
+    {{end}}
+
+    <meta property="og:site_name" content="Daniel J. Manning">
+    <meta property="og:locale" content="en_GB">
     <meta name="twitter:card" content="summary_large_image">
+
+    {{if .StructuredData}}
+    <script type="application/ld+json" nonce="{{.CSPNonce}}">{{.StructuredData}}</script>
+    {{end}}
 
     <link rel="stylesheet" href="/static/css/app.css?v=4">
     <script src="/static/scripts/min.htmx.js" defer></script>

@@ -7,10 +7,10 @@
             <div class="max-w-4xl">
                 <p class="eyebrow">Workspace / Overview</p>
                 <h1 class="mt-7 text-balance text-5xl font-medium leading-[0.92] tracking-[-0.055em] text-mist-50 sm:text-7xl">
-                    Everything you need to manage
-                    <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">the work.</span>
+                    Focus on what needs
+                    <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">your attention.</span>
                 </h1>
-                <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">Keep clients, projects, contracts and journal posts organised in one private workspace.</p>
+                <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">A current view of client work, commercial follow-ups, publishing and recent workspace changes.</p>
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
@@ -23,43 +23,126 @@
         </div>
     </section>
 
-    <section class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-4" aria-label="Workspace areas">
-        <a href="/dashboard/clients" class="interactive-card group rounded-4xl p-7 sm:min-h-72">
-            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">01 / Clients</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
-            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Relationships</p>
-            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Contact details, organisations, status and internal notes.</p>
+    <section class="mt-7 grid gap-px overflow-hidden rounded-4xl border border-white/8 bg-white/8 sm:grid-cols-2 xl:grid-cols-4" aria-label="Workspace summary">
+        <a href="/dashboard/clients" class="bg-ink-900/94 p-6 transition hover:bg-blue-400/7">
+            <p class="metric-label">Active clients</p>
+            <p class="metric-value">{{.Summary.ActiveClients}}</p>
+            <p class="mt-3 text-xs text-mist-700">Open relationships</p>
         </a>
-
-        <a href="/dashboard/projects" class="interactive-card group rounded-4xl p-7 sm:min-h-72 xl:translate-y-6">
-            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">02 / Projects</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
-            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Delivery</p>
-            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Current work, timelines, lifecycle and descriptions.</p>
+        <a href="/dashboard/projects" class="bg-ink-900/94 p-6 transition hover:bg-blue-400/7">
+            <p class="metric-label">Active projects</p>
+            <p class="metric-value">{{.Summary.ActiveProjects}}</p>
+            <p class="mt-3 text-xs text-mist-700">Currently in delivery</p>
         </a>
-
-        <a href="/dashboard/contracts" class="interactive-card group rounded-4xl p-7 sm:min-h-72">
-            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">03 / Contracts</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
-            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Commercial</p>
-            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Agreements, values, dates and project relationships.</p>
+        <a href="/dashboard/blog" class="bg-ink-900/94 p-6 transition hover:bg-blue-400/7">
+            <p class="metric-label">Published posts</p>
+            <p class="metric-value">{{.Summary.PublishedPosts}}</p>
+            <p class="mt-3 text-xs text-mist-700">Visible in the journal</p>
         </a>
-
-        <a href="/dashboard/blog" class="interactive-card group rounded-4xl p-7 sm:min-h-72 xl:translate-y-6">
-            <div class="relative z-10 flex items-center justify-between"><span class="metric-label">04 / Journal</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">↗</span></div>
-            <p class="relative z-10 mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Publishing</p>
-            <p class="relative z-10 mt-4 text-sm leading-6 text-mist-500">Write, edit and publish articles for the public journal.</p>
-        </a>
+        <div class="bg-ink-900/94 p-6">
+            <p class="metric-label">Attention items</p>
+            <p class="metric-value {{if gt .Summary.AttentionTotal 0}}text-blue-200{{end}}">{{.Summary.AttentionTotal}}</p>
+            <p class="mt-3 text-xs text-mist-700">Across delivery, contracts and drafts</p>
+        </div>
     </section>
 
-    <section class="mt-18 pb-4">
+    <section class="mt-16" aria-labelledby="attention-heading">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="eyebrow">Needs attention</p>
+                <h2 id="attention-heading" class="mt-5 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">The next decisions, in one place.</h2>
+            </div>
+            <a href="/dashboard/activity" class="button-secondary min-h-10 px-4 text-xs">View activity <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+            <a href="/dashboard/projects" class="interactive-card group rounded-3xl p-5">
+                <div class="relative z-10 flex items-start justify-between gap-4"><p class="metric-label">Overdue</p><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></div>
+                <p class="relative z-10 mt-8 text-4xl font-medium tracking-[-0.05em] {{if gt .Summary.OverdueProjects 0}}text-red-200{{else}}text-mist-50{{end}}">{{.Summary.OverdueProjects}}</p>
+                <p class="relative z-10 mt-3 text-sm text-mist-500">Projects past their due date</p>
+            </a>
+
+            <a href="/dashboard/projects" class="interactive-card group rounded-3xl p-5">
+                <div class="relative z-10 flex items-start justify-between gap-4"><p class="metric-label">Due soon</p><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></div>
+                <p class="relative z-10 mt-8 text-4xl font-medium tracking-[-0.05em] text-mist-50">{{.Summary.DueSoonProjects}}</p>
+                <p class="relative z-10 mt-3 text-sm text-mist-500">Projects due within 14 days</p>
+            </a>
+
+            <a href="/dashboard/contracts" class="interactive-card group rounded-3xl p-5">
+                <div class="relative z-10 flex items-start justify-between gap-4"><p class="metric-label">Draft contracts</p><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></div>
+                <p class="relative z-10 mt-8 text-4xl font-medium tracking-[-0.05em] text-mist-50">{{.Summary.DraftContracts}}</p>
+                <p class="relative z-10 mt-3 text-sm text-mist-500">Not yet sent</p>
+            </a>
+
+            <a href="/dashboard/contracts" class="interactive-card group rounded-3xl p-5">
+                <div class="relative z-10 flex items-start justify-between gap-4"><p class="metric-label">Awaiting reply</p><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></div>
+                <p class="relative z-10 mt-8 text-4xl font-medium tracking-[-0.05em] text-mist-50">{{.Summary.SentContracts}}</p>
+                <p class="relative z-10 mt-3 text-sm text-mist-500">Contracts marked as sent</p>
+            </a>
+
+            <a href="/dashboard/blog" class="interactive-card group rounded-3xl p-5 sm:col-span-2 xl:col-span-1">
+                <div class="relative z-10 flex items-start justify-between gap-4"><p class="metric-label">Journal drafts</p><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></div>
+                <p class="relative z-10 mt-8 text-4xl font-medium tracking-[-0.05em] text-mist-50">{{.Summary.DraftPosts}}</p>
+                <p class="relative z-10 mt-3 text-sm text-mist-500">Posts waiting to be finished</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="mt-16 grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+        <div>
+            <p class="eyebrow">Workspace areas</p>
+            <h2 class="mt-5 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">Go straight to the record you need.</h2>
+            <p class="mt-5 max-w-md leading-7 text-mist-500">Each area keeps one part of the work organised without adding another external tool.</p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+            <a href="/dashboard/clients" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-lg font-semibold text-mist-100">Clients</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Relationships and notes</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/projects" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-lg font-semibold text-mist-100">Projects</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Delivery and dates</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/contracts" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-lg font-semibold text-mist-100">Contracts</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Agreements and values</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/blog" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-blue-300/18 bg-blue-300/6 p-5 transition hover:border-blue-300/35 hover:bg-blue-300/10"><span class="text-lg font-semibold text-mist-100">Journal</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-500">Draft and publish</span><span class="text-blue-300 transition group-hover:translate-x-1">→</span></span></a>
+        </div>
+    </section>
+
+    <section class="mt-16 grid gap-10 border-t border-white/8 pt-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start" aria-labelledby="recent-activity-heading">
+        <div>
+            <p class="eyebrow">Recent activity</p>
+            <h2 id="recent-activity-heading" class="mt-5 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">The latest changes across the workspace.</h2>
+            <a href="/dashboard/activity" class="button-secondary mt-7 w-fit">Open full history <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="divide-y divide-white/8 border-y border-white/8">
+            {{range .Summary.RecentAuditEvents}}
+            <article class="grid gap-3 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="rounded-full border border-white/8 bg-white/3 px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-mist-500">{{.EntityLabel}}</span>
+                        <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}" class="font-mono text-[0.68rem] text-mist-700">{{.CreatedAt.Format "02 Jan · 15:04"}}</time>
+                    </div>
+                    <p class="mt-3 truncate text-sm font-semibold text-mist-100">{{.Summary}}</p>
+                    {{if .Details}}<p class="mt-1 font-mono text-xs text-blue-300">{{.Details}}</p>{{end}}
+                </div>
+                {{if .URL}}<a href="{{.URL}}" class="text-xs font-semibold text-mist-500 transition hover:text-blue-200">Open →</a>{{end}}
+            </article>
+            {{else}}
+            <div class="py-10 text-center">
+                <p class="text-sm font-semibold text-mist-100">No workspace history yet.</p>
+                <p class="mt-2 text-xs text-mist-700">Your next change will appear here automatically.</p>
+            </div>
+            {{end}}
+        </div>
+    </section>
+
+    <section class="mt-16 pb-4">
         <div class="mb-7 max-w-2xl">
             <p class="eyebrow">Quick actions</p>
-            <h2 class="mt-6 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">Start the next thing.</h2>
+            <h2 class="mt-5 text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-4xl">Start the next thing.</h2>
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="/dashboard/clients/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a client</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Create a relationship record</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
-            <a href="/dashboard/projects/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a project</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Set up current work</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
-            <a href="/dashboard/contracts/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a contract</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Record an agreement</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
-            <a href="/dashboard/blog/new" class="group flex min-h-32 flex-col justify-between rounded-3xl border border-blue-300/18 bg-blue-300/6 p-5 transition hover:border-blue-300/35 hover:bg-blue-300/10"><span class="text-sm font-semibold text-mist-100">Write a journal post</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-500">Create a draft or publish</span><span class="text-blue-300 transition group-hover:translate-x-1">→</span></span></a>
+            <a href="/dashboard/clients/new" class="group flex min-h-28 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a client</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Create a relationship record</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/projects/new" class="group flex min-h-28 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a project</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Set up current work</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/contracts/new" class="group flex min-h-28 flex-col justify-between rounded-3xl border border-white/8 bg-white/3 p-5 transition hover:border-blue-300/25 hover:bg-blue-300/6"><span class="text-sm font-semibold text-mist-100">Add a contract</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-700">Record an agreement</span><span class="text-mist-700 transition group-hover:translate-x-1 group-hover:text-blue-300">→</span></span></a>
+            <a href="/dashboard/blog/new" class="group flex min-h-28 flex-col justify-between rounded-3xl border border-blue-300/18 bg-blue-300/6 p-5 transition hover:border-blue-300/35 hover:bg-blue-300/10"><span class="text-sm font-semibold text-mist-100">Write a journal post</span><span class="flex items-end justify-between gap-4"><span class="text-xs text-mist-500">Create a draft or publish</span><span class="text-blue-300 transition group-hover:translate-x-1">→</span></span></a>
         </div>
     </section>
 </main>
