@@ -6,6 +6,8 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+
+	authservice "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
 )
 
 func (h *AdminHandler) listPosts(
@@ -154,4 +156,14 @@ func (h *AdminHandler) renderStatus(
 	w.WriteHeader(status)
 
 	_, _ = body.WriteTo(w)
+}
+
+func csrfTokenFromRequest(
+	r *http.Request,
+) string {
+	token, _ := authservice.AdminCSRFTokenFromContext(
+		r.Context(),
+	)
+
+	return token
 }
