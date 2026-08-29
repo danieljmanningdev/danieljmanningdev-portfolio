@@ -1,0 +1,19 @@
+{{ define "content" }}
+<section>
+	<h1>Blog</h1>
+
+	{{ range .Posts }}
+	<article>
+		<h2>
+			<a href="/blog/{{ .Slug }}">
+				{{ .Title }}
+			</a>
+		</h2>
+
+		<p>{{ .Excerpt }}</p>
+	</article>
+	{{ else }}
+	<p>No posts published yet.</p>
+	{{ end }}
+</section>
+{{ end }}
