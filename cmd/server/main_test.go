@@ -10,6 +10,7 @@ import (
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/database"
+	apphttp "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/http"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
@@ -115,6 +116,8 @@ func TestNewRouterPublicRoutes(
 		},
 	)
 
+	blogHandler := &apphttp.BlogHandler{}
+
 	router := newRouter(
 		homeHandler,
 		caseStudyHandler,
@@ -124,6 +127,7 @@ func TestNewRouterPublicRoutes(
 		protectedHandler,
 		protectedHandler,
 		sessionService,
+		blogHandler,
 	)
 
 	tests := []struct {
@@ -212,6 +216,7 @@ func TestNewRouterProtectsDashboardRoutes(
 		handler,
 		handler,
 		sessionService,
+		&apphttp.BlogHandler{},
 	)
 
 	protectedPaths := []string{
@@ -289,6 +294,7 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 		handler,
 		handler,
 		sessionService,
+		&apphttp.BlogHandler{},
 	)
 
 	req := httptest.NewRequest(
@@ -347,6 +353,7 @@ func TestNewRouterNoIndexPolicy(
 		handler,
 		handler,
 		sessionService,
+		&apphttp.BlogHandler{},
 	)
 
 	tests := []struct {
