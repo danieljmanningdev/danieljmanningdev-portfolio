@@ -1,139 +1,86 @@
-# Daniel J. Manning — Portfolio & Client Workspace
+<div align="center">
 
-A fast, server-rendered developer portfolio and authenticated internal client workspace built with Go, HTMX, Tailwind CSS and SQLite.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="web/static/djmdev-svg-assets/djmdev-horizontal-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="web/static/djmdev-svg-assets/djmdev-horizontal-light.svg">
+  <img
+    src="web/static/djmdev-svg-assets/djmdev-horizontal-light.svg"
+    alt="Daniel J. Manning"
+    width="420"
+  >
+</picture>
 
-The public website presents my UI/UX design and full-stack development work. Behind it, the application includes a private administrative workspace for managing clients, projects and contracts without duplicating broader operational tools such as scheduling, team communication or time tracking.
+# Portfolio & Personal Workspace
 
-## What this demonstrates
+**A production-deployed, server-rendered Go application combining a public digital-product portfolio, a Markdown journal, and a private personal workspace.**
 
-- Production-style Go application architecture
-- Authentication and secure server-side sessions
-- SQLite persistence and migrations
-- HTMX server-rendered interfaces
-- Automated testing
-- Security-focused middleware
+[Live website](https://danieljmanningdev.com/) ·
+[Case study](https://danieljmanningdev.com/work/portfolio) ·
+[Journal](https://danieljmanningdev.com/blog/)
 
-## Screenshots
+[![CI](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/ci.yml)
+[![Fly Deploy](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/fly.yml/badge.svg)](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/fly.yml)
+[![Go](https://img.shields.io/badge/Go-1.26.5-00ADD8?logo=go&logoColor=white)](https://go.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-0EA5E9?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2563EB.svg)](LICENSE)
 
-### Public portfolio
+</div>
 
-![Daniel J. Manning's portfolio home screen](web/static/images/djmdev-homescreen.png)
+---
 
-### Internal workspace
+## Overview
 
-![Daniel J. Manning's internal workspace](web/static/images/internal-workspace.png)
+This repository contains the complete source for
+[danieljmanningdev.com](https://danieljmanningdev.com/).
 
-## Current Features
+It is designed and engineered as one coherent product with two distinct surfaces:
 
-### Public portfolio
+| Surface | Purpose |
+|---|---|
+| **Public portfolio** | Presents selected work, product-design capability, engineering experience, a detailed case study, and a technical journal. |
+| **Personal workspace** | Provides an authenticated area for managing clients, projects, contracts, and journal publishing. |
 
-- Responsive portfolio homepage
-- Selected-work section
-- About and capabilities sections
-- Contact call to action
-- Shared layout, header and footer templates
-- Tailwind CSS visual system
-- Server-rendered pages using Go templates
+The application is intentionally **server-rendered first**. Go produces the HTML, while HTMX is used only where a focused interaction benefits from progressive enhancement. There is no client-side router, hydration layer, or duplicated JSON API.
 
-### Internal workspace
+The project demonstrates the overlap between product design and engineering: information architecture, interaction design, visual systems, backend structure, authentication, persistence, testing, deployment, and ongoing product operations all live in the same codebase.
 
-- Authenticated administrative dashboard
-- Admin login and logout
-- Server-side session persistence
-- Session idle and absolute expiry
-- HttpOnly session cookies
-- Secure cookies in production
-- Protected `/dashboard/*` routes
-- No-store caching policy for authenticated pages
-- Cross-origin request protection
-- Central HTTP security headers
-- Production-only HSTS
-- Hardened HTTP server timeouts and header limits
-- Client listing and detail pages
-- Create and edit clients
-- Delete clients with HTMX confirmation
-- Active and inactive client statuses
-- Project listing and detail pages
-- Create and edit projects
-- Archive projects
-- Associate projects with clients
-- Planned, active, completed and archived project statuses
-- Optional project start and due dates
-- Contract listing and detail pages
-- Create and edit contracts
-- Cancel contracts while preserving the record
-- Associate contracts with clients
-- Optional project association for contracts
-- Contract-to-project ownership validation
-- Draft, sent, accepted, completed and cancelled contract statuses
-- Contract start and end dates
-- Contract values stored as integer currency amounts
-- Contract notes
-- Server-side form validation
-- SQLite persistence with foreign-key enforcement
-- Automatic database migrations
-- Structured application logging
-- HTTP request logging with response status and duration
-- Automated HTTP, auth, database and repository tests
-- HTMX-aware redirects
+## Highlights
+
+- Distinct public, authentication, and personal-workspace layouts
+- Responsive portfolio with selected work, capabilities, process, and contact sections
+- Long-form portfolio case study
+- Markdown journal powered by Goldmark
+- Custom journal administration for drafting, editing, publishing, unpublishing, and deleting posts
+- Client, project, and contract management
+- Server-side sessions with idle and absolute expiry
+- CSRF protection, login throttling, cross-origin protection, and security headers
+- Tailwind CSS v4 design tokens using CSS-first configuration
+- Custom accessible 404 experience
+- Automated Go checks, tests, template parsing, and CSS compilation in CI
+- Multi-stage Docker build and Fly.io deployment with persistent SQLite storage
 
 ## Technology
 
-- **Backend:** Go and the standard-library `net/http` package
-- **Templates:** Go `html/template`
-- **Interactivity:** HTMX
-- **Styling:** Tailwind CSS v4
-- **Database:** SQLite using `modernc.org/sqlite`
-- **Authentication:** bcrypt passwords and server-side sessions
-- **Logging:** Go `log/slog`
-- **Architecture:** HTTP handler → repository → SQLite
-- **Testing:** Go `testing`, `httptest` and in-memory SQLite databases
+| Area | Technology |
+|---|---|
+| Language | Go 1.26.5 |
+| HTTP | Standard-library `net/http` |
+| Templates | `html/template` |
+| Progressive enhancement | HTMX |
+| Styling | Tailwind CSS v4 |
+| Design tokens | CSS-first `@theme` configuration with OKLCH colours |
+| Database | SQLite through `modernc.org/sqlite` |
+| Markdown | Goldmark |
+| Authentication | bcrypt passwords and server-side sessions |
+| Logging | `log/slog` |
+| Testing | Go `testing`, `httptest`, and in-memory SQLite |
+| Packaging | Multi-stage Docker |
+| Hosting | Fly.io with a persistent volume |
+| Automation | GitHub Actions |
 
-The application deliberately avoids a heavy frontend framework. Most pages are rendered on the server, while HTMX is used for focused interactions where it provides a clear benefit.
+## Architecture
 
-## Project Structure
-
-```text
-.
-├── cmd
-│   ├── adminctl
-│   │   └── main.go
-│   └── server
-│       ├── main.go
-│       └── main_test.go
-├── internal
-│   ├── auth
-│   ├── config
-│   ├── database
-│   ├── http
-│   ├── logging
-│   ├── models
-│   └── repository
-├── migrations
-│   ├── 001_initial.sql
-│   └── 002_auth.sql
-├── web
-│   ├── static
-│   │   ├── css
-│   │   │   └── input.css
-│   │   └── images
-│   │       ├── djmdev-homescreen.png
-│   │       └── internal-workspace.png
-│   └── templates
-│       ├── components
-│       ├── layouts
-│       └── pages
-├── go.mod
-├── go.sum
-├── package.json
-├── package-lock.json
-├── LICENSE
-└── README.md
-```
-
-## Application Architecture
-
-The application is intentionally organised into small, understandable layers.
+The application keeps request handling, domain behaviour, persistence, and rendering in clear layers:
 
 ```text
 Browser request
@@ -148,181 +95,218 @@ Router
       ↓
 Authentication middleware
       ↓
-HTTP handler
+Feature handler
       ↓
 Repository
       ↓
 SQLite
       ↓
-Go model
-      ↓
-HTML template
+Go model + HTML template
       ↓
 Browser response
 ```
 
-Each layer has a specific responsibility:
+Feature areas are separated into focused packages rather than placed inside one large HTTP package:
 
-- `cmd/server` opens the database, constructs handlers, registers routes and starts the HTTP server.
-- `cmd/adminctl` provides an explicit local command for creating administrative accounts.
-- `internal/auth` contains password hashing, token generation and session-service logic.
-- `internal/http` handles routing, HTTP methods, forms, validation, responses, authentication middleware, security middleware and template rendering.
-- `internal/repository` contains parameterised SQL queries and persistence logic.
-- `internal/models` defines the Go data structures used by the application.
-- `internal/database` opens SQLite, enables foreign keys and runs migrations.
-- `internal/config` loads application configuration from environment variables.
-- `internal/logging` configures structured application logging.
-- `web/templates` contains page, layout and shared component templates.
-- `web/static` contains Tailwind source files and repository screenshots.
+```text
+internal/
+├── auth/        # Passwords, tokens, CSRF, login limiting, sessions
+├── blog/        # Personal journal administration and validation
+├── clients/     # Client HTTP flows and forms
+├── config/      # Environment-driven application configuration
+├── contracts/   # Contract HTTP flows, validation, and relationships
+├── database/    # SQLite setup and migrations
+├── http/        # Public pages, authentication, middleware, and routing helpers
+├── logging/     # Structured logging
+├── models/      # Shared application models
+├── projects/    # Project HTTP flows and forms
+├── rendering/   # Public, workspace, and authentication template loading
+└── repository/  # Parameterised persistence operations
+```
 
-The core commercial relationship is:
+The core workspace relationships are:
 
 ```text
 Client
-  ↓
-Project
-  ↓
-Contract
+├── Projects
+└── Contracts
+    └── Optional project association
 ```
 
-A contract always belongs to a client and may optionally belong to a project.
+A contract always belongs to a client. When a project is selected, the application validates that it belongs to the same client.
 
-When a project is selected for a contract, the application validates that the project belongs to the same client as the contract.
+## Features
 
-This keeps the application focused on client and commercial records while operational workflows such as scheduling and time tracking remain outside the application.
+### Public portfolio
 
-## Authentication Flow
+- Product-led responsive homepage
+- Selected-work presentation
+- Detailed portfolio and workspace case study
+- Capabilities and working-process sections
+- Public Markdown journal
+- Individual article pages
+- Page descriptions and Open Graph metadata
+- Responsive navigation
+- Custom noindex 404 page
+- Accessible focus states, skip links, and reduced-motion support
+- Shared branded header and footer
 
-```text
-GET /dashboard/
-      ↓
-RequireAdmin middleware
-      ↓
-No valid session
-      ↓
-303 /login
-```
+### Personal workspace
 
-Successful login:
+- Authenticated dashboard
+- Dedicated workspace navigation
+- Client creation, viewing, editing, status management, and deletion
+- Project creation, viewing, editing, client association, dates, and archiving
+- Contract creation, viewing, editing, client/project relationships, values, dates, and cancellation
+- Journal archive
+- Markdown post editor
+- Draft and published states
+- Publish and unpublish actions
+- HTMX-enhanced deletion with confirmation
+- Server-side form parsing and validation
+- Empty states and contextual actions
 
-```text
-POST /login
-      ↓
-Admin lookup
-      ↓
-bcrypt password verification
-      ↓
-cryptographically random session token
-      ↓
-SHA-256 token hash stored in SQLite
-      ↓
-HttpOnly session cookie
-      ↓
-303 /dashboard/
-```
+The workspace is intentionally a **personal administrative tool**, not a public registration system or multi-tenant SaaS product.
 
-Session behaviour:
+### Authentication and security
 
-- Raw session tokens are not stored in SQLite.
-- Only SHA-256 hashes of session tokens are persisted.
-- Sessions have a 24-hour absolute lifetime.
-- Sessions expire after 30 minutes of inactivity.
-- Activity timestamps are periodically refreshed.
-- Sessions are revoked when an admin becomes inactive.
-- Logout revokes the server-side session and clears the browser cookie.
-- Production cookies use the `Secure` flag.
-- Authenticated dashboard responses use `Cache-Control: no-store`.
-
-## Security
-
-The application currently includes:
-
+- No public account-registration route
 - bcrypt password hashing
-- Generic login failure messages
-- Server-side session persistence
-- Hashed session tokens
-- Session idle expiry
-- Session absolute expiry
-- Admin deactivation checks
-- HttpOnly cookies
-- SameSite cookies
-- Secure production cookies
-- Authorization middleware for all `/dashboard/*` routes
-- Go `CrossOriginProtection`
-- `Cache-Control: no-store` for authenticated workspace responses
-- `X-Content-Type-Options: nosniff`
-- `X-Frame-Options: DENY`
-- `Content-Security-Policy: frame-ancestors 'none'`
-- `Referrer-Policy: strict-origin-when-cross-origin`
-- Restricted `Permissions-Policy`
-- Production-only `Strict-Transport-Security`
-- Request-header, read, write and idle server limits
-- Contract client/project ownership validation
+- Generic login-failure responses
+- Login attempt throttling
+- Cryptographically random session tokens
+- SHA-256 session-token hashes stored in SQLite
+- 24-hour absolute session lifetime
+- 30-minute idle timeout
+- Periodic session activity refresh
+- Server-side session revocation on logout
+- Inactive-admin rejection
+- HttpOnly and SameSite cookies
+- Secure cookies when `APP_ENV=production`
+- CSRF protection for authentication and workspace commands
+- Standard-library cross-origin request protection
+- `Cache-Control: no-store` for authenticated responses
+- Noindex policy for authentication and workspace pages
+- Framing, content-type, referrer, permissions, and HSTS response controls
+- Hardened HTTP server timeouts and header limits
 
-The CSP is intentionally limited to framing protection for now. A broader CSP should be introduced after the public site's external asset requirements are reviewed.
+## Project structure
 
-## Local Development
+```text
+.
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── fly.yml
+├── cmd/
+│   ├── adminctl/
+│   └── server/
+├── docs/
+│   └── site-experience-plan.md
+├── internal/
+│   ├── auth/
+│   ├── blog/
+│   ├── clients/
+│   ├── config/
+│   ├── contracts/
+│   ├── database/
+│   ├── http/
+│   ├── logging/
+│   ├── models/
+│   ├── projects/
+│   ├── rendering/
+│   └── repository/
+├── migrations/
+│   ├── 001_initial.sql
+│   ├── 002_auth.sql
+│   └── 003_blog.sql
+├── web/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── djmdev-svg-assets/
+│   │   ├── images/
+│   │   └── scripts/
+│   └── templates/
+│       ├── components/
+│       ├── layouts/
+│       └── pages/
+├── Dockerfile
+├── fly.toml
+├── go.mod
+├── go.sum
+├── package.json
+└── package-lock.json
+```
+
+Generated CSS, local databases, environment files, and dependency directories are excluded from Git.
+
+## Local development
 
 ### Requirements
 
 - Go 1.26.5 or newer
-- Node.js
+- Node.js 22 or newer recommended
 - npm
 - Git
-- SQLite command-line tools are optional but useful for inspecting the development database
 
-### Clone the repository
+The SQLite command-line client is optional but useful for inspecting local data.
+
+### Clone
 
 ```bash
 git clone https://github.com/danieljmanningdev/danieljmanningdev-portfolio.git
 cd danieljmanningdev-portfolio
 ```
 
-### Install frontend tooling
+### Install frontend dependencies
 
 ```bash
 npm ci
 ```
 
-### Build Tailwind CSS
+### Build the stylesheet
 
 ```bash
 npm run build:css
 ```
 
-The generated stylesheet is written to:
+Tailwind writes the generated stylesheet to:
 
 ```text
 web/static/css/app.css
 ```
 
-The generated CSS file is ignored by Git and should be rebuilt after cloning the repository or before deployment.
+That generated file is ignored by Git and is rebuilt in CI and during the Docker build.
 
-### Watch Tailwind during development
-
-Run this in a separate terminal:
-
-```bash
-npm run dev:css
-```
-
-### Start the Go server
+### Start the application
 
 ```bash
 go run ./cmd/server
 ```
 
-The development server starts at:
+Open:
 
 ```text
 http://localhost:8080
 ```
 
-## Create the First Admin
+### Watch CSS during development
 
-There is no public registration route.
+Run the Go server in one terminal:
 
-Administrative accounts are created explicitly using `adminctl`:
+```bash
+go run ./cmd/server
+```
+
+Run Tailwind in another:
+
+```bash
+npm run dev:css
+```
+
+## Create an administrator
+
+There is no public registration page. Administrative accounts are created explicitly with `adminctl`.
 
 ```bash
 go run ./cmd/adminctl \
@@ -330,456 +314,169 @@ go run ./cmd/adminctl \
   -name "Daniel Manning"
 ```
 
-The command prompts for the password without echoing it to the terminal.
+The command prompts for a password and confirmation without echoing the password to the terminal.
 
-```text
-Password:
-Confirm password:
-Admin created successfully
-```
-
-Only the bcrypt password hash is stored in SQLite.
-
-## Useful Routes
-
-| Route | Purpose | Access |
-|---|---|---|
-| `/` | Public portfolio | Public |
-| `/health` | JSON health check | Public |
-| `/login` | Admin login | Public |
-| `/logout` | Revoke admin session | Authenticated POST |
-| `/dashboard/` | Internal workspace overview | Admin |
-| `/dashboard/clients` | Client listing | Admin |
-| `/dashboard/clients/new` | Create-client form | Admin |
-| `/dashboard/clients/{id}` | Client detail page | Admin |
-| `/dashboard/clients/{id}/edit` | Edit-client form | Admin |
-| `/dashboard/projects` | Project listing | Admin |
-| `/dashboard/projects/new` | Create-project form | Admin |
-| `/dashboard/projects/{id}` | Project detail page | Admin |
-| `/dashboard/projects/{id}/edit` | Edit-project form | Admin |
-| `/dashboard/projects/{id}/archive` | Archive project | Admin |
-| `/dashboard/contracts` | Contract listing | Admin |
-| `/dashboard/contracts/new` | Create-contract form | Admin |
-| `/dashboard/contracts/{id}` | Contract detail page | Admin |
-| `/dashboard/contracts/{id}/edit` | Edit-contract form | Admin |
-| `/dashboard/contracts/{id}/cancel` | Cancel contract | Admin |
+Only the bcrypt password hash is persisted.
 
 ## Configuration
 
-The application reads configuration from environment variables and falls back to development defaults when values are not provided.
+The application reads configuration from environment variables and otherwise uses development defaults.
 
 | Variable | Default | Purpose |
-|---|---|---|
+|---|---:|---|
 | `APP_ENV` | `development` | Application environment |
 | `APP_PORT` | `8080` | HTTP server port |
 | `DATABASE_PATH` | `./data/app.db` | SQLite database path |
-| `TEMPLATE_DIR` | `web/templates` | Go template directory |
+| `TEMPLATE_DIR` | `web/templates` | Template root |
 | `LOG_LEVEL` | `info` | Structured log level |
 
 Example:
 
 ```bash
 APP_ENV=development \
-APP_PORT=9090 \
-DATABASE_PATH=./data/development.db \
+APP_PORT=8080 \
+DATABASE_PATH=./data/app.db \
 TEMPLATE_DIR=web/templates \
 LOG_LEVEL=debug \
 go run ./cmd/server
 ```
 
-Local environment files and database files are excluded from Git.
+Set `APP_ENV=production` in production to enable production-only cookie and HSTS behaviour.
 
-## Database
+## Useful routes
 
-SQLite is opened through `modernc.org/sqlite`.
+| Route | Purpose | Access |
+|---|---|---|
+| `/` | Public portfolio | Public |
+| `/work/portfolio` | Portfolio and workspace case study | Public |
+| `/blog/` | Journal archive | Public |
+| `/blog/{slug}` | Published journal article | Public |
+| `/health` | Health endpoint | Public |
+| `/login` | Administrator sign-in | Public |
+| `/dashboard/` | Personal workspace overview | Authenticated |
+| `/dashboard/clients` | Client management | Authenticated |
+| `/dashboard/projects` | Project management | Authenticated |
+| `/dashboard/contracts` | Contract management | Authenticated |
+| `/dashboard/blog` | Journal administration | Authenticated |
 
-The database layer:
+## Database and migrations
+
+SQLite is opened automatically when the application starts. The database package:
 
 - Creates the database directory when required
-- Enables SQLite foreign-key enforcement
-- Verifies that foreign-key enforcement is active
-- Uses a single connection for in-memory test databases
-- Runs versioned SQL migrations when the application starts
-- Tracks applied migrations in `schema_migrations`
+- Enables and verifies foreign-key enforcement
+- Runs versioned SQL migrations
+- Tracks applied versions in `schema_migrations`
+- Uses in-memory databases throughout the test suite where appropriate
 
-Current migrations:
-
-```text
-001_initial.sql
-    clients
-    projects
-    contracts
-    earlier foundation tables
-
-002_auth.sql
-    admins
-    admin_sessions
-```
-
-The currently implemented application domains are:
-
-- Clients
-- Projects
-- Contracts
-- Admin authentication
-- Admin sessions
-
-Contracts require a client relationship. Their project relationship is optional, allowing both project-specific contracts and broader client agreements.
-
-Application-level validation also ensures a selected project belongs to the contract's selected client.
-
-### Inspect the development database
-
-```bash
-sqlite3 data/app.db
-```
-
-Useful SQLite commands:
-
-```sql
-.tables
-
-.schema clients
-.schema projects
-.schema contracts
-.schema admins
-.schema admin_sessions
-
-SELECT * FROM clients;
-SELECT * FROM projects;
-SELECT * FROM contracts;
-SELECT id, email, display_name, is_active FROM admins;
-SELECT id, admin_id, expires_at, last_seen_at FROM admin_sessions;
-SELECT * FROM schema_migrations;
-```
-
-Never expose password hashes or session-token hashes unnecessarily when inspecting or logging authentication data.
-
-## Client Management
-
-The client feature supports:
+Current migrations provide:
 
 ```text
-Create
-Read
-Update
-Delete
+001_initial.sql  → clients, projects, contracts, and foundation tables
+002_auth.sql     → administrators and server-side sessions
+003_blog.sql     → journal posts and publishing indexes
 ```
 
-Client forms validate:
+Local application data is stored under `data/` by default and is intentionally excluded from source control.
 
-- Required name
-- Required email
-- Valid email format
-- Allowed client statuses
-- Maximum field lengths
-- Whitespace trimming
+## Quality checks
 
-Valid statuses:
-
-```text
-active
-inactive
-```
-
-## Project Management
-
-Projects belong to clients.
-
-The project feature supports:
-
-```text
-Create
-Read
-Update
-Archive
-```
-
-Project forms validate:
-
-- Required client
-- Required project name
-- Maximum name and description lengths
-- Allowed project statuses
-- Optional start and due dates
-- `YYYY-MM-DD` date format
-- Due dates cannot be earlier than start dates
-- Whitespace trimming
-
-Valid statuses:
-
-```text
-planned
-active
-completed
-archived
-```
-
-## Contract Management
-
-Contracts represent commercial agreements with clients.
-
-Every contract belongs to a client and may optionally be associated with a project.
-
-The contract feature supports:
-
-```text
-Create
-Read
-Update
-Cancel
-```
-
-Contracts are cancelled rather than deleted so commercial records remain available.
-
-Contract forms validate:
-
-- Required client
-- Required contract title
-- Maximum title length
-- Maximum notes length
-- Allowed contract statuses
-- Optional project association
-- Selected project ownership
-- Optional start and end dates
-- `YYYY-MM-DD` date format
-- End date cannot be earlier than start date
-- Non-negative contract values
-- Whitespace trimming
-
-Valid statuses:
-
-```text
-draft
-sent
-accepted
-completed
-cancelled
-```
-
-## Logging
-
-The application uses structured logging through Go's `log/slog`.
-
-Development uses human-readable text logs, while production can use JSON output.
-
-HTTP request middleware records:
-
-- Request method
-- Request path
-- Response status
-- Request duration
-
-Example:
-
-```text
-time=2026-08-12T13:49:25+01:00 level=INFO msg="http request" method=POST path=/login status=303 duration=269ms
-```
-
-Authentication credentials, raw session tokens and password hashes should never be logged.
-
-## Testing
-
-### Run all tests
-
-```bash
-go test ./...
-```
-
-### Run tests verbosely
-
-```bash
-go test -v ./...
-```
-
-### Run package-specific tests
-
-```bash
-go test ./internal/auth
-go test ./internal/database
-go test ./internal/repository
-go test ./internal/http
-go test ./cmd/server
-```
-
-### Run static analysis
-
-```bash
-go vet ./...
-```
-
-### Check formatting
+Run the full local verification sequence before opening or merging a pull request:
 
 ```bash
 gofmt -w cmd internal
-```
-
-### Check for whitespace errors
-
-```bash
-git diff --check
-```
-
-### Full local verification
-
-```bash
-gofmt -w cmd internal
-go test ./...
 go vet ./...
+go test ./...
 npm run build:css
 git diff --check
 ```
 
-The test suite covers areas including:
+The CI workflow runs on pull requests and pushes to `main`, checking:
 
-- Configuration defaults and environment overrides
-- Log-level configuration
-- Database opening and connectivity
-- Automatic database-directory creation
-- Migration ordering and idempotency
-- Failed migration handling
-- SQLite foreign-key enforcement
-- Client creation, updates and deletion
-- Client validation
-- HTMX deletion redirects
-- Project repository create/read/update/archive flows
-- Project form parsing and validation
-- Project date handling
-- Contract repository create/read/update/cancel flows
-- Contract listing and client filtering
-- Contract project/client ownership
-- Missing contract clients and projects
-- Contract form parsing and validation
-- Contract date validation
-- Contract value parsing
-- Admin repository behaviour
-- Admin session repository behaviour
-- bcrypt password hashing and verification
-- Session-token generation and hashing
-- Absolute session expiry
-- Idle session expiry
-- Session activity updates
-- Inactive-admin rejection
-- Session revocation
-- Login success and failure
-- Secure-cookie behaviour
-- Logout revocation
-- Authenticated admin context
-- Protected dashboard routing
-- Security headers
-- No-store cache behaviour
-- Cross-origin protection
-- HTTP router behaviour
-- HTTP request logging
-- Response-status capture
-- Health endpoint behaviour
-- Homepage rendering
+- Go formatting
+- `go vet`
+- All Go tests
+- Application-template parsing
+- Frontend dependency installation
+- Tailwind CSS compilation
 
-## Roadmap
+The test suite covers configuration, migrations, foreign keys, repositories, authentication, session expiry, CSRF behaviour, middleware, routing, form validation, domain relationships, HTMX responses, public rendering, and not-found handling.
 
-### Completed foundation
+## Deployment
 
-- [x] Public portfolio foundation
-- [x] Client management
-- [x] Project management
-- [x] Contract management
-- [x] Client → project relationships
-- [x] Client → contract relationships
-- [x] Optional project → contract relationships
-- [x] Contract project ownership validation
-- [x] SQLite persistence
-- [x] Repository layer
-- [x] Server-side validation
-- [x] Structured application logging
-- [x] HTTP request middleware
-- [x] Admin authentication
-- [x] Secure server-side sessions
-- [x] HttpOnly session cookies
-- [x] Secure production cookies
-- [x] Authorization middleware
-- [x] Cross-origin protection
-- [x] Security headers
-- [x] Authenticated-page no-store policy
-- [x] HTTP server timeouts and header limits
-- [x] Automated tests
+The production image uses a multi-stage build:
 
-### Next launch work
+```text
+Node.js builder
+    └── Compiles Tailwind CSS
 
-- [ ] Decide whether the client portal is required for initial launch
-- [ ] Public portfolio content polish
-- [ ] Case-study pages
-- [ ] Real contact and social links
-- [ ] SEO and Open Graph metadata
-- [ ] Custom 404 page
-- [ ] Accessibility review
-- [ ] Responsive/browser QA
-- [ ] Production deployment
-- [ ] Persistent SQLite storage
-- [ ] Automated database backups
-- [ ] Backup restoration test
-- [ ] Production smoke test
+Go builder
+    ├── Builds the web server
+    └── Builds adminctl
 
-### Future workspace improvements
+Debian runtime
+    ├── Application binaries
+    ├── Templates and static assets
+    └── SQL migrations
+```
 
-- [ ] Client search
-- [ ] Client status filtering
-- [ ] Prefer client archiving over permanent deletion
-- [ ] Improve project filtering and sorting
-- [ ] Improve contract filtering and sorting
-- [ ] Add selected workspace summaries to the dashboard
-- [ ] Review and remove unused legacy schema tables
+The application is deployed to Fly.io. Production SQLite data is mounted separately from the application image so posts and workspace records survive new deployments.
 
-### Future commercial workflow
+A push to `main` triggers the Fly deployment workflow.
 
-Potential future additions may include:
+Recommended production configuration:
 
-- Invitation-only client access
-- Client deliverables
-- Contract document generation
-- Contract acceptance or electronic signing
-- Invoicing
-- Payment status
-- Payment processing
+```text
+APP_ENV=production
+APP_PORT=8080
+DATABASE_PATH=/data/portfolio.db
+TEMPLATE_DIR=web/templates
+LOG_LEVEL=info
+```
 
-These features should extend the existing client → project → contract relationship rather than duplicate operational tools used for scheduling, tasks or time tracking.
+## Design approach
 
-## Design Philosophy
+The current experience is built around a **Clarity / Control** direction:
 
-This project is built around a small set of principles:
+- Deep navy, cobalt, polo-blue, and restrained icy-cyan accents
+- Modern sans-serif typography with precise monospaced details
+- Distinct public, authentication, and personal-workspace shells
+- CSS-first Tailwind v4 tokens
+- Responsive layouts and generous spacing
+- Small, purposeful motion
+- Progressive enhancement rather than JavaScript dependence
+- Accessible interaction states and reduced-motion support
 
-- Prefer server-rendered HTML when a JavaScript application is unnecessary.
-- Use HTMX for focused interactions rather than introducing a large frontend framework.
-- Keep SQL and persistence logic out of HTTP handlers.
-- Keep HTTP concerns out of repositories.
-- Use small, understandable layers.
-- Use structured logging for observable application behaviour.
-- Build fast interfaces without unnecessary frontend bloat.
-- Keep the internal workspace focused on clients, projects and commercial agreements.
-- Avoid rebuilding scheduling, team communication and time-tracking tools that already exist elsewhere.
-- Preserve important commercial records rather than deleting them unnecessarily.
-- Treat authentication and authorization as server-side concerns.
-- Store session-token hashes rather than raw session credentials.
-- Add abstractions only when repeated application behaviour justifies them.
-- Keep the public portfolio polished while building the internal workspace incrementally.
+The detailed design rationale and phased improvement plan are documented in:
 
-## Deployment Status
+```text
+docs/site-experience-plan.md
+```
 
-The application now includes the core authentication and HTTP security controls required to protect the internal administrative workspace.
+## Status and roadmap
 
-Production launch still requires:
+This is an actively maintained personal product rather than a tutorial repository.
 
-- persistent SQLite storage
-- backup automation
-- backup restoration testing
-- HTTPS deployment
-- production environment configuration
-- final security verification
-- public-site QA
+Current and planned work is tracked through
+[GitHub Issues](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/issues).
 
-The internal workspace should not be considered production-ready until those deployment controls are also verified.
+Likely areas of continued refinement include:
+
+- Bringing every client, project, and contract screen to the same visual standard
+- Improving active workspace navigation and contextual wayfinding
+- Expanding structured metadata and social sharing
+- Tightening the Content Security Policy
+- Additional browser-level, accessibility, and performance testing
+- Carefully chosen HTMX enhancements where they improve an existing server-rendered workflow
 
 ## Licence
 
-This project is licensed under the MIT Licence.
+Released under the [MIT Licence](LICENSE).
 
-Copyright © 2026 Daniel J. Manning.
+## Author
+
+Designed and built by **Daniel J. Manning**.
+
+- Website: [danieljmanningdev.com](https://danieljmanningdev.com/)
+- GitHub: [@danieljmanningdev](https://github.com/danieljmanningdev)
+- Email: [daniel@danieljmanningdev.com](mailto:daniel@danieljmanningdev.com)
