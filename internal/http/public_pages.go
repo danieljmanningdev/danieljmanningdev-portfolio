@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// Daniel J. Manning
+// https://danieljmanningdev.com
+//
+// Copyright © 2026 Daniel J. Manning.
+// -----------------------------------------------------------------------------
+
 package http
 
 import (
@@ -8,10 +15,15 @@ import (
 )
 
 type PublicPageDefinition struct {
-	Path            string
-	Template        string
-	Title           string
-	Description     string
+	Path        string
+	Template    string
+	Title       string
+	Description string
+
+	ServiceName string
+	ServiceType string
+	AreaServed  []string
+
 	ChangeFrequency string
 	Priority        string
 }
@@ -23,42 +35,78 @@ type PublicPageRoute struct {
 
 var PublicPages = []PublicPageDefinition{
 	{
-		Path:            "/web-design-leeds/",
-		Template:        "public/web-design-leeds.html",
-		Title:           "Web Design & Development in Leeds | Daniel J. Manning",
-		Description:     "Web design and development in Leeds for businesses that need fast, accessible and maintainable websites and digital products.",
+		Path:        "/web-design-leeds/",
+		Template:    "public/web-design-leeds.html",
+		Title:       "Web Design & Development in Leeds | Daniel J. Manning",
+		Description: "Web design and development in Leeds for businesses that need fast, accessible and maintainable websites and digital products.",
+
+		ServiceName: "Web Design & Development in Leeds",
+		ServiceType: "Web design and development",
+		AreaServed: []string{
+			"Leeds",
+			"United Kingdom",
+		},
+
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
 	{
-		Path:            "/web-development/",
-		Template:        "public/web-development.html",
-		Title:           "Web Development | Daniel J. Manning",
-		Description:     "Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
+		Path:        "/web-development/",
+		Template:    "public/web-development.html",
+		Title:       "Web Development | Daniel J. Manning",
+		Description: "Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
+
+		ServiceName: "Web Development",
+		ServiceType: "Web development",
+		AreaServed: []string{
+			"United Kingdom",
+		},
+
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
 	{
-		Path:            "/web-design/",
-		Template:        "public/web-design.html",
-		Title:           "Web Design | Daniel J. Manning",
-		Description:     "Web design for fast, accessible and maintainable websites, web applications and digital products.",
+		Path:        "/web-design/",
+		Template:    "public/web-design.html",
+		Title:       "Web Design | Daniel J. Manning",
+		Description: "Web design for fast, accessible and maintainable websites, web applications and digital products.",
+
+		ServiceName: "Web Design",
+		ServiceType: "Web design",
+		AreaServed: []string{
+			"United Kingdom",
+		},
+
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
 	{
-		Path:            "/software-development/",
-		Template:        "public/software-development.html",
-		Title:           "Software Development | Daniel J. Manning",
-		Description:     "Software development for fast, accessible and maintainable websites, web applications and digital products.",
+		Path:        "/software-development/",
+		Template:    "public/software-development.html",
+		Title:       "Software Development | Daniel J. Manning",
+		Description: "Software development for fast, accessible and maintainable websites, web applications and digital products.",
+
+		ServiceName: "Software Development",
+		ServiceType: "Software development",
+		AreaServed: []string{
+			"United Kingdom",
+		},
+
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
 	{
-		Path:            "/ui-ux-design/",
-		Template:        "public/ui-ux-design.html",
-		Title:           "UI & UX Design | Daniel J. Manning",
-		Description:     "UI and UX design for fast, accessible and maintainable websites, web applications and digital products.",
+		Path:        "/ui-ux-design/",
+		Template:    "public/ui-ux-design.html",
+		Title:       "UI & UX Design | Daniel J. Manning",
+		Description: "UI and UX design for fast, accessible and maintainable websites, web applications and digital products.",
+
+		ServiceName: "UI & UX Design",
+		ServiceType: "UI and UX design",
+		AreaServed: []string{
+			"United Kingdom",
+		},
+
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
@@ -91,17 +139,13 @@ func (h *PublicPageHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	var structuredData any
-
-	if h.definition.Path == "/web-development/" {
-		structuredData = serviceStructuredData(
-			"Web Development",
-			"/web-development/",
-			"Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
-			"Web development",
-			"United Kingdom",
-		)
-	}
+	structuredData := serviceStructuredData(
+		h.definition.ServiceName,
+		h.definition.Path,
+		h.definition.Description,
+		h.definition.ServiceType,
+		h.definition.AreaServed...,
+	)
 
 	data := newPublicPageData(
 		h.definition.Title,
@@ -128,6 +172,7 @@ func (h *PublicPageHandler) ServeHTTP(
 		)
 	}
 }
+
 func BuildPublicPageRoutes(
 	templateDir string,
 ) ([]PublicPageRoute, error) {
