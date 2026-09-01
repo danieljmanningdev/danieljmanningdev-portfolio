@@ -71,7 +71,7 @@ func (h *HomeHandler) ServeHTTP(
 		"Web designer, developer and digital product designer creating fast, accessible and maintainable websites and software for businesses in Leeds and beyond.",
 		"/",
 		"website",
-		personStructuredData(),
+		homeStructuredData(),
 	).withRequest(r)
 
 	w.Header().Set(

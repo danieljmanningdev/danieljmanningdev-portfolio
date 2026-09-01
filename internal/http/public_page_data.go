@@ -8,9 +8,10 @@
 package http
 
 import (
-	"encoding/json"
 	"html/template"
 	"net/http"
+
+	"github.com/danieljmanningdev/go-jsonld-schema/schema"
 )
 
 const (
@@ -64,7 +65,7 @@ func marshalStructuredData(value any) template.JS {
 		return ""
 	}
 
-	encoded, err := json.Marshal(value)
+	encoded, err := schema.Marshal(value)
 	if err != nil {
 		return ""
 	}
@@ -72,23 +73,32 @@ func marshalStructuredData(value any) template.JS {
 	return template.JS(encoded)
 }
 
-func personStructuredData() map[string]any {
-	return map[string]any{
-		"@context": "https://schema.org",
-		"@type":    "Person",
-		"name":     "Daniel J. Manning",
-		"url":      publicSiteURL,
-		"image":    defaultOGImage,
-		"jobTitle": "Digital Product Designer & Engineer",
-		"sameAs": []string{
-			"https://github.com/danieljmanningdev",
-		},
-		"knowsAbout": []string{
-			"Digital product design",
-			"User experience design",
-			"Go software engineering",
-			"HTMX",
-			"Web application security",
-		},
+func personStructuredData() schema.Person {
+	person := schema.NewPerson("Daniel J. Manning")
+
+	person.URL = publicSiteURL
+	person.PictureURL = defaultOGImage
+	person.JobTitle = "Digital Product Designer & Engineer"
+
+	person.SocialProfiles = []schema.SocialProfile{
+		"https://github.com/danieljmanningdev",
 	}
+
+	return person
+}
+
+func websiteStructuredData() schema.WebSite {
+	website := schema.NewWebsite(
+		"Daniel J. Manning",
+		publicSiteURL,
+	)
+
+	return website
+}
+
+func homeStructuredData() schema.Graph {
+	return schema.NewGraph(
+		personStructuredData(),
+		websiteStructuredData(),
+	)
 }
