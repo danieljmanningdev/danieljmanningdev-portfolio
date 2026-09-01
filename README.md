@@ -21,7 +21,6 @@
 [![CI](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/ci.yml)
 [![Fly Deploy](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/fly.yml/badge.svg)](https://github.com/danieljmanningdev/danieljmanningdev-portfolio/actions/workflows/fly.yml)
 [![Go](https://img.shields.io/badge/Go-1.26.5-00ADD8?logo=go&logoColor=white)](https://go.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-0EA5E9?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2563EB.svg)](LICENSE)
 
 </div>
@@ -54,7 +53,6 @@ The project demonstrates the overlap between product design and engineering: inf
 - Client, project, and contract management
 - Server-side sessions with idle and absolute expiry
 - CSRF protection, login throttling, cross-origin protection, and security headers
-- Tailwind CSS v4 design tokens using CSS-first configuration
 - Custom accessible 404 experience
 - Automated Go checks, tests, template parsing, and CSS compilation in CI
 - Multi-stage Docker build and Fly.io deployment with persistent SQLite storage
@@ -67,7 +65,6 @@ The project demonstrates the overlap between product design and engineering: inf
 | HTTP | Standard-library `net/http` |
 | Templates | `html/template` |
 | Progressive enhancement | HTMX |
-| Styling | Tailwind CSS v4 |
 | Design tokens | CSS-first `@theme` configuration with OKLCH colours |
 | Database | SQLite through `modernc.org/sqlite` |
 | Markdown | Goldmark |
@@ -273,7 +270,7 @@ npm run build:css
 Tailwind writes the generated stylesheet to:
 
 ```text
-web/static/css/app.css
+web/static/css/vanilla/main.css
 ```
 
 That generated file is ignored by Git and is rebuilt in CI and during the Docker build.
@@ -398,7 +395,6 @@ The CI workflow runs on pull requests and pushes to `main`, checking:
 - All Go tests
 - Application-template parsing
 - Frontend dependency installation
-- Tailwind CSS compilation
 
 The test suite covers configuration, migrations, foreign keys, repositories, authentication, session expiry, CSRF behaviour, middleware, routing, form validation, domain relationships, HTMX responses, public rendering, and not-found handling.
 
@@ -408,7 +404,6 @@ The production image uses a multi-stage build:
 
 ```text
 Node.js builder
-    └── Compiles Tailwind CSS
 
 Go builder
     ├── Builds the web server

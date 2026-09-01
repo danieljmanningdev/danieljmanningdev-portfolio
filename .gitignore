@@ -39,7 +39,6 @@ backups/
 
 # Node / Tailwind
 node_modules/
-web/static/css/app.css
 
 # Lighthouse
 .lighthouseci/
