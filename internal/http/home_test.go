@@ -119,8 +119,8 @@ func TestHomeHandler(
 
 	for _, expected := range []string{
 		"Daniel Manning",
-		"Digital Product Designer &amp; Engineer",
-		"Digital product design and full-stack engineering",
+		"Web Designer, Developer &amp; Product Designer | Daniel J. Manning",
+		"Web designer, developer and digital product designer creating fast, accessible and maintainable websites and software for businesses in Leeds and beyond.",
 	} {
 		if !strings.Contains(
 			body,

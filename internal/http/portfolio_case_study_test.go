@@ -104,7 +104,7 @@ func TestPortfolioCaseStudyHandler(
 
 	for _, expected := range []string{
 		"Portfolio &amp; Client Workspace",
-		"secure Go portfolio",
+		"secure portfolio and client workspace",
 	} {
 		if !strings.Contains(
 			body,
