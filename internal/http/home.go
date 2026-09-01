@@ -60,7 +60,7 @@ func (h *HomeHandler) ServeHTTP(
 	}
 
 	data := newPublicPageData(
-		"Daniel J. Manning — Digital Product Designer & Engineer",
+		"Web Designer, Developer & Product Designer | Daniel J. Manning",
 		"Digital product design and full-stack engineering focused on fast, purposeful software, thoughtful user experiences and maintainable systems.",
 		"/",
 		"website",
