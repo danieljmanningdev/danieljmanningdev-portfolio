@@ -1,0 +1,24 @@
+/* ========================================================================== 
+   WORKSPACE SPECIALTY COMPONENTS
+   ========================================================================== */
+
+.workspace-filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+.workspace-filter { padding: .5rem .875rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-surface); color: var(--color-mist-500); font-size: .75rem; font-weight: 600; transition: border-color var(--duration-fast) var(--ease-fluid), background var(--duration-fast) var(--ease-fluid), color var(--duration-fast) var(--ease-fluid); }
+.workspace-filter:hover { border-color: var(--color-accent-border); color: var(--color-mist-100); }
+.workspace-filter--active { border-color: color-mix(in oklab, var(--color-signal-300) 30%, transparent); background: color-mix(in oklab, var(--color-signal-300) 10%, transparent); color: var(--color-signal-100, var(--color-signal-200)); }
+
+.activity-header { display: flex; flex-direction: column; gap: 1.25rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
+.activity-title { margin-top: .5rem; color: var(--color-mist-50); font-size: 1.5rem; font-weight: 500; letter-spacing: -.035em; }
+.activity-list { border-bottom: 1px solid var(--color-border); }
+.activity-row { display: grid; gap: 1rem; padding-block: 1.5rem; border-top: 1px solid var(--color-border); }
+.activity-date { color: var(--color-mist-700); font-family: var(--font-mono); font-size: .75rem; line-height: 1.5rem; }
+.activity-summary { margin-top: .75rem; color: var(--color-mist-100); font-weight: 600; line-height: 1.5rem; }
+.activity-action { margin-top: .25rem; color: var(--color-mist-700); font-family: var(--font-mono); font-size: .68rem; }
+.activity-removed { color: var(--color-mist-700); font-size: .75rem; }
+
+.admin-panel { border: 1px solid var(--color-border); border-radius: 2rem; background: var(--color-surface); }
+
+@media (min-width: 40rem) {
+    .activity-header { flex-direction: row; align-items: end; justify-content: space-between; }
+    .activity-row { grid-template-columns: 9rem minmax(0, 1fr) auto; align-items: start; }
+}
