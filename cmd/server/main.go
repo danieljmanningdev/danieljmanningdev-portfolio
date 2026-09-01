@@ -22,180 +22,6 @@ import (
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
-func newRouter(
-	homeHandler http.Handler,
-	portfolioCaseStudyHandler http.Handler,
-	adminAuthHandler http.Handler,
-	dashboardHandler http.Handler,
-	clientsHandler http.Handler,
-	projectsHandler http.Handler,
-	contractsHandler http.Handler,
-	blogAdminHandler http.Handler,
-	sessionService *auth.SessionService,
-	blogHandler *apphttp.BlogHandler,
-) http.Handler {
-	mux := http.NewServeMux()
-
-	// Public application routes.
-	mux.HandleFunc("/health", apphttp.HealthHandler)
-	mux.HandleFunc("GET /robots.txt", apphttp.RobotsHandler)
-	mux.HandleFunc("GET /sitemap.xml", blogHandler.Sitemap)
-
-	mux.Handle(
-		"/work/portfolio",
-		portfolioCaseStudyHandler,
-	)
-
-	noIndexAdminAuth := apphttp.NoIndex(
-		adminAuthHandler,
-	)
-
-	mux.Handle(
-		"/login",
-		noIndexAdminAuth,
-	)
-
-	mux.Handle(
-		"/logout",
-		noIndexAdminAuth,
-	)
-
-	// All workspace routes require a valid admin session.
-	protectedDashboard := apphttp.NoIndex(
-		apphttp.NoStore(
-			apphttp.RequireAdmin(
-				sessionService,
-				dashboardHandler,
-			),
-		),
-	)
-
-	protectedClients := apphttp.NoIndex(
-		apphttp.NoStore(
-			apphttp.RequireAdmin(
-				sessionService,
-				clientsHandler,
-			),
-		),
-	)
-
-	protectedProjects := apphttp.NoIndex(
-		apphttp.NoStore(
-			apphttp.RequireAdmin(
-				sessionService,
-				projectsHandler,
-			),
-		),
-	)
-
-	protectedContracts := apphttp.NoIndex(
-		apphttp.NoStore(
-			apphttp.RequireAdmin(
-				sessionService,
-				contractsHandler,
-			),
-		),
-	)
-
-	protectedBlogAdmin := apphttp.NoIndex(
-		apphttp.NoStore(
-			apphttp.RequireAdmin(
-				sessionService,
-				blogAdminHandler,
-			),
-		),
-	)
-
-	// Redirect the dashboard path to its canonical trailing-slash URL.
-	mux.Handle(
-		"/dashboard",
-		apphttp.NoIndex(
-			http.RedirectHandler(
-				"/dashboard/",
-				http.StatusPermanentRedirect,
-			),
-		),
-	)
-
-	mux.Handle(
-		"/dashboard/{$}",
-		protectedDashboard,
-	)
-
-	mux.Handle(
-		"/dashboard/activity",
-		protectedDashboard,
-	)
-
-	mux.Handle(
-		"/dashboard/clients",
-		protectedClients,
-	)
-
-	mux.Handle(
-		"/dashboard/clients/",
-		protectedClients,
-	)
-
-	mux.Handle(
-		"/dashboard/projects",
-		protectedProjects,
-	)
-
-	mux.Handle(
-		"/dashboard/projects/",
-		protectedProjects,
-	)
-
-	mux.Handle(
-		"/dashboard/contracts",
-		protectedContracts,
-	)
-
-	mux.Handle(
-		"/dashboard/contracts/",
-		protectedContracts,
-	)
-
-	mux.Handle(
-		"/dashboard/blog",
-		protectedBlogAdmin,
-	)
-
-	mux.Handle(
-		"/dashboard/blog/",
-		protectedBlogAdmin,
-	)
-
-	// Static files remain public.
-	fileServer := http.FileServer(
-		http.Dir("web/static"),
-	)
-
-	mux.Handle(
-		"/static/",
-		http.StripPrefix(
-			"/static/",
-			fileServer,
-		),
-	)
-
-	mux.HandleFunc(
-		"GET /blog/{$}",
-		blogHandler.List,
-	)
-
-	mux.HandleFunc(
-		"GET /blog/{slug}",
-		blogHandler.Show,
-	)
-
-	// The public homepage remains the final fallback.
-	mux.Handle("/", homeHandler)
-
-	return mux
-}
-
 func main() {
 	cfg := config.Load()
 
@@ -344,6 +170,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	webDesignLeedsHandler, err :=
+		apphttp.NewWebDesignLeedsHandler(cfg.TemplateDir)
+
+	if err != nil {
+		logger.Error(
+			"failed to create Leeds web design handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	secureCookies :=
 		cfg.Environment == "production"
 
@@ -377,18 +214,21 @@ func main() {
 			sessionRepository,
 		)
 
-	router := newRouter(
-		homeHandler,
-		portfolioCaseStudyHandler,
-		adminAuthHandler,
-		dashboardHandler,
-		clientsHandler,
-		projectsHandler,
-		contractsHandler,
-		blogAdminHandler,
-		sessionService,
-		blogHandler,
-	)
+	router := newRouter(routerDependencies{
+		homeHandler:               homeHandler,
+		portfolioCaseStudyHandler: portfolioCaseStudyHandler,
+		webDesignLeedsHandler:     webDesignLeedsHandler,
+
+		adminAuthHandler: adminAuthHandler,
+		dashboardHandler: dashboardHandler,
+		clientsHandler:   clientsHandler,
+		projectsHandler:  projectsHandler,
+		contractsHandler: contractsHandler,
+		blogAdminHandler: blogAdminHandler,
+
+		sessionService: sessionService,
+		blogHandler:    blogHandler,
+	})
 
 	crossOriginProtection :=
 		http.NewCrossOriginProtection()
