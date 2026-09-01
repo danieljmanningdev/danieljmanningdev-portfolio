@@ -38,6 +38,30 @@ var PublicPages = []PublicPageDefinition{
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},
+	{
+		Path:            "/web-design/",
+		Template:        "public/web-design.html",
+		Title:           "Web Design | Daniel J. Manning",
+		Description:     "Web design for fast, accessible and maintainable websites, web applications and digital products.",
+		ChangeFrequency: "monthly",
+		Priority:        "0.9",
+	},
+	{
+		Path:            "/software-development/",
+		Template:        "public/software-development.html",
+		Title:           "Software Development | Daniel J. Manning",
+		Description:     "Software development for fast, accessible and maintainable websites, web applications and digital products.",
+		ChangeFrequency: "monthly",
+		Priority:        "0.9",
+	},
+	{
+		Path:            "/ui-ux-design/",
+		Template:        "public/ui-ux-design.html",
+		Title:           "UI & UX Design | Daniel J. Manning",
+		Description:     "UI and UX design for fast, accessible and maintainable websites, web applications and digital products.",
+		ChangeFrequency: "monthly",
+		Priority:        "0.9",
+	},
 }
 
 type PublicPageHandler struct {
