@@ -10,7 +10,8 @@ import (
 type routerDependencies struct {
 	homeHandler               http.Handler
 	portfolioCaseStudyHandler http.Handler
-	webDesignLeedsHandler     http.Handler
+
+	publicPageRoutes []apphttp.PublicPageRoute
 
 	adminAuthHandler http.Handler
 	dashboardHandler http.Handler
@@ -19,33 +20,48 @@ type routerDependencies struct {
 	contractsHandler http.Handler
 	blogAdminHandler http.Handler
 
-	sessionService        *auth.SessionService
-	blogHandler           *apphttp.BlogHandler
-	webDevelopmentHandler *apphttp.WebDevelopmentHandler
+	sessionService *auth.SessionService
+	blogHandler    *apphttp.BlogHandler
 }
 
 func newRouter(deps routerDependencies) http.Handler {
 	mux := http.NewServeMux()
 
-	// Public application routes.
-	mux.HandleFunc("/health", apphttp.HealthHandler)
-	mux.HandleFunc("GET /robots.txt", apphttp.RobotsHandler)
-	mux.HandleFunc("GET /sitemap.xml", deps.blogHandler.Sitemap)
+	// -------------------------------------------------------------------------
+	// Public application routes
+	// -------------------------------------------------------------------------
+
+	mux.HandleFunc(
+		"/health",
+		apphttp.HealthHandler,
+	)
+
+	mux.HandleFunc(
+		"GET /robots.txt",
+		apphttp.RobotsHandler,
+	)
+
+	mux.HandleFunc(
+		"GET /sitemap.xml",
+		deps.blogHandler.Sitemap,
+	)
 
 	mux.Handle(
 		"/work/portfolio",
 		deps.portfolioCaseStudyHandler,
 	)
 
-	mux.Handle(
-		"/web-design-leeds/",
-		deps.webDesignLeedsHandler,
-	)
+	// Register static public/SEO pages.
+	for _, route := range deps.publicPageRoutes {
+		mux.Handle(
+			route.Path,
+			route.Handler,
+		)
+	}
 
-	mux.Handle(
-		"/web-development/",
-		deps.webDevelopmentHandler,
-	)
+	// -------------------------------------------------------------------------
+	// Authentication routes
+	// -------------------------------------------------------------------------
 
 	noIndexAdminAuth := apphttp.NoIndex(
 		deps.adminAuthHandler,
@@ -60,6 +76,10 @@ func newRouter(deps routerDependencies) http.Handler {
 		"/logout",
 		noIndexAdminAuth,
 	)
+
+	// -------------------------------------------------------------------------
+	// Protected workspace routes
+	// -------------------------------------------------------------------------
 
 	protectedDashboard := apphttp.NoIndex(
 		apphttp.NoStore(
@@ -116,20 +136,59 @@ func newRouter(deps routerDependencies) http.Handler {
 		),
 	)
 
-	mux.Handle("/dashboard/{$}", protectedDashboard)
-	mux.Handle("/dashboard/activity", protectedDashboard)
+	mux.Handle(
+		"/dashboard/{$}",
+		protectedDashboard,
+	)
 
-	mux.Handle("/dashboard/clients", protectedClients)
-	mux.Handle("/dashboard/clients/", protectedClients)
+	mux.Handle(
+		"/dashboard/activity",
+		protectedDashboard,
+	)
 
-	mux.Handle("/dashboard/projects", protectedProjects)
-	mux.Handle("/dashboard/projects/", protectedProjects)
+	mux.Handle(
+		"/dashboard/clients",
+		protectedClients,
+	)
 
-	mux.Handle("/dashboard/contracts", protectedContracts)
-	mux.Handle("/dashboard/contracts/", protectedContracts)
+	mux.Handle(
+		"/dashboard/clients/",
+		protectedClients,
+	)
 
-	mux.Handle("/dashboard/blog", protectedBlogAdmin)
-	mux.Handle("/dashboard/blog/", protectedBlogAdmin)
+	mux.Handle(
+		"/dashboard/projects",
+		protectedProjects,
+	)
+
+	mux.Handle(
+		"/dashboard/projects/",
+		protectedProjects,
+	)
+
+	mux.Handle(
+		"/dashboard/contracts",
+		protectedContracts,
+	)
+
+	mux.Handle(
+		"/dashboard/contracts/",
+		protectedContracts,
+	)
+
+	mux.Handle(
+		"/dashboard/blog",
+		protectedBlogAdmin,
+	)
+
+	mux.Handle(
+		"/dashboard/blog/",
+		protectedBlogAdmin,
+	)
+
+	// -------------------------------------------------------------------------
+	// Static files
+	// -------------------------------------------------------------------------
 
 	fileServer := http.FileServer(
 		http.Dir("web/static"),
@@ -143,6 +202,10 @@ func newRouter(deps routerDependencies) http.Handler {
 		),
 	)
 
+	// -------------------------------------------------------------------------
+	// Journal
+	// -------------------------------------------------------------------------
+
 	mux.HandleFunc(
 		"GET /blog/{$}",
 		deps.blogHandler.List,
@@ -152,6 +215,10 @@ func newRouter(deps routerDependencies) http.Handler {
 		"GET /blog/{slug}",
 		deps.blogHandler.Show,
 	)
+
+	// -------------------------------------------------------------------------
+	// Homepage fallback
+	// -------------------------------------------------------------------------
 
 	mux.Handle(
 		"/",

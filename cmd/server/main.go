@@ -93,17 +93,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	webDevelopmentHandler, err :=
-		apphttp.NewWebDevelopmentHandler(cfg.TemplateDir)
-
-	if err != nil {
-		logger.Error(
-			"failed to create web development handler",
-			"error", err,
-		)
-		os.Exit(1)
-	}
-
 	portfolioCaseStudyHandler, err :=
 		apphttp.NewPortfolioCaseStudyHandler(
 			cfg.TemplateDir,
@@ -188,12 +177,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	webDesignLeedsHandler, err :=
-		apphttp.NewWebDesignLeedsHandler(cfg.TemplateDir)
+	publicPageRoutes, err :=
+		apphttp.BuildPublicPageRoutes(
+			cfg.TemplateDir,
+		)
 
 	if err != nil {
 		logger.Error(
-			"failed to create Leeds web design handler",
+			"failed to create public page routes",
 			"error", err,
 		)
 		os.Exit(1)
@@ -235,7 +226,8 @@ func main() {
 	router := newRouter(routerDependencies{
 		homeHandler:               homeHandler,
 		portfolioCaseStudyHandler: portfolioCaseStudyHandler,
-		webDesignLeedsHandler:     webDesignLeedsHandler,
+
+		publicPageRoutes: publicPageRoutes,
 
 		adminAuthHandler: adminAuthHandler,
 		dashboardHandler: dashboardHandler,
@@ -244,9 +236,8 @@ func main() {
 		contractsHandler: contractsHandler,
 		blogAdminHandler: blogAdminHandler,
 
-		sessionService:        sessionService,
-		blogHandler:           blogHandler,
-		webDevelopmentHandler: webDevelopmentHandler,
+		sessionService: sessionService,
+		blogHandler:    blogHandler,
 	})
 
 	crossOriginProtection :=
