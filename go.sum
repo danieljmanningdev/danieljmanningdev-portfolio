@@ -1,5 +1,5 @@
-github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260828233056-93cfa8d56719 h1:ILHdMM9LN3XBB96tkhRADvkA4gm+DDVUFOTE3pm83S0=
-github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260828233056-93cfa8d56719/go.mod h1:zNZInNRfe8ZQ7VKBMTvcC6vmGSpExGG4hRPXhWmvNz4=
+github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260901232539-ccad078a06fe h1:txLnX3nYlC/+axO+ZGW+78PrWGwyTFD5U0jwAXBtxOQ=
+github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260901232539-ccad078a06fe/go.mod h1:zNZInNRfe8ZQ7VKBMTvcC6vmGSpExGG4hRPXhWmvNz4=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/google/pprof v0.0.0-20260802141513-ef3492d7dac3 h1:LMLX+LgTNWpfvCBdFebv6EsYotImrt/Ppc5cXIriCSo=

@@ -91,12 +91,18 @@ func (h *PublicPageHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	var structuredData any
+
+	if h.definition.Path == "/web-development/" {
+		structuredData = webDevelopmentStructuredData()
+	}
+
 	data := newPublicPageData(
 		h.definition.Title,
 		h.definition.Description,
 		h.definition.Path,
 		"website",
-		nil,
+		structuredData,
 	).withRequest(r)
 
 	w.Header().Set(

@@ -9,7 +9,7 @@ require golang.org/x/term v0.45.0
 require github.com/yuin/goldmark v1.8.5
 
 require (
-	github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260828233056-93cfa8d56719
+	github.com/danieljmanningdev/go-jsonld-schema v0.0.0-20260901232539-ccad078a06fe
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
