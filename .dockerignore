@@ -20,6 +20,5 @@ coverage.*
 *.out
 *.test
 
-web/static/css/app.css
 
 .DS_Store

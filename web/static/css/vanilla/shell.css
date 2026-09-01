@@ -1,0 +1,400 @@
+/* ========================================================================== 
+   PUBLIC SHELL
+   Daniel J. Manning
+   https://danieljmanningdev.com
+   ========================================================================== */
+
+.site-shell {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
+
+    overflow-x: clip;
+
+    background:
+        radial-gradient(circle at 10% -8%, color-mix(in oklab, var(--color-signal) 17%, transparent), transparent 35rem),
+        radial-gradient(circle at 92% 10%, color-mix(in oklab, var(--color-electric) 11%, transparent), transparent 32rem),
+        linear-gradient(180deg, var(--color-background-panel), var(--color-background) 58%, var(--color-background-panel));
+
+    color: var(--color-text-primary);
+}
+
+.site-shell::before {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+
+    pointer-events: none;
+
+    content: "";
+    opacity: 0.11;
+
+    background-image:
+        linear-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+    background-size: 5rem 5rem;
+
+    mask-image: linear-gradient(to bottom, black, transparent 74%);
+}
+
+.site-shell::after {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    pointer-events: none;
+
+    content: "";
+    opacity: 0.022;
+
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitchTiles'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+.site-main {
+    flex: 1;
+}
+
+.htmx-indicator {
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity var(--duration-fast) var(--ease-standard),
+        visibility var(--duration-fast) var(--ease-standard);
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    opacity: 1;
+    visibility: visible;
+}
+
+.skip-link {
+    position: fixed;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 0.75rem;
+    z-index: var(--z-overlay);
+
+    translate: 0 -180%;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-light);
+
+    padding: 0.75rem 1rem;
+
+    color: var(--color-text-inverse);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+
+    transition: translate var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus {
+    translate: 0;
+}
+
+.page-progress {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-start: 0;
+    z-index: var(--z-overlay);
+
+    height: 0.125rem;
+    transform-origin: left center;
+
+    background: var(--color-accent-light);
+    box-shadow: 0 0 1.375rem rgb(96 165 250 / 0.68);
+}
+
+/* --------------------------------------------------------------------------
+   HEADER
+   -------------------------------------------------------------------------- */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+
+    border-bottom: 1px solid var(--color-border);
+
+    background: rgb(5 11 24 / 0.82);
+
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.primary-nav {
+    display: flex;
+    min-height: 5rem;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: var(--space-5);
+}
+
+.brand-link {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.brand-logo {
+    width: auto;
+    height: 2.25rem;
+}
+
+.desktop-nav {
+    display: none;
+    align-items: center;
+    gap: var(--space-7);
+}
+
+.nav-link {
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+
+    transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.nav-link:hover {
+    color: var(--color-text-primary);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.header-project-link {
+    display: none;
+    min-height: 2.5rem;
+    padding-inline: 1rem;
+}
+
+.mobile-nav {
+    position: relative;
+}
+
+.mobile-nav summary {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    list-style: none;
+    place-items: center;
+
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius-pill);
+
+    background: rgb(255 255 255 / 0.04);
+    color: var(--color-text-secondary);
+}
+
+.mobile-nav summary::-webkit-details-marker {
+    display: none;
+}
+
+.mobile-nav-icon {
+    display: grid;
+    gap: 0.375rem;
+}
+
+.mobile-nav-icon span {
+    width: 1rem;
+    height: 1px;
+
+    background: currentColor;
+
+    transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.mobile-nav[open] .mobile-nav-icon span:first-child {
+    transform: translateY(0.21875rem) rotate(45deg);
+}
+
+.mobile-nav[open] .mobile-nav-icon span:last-child {
+    transform: translateY(-0.21875rem) rotate(-45deg);
+}
+
+.mobile-nav-panel {
+    position: absolute;
+    top: 3rem;
+    right: 0;
+
+    width: 16rem;
+
+    padding: var(--space-3);
+    border-radius: var(--radius-2xl);
+}
+
+.mobile-nav-links {
+    display: grid;
+    gap: var(--space-1);
+}
+
+.mobile-nav-link {
+    border-radius: var(--radius-xl);
+    padding: 0.75rem 1rem;
+
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+
+    transition:
+        background-color var(--duration-fast) var(--ease-standard),
+        color var(--duration-fast) var(--ease-standard);
+}
+
+.mobile-nav-link:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-white);
+}
+
+.mobile-nav-cta {
+    margin-top: var(--space-2);
+    border-radius: var(--radius-xl);
+    padding: 0.75rem 1rem;
+
+    background: var(--color-accent);
+    color: var(--color-white);
+
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   FOOTER
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+    position: relative;
+    z-index: var(--z-raised);
+
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+
+    background: rgb(3 8 20 / 0.38);
+}
+
+.footer-inner {
+    padding-block: var(--space-12);
+}
+
+.footer-cta {
+    display: grid;
+    gap: var(--space-10);
+
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-12);
+}
+
+.footer-title {
+    margin-top: var(--space-6);
+    max-width: var(--content-xl);
+
+    color: var(--color-text-primary);
+
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: var(--font-medium);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--color-accent-light), var(--color-electric));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.footer-contact-button {
+    width: fit-content;
+}
+
+.footer-meta {
+    display: grid;
+    gap: var(--space-8);
+
+    padding-top: var(--space-8);
+
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+}
+
+.footer-logo-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.footer-logo {
+    width: auto;
+    height: 2.25rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem var(--space-6);
+}
+
+.footer-link {
+    transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.footer-link:hover {
+    color: var(--color-text-primary);
+}
+
+.footer-copyright {
+    font-size: var(--text-xs);
+}
+
+
+@media (min-width: 40rem) {
+    .brand-logo {
+        height: 2.5rem;
+    }
+
+    .header-project-link {
+        display: inline-flex;
+    }
+
+    .footer-inner {
+        padding-block: var(--space-16);
+    }
+
+    .footer-meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 64rem) {
+    .desktop-nav {
+        display: flex;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+
+    .footer-cta {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+    }
+
+    .footer-meta {
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+    }
+
+    .footer-copyright {
+        text-align: right;
+    }
+}

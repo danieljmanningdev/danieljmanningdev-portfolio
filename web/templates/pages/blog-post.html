@@ -1,32 +1,26 @@
 {{define "content"}}
-<main class="overflow-clip">
+<main class="journal-page">
     <article>
-        <header class="relative border-b border-white/8 py-18 sm:py-24 lg:py-28">
-            <div class="pointer-events-none absolute right-[12%] top-12 size-80 rounded-full bg-signal-400/8 blur-3xl" aria-hidden="true"></div>
-
-            <div class="site-container relative grid gap-10 lg:grid-cols-[0.32fr_1fr]">
+        <header class="article-header">
+            <div class="article-header__glow" aria-hidden="true"></div>
+            <div class="site-container article-header__grid">
                 <div>
-                    <a href="/blog/" class="button-quiet px-0">
-                        <span aria-hidden="true">←</span>
-                        Journal
-                    </a>
+                    <a href="/blog/" class="button-quiet article-back"><span aria-hidden="true">←</span> Journal</a>
                 </div>
 
-                <div class="max-w-5xl">
+                <div class="article-header__content">
                     {{with .Post.PublishedAt}}
                     <time class="eyebrow" datetime="{{.Format "2006-01-02"}}">{{.Format "02 January 2006"}}</time>
                     {{end}}
 
-                    <h1 class="mt-8 text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em] text-mist-50">
-                        {{.Post.Title}}
-                    </h1>
+                    <h1 class="article-title">{{.Post.Title}}</h1>
 
                     {{if .Post.Excerpt}}
-                    <p class="mt-8 max-w-3xl text-xl leading-9 text-mist-300">{{.Post.Excerpt}}</p>
+                    <p class="article-excerpt">{{.Post.Excerpt}}</p>
                     {{end}}
 
-                    <div class="mt-10 flex flex-wrap items-center gap-3 text-xs text-mist-500">
-                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Daniel J. Manning</span>
+                    <div class="article-meta">
+                        <span class="article-author">Daniel J. Manning</span>
                         <span aria-hidden="true">•</span>
                         <span>Design, engineering &amp; security notes</span>
                     </div>
@@ -34,27 +28,25 @@
             </div>
         </header>
 
-        <div class="site-container grid gap-12 py-18 sm:py-24 lg:grid-cols-[0.32fr_1fr] lg:py-30">
-            <aside class="hidden lg:block">
-                <div class="sticky top-28 border-l border-white/9 pl-5">
+        <div class="site-container article-layout">
+            <aside class="article-sidebar">
+                <div class="article-sidebar__inner">
                     <p class="metric-label">Article</p>
-                    <p class="mt-4 text-sm leading-6 text-mist-500">Written directly in the portfolio's own Markdown publishing system.</p>
-                    <a href="mailto:daniel@danieljmanningdev.com" class="mt-5 inline-flex text-xs font-bold text-signal-300 transition hover:text-signal-200">Discuss this idea ↗</a>
+                    <p class="article-sidebar__copy">Written directly in the portfolio's own Markdown publishing system.</p>
+                    <a href="mailto:daniel@danieljmanningdev.com" class="article-sidebar__link">Discuss this idea ↗</a>
                 </div>
             </aside>
 
-            <div class="max-w-3xl">
-                <div class="article-prose">
-                    {{.ContentHTML}}
-                </div>
+            <div class="article-content">
+                <div class="article-prose">{{.ContentHTML}}</div>
 
-                <footer class="mt-18 border-t border-white/9 pt-8">
-                    <a href="/blog/" class="group flex items-center justify-between gap-6 rounded-4xl border border-white/9 bg-white/3 p-6 transition hover:border-signal-300/25 hover:bg-signal-300/5 sm:p-8">
+                <footer class="article-footer">
+                    <a href="/blog/" class="article-footer__link">
                         <div>
                             <p class="metric-label">Continue reading</p>
-                            <p class="mt-3 text-xl font-medium text-mist-50">Return to the journal archive</p>
+                            <p class="article-footer__title">Return to the journal archive</p>
                         </div>
-                        <span class="grid size-12 shrink-0 place-items-center rounded-full bg-signal-300 text-ink-950 transition group-hover:-rotate-12" aria-hidden="true">←</span>
+                        <span class="article-footer__arrow" aria-hidden="true">←</span>
                     </a>
                 </footer>
             </div>

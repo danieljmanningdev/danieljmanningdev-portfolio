@@ -1,67 +1,59 @@
 {{define "content"}}
-<main class="overflow-clip">
-    <section class="relative border-b border-white/8 py-20 sm:py-28 lg:py-32">
-        <div class="pointer-events-none absolute right-[12%] top-10 size-80 rounded-full bg-blue-500/11 blur-3xl" aria-hidden="true"></div>
+<main class="journal-page">
+    <section class="journal-hero">
+        <div class="journal-hero__glow" aria-hidden="true"></div>
+        <div class="site-container journal-hero__inner">
+            <div>
+                <p class="eyebrow">Journal / Field notes</p>
+                <h1 class="journal-hero__title">Thinking in public about <span class="journal-hero__accent">designing systems.</span></h1>
+            </div>
 
-        <div class="site-container relative">
-            <div class="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-                <div>
-                    <p class="eyebrow">Journal / Field notes</p>
-                    <h1 class="mt-8 max-w-5xl text-balance text-[clamp(3.6rem,8vw,7.8rem)] font-medium leading-[0.88] tracking-[-0.06em] text-mist-50">
-                        Thinking in public about
-                        <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">designing systems.</span>
-                    </h1>
-                </div>
-
-                <div class="max-w-lg lg:justify-self-end">
-                    <p class="text-lg leading-8 text-mist-300">Design decisions, Go engineering, security learning and the practical details behind building focused digital products.</p>
-                    <div class="mt-7 flex flex-wrap gap-2 text-xs text-mist-500">
-                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Product design</span>
-                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Go</span>
-                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Security</span>
-                        <span class="rounded-full border border-white/9 bg-white/3 px-3 py-1.5">Build notes</span>
-                    </div>
+            <div class="journal-hero__aside">
+                <p class="journal-hero__copy">Design decisions, Go engineering, security learning and the practical details behind building focused digital products.</p>
+                <div class="journal-tags">
+                    <span class="journal-tag">Product design</span>
+                    <span class="journal-tag">Go</span>
+                    <span class="journal-tag">Security</span>
+                    <span class="journal-tag">Build notes</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-18 sm:py-24 lg:py-30">
-        <div class="site-container">
-            <div class="grid gap-10 lg:grid-cols-[0.32fr_1fr]">
-                <aside class="lg:sticky lg:top-28 lg:self-start">
-                    <p class="metric-label">Archive</p>
-                    <p class="mt-4 max-w-xs text-sm leading-6 text-mist-500">Long-form notes, technical walkthroughs and reflections from the work as it develops.</p>
-                    <a href="mailto:daniel@danieljmanningdev.com" class="button-quiet mt-5 px-0 text-xs">Suggest a topic <span aria-hidden="true">↗</span></a>
-                </aside>
+    <section class="journal-archive">
+        <div class="site-container journal-archive__grid">
+            <aside class="journal-sidebar">
+                <p class="metric-label">Archive</p>
+                <p class="journal-sidebar__copy">Long-form notes, technical walkthroughs and reflections from the work as it develops.</p>
+                <a href="mailto:daniel@danieljmanningdev.com" class="journal-sidebar__link">Suggest a topic <span aria-hidden="true">↗</span></a>
+            </aside>
 
-                <div class="border-t border-white/9">
-                    {{range .Posts}}
-                    <article class="group border-b border-white/9 py-9 sm:py-11">
-                        <a href="/blog/{{.Slug}}" class="grid gap-6 sm:grid-cols-[10rem_1fr_auto] sm:items-start">
-                            <div>
-                                {{with .PublishedAt}}
-                                <time class="font-mono text-xs uppercase tracking-[0.12em] text-mist-700" datetime="{{.Format "2006-01-02"}}">{{.Format "02 Jan 2006"}}</time>
-                                {{end}}
-                            </div>
+            <div class="journal-list">
+                {{range .Posts}}
+                <article class="journal-entry">
+                    <a href="/blog/{{.Slug}}" class="journal-entry__link">
+                        <div>
+                            {{with .PublishedAt}}
+                            <time class="journal-entry__date" datetime="{{.Format "2006-01-02"}}">{{.Format "02 Jan 2006"}}</time>
+                            {{end}}
+                        </div>
 
-                            <div>
-                                <h2 class="max-w-3xl text-balance text-2xl font-medium leading-tight tracking-[-0.035em] text-mist-50 transition group-hover:text-blue-300 sm:text-3xl">{{.Title}}</h2>
-                                <p class="mt-4 max-w-2xl leading-7 text-mist-500">{{.Excerpt}}</p>
-                            </div>
+                        <div>
+                            <h2 class="journal-entry__title">{{.Title}}</h2>
+                            <p class="journal-entry__excerpt">{{.Excerpt}}</p>
+                        </div>
 
-                            <span class="grid size-11 place-items-center rounded-full border border-white/9 bg-white/3 text-mist-500 transition duration-300 group-hover:rotate-12 group-hover:border-blue-300/30 group-hover:bg-blue-400 group-hover:text-white" aria-hidden="true">↗</span>
-                        </a>
-                    </article>
-                    {{else}}
-                    <div class="glass-panel rounded-5xl p-8 sm:p-12">
-                        <p class="eyebrow">The archive is opening soon</p>
-                        <h2 class="mt-7 max-w-3xl text-balance text-3xl font-medium tracking-[-0.04em] text-mist-50 sm:text-5xl">The publishing system is live. The first field notes are being prepared.</h2>
-                        <p class="mt-6 max-w-2xl leading-7 text-mist-500">In the meantime, the case study explains how the portfolio and private workspace fit together.</p>
-                        <a href="/work/portfolio" class="button-primary mt-8">Read the case study <span aria-hidden="true">↗</span></a>
-                    </div>
-                    {{end}}
+                        <span class="journal-entry__arrow" aria-hidden="true">↗</span>
+                    </a>
+                </article>
+                {{else}}
+                <div class="glass-panel journal-empty">
+                    <p class="eyebrow">The archive is opening soon</p>
+                    <h2 class="journal-empty__title">The publishing system is live. The first field notes are being prepared.</h2>
+                    <p class="journal-empty__copy">In the meantime, the case study explains how the portfolio and private workspace fit together.</p>
+                    <a href="/work/portfolio" class="button-primary journal-empty__cta">Read the case study <span aria-hidden="true">↗</span></a>
                 </div>
+                {{end}}
             </div>
         </div>
     </section>

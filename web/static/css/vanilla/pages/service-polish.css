@@ -1,0 +1,18 @@
+/* ========================================================================== 
+   SERVICE PAGE POLISH
+   ========================================================================== */
+
+.service-hero__copy {
+    min-width: 0;
+}
+
+@media (min-width: 64rem) {
+    .service-hero__layout {
+        grid-template-columns: minmax(0, 1.02fr) minmax(28rem, 0.98fr);
+        column-gap: clamp(6rem, 8vw, 9rem);
+    }
+
+    .service-preview {
+        margin-left: clamp(2rem, 3vw, 4rem);
+    }
+}

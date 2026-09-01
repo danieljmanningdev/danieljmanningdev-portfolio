@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   quality:
-    name: Test, vet and build styles
+    name: Test, vet and build
     runs-on: ubuntu-latest
 
     steps:
@@ -35,18 +35,6 @@ jobs:
 
       - name: Test Go packages
         run: go test ./...
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install frontend dependencies
-        run: npm ci
-
-      - name: Build Tailwind CSS
-        run: npm run build:css
 
       - name: Build production image
         run: docker build --tag portfolio-ci .

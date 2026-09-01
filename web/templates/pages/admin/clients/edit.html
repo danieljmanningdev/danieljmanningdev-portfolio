@@ -1,256 +1,58 @@
 {{define "content"}}
-
-<div class="mx-auto max-w-4xl">
-
-    <!-- ==================== PAGE HEADER ==================== -->
-
-    <div class="mb-10">
-
-        <a
-            href="/dashboard/clients/{{.Form.ID}}"
-            class="inline-flex items-center text-sm text-blue-300/60 transition hover:text-white"
-        >
-            ← Back to client
-        </a>
-
-        <p class="mt-10 text-xs uppercase tracking-[0.3em] text-blue-300/50">
-            Clients
-        </p>
-
-        <h1 class="mt-4 text-4xl font-medium tracking-tight text-white sm:text-5xl">
-            Edit client
-        </h1>
-
-        <p class="mt-4 max-w-2xl text-base leading-7 text-blue-100/50">
-            Update this client's contact details and internal notes.
-        </p>
-
-    </div>
-
+<main class="workspace-page workspace-form-shell">
+    <section class="workspace-form-header">
+        <div>
+            <a href="/dashboard/clients/{{.Form.ID}}" class="button-quiet">← Back to client</a>
+            <p class="eyebrow">Clients</p>
+            <h1 class="workspace-form-header__title">Edit client</h1>
+            <p class="workspace-form-header__copy">Update this client's contact details and internal notes.</p>
+        </div>
+    </section>
 
     {{if .Errors.General}}
-        <div
-            role="alert"
-            class="mb-6 rounded-2xl border border-red-400/20 bg-red-500/10 px-5 py-4 text-sm text-red-200"
-        >
-            {{.Errors.General}}
-        </div>
+    <div role="alert" class="auth-alert">{{.Errors.General}}</div>
     {{end}}
 
-
-    <!-- ==================== FORM ==================== -->
-
-    <form
-        method="post"
-        action="/dashboard/clients/{{.Form.ID}}"
-        class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-6 shadow-2xl shadow-black/10 sm:p-8"
-    >
-
-        <div class="space-y-7">
-
-            <!-- NAME -->
-
+    <form method="post" action="/dashboard/clients/{{.Form.ID}}" class="workspace-form">
+        <div class="workspace-form-grid">
             <div>
-                <label
-                    for="name"
-                    class="block text-sm font-medium text-blue-100/70"
-                >
-                    Name
-                </label>
-
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value="{{.Form.Name}}"
-                    required
-                    maxlength="100"
-                    autocomplete="name"
-                    aria-invalid="{{if .Errors.Name}}true{{else}}false{{end}}"
-                    {{if .Errors.Name}}aria-describedby="name-error"{{end}}
-                    class="mt-2 block w-full rounded-2xl border {{if .Errors.Name}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
-                    placeholder="Client name"
-                >
-
-                {{if .Errors.Name}}
-                    <p
-                        id="name-error"
-                        class="mt-2 text-sm text-red-300"
-                    >
-                        {{.Errors.Name}}
-                    </p>
-                {{end}}
+                <label for="name" class="workspace-field__label">Name</label>
+                <input id="name" name="name" type="text" value="{{.Form.Name}}" required maxlength="100" autocomplete="name" aria-invalid="{{if .Errors.Name}}true{{else}}false{{end}}" {{if .Errors.Name}}aria-describedby="name-error"{{end}} class="workspace-field__control" placeholder="Client name">
+                {{if .Errors.Name}}<p id="name-error" class="workspace-field__error">{{.Errors.Name}}</p>{{end}}
             </div>
 
-
-            <!-- EMAIL -->
-
             <div>
-                <label
-                    for="email"
-                    class="block text-sm font-medium text-blue-100/70"
-                >
-                    Email
-                </label>
-
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value="{{.Form.Email}}"
-                    required
-                    maxlength="254"
-                    autocomplete="email"
-                    aria-invalid="{{if .Errors.Email}}true{{else}}false{{end}}"
-                    {{if .Errors.Email}}aria-describedby="email-error"{{end}}
-                    class="mt-2 block w-full rounded-2xl border {{if .Errors.Email}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
-                    placeholder="client@example.com"
-                >
-
-                {{if .Errors.Email}}
-                    <p
-                        id="email-error"
-                        class="mt-2 text-sm text-red-300"
-                    >
-                        {{.Errors.Email}}
-                    </p>
-                {{end}}
+                <label for="email" class="workspace-field__label">Email</label>
+                <input id="email" name="email" type="email" value="{{.Form.Email}}" required maxlength="254" autocomplete="email" aria-invalid="{{if .Errors.Email}}true{{else}}false{{end}}" {{if .Errors.Email}}aria-describedby="email-error"{{end}} class="workspace-field__control" placeholder="client@example.com">
+                {{if .Errors.Email}}<p id="email-error" class="workspace-field__error">{{.Errors.Email}}</p>{{end}}
             </div>
 
-
-            <!-- COMPANY -->
-
             <div>
-                <label
-                    for="company"
-                    class="block text-sm font-medium text-blue-100/70"
-                >
-                    Company
-                </label>
-
-                <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    value="{{.Form.Company}}"
-                    maxlength="150"
-                    autocomplete="organization"
-                    aria-invalid="{{if .Errors.Company}}true{{else}}false{{end}}"
-                    {{if .Errors.Company}}aria-describedby="company-error"{{end}}
-                    class="mt-2 block w-full rounded-2xl border {{if .Errors.Company}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
-                    placeholder="Company name"
-                >
-
-                {{if .Errors.Company}}
-                    <p
-                        id="company-error"
-                        class="mt-2 text-sm text-red-300"
-                    >
-                        {{.Errors.Company}}
-                    </p>
-                {{end}}
+                <label for="company" class="workspace-field__label">Company</label>
+                <input id="company" name="company" type="text" value="{{.Form.Company}}" maxlength="150" autocomplete="organization" aria-invalid="{{if .Errors.Company}}true{{else}}false{{end}}" {{if .Errors.Company}}aria-describedby="company-error"{{end}} class="workspace-field__control" placeholder="Company name">
+                {{if .Errors.Company}}<p id="company-error" class="workspace-field__error">{{.Errors.Company}}</p>{{end}}
             </div>
 
-
-            <!-- STATUS -->
-
             <div>
-                <label
-                    for="status"
-                    class="block text-sm font-medium text-blue-100/70"
-                >
-                    Status
-                </label>
-
-                <select
-                    id="status"
-                    name="status"
-                    aria-invalid="{{if .Errors.Status}}true{{else}}false{{end}}"
-                    {{if .Errors.Status}}aria-describedby="status-error"{{end}}
-                    class="mt-2 block w-full rounded-2xl border {{if .Errors.Status}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
-                >
-                    <option
-                        value="active"
-                        {{if eq .Form.Status "active"}}selected{{end}}
-                    >
-                        Active
-                    </option>
-
-                    <option
-                        value="inactive"
-                        {{if eq .Form.Status "inactive"}}selected{{end}}
-                    >
-                        Inactive
-                    </option>
+                <label for="status" class="workspace-field__label">Status</label>
+                <select id="status" name="status" aria-invalid="{{if .Errors.Status}}true{{else}}false{{end}}" {{if .Errors.Status}}aria-describedby="status-error"{{end}} class="workspace-field__control">
+                    <option value="active" {{if eq .Form.Status "active"}}selected{{end}}>Active</option>
+                    <option value="inactive" {{if eq .Form.Status "inactive"}}selected{{end}}>Inactive</option>
                 </select>
-
-                {{if .Errors.Status}}
-                    <p
-                        id="status-error"
-                        class="mt-2 text-sm text-red-300"
-                    >
-                        {{.Errors.Status}}
-                    </p>
-                {{end}}
+                {{if .Errors.Status}}<p id="status-error" class="workspace-field__error">{{.Errors.Status}}</p>{{end}}
             </div>
-
-
-            <!-- NOTES -->
 
             <div>
-                <label
-                    for="notes"
-                    class="block text-sm font-medium text-blue-100/70"
-                >
-                    Notes
-                </label>
-
-                <textarea
-                    id="notes"
-                    name="notes"
-                    rows="6"
-                    maxlength="5000"
-                    aria-invalid="{{if .Errors.Notes}}true{{else}}false{{end}}"
-                    {{if .Errors.Notes}}aria-describedby="notes-error"{{end}}
-                    class="mt-2 block w-full resize-y rounded-2xl border {{if .Errors.Notes}}border-red-400/40{{else}}border-blue-400/10{{end}} bg-[#071127] px-4 py-3.5 text-white placeholder:text-blue-100/20 outline-none transition focus:border-blue-400/40 focus:ring-2 focus:ring-blue-400/10"
-                    placeholder="Anything useful about this client..."
-                >{{.Form.Notes}}</textarea>
-
-                {{if .Errors.Notes}}
-                    <p
-                        id="notes-error"
-                        class="mt-2 text-sm text-red-300"
-                    >
-                        {{.Errors.Notes}}
-                    </p>
-                {{end}}
+                <label for="notes" class="workspace-field__label">Notes</label>
+                <textarea id="notes" name="notes" rows="6" maxlength="5000" aria-invalid="{{if .Errors.Notes}}true{{else}}false{{end}}" {{if .Errors.Notes}}aria-describedby="notes-error"{{end}} class="workspace-field__control" placeholder="Anything useful about this client...">{{.Form.Notes}}</textarea>
+                {{if .Errors.Notes}}<p id="notes-error" class="workspace-field__error">{{.Errors.Notes}}</p>{{end}}
             </div>
-
         </div>
 
-
-        <!-- ACTIONS -->
-
-        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-blue-400/10 pt-6 sm:flex-row sm:items-center sm:justify-end">
-
-            <a
-                href="/dashboard/clients/{{.Form.ID}}"
-                class="inline-flex items-center justify-center rounded-full border border-blue-400/10 px-5 py-3 text-sm font-medium text-blue-100/60 transition hover:border-blue-400/20 hover:text-white"
-            >
-                Cancel
-            </a>
-
-            <button
-                type="submit"
-                class="inline-flex items-center justify-center rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-[#050B18] transition hover:bg-blue-400"
-            >
-                Save changes
-            </button>
-
+        <div class="workspace-form-actions">
+            <a href="/dashboard/clients/{{.Form.ID}}" class="button-secondary">Cancel</a>
+            <button type="submit" class="button-primary">Save changes</button>
         </div>
-
     </form>
-
-</div>
-
+</main>
 {{end}}

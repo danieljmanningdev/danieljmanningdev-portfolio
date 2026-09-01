@@ -1,0 +1,169 @@
+/* ========================================================================== 
+   ADMIN + AUTH
+   ========================================================================== */
+
+.admin-shell,
+.auth-shell {
+    min-height: 100dvh;
+    overflow-x: clip;
+    background: var(--color-ink-950);
+    color: var(--color-mist-50);
+}
+
+.admin-shell {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-canvas {
+    flex: 1;
+}
+
+.admin-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    height: 2px;
+    transform-origin: left center;
+    background: var(--color-signal-300);
+    box-shadow: 0 0 22px rgb(96 165 250 / .68);
+}
+
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--color-border);
+    background: color-mix(in oklab, #050b18 88%, transparent);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.admin-nav,
+.admin-footer__inner {
+    width: min(calc(100% - 1.5rem), 96rem);
+    margin-inline: auto;
+}
+
+.admin-nav {
+    display: flex;
+    min-height: 4.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.admin-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.admin-brand__mark {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    overflow: hidden;
+    padding: .375rem;
+    border: 1px solid color-mix(in oklab, var(--color-signal-300) 18%, transparent);
+    border-radius: .75rem;
+    background: color-mix(in oklab, var(--color-signal-400) 6%, transparent);
+    transition: background var(--duration-fast) var(--ease-fluid), border-color var(--duration-fast) var(--ease-fluid);
+}
+
+.admin-brand:hover .admin-brand__mark {
+    border-color: color-mix(in oklab, var(--color-signal-300) 35%, transparent);
+    background: color-mix(in oklab, var(--color-signal-400) 10%, transparent);
+}
+
+.admin-brand__logo { width: 100%; height: 100%; object-fit: contain; }
+.admin-brand__text { display: none; }
+.admin-brand__title { display: block; color: var(--color-mist-100); font-size: .68rem; font-weight: 700; letter-spacing: .2em; }
+.admin-brand__subtitle { display: block; margin-top: .125rem; color: var(--color-mist-700); font-size: .68rem; }
+
+.admin-desktop-nav {
+    display: none;
+    align-items: center;
+    gap: .25rem;
+    padding: .25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+}
+
+.admin-nav-link {
+    padding: .5rem .875rem;
+    border-radius: 999px;
+    color: var(--color-mist-500);
+    font-size: .75rem;
+    font-weight: 600;
+    transition: background var(--duration-fast) var(--ease-fluid), color var(--duration-fast) var(--ease-fluid);
+}
+
+.admin-nav-link:hover { background: color-mix(in oklab, white 6%, transparent); color: white; }
+.admin-actions { display: flex; align-items: center; gap: .5rem; }
+.admin-view-site { min-height: 2.5rem; padding-inline: 1rem; font-size: .75rem; }
+.admin-mobile-nav { position: relative; }
+.admin-mobile-nav summary { display: grid; width: 2.5rem; height: 2.5rem; list-style: none; place-items: center; border: 1px solid var(--color-border-strong); border-radius: 999px; background: color-mix(in oklab, white 4%, transparent); color: var(--color-mist-100); }
+.admin-mobile-nav summary::-webkit-details-marker { display: none; }
+.admin-mobile-nav__panel { position: absolute; top: 3rem; right: 0; width: 15rem; padding: .75rem; border-radius: 1.5rem; }
+.admin-mobile-nav__links { display: grid; gap: .25rem; }
+.admin-mobile-nav__link { padding: .75rem 1rem; border-radius: 1rem; color: var(--color-mist-300); font-size: .875rem; }
+.admin-mobile-nav__link:hover { background: var(--color-surface-hover); color: white; }
+
+.admin-footer { margin-top: auto; border-top: 1px solid var(--color-border-subtle); background: rgb(3 8 20 / .28); }
+.admin-footer__inner { display: flex; flex-direction: column; gap: .5rem; padding-block: 1.25rem; color: var(--color-mist-700); font-size: .75rem; }
+
+/* Auth */
+.auth-layout { display: grid; min-height: 100dvh; }
+.auth-story { position: relative; display: none; overflow: hidden; padding: 3rem; border-right: 1px solid var(--color-border); }
+.auth-story__glow { position: absolute; border-radius: 999px; filter: blur(64px); pointer-events: none; }
+.auth-story__glow--signal { top: 25%; left: -6rem; width: 34rem; height: 34rem; background: color-mix(in oklab, var(--color-signal-500) 16%, transparent); }
+.auth-story__glow--electric { right: 0; bottom: -8rem; width: 30rem; height: 30rem; background: color-mix(in oklab, var(--color-electric-400) 9%, transparent); }
+.auth-logo-link { position: relative; display: inline-flex; width: fit-content; align-items: center; }
+.auth-logo { width: auto; height: 2.75rem; }
+.auth-story__content { position: relative; max-width: 48rem; padding-block: 4rem; }
+.auth-story__title { margin-top: 2rem; color: var(--color-mist-50); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 500; line-height: .86; letter-spacing: -.065em; text-wrap: balance; }
+.auth-story__accent { display: block; background: linear-gradient(90deg, var(--color-signal-300), var(--color-electric-300)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.auth-story__copy { max-width: 36rem; margin-top: 2rem; color: var(--color-mist-300); font-size: 1.125rem; line-height: 2rem; }
+.auth-story__note { position: relative; color: var(--color-mist-700); font-size: .75rem; }
+.auth-form-section { display: flex; min-height: 100dvh; align-items: center; justify-content: center; padding: 3rem 1.25rem; }
+.auth-form-wrap { width: 100%; max-width: 32rem; }
+.auth-mobile-logo { display: inline-flex; margin-bottom: 3rem; align-items: center; }
+.auth-mobile-logo img { width: auto; height: 2.5rem; }
+.auth-card { padding: 1.75rem; border-radius: 2.75rem; }
+.auth-card__title { margin-top: 1.75rem; color: var(--color-mist-50); font-size: 2.25rem; font-weight: 500; letter-spacing: -.045em; }
+.auth-card__copy { margin-top: 1rem; color: var(--color-mist-500); line-height: 1.75rem; }
+.auth-alert { margin-top: 1.75rem; padding: 1rem 1.25rem; border: 1px solid rgb(248 113 113 / .2); border-radius: 1.5rem; background: rgb(248 113 113 / .08); color: rgb(254 202 202); font-size: .875rem; }
+.auth-form { display: grid; gap: 1.5rem; margin-top: 2.25rem; }
+.auth-field__label { display: block; color: var(--color-mist-300); font-size: .875rem; font-weight: 600; }
+.auth-field__input { display: block; width: 100%; margin-top: .75rem; padding: .875rem 1rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; background: rgb(0 0 0 / .22); color: var(--color-mist-50); font-size: 1rem; outline: none; transition: border-color var(--duration-fast) var(--ease-fluid), box-shadow var(--duration-fast) var(--ease-fluid); }
+.auth-field__input::placeholder { color: var(--color-mist-700); }
+.auth-field__input:focus { border-color: color-mix(in oklab, var(--color-signal-300) 45%, transparent); box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-signal-300) 12%, transparent); }
+.auth-submit { width: 100%; }
+.auth-card__footer { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-mist-700); font-size: .75rem; line-height: 1.25rem; text-align: center; }
+
+@media (min-width: 40rem) {
+    .admin-brand__text { display: block; }
+    .admin-footer__inner { flex-direction: row; align-items: center; justify-content: space-between; }
+    .auth-form-section { padding-inline: 2rem; }
+    .auth-card { padding: 2.5rem; }
+    .auth-card__title { font-size: 3rem; }
+}
+
+@media (min-width: 48rem) {
+    .admin-desktop-nav { display: flex; }
+    .admin-mobile-nav { display: none; }
+}
+
+@media (min-width: 64rem) {
+    .auth-layout { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+    .auth-story { display: flex; flex-direction: column; justify-content: space-between; }
+    .auth-form-section { padding-inline: 3rem; }
+    .auth-mobile-logo { display: none; }
+}
+
+@media (min-width: 80rem) {
+    .auth-story { padding: 4rem; }
+}

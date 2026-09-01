@@ -1,0 +1,415 @@
+/* ==========================================================================
+   LAYOUT
+   Daniel J. Manning
+   https://danieljmanningdev.com
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   DOCUMENT
+   -------------------------------------------------------------------------- */
+
+.site {
+    min-height: 100vh;
+    overflow-x: clip;
+}
+
+
+/* --------------------------------------------------------------------------
+   CONTAINERS
+   -------------------------------------------------------------------------- */
+
+.site-container {
+    width: min(
+        calc(100% - (var(--container-gutter) * 2)),
+        var(--container-width)
+    );
+
+    margin-inline: auto;
+}
+
+.content-xs {
+    width: min(100%, var(--content-xs));
+}
+
+.content-sm {
+    width: min(100%, var(--content-sm));
+}
+
+.content-md {
+    width: min(100%, var(--content-md));
+}
+
+.content-lg {
+    width: min(100%, var(--content-lg));
+}
+
+.content-xl {
+    width: min(100%, var(--content-xl));
+}
+
+
+/* --------------------------------------------------------------------------
+   SECTIONS
+   -------------------------------------------------------------------------- */
+
+.section {
+    padding-block: var(--space-section);
+}
+
+.section-bordered {
+    border-bottom: var(--section-border);
+}
+
+.section-compact {
+    padding-block: clamp(
+        var(--space-16),
+        6vw,
+        var(--space-24)
+    );
+}
+
+.section-full {
+    min-height: calc(100svh - 5rem);
+}
+
+
+/* --------------------------------------------------------------------------
+   STACKS
+   Vertical rhythm without individual margin utilities.
+   -------------------------------------------------------------------------- */
+
+.stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.stack-xs {
+    gap: var(--space-2);
+}
+
+.stack-sm {
+    gap: var(--space-4);
+}
+
+.stack-md {
+    gap: var(--space-6);
+}
+
+.stack-lg {
+    gap: var(--space-8);
+}
+
+.stack-xl {
+    gap: var(--space-12);
+}
+
+.stack-2xl {
+    gap: var(--space-16);
+}
+
+
+/* --------------------------------------------------------------------------
+   CLUSTERS
+   Horizontal groups which wrap naturally.
+   -------------------------------------------------------------------------- */
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.cluster-sm {
+    gap: var(--space-2);
+}
+
+.cluster-lg {
+    gap: var(--space-4);
+}
+
+.cluster-between {
+    justify-content: space-between;
+}
+
+
+/* --------------------------------------------------------------------------
+   GENERIC GRID
+   -------------------------------------------------------------------------- */
+
+.grid {
+    display: grid;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-gap-sm {
+    gap: var(--space-3);
+}
+
+.grid-gap-md {
+    gap: var(--space-4);
+}
+
+.grid-gap-lg {
+    gap: var(--space-8);
+}
+
+.grid-gap-xl {
+    gap: var(--space-14);
+}
+
+
+/* --------------------------------------------------------------------------
+   SPLIT LAYOUTS
+   Common two-column patterns used throughout the public site.
+   -------------------------------------------------------------------------- */
+
+.split {
+    display: grid;
+    gap: var(--space-12);
+}
+
+.split-balanced {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.split-content {
+    grid-template-columns:
+        minmax(0, 0.72fr)
+        minmax(0, 1.28fr);
+}
+
+.split-wide {
+    grid-template-columns:
+        minmax(0, 0.8fr)
+        minmax(0, 1.2fr);
+}
+
+.split-reverse-wide {
+    grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(0, 0.8fr);
+}
+
+
+/* --------------------------------------------------------------------------
+   HERO
+   Shared structural layout for large public-page introductions.
+   -------------------------------------------------------------------------- */
+
+.hero-layout {
+    display: grid;
+    min-height: calc(100svh - 5rem);
+
+    align-items: center;
+
+    gap: var(--space-14);
+    padding-block: var(--space-20);
+}
+
+.hero-content {
+    width: min(100%, var(--content-xl));
+}
+
+.hero-aside {
+    width: min(100%, 36rem);
+    margin-inline: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   SECTION INTRO
+   Heading + supporting description.
+   -------------------------------------------------------------------------- */
+
+.section-intro {
+    display: grid;
+    gap: var(--space-8);
+}
+
+.section-intro__content {
+    width: min(100%, var(--content-lg));
+}
+
+.section-intro__description {
+    width: min(100%, var(--content-md));
+}
+
+
+/* --------------------------------------------------------------------------
+   CARD GRIDS
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.card-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+/* --------------------------------------------------------------------------
+   LIST LAYOUT
+   Used for numbered service/capability rows.
+   -------------------------------------------------------------------------- */
+
+.feature-list {
+    border-block: var(--section-border);
+}
+
+.feature-row {
+    display: grid;
+
+    grid-template-columns:
+        4rem
+        minmax(0, 1fr);
+
+    gap: var(--space-5);
+
+    padding-block: var(--space-9);
+}
+
+.feature-row + .feature-row {
+    border-top: var(--section-border);
+}
+
+
+/* --------------------------------------------------------------------------
+   STICKY CONTENT
+   -------------------------------------------------------------------------- */
+
+.sticky-section {
+    position: sticky;
+    top: 7rem;
+    align-self: start;
+}
+
+
+/* --------------------------------------------------------------------------
+   ALIGNMENT
+   -------------------------------------------------------------------------- */
+
+.align-start {
+    align-items: start;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-end {
+    align-items: end;
+}
+
+.justify-start {
+    justify-content: start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: end;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE LAYOUT
+   Mobile-first collapse for structural grids.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 63.999rem) {
+    .split,
+    .split-balanced,
+    .split-content,
+    .split-wide,
+    .split-reverse-wide {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sticky-section {
+        position: static;
+    }
+
+    .card-grid-3,
+    .card-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 64rem) {
+    .hero-layout {
+        grid-template-columns:
+            minmax(0, 1.04fr)
+            minmax(0, 0.96fr);
+
+        gap: var(--space-20);
+        padding-block: var(--space-24);
+    }
+
+    .section-intro {
+        grid-template-columns:
+            minmax(0, 0.8fr)
+            minmax(0, 1.2fr);
+
+        align-items: end;
+    }
+
+    .section-intro__description {
+        justify-self: end;
+    }
+
+    .hero-aside {
+        justify-self: end;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .card-grid-2,
+    .card-grid-3,
+    .card-grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-row {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding-block: var(--space-20);
+    }
+}

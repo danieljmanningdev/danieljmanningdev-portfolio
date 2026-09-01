@@ -1,85 +1,77 @@
 {{define "content"}}
-<main class="mx-auto max-w-7xl">
-    <section class="relative overflow-hidden rounded-5xl border border-white/8 bg-linear-to-br from-blue-500/9 via-white/3 to-cyan-400/5 p-7 sm:p-10 lg:p-12">
-        <div class="pointer-events-none absolute -right-24 -top-32 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
-
-        <div class="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div class="max-w-3xl">
-                <a href="/dashboard/" class="button-quiet -ml-4 min-h-10 px-4">← Workspace</a>
-                <p class="eyebrow mt-8">Journal</p>
-                <h1 class="mt-7 text-balance text-5xl font-medium leading-[0.94] tracking-[-0.055em] text-mist-50 sm:text-7xl">
-                    Manage your
-                    <span class="bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">writing.</span>
-                </h1>
-                <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">Create drafts, edit articles and control what appears in the public journal.</p>
+<main class="workspace-page workspace-page--wide">
+    <section class="workspace-hero">
+        <div class="workspace-hero__glow" aria-hidden="true"></div>
+        <div class="workspace-hero__inner">
+            <div class="workspace-hero__copy">
+                <a href="/dashboard/" class="button-quiet">← Workspace</a>
+                <p class="eyebrow">Journal</p>
+                <h1 class="workspace-title">Manage your <span class="workspace-title__accent">writing.</span></h1>
+                <p class="workspace-lede">Create drafts, edit articles and control what appears in the public journal.</p>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3">
-                <span class="rounded-full border border-white/9 bg-white/3 px-4 py-2 text-xs text-mist-500">{{len .Posts}} total posts</span>
-                <a href="/dashboard/blog/new" class="button-primary w-fit">New post <span aria-hidden="true">＋</span></a>
+            <div class="workspace-actions">
+                <span class="publisher-badge">{{len .Posts}} total posts</span>
+                <a href="/dashboard/blog/new" class="button-primary">New post <span aria-hidden="true">＋</span></a>
             </div>
         </div>
     </section>
 
-    <section class="mt-8 pb-4" aria-labelledby="post-archive-heading">
-        <div class="mb-6 flex items-center justify-between gap-4">
+    <section class="workspace-section" aria-labelledby="post-archive-heading">
+        <div class="workspace-section__header">
             <div>
                 <p class="metric-label">Archive</p>
-                <h2 id="post-archive-heading" class="mt-2 text-2xl font-medium tracking-[-0.035em] text-mist-50">All journal posts</h2>
+                <h2 id="post-archive-heading" class="workspace-section__title">All journal posts</h2>
             </div>
-            <a href="/blog/" target="_blank" rel="noopener noreferrer" class="button-secondary hidden min-h-10 px-4 text-xs sm:inline-flex">View public journal <span aria-hidden="true">↗</span></a>
+            <a href="/blog/" target="_blank" rel="noopener noreferrer" class="button-secondary admin-view-site">View public journal <span aria-hidden="true">↗</span></a>
         </div>
 
         {{if .Posts}}
-        <div class="grid gap-4">
+        <div class="publisher-post-list">
             {{range .Posts}}
-            <article class="admin-panel group overflow-hidden p-6 sm:p-7">
-                <div class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-                    <div class="min-w-0">
-                        <div class="flex flex-wrap items-center gap-3">
+            <article class="admin-panel publisher-post">
+                <div class="publisher-post__grid">
+                    <div>
+                        <div class="publisher-post__meta">
                             {{if eq .Status "published"}}
-                            <span class="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-blue-200"><span class="size-1.5 rounded-full bg-blue-300"></span>Published</span>
+                            <span class="publisher-post__status publisher-post__status--live"><span class="publisher-status__dot"></span>Published</span>
                             {{else}}
-                            <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-mist-500"><span class="size-1.5 rounded-full bg-mist-700"></span>Draft</span>
+                            <span class="publisher-post__status"><span class="publisher-status__dot"></span>Draft</span>
                             {{end}}
-                            <span class="font-mono text-xs text-mist-700">/blog/{{.Slug}}</span>
+                            <span class="publisher-post__slug">/blog/{{.Slug}}</span>
                         </div>
-
-                        <h3 class="mt-5 truncate text-2xl font-medium tracking-[-0.035em] text-mist-50 sm:text-3xl">{{.Title}}</h3>
-                        {{if .Excerpt}}<p class="mt-3 max-w-3xl text-sm leading-6 text-mist-500">{{.Excerpt}}</p>{{end}}
+                        <h3 class="publisher-post__title">{{.Title}}</h3>
+                        {{if .Excerpt}}<p class="publisher-post__excerpt">{{.Excerpt}}</p>{{end}}
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2 lg:justify-end">
-                        {{if eq .Status "published"}}<a href="/blog/{{.Slug}}" target="_blank" rel="noopener noreferrer" class="button-secondary min-h-10 px-4 text-xs">View <span aria-hidden="true">↗</span></a>{{end}}
-                        <a href="/dashboard/blog/{{.ID}}/edit" class="button-secondary min-h-10 px-4 text-xs">Edit</a>
+                    <div class="publisher-post__actions">
+                        {{if eq .Status "published"}}<a href="/blog/{{.Slug}}" target="_blank" rel="noopener noreferrer" class="button-secondary admin-view-site">View <span aria-hidden="true">↗</span></a>{{end}}
+                        <a href="/dashboard/blog/{{.ID}}/edit" class="button-secondary admin-view-site">Edit</a>
 
                         {{if eq .Status "published"}}
                         <form method="post" action="/dashboard/blog/{{.ID}}/unpublish">
                             <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
-                            <button type="submit" class="button-secondary min-h-10 px-4 text-xs text-amber-200 hover:border-amber-300/30 hover:bg-amber-300/8">Unpublish</button>
+                            <button type="submit" class="button-secondary admin-view-site">Unpublish</button>
                         </form>
                         {{else}}
                         <form method="post" action="/dashboard/blog/{{.ID}}/publish">
                             <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
-                            <button type="submit" class="button-secondary min-h-10 px-4 text-xs text-blue-200 hover:border-blue-300/35 hover:bg-blue-300/8">Publish</button>
+                            <button type="submit" class="button-secondary admin-view-site">Publish</button>
                         </form>
                         {{end}}
 
-                        <button type="button" hx-delete="/dashboard/blog/{{.ID}}" hx-confirm="Delete ‘{{.Title}}’? This cannot be undone." hx-headers='{"X-CSRF-Token":"{{$.CSRFToken}}"}' class="button-secondary min-h-10 px-4 text-xs text-red-200 hover:border-red-300/30 hover:bg-red-300/8">Delete</button>
+                        <button type="button" hx-delete="/dashboard/blog/{{.ID}}" hx-confirm="Delete ‘{{.Title}}’? This cannot be undone." hx-headers='{"X-CSRF-Token":"{{$.CSRFToken}}"}' class="button-secondary admin-view-site workspace-signout">Delete</button>
                     </div>
                 </div>
             </article>
             {{end}}
         </div>
         {{else}}
-        <div class="admin-panel relative overflow-hidden px-7 py-16 text-center sm:px-12 sm:py-20">
-            <div class="pointer-events-none absolute left-1/2 top-0 size-72 -translate-x-1/2 rounded-full bg-blue-400/10 blur-3xl" aria-hidden="true"></div>
-            <div class="relative mx-auto max-w-xl">
-                <span class="mx-auto grid size-14 place-items-center rounded-2xl border border-blue-300/20 bg-blue-300/8 text-2xl text-blue-200">✦</span>
-                <h2 class="mt-6 text-3xl font-medium tracking-[-0.04em] text-mist-50">Your journal starts here.</h2>
-                <p class="mt-4 leading-7 text-mist-500">Create a draft and publish it whenever it is ready.</p>
-                <a href="/dashboard/blog/new" class="button-primary mt-7">Create the first post <span aria-hidden="true">→</span></a>
-            </div>
+        <div class="admin-panel workspace-empty">
+            <p class="eyebrow">Your journal starts here</p>
+            <h2 class="workspace-section__title">Create a draft and publish it whenever it is ready.</h2>
+            <p class="workspace-empty__copy">Your first journal post can stay private until you're ready to make it public.</p>
+            <a href="/dashboard/blog/new" class="button-primary">Create the first post <span aria-hidden="true">→</span></a>
         </div>
         {{end}}
     </section>

@@ -1,103 +1,100 @@
 {{define "content"}}
-<main class="overflow-clip">
-    <section class="relative isolate border-b border-white/8">
-        <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-            <div class="absolute left-[8%] top-16 size-72 rounded-full bg-signal-500/14 blur-3xl sm:size-112"></div>
-            <div class="absolute -right-28 top-1/4 size-80 rounded-full bg-electric-400/10 blur-3xl sm:size-120"></div>
+<main class="service-page">
+    <section class="service-hero">
+        <div class="service-hero__glow-field" aria-hidden="true">
+            <div class="service-hero__glow service-hero__glow--signal"></div>
+            <div class="service-hero__glow service-hero__glow--electric"></div>
         </div>
 
-        <div class="site-container grid min-h-[calc(100svh-5rem)] items-center gap-14 py-20 lg:grid-cols-[1.04fr_0.96fr] lg:gap-20 lg:py-24">
-            <div class="max-w-5xl">
-                <div class="mb-8 flex items-center gap-4">
-                    <span class="h-px w-10 bg-blue-400"></span>
-                    <p class="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-                        Web Design / Leeds
-                    </p>
+        <div class="site-container service-hero__layout">
+            <div class="service-hero__copy">
+                <div class="service-kicker">
+                    <span class="service-kicker__line"></span>
+                    <p class="service-kicker__text">Web Design / Leeds</p>
                 </div>
 
-                <h1 class="text-[4.1rem] font-medium leading-[0.92] tracking-[-0.045em] text-mist-50 sm:text-8xl lg:text-9xl">
-                    <span class="block">Web design &amp;</span>
-                    <span class="block text-blue-400">development</span>
-                    <span class="block">in Leeds.</span>
+                <h1 class="service-hero__title">
+                    <span class="service-hero__title-line">Web design &amp;</span>
+                    <span class="service-hero__title-line service-hero__title-accent">development</span>
+                    <span class="service-hero__title-line">in Leeds.</span>
                 </h1>
 
-                <p class="mt-9 max-w-2xl text-lg leading-8 text-mist-300 sm:text-xl">
+                <p class="service-hero__intro">
                     I design and build fast, accessible and maintainable websites and digital products for businesses in Leeds and beyond — with UI/UX and full-stack engineering handled as one connected process.
                 </p>
 
-                <div class="mt-8 flex flex-wrap gap-3">
+                <div class="service-actions">
                     <a href="/#contact" class="button-primary">Start a project <span aria-hidden="true">↗</span></a>
                     <a href="/work/portfolio" class="button-secondary">View selected work <span aria-hidden="true">→</span></a>
                 </div>
 
-                <dl class="mt-12 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/9 pt-7 sm:grid-cols-3">
+                <dl class="service-metrics">
                     <div>
                         <dt class="metric-label">Based</dt>
-                        <dd class="mt-2 text-sm font-semibold text-mist-100">Leeds, UK</dd>
+                        <dd class="service-metric__value">Leeds, UK</dd>
                     </div>
                     <div>
                         <dt class="metric-label">Approach</dt>
-                        <dd class="mt-2 text-sm font-semibold text-mist-100">Design + engineering</dd>
+                        <dd class="service-metric__value">Design + engineering</dd>
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="service-metric--wide">
                         <dt class="metric-label">Delivery</dt>
-                        <dd class="mt-2 text-sm font-semibold text-mist-100">Fast, accessible, maintainable</dd>
+                        <dd class="service-metric__value">Fast, accessible, maintainable</dd>
                     </div>
                 </dl>
             </div>
 
-            <div class="relative mx-auto w-full max-w-xl lg:justify-self-end">
-                <div class="absolute -inset-8 -z-10 rounded-[3rem] bg-linear-to-br from-signal-500/16 via-transparent to-electric-400/10 blur-3xl" aria-hidden="true"></div>
-
-                <div class="glass-panel overflow-hidden rounded-5xl">
-                    <div class="flex items-center justify-between border-b border-white/8 px-5 py-4">
-                        <div class="flex gap-2" aria-hidden="true">
-                            <span class="size-2 rounded-full bg-white/18"></span>
-                            <span class="size-2 rounded-full bg-white/18"></span>
-                            <span class="size-2 rounded-full bg-blue-300/70"></span>
+            <div class="service-preview">
+                <div class="service-preview__glow" aria-hidden="true"></div>
+                <div class="glass-panel service-preview__panel">
+                    <div class="service-preview__toolbar">
+                        <div class="service-preview__dots" aria-hidden="true">
+                            <span class="service-preview__dot"></span>
+                            <span class="service-preview__dot"></span>
+                            <span class="service-preview__dot service-preview__dot--accent"></span>
                         </div>
-                        <p class="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-mist-700">Leeds / digital delivery</p>
+                        <p class="service-preview__label">Leeds / digital delivery</p>
                     </div>
 
-                    <div class="p-5 sm:p-7">
-                        <div class="flex items-start justify-between gap-5">
+                    <div class="service-preview__body">
+                        <div class="service-preview__heading">
                             <div>
                                 <p class="metric-label">One process</p>
-                                <p class="mt-2 text-2xl font-medium tracking-[-0.035em] text-mist-50">From first decision to working product.</p>
+                                <p class="service-preview__principle">From first decision to working product.</p>
                             </div>
-                            <span class="inline-flex shrink-0 items-center gap-2 rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-xs font-bold text-blue-200">
-                                <span class="size-1.5 rounded-full bg-blue-300"></span>
+                            <span class="service-preview__status">
+                                <span class="service-preview__status-dot"></span>
                                 Local
                             </span>
                         </div>
 
-                        <div class="mt-7 space-y-3">
-                            <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
-                                <div class="flex items-center gap-4">
-                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">01</span>
+                        <div class="service-preview__steps">
+                            <div class="service-preview__step">
+                                <div class="service-preview__step-inner">
+                                    <span class="service-preview__step-number">01</span>
                                     <div>
-                                        <p class="font-semibold text-mist-100">Understand the business</p>
-                                        <p class="mt-1 text-xs leading-5 text-mist-500">Goals, users, constraints and the decisions the website needs to support.</p>
+                                        <p class="service-preview__step-title">Understand the business</p>
+                                        <p class="service-preview__step-copy">Goals, users, constraints and the decisions the website needs to support.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
-                                <div class="flex items-center gap-4">
-                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">02</span>
+                            <div class="service-preview__step">
+                                <div class="service-preview__step-inner">
+                                    <span class="service-preview__step-number">02</span>
                                     <div>
-                                        <p class="font-semibold text-mist-100">Shape the experience</p>
-                                        <p class="mt-1 text-xs leading-5 text-mist-500">Information architecture, UI/UX and a visual system with a clear purpose.</p>
+                                        <p class="service-preview__step-title">Shape the experience</p>
+                                        <p class="service-preview__step-copy">Information architecture, UI/UX and a visual system with a clear purpose.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="rounded-3xl border border-white/8 bg-[#050915] p-5">
-                                <div class="flex items-center gap-4">
-                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">03</span>
+                            <div class="service-preview__step service-preview__step--strong">
+                                <div class="service-preview__step-inner">
+                                    <span class="service-preview__step-number">03</span>
                                     <div>
-                                        <p class="font-semibold text-mist-100">Build and ship</p>
-                                        <p class="mt-1 text-xs leading-5 text-mist-500">Responsive implementation, performance, accessibility, testing and deployment.</p>
+                                        <p class="service-preview__step-title">Build and ship</p>
+                                        <p class="service-preview__step-copy">Responsive implementation, performance, accessibility, testing and deployment.</p>
                                     </div>
                                 </div>
                             </div>
@@ -108,128 +105,104 @@
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
-        <div class="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
-            <div class="lg:sticky lg:top-28 lg:self-start">
+    <section class="service-section">
+        <div class="site-container service-split">
+            <div class="service-sticky">
                 <p class="eyebrow">01 / What I do</p>
-                <h2 class="mt-7 max-w-xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
-                    Websites designed around the
-                    <span class="text-blue-300">business.</span>
-                </h2>
-                <p class="mt-7 max-w-lg leading-7 text-mist-500">
-                    Good web design is more than a polished homepage. The structure, interface, content and engineering should all make it easier for the right person to understand what you do and take the next step.
-                </p>
+                <h2 class="service-title">Websites designed around the <span class="service-accent">business.</span></h2>
+                <p class="service-copy">Good web design is more than a polished homepage. The structure, interface, content and engineering should all make it easier for the right person to understand what you do and take the next step.</p>
             </div>
 
-            <div class="divide-y divide-white/9 border-y border-white/9">
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
-                    <span class="font-mono text-sm text-blue-300">01</span>
+            <div class="service-list">
+                <article class="service-list__item">
+                    <span class="service-list__index">01</span>
                     <div>
-                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">Web design &amp; UI/UX</h3>
-                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">Clear hierarchy, responsive layouts, accessible interactions and visual systems that feel considered without getting in the way of the message.</p>
+                        <h3 class="service-list__title">Web design &amp; UI/UX</h3>
+                        <p class="service-list__copy">Clear hierarchy, responsive layouts, accessible interactions and visual systems that feel considered without getting in the way of the message.</p>
                     </div>
                 </article>
-
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
-                    <span class="font-mono text-sm text-blue-300">02</span>
+                <article class="service-list__item">
+                    <span class="service-list__index">02</span>
                     <div>
-                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">Web development</h3>
-                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">Fast, responsive implementation with maintainability, semantic HTML, performance and security considered from the start rather than patched in afterwards.</p>
+                        <h3 class="service-list__title">Web development</h3>
+                        <p class="service-list__copy">Fast, responsive implementation with maintainability, semantic HTML, performance and security considered from the start rather than patched in afterwards.</p>
                     </div>
                 </article>
-
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
-                    <span class="font-mono text-sm text-blue-300">03</span>
+                <article class="service-list__item">
+                    <span class="service-list__index">03</span>
                     <div>
-                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">Digital products &amp; custom software</h3>
-                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">For work that goes beyond a marketing site: authenticated areas, internal tools, data-backed workflows and focused product experiences built around a real operational need.</p>
+                        <h3 class="service-list__title">Digital products &amp; custom software</h3>
+                        <p class="service-list__copy">For work that goes beyond a marketing site: authenticated areas, internal tools, data-backed workflows and focused product experiences built around a real operational need.</p>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+    <section class="service-section">
         <div class="site-container">
-            <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div class="service-intro-grid">
                 <div>
                     <p class="eyebrow">02 / One connected process</p>
-                    <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
-                        Design and development shouldn't
-                        <span class="text-blue-300">fight each other.</span>
-                    </h2>
+                    <h2 class="service-title">Design and development shouldn't <span class="service-accent">fight each other.</span></h2>
                 </div>
-                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">
-                    Keeping both disciplines connected means fewer hand-offs, fewer assumptions and a product where the visual decisions actually survive implementation.
-                </p>
+                <p class="service-copy--large">Keeping both disciplines connected means fewer hand-offs, fewer assumptions and a product where the visual decisions actually survive implementation.</p>
             </div>
 
-            <div class="mt-14 grid gap-4 lg:grid-cols-3">
-                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+            <div class="service-card-grid">
+                <article class="interactive-card service-card">
                     <p class="metric-label">Discover</p>
-                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">Understand what matters</h3>
-                    <p class="mt-4 leading-7 text-mist-500">Clarify the audience, commercial goal, information hierarchy and constraints before choosing visual or technical solutions.</p>
+                    <h3 class="service-card__title">Understand what matters</h3>
+                    <p class="service-card__copy">Clarify the audience, commercial goal, information hierarchy and constraints before choosing visual or technical solutions.</p>
                 </article>
-
-                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+                <article class="interactive-card service-card">
                     <p class="metric-label">Design</p>
-                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">Make the route obvious</h3>
-                    <p class="mt-4 leading-7 text-mist-500">Shape the interface around comprehension and action, with responsive layouts, accessible states and restrained interaction.</p>
+                    <h3 class="service-card__title">Make the route obvious</h3>
+                    <p class="service-card__copy">Shape the interface around comprehension and action, with responsive layouts, accessible states and restrained interaction.</p>
                 </article>
-
-                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+                <article class="interactive-card service-card">
                     <p class="metric-label">Build</p>
-                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">Ship a dependable system</h3>
-                    <p class="mt-4 leading-7 text-mist-500">Implement, test and deploy the experience with performance, security and maintainability treated as product requirements.</p>
+                    <h3 class="service-card__title">Ship a dependable system</h3>
+                    <p class="service-card__copy">Implement, test and deploy the experience with performance, security and maintainability treated as product requirements.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+    <section class="service-section">
         <div class="site-container">
-            <div class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+            <div class="service-intro-grid service-intro-grid--work">
                 <div>
                     <p class="eyebrow">03 / Selected work</p>
-                    <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
-                        See the thinking behind a
-                        <span class="text-blue-300">working product.</span>
-                    </h2>
+                    <h2 class="service-title">See the thinking behind a <span class="service-accent">working product.</span></h2>
                 </div>
-                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">The portfolio itself is also a full-stack product — public site, private workspace, authentication, publishing and operational tooling in one codebase.</p>
+                <p class="service-copy--large">The portfolio itself is also a full-stack product — public site, private workspace, authentication, publishing and operational tooling in one codebase.</p>
             </div>
 
-            <a href="/work/portfolio" class="interactive-card group mt-14 block rounded-5xl p-4 sm:p-7">
-                <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
-                    <div class="relative z-10 py-5 sm:px-3">
-                        <div class="flex items-center gap-3">
-                            <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-[0.67rem] font-bold uppercase tracking-[0.18em] text-blue-200">Case study</span>
-                            <span class="text-xs text-mist-700">Go / HTMX / SQLite</span>
+            <a href="/work/portfolio" class="interactive-card service-case">
+                <div class="service-case__grid">
+                    <div class="service-case__copy">
+                        <div class="service-case__meta">
+                            <span class="service-case__badge">Case study</span>
+                            <span class="service-case__meta-text">Go / HTMX / SQLite</span>
                         </div>
-
-                        <h3 class="mt-8 text-balance text-4xl font-medium leading-[0.98] tracking-[-0.045em] text-mist-50 sm:text-5xl">
-                            Portfolio &amp;
-                            <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">Client Workspace</span>
-                        </h3>
-
-                        <p class="mt-6 max-w-xl leading-7 text-mist-500">A public portfolio and private workspace designed as one coherent product, covering interface design, backend structure, authentication, persistence and deployment.</p>
-
-                        <p class="mt-10 inline-flex items-center gap-3 text-sm font-bold text-mist-100">Read the case study <span class="text-blue-300 transition group-hover:translate-x-1" aria-hidden="true">→</span></p>
+                        <h3 class="service-case__title">Portfolio &amp; <span class="service-case__title-accent">Client Workspace</span></h3>
+                        <p class="service-case__description">A public portfolio and private workspace designed as one coherent product, covering interface design, backend structure, authentication, persistence and deployment.</p>
+                        <p class="service-case__link">Read the case study <span class="service-case__arrow" aria-hidden="true">→</span></p>
                     </div>
 
-                    <div class="relative min-h-96 overflow-hidden rounded-4xl border border-white/9 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/7 p-5 sm:min-h-112 sm:p-7">
-                        <div class="absolute -right-16 -top-16 size-64 rounded-full bg-blue-400/14 blur-3xl" aria-hidden="true"></div>
-                        <div class="relative grid h-full content-between overflow-hidden rounded-3xl border border-white/10 bg-[#050b18]/92 p-6 shadow-2xl shadow-black/40 sm:p-8">
+                    <div class="service-case__visual">
+                        <div class="service-case__visual-glow" aria-hidden="true"></div>
+                        <div class="service-case__visual-panel">
                             <div>
                                 <p class="metric-label">Product system</p>
-                                <p class="mt-3 text-3xl font-medium tracking-[-0.04em] text-mist-50">Public experience + private operations.</p>
+                                <p class="service-case__visual-title">Public experience + private operations.</p>
                             </div>
-
-                            <div class="mt-10 grid grid-cols-2 gap-3">
-                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><p class="metric-label">Interface</p><p class="mt-3 text-sm font-semibold text-mist-100">Responsive UI</p></div>
-                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><p class="metric-label">Backend</p><p class="mt-3 text-sm font-semibold text-mist-100">Go services</p></div>
-                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><p class="metric-label">Data</p><p class="mt-3 text-sm font-semibold text-mist-100">SQLite</p></div>
-                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><p class="metric-label">Delivery</p><p class="mt-3 text-sm font-semibold text-mist-100">Secure deployment</p></div>
+                            <div class="service-case__mini-grid">
+                                <div class="service-case__mini-card"><p class="metric-label">Interface</p><p class="service-case__mini-value">Responsive UI</p></div>
+                                <div class="service-case__mini-card"><p class="metric-label">Backend</p><p class="service-case__mini-value">Go services</p></div>
+                                <div class="service-case__mini-card"><p class="metric-label">Data</p><p class="service-case__mini-value">SQLite</p></div>
+                                <div class="service-case__mini-card"><p class="metric-label">Delivery</p><p class="service-case__mini-value">Secure deployment</p></div>
                             </div>
                         </div>
                     </div>
@@ -238,52 +211,42 @@
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
-        <div class="site-container grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <section class="service-section">
+        <div class="site-container service-split service-split--balanced">
             <div>
                 <p class="eyebrow">04 / Leeds</p>
-                <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
-                    Local when it helps.
-                    <span class="block text-blue-300">Remote when it doesn't matter.</span>
-                </h2>
+                <h2 class="service-title">Local when it helps. <span class="service-hero__title-line service-accent">Remote when it doesn't matter.</span></h2>
             </div>
 
-            <div class="glass-panel rounded-5xl p-7 sm:p-10">
-                <p class="text-lg leading-8 text-mist-300">
-                    I'm based in Leeds and can work with businesses locally while still handling projects remotely across the UK and beyond. The process stays focused on the same thing either way: understanding the problem, keeping communication clear and shipping work that is easy to use and maintain.
-                </p>
-
-                <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+            <div class="glass-panel service-panel">
+                <p class="service-copy--large">I'm based in Leeds and can work with businesses locally while still handling projects remotely across the UK and beyond. The process stays focused on the same thing either way: understanding the problem, keeping communication clear and shipping work that is easy to use and maintain.</p>
+                <div class="service-panel-grid">
+                    <div class="service-panel-card">
                         <p class="metric-label">Local</p>
-                        <p class="mt-3 font-semibold text-mist-100">Leeds &amp; West Yorkshire</p>
-                        <p class="mt-2 text-sm leading-6 text-mist-500">Useful when face-to-face context or local knowledge makes the project easier.</p>
+                        <p class="service-panel-card__title">Leeds &amp; West Yorkshire</p>
+                        <p class="service-panel-card__copy">Useful when face-to-face context or local knowledge makes the project easier.</p>
                     </div>
-                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                    <div class="service-panel-card">
                         <p class="metric-label">Remote</p>
-                        <p class="mt-3 font-semibold text-mist-100">UK &amp; beyond</p>
-                        <p class="mt-2 text-sm leading-6 text-mist-500">A structured process works just as well when location isn't part of the problem.</p>
+                        <p class="service-panel-card__title">UK &amp; beyond</p>
+                        <p class="service-panel-card__copy">A structured process works just as well when location isn't part of the problem.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 sm:py-30 lg:py-36">
+    <section class="service-cta">
         <div class="site-container">
-            <div class="relative overflow-hidden rounded-5xl border border-white/10 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/8 px-6 py-14 sm:px-10 sm:py-18 lg:px-14 lg:py-20">
-                <div class="pointer-events-none absolute -right-20 -top-24 size-80 rounded-full bg-blue-400/16 blur-3xl" aria-hidden="true"></div>
-                <div class="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-                    <div class="max-w-4xl">
+            <div class="service-cta__panel">
+                <div class="service-cta__glow" aria-hidden="true"></div>
+                <div class="service-cta__grid">
+                    <div class="service-cta__copy">
                         <p class="eyebrow">05 / Start a project</p>
-                        <h2 class="mt-7 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
-                            Need a website that has to do more than
-                            <span class="text-blue-300">just look good?</span>
-                        </h2>
-                        <p class="mt-7 max-w-2xl text-lg leading-8 text-mist-300">If you're planning a new website, redesign or digital product, tell me what you're trying to achieve and where the current experience is getting in the way.</p>
+                        <h2 class="service-title">Need a website that has to do more than <span class="service-accent">just look good?</span></h2>
+                        <p class="service-cta__description">If you're planning a new website, redesign or digital product, tell me what you're trying to achieve and where the current experience is getting in the way.</p>
                     </div>
-
-                    <div class="flex flex-wrap gap-3 lg:justify-end">
+                    <div class="service-cta__actions">
                         <a href="/#contact" class="button-primary">Start a project <span aria-hidden="true">↗</span></a>
                         <a href="/blog/" class="button-secondary">Read the journal <span aria-hidden="true">→</span></a>
                     </div>

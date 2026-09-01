@@ -26,13 +26,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-
-      - name: Install frontend dependencies
-        run: npm ci
-
-      - name: Build Tailwind CSS
-        run: npm run build:css
 
       - name: Install official Lighthouse CI CLI
         run: npm install --global @lhci/cli@0.15.1

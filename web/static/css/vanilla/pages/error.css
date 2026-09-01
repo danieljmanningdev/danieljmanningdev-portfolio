@@ -1,0 +1,97 @@
+/* ========================================================================== 
+   ERROR PAGES
+   ========================================================================== */
+
+.error-page {
+    display: grid;
+    min-height: calc(100svh - 5rem);
+    place-items: center;
+    padding-block: 4rem;
+}
+
+.error-page__section {
+    position: relative;
+}
+
+.error-page__glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34rem;
+    height: 34rem;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-signal-500) 12%, transparent);
+    filter: blur(64px);
+    pointer-events: none;
+}
+
+.error-page__content {
+    position: relative;
+    max-width: 64rem;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.error-page__code {
+    margin-top: 2rem;
+    color: color-mix(in oklab, white 5%, transparent);
+    font-family: var(--font-mono);
+    font-size: clamp(5rem, 18vw, 13rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.09em;
+}
+
+.error-page__title {
+    margin-top: -2rem;
+    color: var(--color-mist-50);
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 500;
+    line-height: .92;
+    letter-spacing: -.055em;
+    text-wrap: balance;
+}
+
+.error-page__accent {
+    background: linear-gradient(90deg, var(--color-signal-300), var(--color-electric-300));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.error-page__copy {
+    max-width: 42rem;
+    margin: 1.75rem auto 0;
+    color: var(--color-mist-500);
+    font-size: 1.125rem;
+    line-height: 2rem;
+}
+
+.error-page__path {
+    width: fit-content;
+    max-width: 100%;
+    margin: 1.75rem auto 0;
+    overflow: hidden;
+    padding: .5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-mist-700);
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    text-overflow: ellipsis;
+}
+
+.error-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .75rem;
+    margin-top: 2.25rem;
+}
+
+@media (min-width: 40rem) {
+    .error-page { padding-block: 6rem; }
+    .error-page__title { margin-top: -3.5rem; }
+}

@@ -1,67 +1,60 @@
 {{define "content"}}
-<main class="mx-auto max-w-7xl">
-    <section class="relative overflow-hidden rounded-5xl border border-white/8 bg-linear-to-br from-blue-500/9 via-white/3 to-cyan-400/5 p-7 sm:p-10 lg:p-12">
-        <div class="pointer-events-none absolute -right-20 -top-28 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
-
-        <div class="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <div class="max-w-4xl">
-                <a href="/dashboard/" class="button-quiet -ml-4 min-h-10 px-4">← Overview</a>
-                <p class="eyebrow mt-8">Workspace / Activity</p>
-                <h1 class="mt-7 text-balance text-5xl font-medium leading-[0.94] tracking-[-0.055em] text-mist-50 sm:text-7xl">
-                    A clear history of
-                    <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">what changed.</span>
-                </h1>
-                <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">Recent client, project, contract and journal events, recorded automatically as the workspace changes.</p>
+<main class="workspace-page workspace-page--wide">
+    <section class="workspace-hero">
+        <div class="workspace-hero__glow" aria-hidden="true"></div>
+        <div class="workspace-hero__inner">
+            <div class="workspace-hero__copy">
+                <a href="/dashboard/" class="button-quiet">← Overview</a>
+                <p class="eyebrow">Workspace / Activity</p>
+                <h1 class="workspace-title">A clear history of <span class="workspace-title__accent">what changed.</span></h1>
+                <p class="workspace-lede">Recent client, project, contract and journal events, recorded automatically as the workspace changes.</p>
             </div>
         </div>
     </section>
 
-    <section class="mt-8 pb-6">
-        <div class="flex flex-col gap-5 border-b border-white/8 pb-6 sm:flex-row sm:items-end sm:justify-between">
+    <section class="workspace-section">
+        <div class="activity-header">
             <div>
                 <p class="metric-label">History</p>
-                <h2 class="mt-2 text-2xl font-medium tracking-[-0.035em] text-mist-50">Latest events</h2>
+                <h2 class="activity-title">Latest events</h2>
             </div>
 
-            <nav class="flex flex-wrap gap-2" aria-label="Filter activity by type">
-                <a href="/dashboard/activity" class="rounded-full border px-3.5 py-2 text-xs font-semibold transition {{if eq .Filter ""}}border-blue-300/30 bg-blue-300/10 text-blue-100{{else}}border-white/8 bg-white/3 text-mist-500 hover:border-blue-300/20 hover:text-mist-100{{end}}">All</a>
-                <a href="/dashboard/activity?type=client" class="rounded-full border px-3.5 py-2 text-xs font-semibold transition {{if eq .Filter "client"}}border-blue-300/30 bg-blue-300/10 text-blue-100{{else}}border-white/8 bg-white/3 text-mist-500 hover:border-blue-300/20 hover:text-mist-100{{end}}">Clients</a>
-                <a href="/dashboard/activity?type=project" class="rounded-full border px-3.5 py-2 text-xs font-semibold transition {{if eq .Filter "project"}}border-blue-300/30 bg-blue-300/10 text-blue-100{{else}}border-white/8 bg-white/3 text-mist-500 hover:border-blue-300/20 hover:text-mist-100{{end}}">Projects</a>
-                <a href="/dashboard/activity?type=contract" class="rounded-full border px-3.5 py-2 text-xs font-semibold transition {{if eq .Filter "contract"}}border-blue-300/30 bg-blue-300/10 text-blue-100{{else}}border-white/8 bg-white/3 text-mist-500 hover:border-blue-300/20 hover:text-mist-100{{end}}">Contracts</a>
-                <a href="/dashboard/activity?type=blog_post" class="rounded-full border px-3.5 py-2 text-xs font-semibold transition {{if eq .Filter "blog_post"}}border-blue-300/30 bg-blue-300/10 text-blue-100{{else}}border-white/8 bg-white/3 text-mist-500 hover:border-blue-300/20 hover:text-mist-100{{end}}">Journal</a>
+            <nav class="workspace-filters" aria-label="Filter activity by type">
+                <a href="/dashboard/activity" class="workspace-filter {{if eq .Filter ""}}workspace-filter--active{{end}}">All</a>
+                <a href="/dashboard/activity?type=client" class="workspace-filter {{if eq .Filter "client"}}workspace-filter--active{{end}}">Clients</a>
+                <a href="/dashboard/activity?type=project" class="workspace-filter {{if eq .Filter "project"}}workspace-filter--active{{end}}">Projects</a>
+                <a href="/dashboard/activity?type=contract" class="workspace-filter {{if eq .Filter "contract"}}workspace-filter--active{{end}}">Contracts</a>
+                <a href="/dashboard/activity?type=blog_post" class="workspace-filter {{if eq .Filter "blog_post"}}workspace-filter--active{{end}}">Journal</a>
             </nav>
         </div>
 
         {{if .Events}}
-        <ol class="divide-y divide-white/8">
+        <ol class="activity-list">
             {{range .Events}}
-            <li class="grid gap-4 py-6 sm:grid-cols-[9rem_minmax(0,1fr)_auto] sm:items-start">
-                <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}" class="font-mono text-xs leading-6 text-mist-700">
-                    {{.CreatedAt.Format "02 Jan 2006"}}<br>
-                    {{.CreatedAt.Format "15:04"}}
-                </time>
+            <li class="activity-row">
+                <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}" class="activity-date">{{.CreatedAt.Format "02 Jan 2006"}}<br>{{.CreatedAt.Format "15:04"}}</time>
 
-                <div class="min-w-0">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="rounded-full border border-white/8 bg-white/3 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-mist-500">{{.EntityLabel}}</span>
-                        {{if .Details}}<span class="font-mono text-xs text-blue-300">{{.Details}}</span>{{end}}
+                <div>
+                    <div class="workspace-list__meta">
+                        <span class="workspace-chip">{{.EntityLabel}}</span>
+                        {{if .Details}}<span class="workspace-list__detail">{{.Details}}</span>{{end}}
                     </div>
-                    <p class="mt-3 text-base font-semibold leading-6 text-mist-100">{{.Summary}}</p>
-                    <p class="mt-1 font-mono text-[0.68rem] text-mist-700">{{.Action}}</p>
+                    <p class="activity-summary">{{.Summary}}</p>
+                    <p class="activity-action">{{.Action}}</p>
                 </div>
 
                 {{if .URL}}
-                <a href="{{.URL}}" class="button-secondary min-h-10 px-4 text-xs">Open <span aria-hidden="true">↗</span></a>
+                <a href="{{.URL}}" class="button-secondary admin-view-site">Open <span aria-hidden="true">↗</span></a>
                 {{else}}
-                <span class="text-xs text-mist-700">Record removed</span>
+                <span class="activity-removed">Record removed</span>
                 {{end}}
             </li>
             {{end}}
         </ol>
         {{else}}
-        <div class="admin-panel mt-7 px-7 py-14 text-center sm:px-10">
-            <p class="mx-auto max-w-xl text-lg font-medium text-mist-100">No activity has been recorded for this filter yet.</p>
-            <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-mist-500">Creating or updating a workspace record will add its first history event automatically.</p>
+        <div class="admin-panel workspace-empty">
+            <p class="workspace-empty__title">No activity has been recorded for this filter yet.</p>
+            <p class="workspace-empty__copy">Creating or updating a workspace record will add its first history event automatically.</p>
         </div>
         {{end}}
     </section>

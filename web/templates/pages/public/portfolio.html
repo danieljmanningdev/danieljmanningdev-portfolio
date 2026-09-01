@@ -1,70 +1,102 @@
 {{define "content"}}
-<main class="overflow-clip">
-    <section class="relative border-b border-white/8 py-20 sm:py-28 lg:py-36">
-        <div class="pointer-events-none absolute left-1/3 top-0 size-[34rem] rounded-full bg-signal-500/12 blur-3xl" aria-hidden="true"></div>
+<main class="portfolio-page">
+    <section class="portfolio-section portfolio-hero">
+        <div class="portfolio-hero__glow" aria-hidden="true"></div>
 
-        <div class="site-container relative">
-            <a href="/#work" class="button-quiet -ml-4 min-h-10 px-4">← Selected work</a>
+        <div class="site-container portfolio-hero__inner">
+            <a href="/#work" class="button-quiet portfolio-back-link">← Selected work</a>
 
-            <div class="mt-12 grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+            <div class="portfolio-hero__grid">
                 <div>
                     <p class="eyebrow">Case study / 2026</p>
-                    <h1 class="mt-8 text-balance text-[clamp(3.7rem,8vw,8rem)] font-medium leading-[0.88] tracking-[-0.065em] text-mist-50">
+                    <h1 class="portfolio-hero__title">
                         Portfolio &amp;
-                        <span class="block bg-linear-to-r from-signal-300 via-electric-300 to-signal-400 bg-clip-text text-transparent">Client Workspace</span>
+                        <span class="portfolio-hero__title-accent">Client Workspace</span>
                     </h1>
                 </div>
 
                 <div>
-                    <p class="text-lg leading-8 text-mist-300">A public portfolio and secure personal workspace designed as one coherent product — clear in public, focused in private and deliberately lightweight throughout.</p>
-                    <div class="mt-8 flex flex-wrap gap-2 text-xs text-mist-300">
-                        <span class="rounded-full border border-white/9 px-3 py-1.5">Product design</span>
-                        <span class="rounded-full border border-white/9 px-3 py-1.5">Go</span>
-                        <span class="rounded-full border border-white/9 px-3 py-1.5">HTMX</span>
-                        <span class="rounded-full border border-white/9 px-3 py-1.5">Security</span>
+                    <p class="portfolio-hero__summary">A public portfolio and secure personal workspace designed as one coherent product — clear in public, focused in private and deliberately lightweight throughout.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Product design</span>
+                        <span class="portfolio-tag">Go</span>
+                        <span class="portfolio-tag">HTMX</span>
+                        <span class="portfolio-tag">Security</span>
                     </div>
                 </div>
             </div>
 
-            <dl class="mt-14 grid gap-px overflow-hidden rounded-4xl border border-white/8 bg-white/8 sm:grid-cols-3">
-                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Public side</dt><dd class="mt-3 text-lg font-semibold text-mist-50">Clear positioning</dd></div>
-                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Private side</dt><dd class="mt-3 text-lg font-semibold text-mist-50">Focused management</dd></div>
-                <div class="bg-ink-900/94 p-6"><dt class="metric-label">Experience</dt><dd class="mt-3 text-lg font-semibold text-mist-50">One visual language</dd></div>
+            <dl class="portfolio-metrics">
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Public side</dt>
+                    <dd class="portfolio-metric__value">Clear positioning</dd>
+                </div>
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Private side</dt>
+                    <dd class="portfolio-metric__value">Focused management</dd>
+                </div>
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Experience</dt>
+                    <dd class="portfolio-metric__value">One visual language</dd>
+                </div>
             </dl>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-20 sm:py-28">
+    <section class="portfolio-section">
         <div class="site-container">
-            <div class="relative mx-auto max-w-6xl overflow-hidden rounded-5xl border border-white/9 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/6 p-5 sm:p-8 lg:p-10">
-                <div class="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full bg-blue-400/14 blur-3xl" aria-hidden="true"></div>
+            <div class="portfolio-showcase">
+                <div class="portfolio-showcase__glow" aria-hidden="true"></div>
 
-                <div class="relative grid gap-5 lg:grid-cols-[0.36fr_1fr]">
-                    <aside class="rounded-4xl border border-white/8 bg-[#050b18]/82 p-5">
-                        <div class="flex items-center gap-3 border-b border-white/8 pb-5">
-                            <img src="/static/djmdev-svg-assets/djmdev-mark-dark.svg" alt="" class="size-10 object-contain" width="40" height="40">
-                            <div><p class="text-xs font-bold tracking-[0.18em] text-mist-100">WORKSPACE</p><p class="mt-1 text-xs text-mist-700">Personal overview</p></div>
+                <div class="portfolio-showcase__grid">
+                    <aside class="portfolio-sidebar">
+                        <div class="portfolio-sidebar__brand">
+                            <img src="/static/djmdev-svg-assets/djmdev-mark-dark.svg" alt="" class="portfolio-sidebar__logo" width="40" height="40">
+                            <div>
+                                <p class="portfolio-sidebar__title">WORKSPACE</p>
+                                <p class="portfolio-sidebar__subtitle">Personal overview</p>
+                            </div>
                         </div>
-                        <div class="mt-6 space-y-2">
-                            <div class="rounded-2xl bg-blue-400/12 px-4 py-3 text-sm font-semibold text-blue-100">Overview</div>
-                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Clients</div>
-                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Projects</div>
-                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Contracts</div>
-                            <div class="rounded-2xl px-4 py-3 text-sm text-mist-500">Journal</div>
+
+                        <div class="portfolio-sidebar__nav">
+                            <div class="portfolio-sidebar__item portfolio-sidebar__item--active">Overview</div>
+                            <div class="portfolio-sidebar__item">Clients</div>
+                            <div class="portfolio-sidebar__item">Projects</div>
+                            <div class="portfolio-sidebar__item">Contracts</div>
+                            <div class="portfolio-sidebar__item">Journal</div>
                         </div>
                     </aside>
 
-                    <div class="rounded-4xl border border-white/8 bg-[#050b18]/82 p-5 sm:p-7">
-                        <div class="flex flex-col gap-5 border-b border-white/8 pb-6 sm:flex-row sm:items-end sm:justify-between">
-                            <div><p class="metric-label">Workspace</p><h2 class="mt-3 text-3xl font-medium tracking-[-0.04em] text-mist-50">Everything important, without the noise.</h2></div>
-                            <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-xs font-semibold text-blue-200">Personal access</span>
+                    <div class="portfolio-dashboard">
+                        <div class="portfolio-dashboard__header">
+                            <div>
+                                <p class="metric-label">Workspace</p>
+                                <h2 class="portfolio-dashboard__title">Everything important, without the noise.</h2>
+                            </div>
+                            <span class="portfolio-dashboard__status">Personal access</span>
                         </div>
 
-                        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Clients</p><p class="mt-8 text-2xl font-medium text-mist-50">Relationships</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-3/4 rounded-full bg-blue-400/55"></div></div></div>
-                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Projects</p><p class="mt-8 text-2xl font-medium text-mist-50">Delivery</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-1/2 rounded-full bg-cyan-400/50"></div></div></div>
-                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Contracts</p><p class="mt-8 text-2xl font-medium text-mist-50">Commercial</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-2/3 rounded-full bg-indigo-400/45"></div></div></div>
-                            <div class="rounded-3xl border border-white/8 bg-white/3 p-5"><p class="metric-label">Journal</p><p class="mt-8 text-2xl font-medium text-mist-50">Publishing</p><div class="mt-5 h-1.5 rounded-full bg-white/6"><div class="h-full w-4/5 rounded-full bg-blue-300/55"></div></div></div>
+                        <div class="portfolio-dashboard__cards">
+                            <div class="portfolio-dashboard__card">
+                                <p class="metric-label">Clients</p>
+                                <p class="portfolio-dashboard__card-title">Relationships</p>
+                                <div class="portfolio-progress"><div class="portfolio-progress__bar portfolio-progress__bar--clients"></div></div>
+                            </div>
+                            <div class="portfolio-dashboard__card">
+                                <p class="metric-label">Projects</p>
+                                <p class="portfolio-dashboard__card-title">Delivery</p>
+                                <div class="portfolio-progress"><div class="portfolio-progress__bar portfolio-progress__bar--projects"></div></div>
+                            </div>
+                            <div class="portfolio-dashboard__card">
+                                <p class="metric-label">Contracts</p>
+                                <p class="portfolio-dashboard__card-title">Commercial</p>
+                                <div class="portfolio-progress"><div class="portfolio-progress__bar portfolio-progress__bar--contracts"></div></div>
+                            </div>
+                            <div class="portfolio-dashboard__card">
+                                <p class="metric-label">Journal</p>
+                                <p class="portfolio-dashboard__card-title">Publishing</p>
+                                <div class="portfolio-progress"><div class="portfolio-progress__bar portfolio-progress__bar--journal"></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,12 +104,14 @@
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30">
-        <div class="site-container grid gap-14 lg:grid-cols-12">
-            <div class="lg:col-span-4"><p class="eyebrow">01 / The problem</p></div>
-            <div class="lg:col-span-8">
-                <h2 class="text-balance text-4xl font-medium leading-[1.04] tracking-[-0.045em] text-mist-50 sm:text-6xl">A portfolio usually stops exactly where the working relationship starts.</h2>
-                <div class="mt-10 grid gap-8 text-lg leading-8 text-mist-500 md:grid-cols-2">
+    <section class="portfolio-section">
+        <div class="site-container portfolio-editorial">
+            <div class="portfolio-editorial__label">
+                <p class="eyebrow">01 / The problem</p>
+            </div>
+            <div class="portfolio-editorial__content">
+                <h2>A portfolio usually stops exactly where the working relationship starts.</h2>
+                <div class="portfolio-editorial__body">
                     <p>The public site needed to communicate design and engineering capability without becoming another decorative agency page.</p>
                     <p>The private side needed a clear place for clients, projects, contracts and publishing without the weight of a large business platform.</p>
                 </div>
@@ -85,69 +119,83 @@
         </div>
     </section>
 
-    <section class="border-b border-white/8 bg-white/2 py-24 sm:py-30">
+    <section class="portfolio-section portfolio-section--soft">
         <div class="site-container">
             <p class="eyebrow">02 / Product model</p>
-            <div class="mt-12 grid gap-4 lg:grid-cols-3">
-                <article class="interactive-card rounded-4xl p-7 sm:min-h-80"><p class="font-mono text-sm text-blue-300">01</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Public story</h3><p class="mt-5 leading-7 text-mist-500">Selected work, capabilities, technical writing and a clear route to start a conversation.</p></article>
-                <article class="interactive-card rounded-4xl p-7 sm:min-h-80 lg:translate-y-8"><p class="font-mono text-sm text-cyan-300">02</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Personal workspace</h3><p class="mt-5 leading-7 text-mist-500">A private place to manage current client work and publish journal entries.</p></article>
-                <article class="interactive-card rounded-4xl p-7 sm:min-h-80"><p class="font-mono text-sm text-blue-300">03</p><h3 class="mt-16 text-3xl font-medium tracking-[-0.04em] text-mist-50">Shared quality</h3><p class="mt-5 leading-7 text-mist-500">Consistent interaction, visual hierarchy and dependable server-rendered performance.</p></article>
+            <div class="portfolio-model__grid">
+                <article class="interactive-card portfolio-model__card">
+                    <p class="portfolio-model__index">01</p>
+                    <h3 class="portfolio-model__title">Public story</h3>
+                    <p class="portfolio-model__copy">Selected work, capabilities, technical writing and a clear route to start a conversation.</p>
+                </article>
+                <article class="interactive-card portfolio-model__card portfolio-model__card--offset">
+                    <p class="portfolio-model__index portfolio-model__index--electric">02</p>
+                    <h3 class="portfolio-model__title">Personal workspace</h3>
+                    <p class="portfolio-model__copy">A private place to manage current client work and publish journal entries.</p>
+                </article>
+                <article class="interactive-card portfolio-model__card">
+                    <p class="portfolio-model__index">03</p>
+                    <h3 class="portfolio-model__title">Shared quality</h3>
+                    <p class="portfolio-model__copy">Consistent interaction, visual hierarchy and dependable server-rendered performance.</p>
+                </article>
             </div>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30">
-        <div class="site-container grid gap-14 lg:grid-cols-[0.78fr_1.22fr]">
-            <div>
+    <section class="portfolio-section">
+        <div class="site-container portfolio-architecture">
+            <div class="portfolio-architecture__copy">
                 <p class="eyebrow">03 / Architecture</p>
-                <h2 class="mt-7 text-balance text-4xl font-medium tracking-[-0.045em] text-mist-50 sm:text-6xl">Small layers. Clear responsibilities.</h2>
-                <p class="mt-7 max-w-xl leading-7 text-mist-500">The application stays explicit enough to understand, test and extend without turning ordinary product work into a framework exercise.</p>
+                <h2 class="portfolio-architecture__title">Small layers. Clear responsibilities.</h2>
+                <p>The application stays explicit enough to understand, test and extend without turning ordinary product work into a framework exercise.</p>
             </div>
 
-            <div class="glass-panel rounded-5xl p-7 font-mono text-sm leading-7 text-mist-300 sm:p-10">
-                <p><span class="text-cyan-300">HTTP request</span></p>
-                <p class="pl-5 text-mist-700">↓ security + request middleware</p>
+            <div class="glass-panel portfolio-architecture__diagram">
+                <p><span class="portfolio-architecture__accent--electric">HTTP request</span></p>
+                <p class="portfolio-architecture__step">↓ security + request middleware</p>
                 <p>handler</p>
-                <p class="pl-5 text-mist-700">↓ domain validation</p>
+                <p class="portfolio-architecture__step">↓ domain validation</p>
                 <p>repository</p>
-                <p class="pl-5 text-mist-700">↓ parameterised persistence</p>
+                <p class="portfolio-architecture__step">↓ parameterised persistence</p>
                 <p>data store</p>
-                <p class="pl-5 text-mist-700">↓ Go model + template</p>
-                <p><span class="text-blue-300">HTML response</span></p>
+                <p class="portfolio-architecture__step">↓ Go model + template</p>
+                <p><span class="portfolio-architecture__accent--signal">HTML response</span></p>
             </div>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30">
-        <div class="site-container grid gap-14 lg:grid-cols-12">
-            <div class="lg:col-span-4"><p class="eyebrow">04 / Trust</p></div>
-            <div class="lg:col-span-8">
-                <h2 class="text-balance text-4xl font-medium tracking-[-0.045em] text-mist-50 sm:text-6xl">Security treated as product quality.</h2>
-                <div class="mt-10 grid gap-x-10 sm:grid-cols-2">
-                    <p class="border-b border-white/9 py-5 text-mist-500">bcrypt password hashing</p>
-                    <p class="border-b border-white/9 py-5 text-mist-500">hashed server-side sessions</p>
-                    <p class="border-b border-white/9 py-5 text-mist-500">CSRF and cross-origin controls</p>
-                    <p class="border-b border-white/9 py-5 text-mist-500">login attempt throttling</p>
-                    <p class="border-b border-white/9 py-5 text-mist-500">secure cookie policy</p>
-                    <p class="border-b border-white/9 py-5 text-mist-500">no-store admin responses</p>
+    <section class="portfolio-section">
+        <div class="site-container portfolio-trust">
+            <div class="portfolio-trust__label">
+                <p class="eyebrow">04 / Trust</p>
+            </div>
+            <div class="portfolio-trust__content">
+                <h2>Security treated as product quality.</h2>
+                <div class="portfolio-trust__list">
+                    <p class="portfolio-trust__item">bcrypt password hashing</p>
+                    <p class="portfolio-trust__item">hashed server-side sessions</p>
+                    <p class="portfolio-trust__item">CSRF and cross-origin controls</p>
+                    <p class="portfolio-trust__item">login attempt throttling</p>
+                    <p class="portfolio-trust__item">secure cookie policy</p>
+                    <p class="portfolio-trust__item">no-store admin responses</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 sm:py-32">
+    <section class="portfolio-outcome">
         <div class="site-container">
-            <div class="relative overflow-hidden rounded-5xl border border-white/9 bg-linear-to-br from-white/6 to-blue-400/7 p-8 sm:p-12 lg:p-16">
-                <div class="pointer-events-none absolute -right-28 -top-28 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
-                <div class="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div class="portfolio-outcome__panel">
+                <div class="portfolio-outcome__glow" aria-hidden="true"></div>
+                <div class="portfolio-outcome__grid">
                     <div>
                         <p class="eyebrow">Outcome</p>
-                        <h2 class="mt-7 max-w-4xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                        <h2 class="portfolio-outcome__title">
                             A portfolio that proves the product thinking by
-                            <span class="text-blue-300">being the product.</span>
+                            <span class="portfolio-outcome__accent">being the product.</span>
                         </h2>
                     </div>
-                    <a href="mailto:daniel@danieljmanningdev.com" class="button-primary w-fit">Discuss a project <span aria-hidden="true">↗</span></a>
+                    <a href="mailto:daniel@danieljmanningdev.com" class="button-primary portfolio-outcome__cta">Discuss a project <span aria-hidden="true">↗</span></a>
                 </div>
             </div>
         </div>

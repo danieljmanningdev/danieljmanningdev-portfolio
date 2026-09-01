@@ -1,0 +1,168 @@
+/* ==========================================================================
+   BASE
+   Daniel J. Manning
+   https://danieljmanningdev.com
+   ========================================================================== */
+
+html {
+    color-scheme: dark;
+    background: var(--color-background);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    background: var(--color-background);
+    color: var(--color-text-primary);
+
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-body);
+
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-text-primary);
+
+    font-weight: var(--font-medium);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+
+h1 {
+    font-size: var(--text-display-lg);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+}
+
+h2 {
+    font-size: var(--text-display-sm);
+}
+
+h3 {
+    font-size: var(--text-2xl);
+}
+
+h4 {
+    font-size: var(--text-xl);
+}
+
+h5 {
+    font-size: var(--text-lg);
+}
+
+h6 {
+    font-size: var(--text-base);
+}
+
+p {
+    color: var(--color-text-secondary);
+}
+
+strong,
+b {
+    color: var(--color-text-primary);
+    font-weight: var(--font-semibold);
+}
+
+small {
+    font-size: var(--text-sm);
+}
+
+a {
+    color: inherit;
+
+    transition:
+        color var(--duration-fast) var(--ease-standard),
+        opacity var(--duration-fast) var(--ease-standard);
+}
+
+a:hover {
+    color: var(--color-accent-light);
+}
+
+button,
+input,
+textarea,
+select {
+    color: inherit;
+}
+
+input,
+textarea,
+select {
+    background: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+}
+
+textarea {
+    resize: vertical;
+}
+
+code,
+kbd,
+samp,
+pre {
+    font-family: var(--font-mono);
+}
+
+code {
+    font-size: 0.9em;
+}
+
+pre {
+    overflow-x: auto;
+}
+
+hr {
+    height: 1px;
+    margin: 0;
+
+    background: var(--color-border);
+    border: 0;
+}
+
+img {
+    height: auto;
+}
+
+svg {
+    fill: currentColor;
+}
+
+address {
+    font-style: normal;
+}
+
+blockquote {
+    color: var(--color-text-secondary);
+}
+
+mark {
+    background: var(--color-accent-soft);
+    color: var(--color-text-inverse);
+}
+
+:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+[hidden] {
+    display: none !important;
+}

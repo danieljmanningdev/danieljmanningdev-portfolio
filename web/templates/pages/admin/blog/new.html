@@ -1,128 +1,79 @@
 {{define "content"}}
-<main class="mx-auto max-w-7xl">
-    <section class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <div class="max-w-3xl">
-            <a href="/dashboard/blog" class="button-quiet -ml-4 min-h-10 px-4">← Journal</a>
-            <p class="eyebrow mt-8">Publishing / New post</p>
-            <h1 class="mt-7 text-balance text-5xl font-medium leading-[0.94] tracking-[-0.05em] text-mist-50 sm:text-6xl">Turn a draft into something <span class="bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">worth reading.</span></h1>
+<main class="workspace-page workspace-page--wide">
+    <section class="publisher-header">
+        <div>
+            <a href="/dashboard/blog" class="button-quiet">← Journal</a>
+            <p class="eyebrow">Publishing / New post</p>
+            <h1 class="publisher-title">Turn a draft into something <span class="publisher-title__accent">worth reading.</span></h1>
         </div>
-        <span class="inline-flex w-fit items-center gap-2 rounded-full border border-white/8 bg-white/3 px-4 py-2 text-xs text-mist-500"><span class="size-1.5 rounded-full bg-mist-700"></span> Unsaved draft</span>
+        <span class="publisher-badge"><span class="publisher-status__dot"></span>Unsaved draft</span>
     </section>
 
-    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-        <form id="post-form" method="post" action="/dashboard/blog/new" class="admin-panel p-6 sm:p-8">
+    <div class="publisher-layout">
+        <form id="post-form" method="post" action="/dashboard/blog/new" class="admin-panel publisher-form">
             <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
 
-            <div class="space-y-8">
+            <div class="publisher-fields">
                 <div>
-                    <label for="title" class="block text-sm font-semibold text-mist-300">Title</label>
-                    <p class="mt-1 text-xs text-mist-700">The public headline shown on the journal and article page.</p>
-                    <input
-                        id="title"
-                        name="title"
-                        type="text"
-                        value="{{.Form.Title}}"
-                        required
-                        maxlength="180"
-                        autofocus
-                        aria-invalid="{{if .Errors.Title}}true{{else}}false{{end}}"
-                        {{if .Errors.Title}}aria-describedby="title-error"{{end}}
-                        class="mt-3 block w-full rounded-2xl border {{if .Errors.Title}}border-red-400/40{{else}}border-white/10{{end}} bg-black/20 px-4 py-3.5 text-lg text-mist-50 outline-hidden transition placeholder:text-mist-700 focus:border-blue-300/45 focus:ring-2 focus:ring-blue-300/10"
-                        placeholder="A useful, specific headline"
-                    >
-                    {{if .Errors.Title}}<p id="title-error" class="mt-2 text-sm text-red-300">{{.Errors.Title}}</p>{{end}}
+                    <label for="title" class="workspace-field__label">Title</label>
+                    <p class="publisher-field__hint">The public headline shown on the journal and article page.</p>
+                    <input id="title" name="title" type="text" value="{{.Form.Title}}" required maxlength="180" autofocus aria-invalid="{{if .Errors.Title}}true{{else}}false{{end}}" {{if .Errors.Title}}aria-describedby="title-error"{{end}} class="workspace-field__control" placeholder="A useful, specific headline">
+                    {{if .Errors.Title}}<p id="title-error" class="workspace-field__error">{{.Errors.Title}}</p>{{end}}
                 </div>
 
                 <div>
-                    <label for="slug" class="block text-sm font-semibold text-mist-300">URL slug</label>
-                    <div class="mt-3 flex overflow-hidden rounded-2xl border {{if .Errors.Slug}}border-red-400/40{{else}}border-white/10{{end}} bg-black/20 focus-within:border-blue-300/45 focus-within:ring-2 focus-within:ring-blue-300/10">
-                        <span class="hidden items-center border-r border-white/8 px-4 font-mono text-sm text-mist-700 sm:flex">/blog/</span>
-                        <input
-                            id="slug"
-                            name="slug"
-                            type="text"
-                            value="{{.Form.Slug}}"
-                            required
-                            maxlength="180"
-                            spellcheck="false"
-                            aria-invalid="{{if .Errors.Slug}}true{{else}}false{{end}}"
-                            {{if .Errors.Slug}}aria-describedby="slug-error"{{end}}
-                            class="min-w-0 flex-1 bg-transparent px-4 py-3.5 font-mono text-sm text-mist-100 outline-hidden placeholder:text-mist-700"
-                            placeholder="building-a-better-product"
-                        >
+                    <label for="slug" class="workspace-field__label">URL slug</label>
+                    <div class="publisher-slug">
+                        <span class="publisher-slug__prefix">/blog/</span>
+                        <input id="slug" name="slug" type="text" value="{{.Form.Slug}}" required maxlength="180" spellcheck="false" aria-invalid="{{if .Errors.Slug}}true{{else}}false{{end}}" {{if .Errors.Slug}}aria-describedby="slug-error"{{end}} class="publisher-slug__input" placeholder="building-a-better-product">
                     </div>
-                    {{if .Errors.Slug}}<p id="slug-error" class="mt-2 text-sm text-red-300">{{.Errors.Slug}}</p>{{else}}<p class="mt-2 text-xs text-mist-700">Lowercase letters, numbers and hyphens only.</p>{{end}}
+                    {{if .Errors.Slug}}<p id="slug-error" class="workspace-field__error">{{.Errors.Slug}}</p>{{else}}<p class="publisher-field__hint">Lowercase letters, numbers and hyphens only.</p>{{end}}
                 </div>
 
                 <div>
-                    <label for="excerpt" class="block text-sm font-semibold text-mist-300">Excerpt</label>
-                    <p class="mt-1 text-xs text-mist-700">A concise summary used on the journal archive.</p>
-                    <textarea
-                        id="excerpt"
-                        name="excerpt"
-                        rows="4"
-                        required
-                        maxlength="420"
-                        aria-invalid="{{if .Errors.Excerpt}}true{{else}}false{{end}}"
-                        {{if .Errors.Excerpt}}aria-describedby="excerpt-error"{{end}}
-                        class="mt-3 block w-full resize-y rounded-2xl border {{if .Errors.Excerpt}}border-red-400/40{{else}}border-white/10{{end}} bg-black/20 px-4 py-3.5 text-mist-100 outline-hidden transition placeholder:text-mist-700 focus:border-blue-300/45 focus:ring-2 focus:ring-blue-300/10"
-                        placeholder="What will the reader learn?"
-                    >{{.Form.Excerpt}}</textarea>
-                    {{if .Errors.Excerpt}}<p id="excerpt-error" class="mt-2 text-sm text-red-300">{{.Errors.Excerpt}}</p>{{end}}
+                    <label for="excerpt" class="workspace-field__label">Excerpt</label>
+                    <p class="publisher-field__hint">A concise summary used on the journal archive.</p>
+                    <textarea id="excerpt" name="excerpt" rows="4" required maxlength="420" aria-invalid="{{if .Errors.Excerpt}}true{{else}}false{{end}}" {{if .Errors.Excerpt}}aria-describedby="excerpt-error"{{end}} class="workspace-field__control" placeholder="What will the reader learn?">{{.Form.Excerpt}}</textarea>
+                    {{if .Errors.Excerpt}}<p id="excerpt-error" class="workspace-field__error">{{.Errors.Excerpt}}</p>{{end}}
                 </div>
 
                 <div>
-                    <div class="flex flex-wrap items-end justify-between gap-3">
+                    <div class="publisher-field-header">
                         <div>
-                            <label for="content" class="block text-sm font-semibold text-mist-300">Article content</label>
-                            <p class="mt-1 text-xs text-mist-700">Markdown is rendered into the public article layout.</p>
+                            <label for="content" class="workspace-field__label">Article content</label>
+                            <p class="publisher-field__hint">Markdown is rendered into the public article layout.</p>
                         </div>
-                        <span class="rounded-full border border-white/8 bg-white/3 px-3 py-1.5 font-mono text-[0.68rem] text-mist-700">MARKDOWN</span>
+                        <span class="publisher-format-badge">MARKDOWN</span>
                     </div>
-                    <textarea
-                        id="content"
-                        name="content"
-                        rows="26"
-                        required
-                        spellcheck="true"
-                        aria-invalid="{{if .Errors.Content}}true{{else}}false{{end}}"
-                        {{if .Errors.Content}}aria-describedby="content-error"{{end}}
-                        class="mt-3 block min-h-[32rem] w-full resize-y rounded-3xl border {{if .Errors.Content}}border-red-400/40{{else}}border-white/10{{end}} bg-[#050915] px-5 py-5 font-mono text-sm leading-7 text-mist-100 outline-hidden transition placeholder:text-mist-700 focus:border-blue-300/45 focus:ring-2 focus:ring-blue-300/10"
-                        placeholder="Begin with the opening paragraph…&#10;&#10;## Then structure the argument"
-                    >{{.Form.Content}}</textarea>
-                    {{if .Errors.Content}}<p id="content-error" class="mt-2 text-sm text-red-300">{{.Errors.Content}}</p>{{end}}
+                    <textarea id="content" name="content" rows="26" required spellcheck="true" aria-invalid="{{if .Errors.Content}}true{{else}}false{{end}}" {{if .Errors.Content}}aria-describedby="content-error"{{end}} class="workspace-field__control publisher-editor" placeholder="Begin with the opening paragraph…&#10;&#10;## Then structure the argument">{{.Form.Content}}</textarea>
+                    {{if .Errors.Content}}<p id="content-error" class="workspace-field__error">{{.Errors.Content}}</p>{{end}}
                 </div>
             </div>
 
-            <div class="mt-9 flex flex-col-reverse gap-3 border-t border-white/8 pt-7 sm:flex-row sm:items-center sm:justify-between">
+            <div class="publisher-actions">
                 <a href="/dashboard/blog" class="button-secondary">Cancel</a>
                 <button type="submit" class="button-primary">Create post <span aria-hidden="true">→</span></button>
             </div>
         </form>
 
-        <aside class="space-y-5 lg:sticky lg:top-24">
-            <div class="admin-panel p-6">
+        <aside class="publisher-sidebar">
+            <div class="admin-panel publisher-sidebar__panel">
                 <p class="metric-label">Publication</p>
-                <label for="status" class="mt-5 block text-sm font-semibold text-mist-300">Initial status</label>
-                <select
-                    id="status"
-                    name="status"
-                    form="post-form"
-                    class="mt-3 block w-full rounded-2xl border border-white/10 bg-ink-900 px-4 py-3 text-sm text-mist-100 outline-hidden transition focus:border-blue-300/45 focus:ring-2 focus:ring-blue-300/10"
-                >
+                <label for="status" class="workspace-field__label">Initial status</label>
+                <select id="status" name="status" form="post-form" class="workspace-field__control">
                     <option value="draft" {{if eq .Form.Status "draft"}}selected{{end}}>Draft</option>
                     <option value="published" {{if eq .Form.Status "published"}}selected{{end}}>Published</option>
                 </select>
-                {{if .Errors.Status}}<p class="mt-2 text-sm text-red-300">{{.Errors.Status}}</p>{{end}}
-                <p class="mt-4 text-xs leading-5 text-mist-700">Drafts remain private. Published posts become visible immediately.</p>
+                {{if .Errors.Status}}<p class="workspace-field__error">{{.Errors.Status}}</p>{{end}}
+                <p class="publisher-field__hint">Drafts remain private. Published posts become visible immediately.</p>
             </div>
 
-            <div class="rounded-4xl border border-blue-300/15 bg-blue-300/5 p-6">
-                <p class="metric-label text-blue-200">Markdown help</p>
-                <ul class="mt-5 space-y-3 text-sm leading-6 text-mist-500">
-                    <li><span class="font-mono text-blue-300">##</span> creates a section heading.</li>
-                    <li><span class="font-mono text-blue-300">**text**</span> adds emphasis.</li>
-                    <li><span class="font-mono text-blue-300">-</span> creates a list item.</li>
+            <div class="publisher-help">
+                <p class="metric-label">Markdown help</p>
+                <ul class="publisher-help__list">
+                    <li><code>##</code> creates a section heading.</li>
+                    <li><code>**text**</code> adds emphasis.</li>
+                    <li><code>-</code> creates a list item.</li>
                     <li>Fenced code blocks keep technical examples readable.</li>
                 </ul>
             </div>

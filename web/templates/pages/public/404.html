@@ -1,22 +1,22 @@
 {{define "content"}}
-<main class="grid min-h-[calc(100svh-5rem)] place-items-center py-16 sm:py-24">
-    <section class="site-container relative">
-        <div class="pointer-events-none absolute left-1/2 top-1/2 size-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/12 blur-3xl" aria-hidden="true"></div>
+<main class="error-page">
+    <section class="site-container error-page__section">
+        <div class="error-page__glow" aria-hidden="true"></div>
 
-        <div class="relative mx-auto max-w-5xl text-center">
-            <p class="eyebrow justify-center">404 / Page not found</p>
-            <p class="mt-8 font-mono text-[clamp(5rem,18vw,13rem)] font-bold leading-none tracking-[-0.09em] text-white/5" aria-hidden="true">404</p>
-            <h1 class="-mt-8 text-balance text-[clamp(3rem,7vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.055em] text-mist-50 sm:-mt-14">
+        <div class="error-page__content">
+            <p class="eyebrow">404 / Page not found</p>
+            <p class="error-page__code" aria-hidden="true">404</p>
+            <h1 class="error-page__title">
                 That page is no longer
-                <span class="bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">at this address.</span>
+                <span class="error-page__accent">at this address.</span>
             </h1>
-            <p class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-mist-500">The page may have moved, the link may be outdated, or the URL may be incorrect.</p>
+            <p class="error-page__copy">The page may have moved, the link may be outdated, or the URL may be incorrect.</p>
 
             {{if .Path}}
-            <p class="mx-auto mt-7 w-fit max-w-full overflow-hidden text-ellipsis rounded-full border border-white/8 bg-white/3 px-4 py-2 font-mono text-xs text-mist-700">GET {{.Path}}</p>
+            <p class="error-page__path">GET {{.Path}}</p>
             {{end}}
 
-            <div class="mt-9 flex flex-wrap justify-center gap-3">
+            <div class="error-page__actions">
                 <a href="/" class="button-primary">Return home <span aria-hidden="true">→</span></a>
                 <a href="/blog/" class="button-secondary">Open the journal</a>
             </div>

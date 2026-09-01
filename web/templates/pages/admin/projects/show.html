@@ -1,184 +1,45 @@
 {{define "content"}}
-
-<main class="mx-auto max-w-7xl px-6 lg:px-8">
-
-    <!-- ==================== PROJECT HEADER ==================== -->
-
-    <section class="pt-10 sm:pt-14 lg:pt-16">
-
-        <a
-            href="/dashboard/projects"
-            class="inline-flex items-center text-sm text-blue-300/50 transition hover:text-white"
-        >
-            ← Back to projects
-        </a>
-
-        <div class="mt-10 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
-
-            <div>
-
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-300/50">
-                    Project
-                </p>
-
-                <h1 class="mt-5 text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
-                    {{.Project.Name}}
-                </h1>
-
-                <p class="mt-4 text-base text-blue-100/40">
-                    {{.Project.ClientName}}
-                </p>
-
-            </div>
-
-
-            <!-- ==================== PROJECT ACTIONS ==================== -->
-
-            <div class="flex flex-wrap items-center gap-3">
-
-                <span
-                    class="inline-flex w-fit shrink-0 rounded-full bg-blue-400/10 px-4 py-2 text-xs text-blue-200/60"
-                >
-                    {{.Project.Status}}
-                </span>
-
-                <a
-                    href="/dashboard/projects/{{.Project.ID}}/edit"
-                    class="inline-flex items-center justify-center rounded-full border border-blue-400/20 px-5 py-2.5 text-sm font-medium text-blue-100/70 transition hover:border-blue-400/40 hover:text-white"
-                >
-                    Edit
-                </a>
-
-                {{if ne .Project.Status "archived"}}
-                    <form
-                        method="post"
-                        action="/dashboard/projects/{{.Project.ID}}/archive"
-                    >
-                        <button
-                            type="submit"
-                            class="inline-flex items-center justify-center rounded-full border border-amber-400/20 px-5 py-2.5 text-sm font-medium text-amber-200/70 transition hover:border-amber-400/40 hover:bg-amber-400/10 hover:text-amber-100"
-                        >
-                            Archive
-                        </button>
-                    </form>
-                {{end}}
-
-            </div>
-
+<main class="workspace-page workspace-form-shell">
+    <section class="workspace-form-header">
+        <div>
+            <a href="/dashboard/projects" class="button-quiet">← Back to projects</a>
+            <p class="eyebrow">Project</p>
+            <h1 class="workspace-form-header__title">{{.Project.Name}}</h1>
+            <p class="workspace-form-header__copy">{{.Project.ClientName}}</p>
         </div>
 
+        <div class="workspace-actions">
+            <span class="crud-row__status">{{.Project.Status}}</span>
+            <a href="/dashboard/projects/{{.Project.ID}}/edit" class="button-secondary">Edit</a>
+            {{if ne .Project.Status "archived"}}
+            <form method="post" action="/dashboard/projects/{{.Project.ID}}/archive">
+                <button type="submit" class="button-secondary">Archive</button>
+            </form>
+            {{end}}
+        </div>
     </section>
 
-
-    <!-- ==================== PROJECT INFORMATION ==================== -->
-
-    <section class="mt-14 pb-16">
-
-        <div class="grid gap-6 lg:grid-cols-2">
-
-            <!-- ==================== DETAILS ==================== -->
-
-            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
-
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Details
-                </p>
-
-                <div class="mt-6 space-y-6">
-
-                    <div>
-                        <p class="text-sm text-blue-100/30">
-                            Client
-                        </p>
-
-                        <a
-                            href="/dashboard/clients/{{.Project.ClientID}}"
-                            class="mt-2 inline-flex text-base text-blue-300 transition hover:text-white"
-                        >
-                            {{.Project.ClientName}}
-                        </a>
-                    </div>
-
-                    <div>
-                        <p class="text-sm text-blue-100/30">
-                            Status
-                        </p>
-
-                        <p class="mt-2 text-base text-blue-100/70">
-                            {{.Project.Status}}
-                        </p>
-                    </div>
-
-                </div>
-
+    <section class="workspace-detail">
+        <div class="workspace-detail__panel">
+            <p class="metric-label">Details</p>
+            <div class="workspace-detail__grid">
+                <div class="workspace-detail__item"><p class="metric-label">Client</p><a href="/dashboard/clients/{{.Project.ClientID}}" class="workspace-detail__value">{{.Project.ClientName}}</a></div>
+                <div class="workspace-detail__item"><p class="metric-label">Status</p><p class="workspace-detail__value">{{.Project.Status}}</p></div>
             </div>
-
-
-            <!-- ==================== TIMELINE ==================== -->
-
-            <div class="rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
-
-                <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                    Timeline
-                </p>
-
-                <div class="mt-6 grid gap-6 sm:grid-cols-2">
-
-                    <div>
-                        <p class="text-sm text-blue-100/30">
-                            Start date
-                        </p>
-
-                        <p class="mt-2 text-base text-blue-100/70">
-                            {{if .Project.StartDate}}
-                                {{.Project.StartDate.Format "02 Jan 2006"}}
-                            {{else}}
-                                Not set
-                            {{end}}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p class="text-sm text-blue-100/30">
-                            Due date
-                        </p>
-
-                        <p class="mt-2 text-base text-blue-100/70">
-                            {{if .Project.DueDate}}
-                                {{.Project.DueDate.Format "02 Jan 2006"}}
-                            {{else}}
-                                Not set
-                            {{end}}
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
 
-
-        <!-- ==================== DESCRIPTION ==================== -->
-
-        <div class="mt-6 rounded-3xl border border-blue-400/10 bg-blue-950/20 p-8 sm:p-9">
-
-            <p class="text-xs uppercase tracking-[0.2em] text-blue-300/40">
-                Description
-            </p>
-
-            <p class="mt-5 whitespace-pre-line text-base leading-7 text-blue-100/50">
-                {{if .Project.Description}}
-                    {{.Project.Description}}
-                {{else}}
-                    No description yet.
-                {{end}}
-            </p>
-
+        <div class="workspace-detail__panel">
+            <p class="metric-label">Timeline</p>
+            <div class="workspace-detail__grid">
+                <div class="workspace-detail__item"><p class="metric-label">Start date</p><p class="workspace-detail__value">{{if .Project.StartDate}}{{.Project.StartDate.Format "02 Jan 2006"}}{{else}}Not set{{end}}</p></div>
+                <div class="workspace-detail__item"><p class="metric-label">Due date</p><p class="workspace-detail__value">{{if .Project.DueDate}}{{.Project.DueDate.Format "02 Jan 2006"}}{{else}}Not set{{end}}</p></div>
+            </div>
         </div>
 
+        <div class="workspace-detail__panel">
+            <p class="metric-label">Description</p>
+            <p class="workspace-detail__copy">{{if .Project.Description}}{{.Project.Description}}{{else}}No description yet.{{end}}</p>
+        </div>
     </section>
-
 </main>
-
 {{end}}
