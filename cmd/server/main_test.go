@@ -118,18 +118,21 @@ func TestNewRouterPublicRoutes(
 
 	blogHandler := &apphttp.BlogHandler{}
 
-	router := newRouter(
-		homeHandler,
-		caseStudyHandler,
-		authHandler,
-		protectedHandler,
-		protectedHandler,
-		protectedHandler,
-		protectedHandler,
-		protectedHandler,
-		sessionService,
-		blogHandler,
-	)
+	router := newRouter(routerDependencies{
+		homeHandler:               homeHandler,
+		portfolioCaseStudyHandler: caseStudyHandler,
+		webDesignLeedsHandler:     protectedHandler,
+
+		adminAuthHandler: authHandler,
+		dashboardHandler: protectedHandler,
+		clientsHandler:   protectedHandler,
+		projectsHandler:  protectedHandler,
+		contractsHandler: protectedHandler,
+		blogAdminHandler: protectedHandler,
+
+		sessionService: sessionService,
+		blogHandler:    blogHandler,
+	})
 
 	tests := []struct {
 		path     string
@@ -208,18 +211,21 @@ func TestNewRouterProtectsDashboardRoutes(
 		},
 	)
 
-	router := newRouter(
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		sessionService,
-		&apphttp.BlogHandler{},
-	)
+	router := newRouter(routerDependencies{
+		homeHandler:               handler,
+		portfolioCaseStudyHandler: handler,
+		webDesignLeedsHandler:     handler,
+
+		adminAuthHandler: handler,
+		dashboardHandler: handler,
+		clientsHandler:   handler,
+		projectsHandler:  handler,
+		contractsHandler: handler,
+		blogAdminHandler: handler,
+
+		sessionService: sessionService,
+		blogHandler:    &apphttp.BlogHandler{},
+	})
 
 	protectedPaths := []string{
 		"/dashboard/",
@@ -290,18 +296,21 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 		},
 	)
 
-	router := newRouter(
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		sessionService,
-		&apphttp.BlogHandler{},
-	)
+	router := newRouter(routerDependencies{
+		homeHandler:               handler,
+		portfolioCaseStudyHandler: handler,
+		webDesignLeedsHandler:     handler,
+
+		adminAuthHandler: handler,
+		dashboardHandler: handler,
+		clientsHandler:   handler,
+		projectsHandler:  handler,
+		contractsHandler: handler,
+		blogAdminHandler: handler,
+
+		sessionService: sessionService,
+		blogHandler:    &apphttp.BlogHandler{},
+	})
 
 	req := httptest.NewRequest(
 		http.MethodGet,
@@ -350,18 +359,21 @@ func TestNewRouterNoIndexPolicy(
 		},
 	)
 
-	router := newRouter(
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		handler,
-		sessionService,
-		&apphttp.BlogHandler{},
-	)
+	router := newRouter(routerDependencies{
+		homeHandler:               handler,
+		portfolioCaseStudyHandler: handler,
+		webDesignLeedsHandler:     handler,
+
+		adminAuthHandler: handler,
+		dashboardHandler: handler,
+		clientsHandler:   handler,
+		projectsHandler:  handler,
+		contractsHandler: handler,
+		blogAdminHandler: handler,
+
+		sessionService: sessionService,
+		blogHandler:    &apphttp.BlogHandler{},
+	})
 
 	tests := []struct {
 		path        string

@@ -84,8 +84,8 @@ func (h *BlogHandler) List(
 		return
 	}
 
-	title := "Journal — Daniel J. Manning"
-	description := "Articles and technical notes on digital product design, Go, HTMX, security and building maintainable software."
+	title := "Web Development & Product Design Journal | Daniel J. Manning"
+	description := "Articles on web development, Go, HTMX, UI/UX, digital product design, security and building fast, maintainable software."
 
 	w.Header().Set(
 		"Link",

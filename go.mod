@@ -6,7 +6,7 @@ require modernc.org/sqlite v1.56.0
 
 require golang.org/x/term v0.45.0
 
-require github.com/yuin/goldmark v1.8.5 // indirect
+require github.com/yuin/goldmark v1.8.5
 
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
