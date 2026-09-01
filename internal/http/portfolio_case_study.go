@@ -45,8 +45,8 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 		return
 	}
 
-	title := "Portfolio & Client Workspace — Daniel J. Manning"
-	description := "A case study covering the design and engineering of a secure Go portfolio and private workspace for managing clients, projects, contracts and journal publishing."
+	title := "Go Portfolio & Client Workspace Case Study | Daniel J. Manning"
+	description := "Case study of a secure portfolio and client workspace built with Go, HTMX and SQLite, covering product design, authentication, security and full-stack engineering."
 
 	data := newPublicPageData(
 		title,
