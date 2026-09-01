@@ -57,6 +57,21 @@
     flex: 1;
 }
 
+.htmx-indicator {
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity var(--duration-fast) var(--ease-standard),
+        visibility var(--duration-fast) var(--ease-standard);
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    opacity: 1;
+    visibility: visible;
+}
+
 .skip-link {
     position: fixed;
     inset-block-start: 0.75rem;
@@ -340,6 +355,7 @@
 .footer-copyright {
     font-size: var(--text-xs);
 }
+
 
 @media (min-width: 40rem) {
     .brand-logo {
