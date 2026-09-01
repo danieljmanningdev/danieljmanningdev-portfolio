@@ -1,0 +1,366 @@
+/* ========================================================================== 
+   HOME PAGE
+   Daniel J. Manning
+   https://danieljmanningdev.com
+   ========================================================================== */
+
+.home-page {
+    overflow: clip;
+}
+
+/* Hero */
+.home-hero {
+    position: relative;
+    isolation: isolate;
+    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+}
+
+.home-hero__glow-field {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.home-hero__glow {
+    position: absolute;
+    width: 20rem;
+    height: 20rem;
+    border-radius: 999px;
+    filter: blur(64px);
+}
+
+.home-hero__glow--signal {
+    top: 5rem;
+    left: 5%;
+    background: color-mix(in oklab, var(--color-signal-500) 13%, transparent);
+}
+
+.home-hero__glow--electric {
+    top: 33.333%;
+    right: -6rem;
+    background: color-mix(in oklab, var(--color-electric-400) 9%, transparent);
+}
+
+.home-hero__layout {
+    display: grid;
+    min-height: calc(100svh - 5rem);
+    align-items: center;
+    gap: 3.5rem;
+    padding-block: 5.5rem;
+}
+
+.home-hero__copy {
+    max-width: 64rem;
+}
+
+.home-hero__identity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.home-hero__identity-line {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--color-signal-400);
+}
+
+.home-hero__identity-text {
+    color: color-mix(in oklab, var(--color-signal-300) 70%, transparent);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.home-hero__title {
+    font-size: 4.25rem;
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+}
+
+.home-hero__title-line {
+    display: block;
+}
+
+.home-hero__title-accent {
+    color: var(--color-signal-400);
+}
+
+.home-hero__intro {
+    max-width: 42rem;
+    margin-top: 2.25rem;
+    color: var(--color-mist-300);
+    font-size: 1.125rem;
+    line-height: 2rem;
+}
+
+.home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.home-hero__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 48rem;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid color-mix(in oklab, white 9%, transparent);
+}
+
+.home-hero__metric--wide {
+    grid-column: span 2;
+}
+
+.home-hero__metric-value {
+    margin-top: 0.5rem;
+    color: var(--color-mist-100);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* Hero workspace preview */
+.home-workspace {
+    position: relative;
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+}
+
+.home-workspace__glow {
+    position: absolute;
+    inset: -2rem;
+    z-index: -10;
+    border-radius: 3rem;
+    background: linear-gradient(135deg, color-mix(in oklab, var(--color-signal-500) 16%, transparent), transparent, color-mix(in oklab, var(--color-electric-400) 10%, transparent));
+    filter: blur(64px);
+}
+
+.home-workspace__panel {
+    overflow: hidden;
+    border-radius: 2.75rem;
+}
+
+.home-workspace__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+}
+
+.home-workspace__dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.home-workspace__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, white 18%, transparent);
+}
+
+.home-workspace__dot--accent {
+    background: color-mix(in oklab, var(--color-signal-300) 70%, transparent);
+}
+
+.home-workspace__label {
+    color: var(--color-mist-700);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.home-workspace__body {
+    padding: 1.25rem;
+}
+
+.home-workspace__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+.home-workspace__principle {
+    margin-top: 0.5rem;
+    color: var(--color-mist-50);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+}
+
+.home-workspace__status {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--color-signal-300) 20%, transparent);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-signal-300) 7%, transparent);
+    color: var(--color-signal-200);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.home-workspace__status-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: var(--color-signal-300);
+}
+
+.home-workspace__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+}
+
+.home-workspace__card {
+    padding: 1.25rem;
+    border: 1px solid color-mix(in oklab, white 8%, transparent);
+    border-radius: 1.5rem;
+    background: color-mix(in oklab, black 18%, transparent);
+}
+
+.home-workspace__card-title {
+    margin-top: 1.25rem;
+    color: var(--color-mist-50);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.home-workspace__card-copy {
+    margin-top: 0.5rem;
+    color: var(--color-mist-500);
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+}
+
+.home-workspace__flow {
+    grid-column: span 2;
+    padding: 1.25rem;
+    border: 1px solid color-mix(in oklab, white 8%, transparent);
+    border-radius: 1.5rem;
+    background: #050915;
+}
+
+.home-workspace__flow-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.home-workspace__live {
+    color: var(--color-signal-300);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+}
+
+.home-workspace__steps {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+}
+
+.home-workspace__step-number {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: color-mix(in oklab, var(--color-signal-400) 12%, transparent);
+    color: var(--color-signal-200);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.home-workspace__step-title {
+    color: var(--color-mist-100);
+    font-weight: 600;
+}
+
+.home-workspace__step-copy {
+    margin-top: 0.25rem;
+    color: var(--color-mist-700);
+    font-size: 0.75rem;
+}
+
+.home-capability-strip {
+    padding-block: 1rem;
+    border-top: 1px solid color-mix(in oklab, white 7%, transparent);
+}
+
+.home-capability-strip__track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+    color: var(--color-mist-700);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.home-capability-strip__accent {
+    color: var(--color-signal-300);
+}
+
+@media (min-width: 40rem) {
+    .home-hero__glow {
+        width: 28rem;
+        height: 28rem;
+    }
+
+    .home-hero__title {
+        font-size: 6rem;
+    }
+
+    .home-hero__intro {
+        font-size: 1.25rem;
+    }
+
+    .home-hero__metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-hero__metric--wide {
+        grid-column: span 1;
+    }
+
+    .home-workspace__body {
+        padding: 1.75rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .home-hero__layout {
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        gap: 5rem;
+        padding-block: 6rem;
+    }
+
+    .home-hero__title {
+        font-size: 8rem;
+    }
+
+    .home-workspace {
+        justify-self: end;
+    }
+}
