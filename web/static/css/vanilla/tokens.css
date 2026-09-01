@@ -7,60 +7,65 @@
 :root {
     /* ----------------------------------------------------------------------
        COLOUR — FOUNDATIONS
+       Mirrors the existing Tailwind theme while the vanilla CSS migration is
+       in progress. These values are the visual source of truth.
        ---------------------------------------------------------------------- */
 
-    --color-navy-950: #030712;
-    --color-navy-900: #050915;
-    --color-navy-850: #050b18;
-    --color-navy-800: #071127;
+    --color-ink-950: oklch(0.12 0.032 257);
+    --color-ink-900: oklch(0.155 0.038 257);
+    --color-ink-850: oklch(0.185 0.042 257);
+    --color-ink-800: oklch(0.225 0.045 257);
+
+    --color-mist-50: oklch(0.985 0.005 255);
+    --color-mist-100: oklch(0.94 0.012 255);
+    --color-mist-300: oklch(0.8 0.025 255);
+    --color-mist-500: oklch(0.62 0.035 255);
+    --color-mist-700: oklch(0.45 0.035 255);
+
+    --color-signal-200: oklch(0.9 0.055 239);
+    --color-signal-300: oklch(0.83 0.095 241);
+    --color-signal-400: oklch(0.75 0.135 244);
+    --color-signal-500: oklch(0.66 0.17 248);
+
+    --color-electric-300: oklch(0.88 0.055 215);
+    --color-electric-400: oklch(0.8 0.095 221);
+    --color-electric-500: oklch(0.71 0.135 228);
 
     --color-white: #ffffff;
     --color-black: #000000;
 
 
     /* ----------------------------------------------------------------------
-       COLOUR — TEXT
-       ---------------------------------------------------------------------- */
-
-    --color-text-primary: #f8fafc;
-    --color-text-secondary: #cbd5e1;
-    --color-text-muted: #94a3b8;
-    --color-text-subtle: #64748b;
-    --color-text-faint: #475569;
-
-    --color-text-inverse: var(--color-navy-950);
-
-
-    /* ----------------------------------------------------------------------
-       COLOUR — ACCENT
-       ---------------------------------------------------------------------- */
-
-    --color-accent: #60a5fa;
-    --color-accent-light: #93c5fd;
-    --color-accent-soft: #bfdbfe;
-
-    --color-electric: #22d3ee;
-    --color-signal: #3b82f6;
-
-
-    /* ----------------------------------------------------------------------
        COLOUR — SEMANTIC
+       Components should prefer these names where the visual role matters.
        ---------------------------------------------------------------------- */
 
-    --color-background: var(--color-navy-950);
-    --color-background-elevated: var(--color-navy-900);
-    --color-background-panel: var(--color-navy-850);
-    --color-background-strong: var(--color-navy-800);
+    --color-background: var(--color-ink-950);
+    --color-background-elevated: var(--color-ink-900);
+    --color-background-panel: var(--color-ink-850);
+    --color-background-strong: var(--color-ink-800);
 
-    --color-border: rgb(255 255 255 / 0.08);
-    --color-border-subtle: rgb(255 255 255 / 0.06);
-    --color-border-strong: rgb(255 255 255 / 0.10);
+    --color-text-primary: var(--color-mist-50);
+    --color-text-secondary: var(--color-mist-100);
+    --color-text-muted: var(--color-mist-300);
+    --color-text-subtle: var(--color-mist-500);
+    --color-text-faint: var(--color-mist-700);
+    --color-text-inverse: var(--color-ink-950);
 
-    --color-surface: rgb(255 255 255 / 0.03);
-    --color-surface-hover: rgb(255 255 255 / 0.05);
+    --color-accent: var(--color-signal-300);
+    --color-accent-light: var(--color-signal-200);
+    --color-accent-strong: var(--color-signal-500);
+    --color-electric: var(--color-electric-400);
 
-    --color-accent-surface: rgb(96 165 250 / 0.10);
-    --color-accent-border: rgb(147 197 253 / 0.20);
+    --color-border: color-mix(in oklab, white 8%, transparent);
+    --color-border-subtle: color-mix(in oklab, white 6%, transparent);
+    --color-border-strong: color-mix(in oklab, white 10%, transparent);
+
+    --color-surface: color-mix(in oklab, var(--color-mist-50) 3%, transparent);
+    --color-surface-hover: color-mix(in oklab, var(--color-mist-50) 5%, transparent);
+
+    --color-accent-surface: color-mix(in oklab, var(--color-signal-300) 10%, transparent);
+    --color-accent-border: color-mix(in oklab, var(--color-signal-300) 20%, transparent);
 
 
     /* ----------------------------------------------------------------------
@@ -68,18 +73,26 @@
        ---------------------------------------------------------------------- */
 
     --font-sans:
-        Inter,
+        "Avenir Next",
+        "Segoe UI Variable",
+        "Segoe UI",
         ui-sans-serif,
         system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
+        sans-serif;
+
+    --font-display:
+        "Avenir Next",
+        "Segoe UI Variable Display",
         "Segoe UI",
+        ui-sans-serif,
+        system-ui,
         sans-serif;
 
     --font-mono:
         "SFMono-Regular",
-        Consolas,
+        "Cascadia Code",
         "Liberation Mono",
+        ui-monospace,
         monospace;
 
 
@@ -97,13 +110,6 @@
     --text-4xl: 2.25rem;
     --text-5xl: 3rem;
     --text-6xl: 3.75rem;
-
-    /*
-     * Fluid display sizes replace many of:
-     * sm:text-7xl
-     * sm:text-8xl
-     * lg:text-9xl
-     */
 
     --text-display-sm: clamp(2.5rem, 6vw, 4rem);
     --text-display-md: clamp(3rem, 7vw, 6rem);
@@ -171,8 +177,8 @@
        LAYOUT
        ---------------------------------------------------------------------- */
 
-    --container-width: 96rem;
-    --container-gutter: clamp(1.25rem, 4vw, 3rem);
+    --container-width: 82rem;
+    --container-gutter: 1rem;
 
     --content-xs: 24rem;
     --content-sm: 32rem;
@@ -191,7 +197,8 @@
     --radius-xl: 1.5rem;
     --radius-2xl: 2rem;
     --radius-3xl: 2.5rem;
-    --radius-4xl: 3rem;
+    --radius-4xl: 2rem;
+    --radius-5xl: 2.75rem;
     --radius-pill: 9999px;
 
 
@@ -209,14 +216,21 @@
         0 24px 60px rgb(0 0 0 / 0.35);
 
     --shadow-panel:
-        0 30px 80px rgb(0 0 0 / 0.40);
+        0 24px 80px color-mix(in oklab, black 48%, transparent);
+
+    --shadow-glow:
+        0 0 80px color-mix(
+            in oklab,
+            var(--color-signal-400) 18%,
+            transparent
+        );
 
 
     /* ----------------------------------------------------------------------
        BLUR
        ---------------------------------------------------------------------- */
 
-    --blur-panel: 1rem;
+    --blur-panel: 1.5rem;
     --blur-glow: 4rem;
 
 
@@ -230,6 +244,7 @@
 
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-fluid: cubic-bezier(0.22, 1, 0.36, 1);
 
 
     /* ----------------------------------------------------------------------
@@ -248,16 +263,16 @@
 
     --section-border: 1px solid var(--color-border);
 
-    --card-background: var(--color-surface);
-    --card-border: 1px solid var(--color-border);
-    --card-radius: var(--radius-2xl);
+    --card-background: color-mix(in oklab, var(--color-ink-900) 86%, transparent);
+    --card-border: 1px solid color-mix(in oklab, white 10%, transparent);
+    --card-radius: var(--radius-4xl);
 
-    --panel-background: rgb(5 9 21 / 0.80);
-    --panel-border: 1px solid var(--color-border-strong);
-    --panel-radius: var(--radius-3xl);
+    --panel-background: color-mix(in oklab, var(--color-ink-900) 88%, transparent);
+    --panel-border: 1px solid color-mix(in oklab, white 11%, transparent);
+    --panel-radius: var(--radius-5xl);
 
     --button-radius: var(--radius-pill);
 
     --focus-ring:
-        0 0 0 3px rgb(96 165 250 / 0.30);
+        0 0 0 3px color-mix(in oklab, var(--color-signal-300) 30%, transparent);
 }
