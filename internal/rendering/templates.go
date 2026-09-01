@@ -28,7 +28,8 @@ func LoadPageTemplate(
 		"public/home.html",
 		"public/portfolio.html",
 		"public/404.html",
-		"public/web-design-leeds.html":
+		"public/web-design-leeds.html",
+		"public/web-development.html":
 		return loadPublicPageTemplate(
 			templateDir,
 			page,

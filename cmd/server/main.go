@@ -93,6 +93,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	webDevelopmentHandler, err :=
+		apphttp.NewWebDevelopmentHandler(cfg.TemplateDir)
+
+	if err != nil {
+		logger.Error(
+			"failed to create web development handler",
+			"error", err,
+		)
+		os.Exit(1)
+	}
+
 	portfolioCaseStudyHandler, err :=
 		apphttp.NewPortfolioCaseStudyHandler(
 			cfg.TemplateDir,
@@ -233,8 +244,9 @@ func main() {
 		contractsHandler: contractsHandler,
 		blogAdminHandler: blogAdminHandler,
 
-		sessionService: sessionService,
-		blogHandler:    blogHandler,
+		sessionService:        sessionService,
+		blogHandler:           blogHandler,
+		webDevelopmentHandler: webDevelopmentHandler,
 	})
 
 	crossOriginProtection :=

@@ -19,8 +19,9 @@ type routerDependencies struct {
 	contractsHandler http.Handler
 	blogAdminHandler http.Handler
 
-	sessionService *auth.SessionService
-	blogHandler    *apphttp.BlogHandler
+	sessionService        *auth.SessionService
+	blogHandler           *apphttp.BlogHandler
+	webDevelopmentHandler *apphttp.WebDevelopmentHandler
 }
 
 func newRouter(deps routerDependencies) http.Handler {
@@ -39,6 +40,11 @@ func newRouter(deps routerDependencies) http.Handler {
 	mux.Handle(
 		"/web-design-leeds/",
 		deps.webDesignLeedsHandler,
+	)
+
+	mux.Handle(
+		"/web-development/",
+		deps.webDevelopmentHandler,
 	)
 
 	noIndexAdminAuth := apphttp.NoIndex(
