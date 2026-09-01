@@ -128,7 +128,7 @@ func TestNewRouterPublicRoutes(
 	router := newRouter(routerDependencies{
 		homeHandler:               homeHandler,
 		portfolioCaseStudyHandler: caseStudyHandler,
-		webDesignLeedsHandler:     protectedHandler,
+		publicPageRoutes:          nil,
 
 		adminAuthHandler: authHandler,
 		dashboardHandler: protectedHandler,
@@ -221,7 +221,7 @@ func TestNewRouterProtectsDashboardRoutes(
 	router := newRouter(routerDependencies{
 		homeHandler:               handler,
 		portfolioCaseStudyHandler: handler,
-		webDesignLeedsHandler:     handler,
+		publicPageRoutes:          nil,
 
 		adminAuthHandler: handler,
 		dashboardHandler: handler,
@@ -306,7 +306,7 @@ func TestNewRouterRedirectsDashboardWithoutTrailingSlash(
 	router := newRouter(routerDependencies{
 		homeHandler:               handler,
 		portfolioCaseStudyHandler: handler,
-		webDesignLeedsHandler:     handler,
+		publicPageRoutes:          nil,
 
 		adminAuthHandler: handler,
 		dashboardHandler: handler,
@@ -369,7 +369,7 @@ func TestNewRouterNoIndexPolicy(
 	router := newRouter(routerDependencies{
 		homeHandler:               handler,
 		portfolioCaseStudyHandler: handler,
-		webDesignLeedsHandler:     handler,
+		publicPageRoutes:          nil,
 
 		adminAuthHandler: handler,
 		dashboardHandler: handler,

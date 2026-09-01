@@ -10,26 +10,23 @@ package rendering
 import (
 	"html/template"
 	"path/filepath"
+	"strings"
 )
 
 func LoadPageTemplate(
 	templateDir string,
 	page string,
 ) (*template.Template, error) {
-	switch page {
-	case "admin/login.html":
+	switch {
+	case page == "admin/login.html":
 		return loadAuthPageTemplate(
 			templateDir,
 			page,
 		)
 
-	case "blog.html",
-		"blog-post.html",
-		"public/home.html",
-		"public/portfolio.html",
-		"public/404.html",
-		"public/web-design-leeds.html",
-		"public/web-development.html":
+	case page == "blog.html",
+		page == "blog-post.html",
+		strings.HasPrefix(page, "public/"):
 		return loadPublicPageTemplate(
 			templateDir,
 			page,

@@ -79,16 +79,17 @@ func (h *BlogHandler) Sitemap(
 			ChangeFrequency: "weekly",
 			Priority:        "0.8",
 		},
-		{
-			Location:        publicSiteURL + "/web-design-leeds/",
-			ChangeFrequency: "monthly",
-			Priority:        "0.9",
-		},
-		{
-			Location:        publicSiteURL + "/web-design/",
-			ChangeFrequency: "monthly",
-			Priority:        "0.9",
-		},
+	}
+
+	for _, page := range PublicPages {
+		urls = append(
+			urls,
+			sitemapURL{
+				Location:        publicSiteURL + page.Path,
+				ChangeFrequency: page.ChangeFrequency,
+				Priority:        page.Priority,
+			},
+		)
 	}
 
 	for _, post := range posts {
