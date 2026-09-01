@@ -1,0 +1,91 @@
+{{define "content"}}
+<main class="service-page">
+    <section class="service-hero">
+        <div class="service-hero__glow-field" aria-hidden="true">
+            <div class="service-hero__glow service-hero__glow--signal"></div>
+            <div class="service-hero__glow service-hero__glow--electric"></div>
+        </div>
+
+        <div class="site-container service-hero__layout">
+            <div class="service-hero__copy">
+                <div class="service-kicker"><span class="service-kicker__line"></span><p class="service-kicker__text">Software Development</p></div>
+                <h1 class="service-hero__title"><span class="service-hero__title-line">Software built</span><span class="service-hero__title-line service-hero__title-accent">around the work.</span></h1>
+                <p class="service-hero__intro">I build focused software for real workflows — from internal tools and client portals to custom web applications that need more than an off-the-shelf platform can provide.</p>
+                <div class="service-actions"><a href="/#contact" class="button-primary">Start a project <span aria-hidden="true">↗</span></a><a href="/work/portfolio" class="button-secondary">View selected work <span aria-hidden="true">→</span></a></div>
+                <dl class="service-metrics"><div><dt class="metric-label">Approach</dt><dd class="service-metric__value">Problem-led</dd></div><div><dt class="metric-label">Architecture</dt><dd class="service-metric__value">Small + explicit</dd></div><div class="service-metric--wide"><dt class="metric-label">Delivery</dt><dd class="service-metric__value">Tested + maintainable</dd></div></dl>
+            </div>
+
+            <div class="service-preview">
+                <div class="service-preview__glow" aria-hidden="true"></div>
+                <div class="glass-panel service-preview__panel">
+                    <div class="service-preview__toolbar"><div class="service-preview__dots" aria-hidden="true"><span class="service-preview__dot"></span><span class="service-preview__dot"></span><span class="service-preview__dot service-preview__dot--accent"></span></div><p class="service-preview__label">system / workflow</p></div>
+                    <div class="service-preview__body">
+                        <div class="service-preview__heading"><div><p class="metric-label">Engineering principle</p><p class="service-preview__principle">Model the real workflow.</p></div><span class="service-preview__status"><span class="service-preview__status-dot"></span>Working</span></div>
+                        <div class="service-preview__steps">
+                            <div class="service-preview__step"><div class="service-preview__step-inner"><span class="service-preview__step-number">01</span><div><p class="service-preview__step-title">Workflow</p><p class="service-preview__step-copy">Understand the decisions, data and hand-offs.</p></div></div></div>
+                            <div class="service-preview__step"><div class="service-preview__step-inner"><span class="service-preview__step-number">02</span><div><p class="service-preview__step-title">System</p><p class="service-preview__step-copy">Turn the workflow into clear application boundaries.</p></div></div></div>
+                            <div class="service-preview__step service-preview__step--strong"><div class="service-preview__step-inner"><span class="service-preview__step-number">03</span><div><p class="service-preview__step-title">Delivery</p><p class="service-preview__step-copy">Ship, observe and improve the product over time.</p></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="site-container service-split">
+            <div class="service-sticky"><p class="eyebrow">01 / Software</p><h2 class="service-title">Build around the process, not the <span class="service-accent">platform.</span></h2><p class="service-copy">Custom software makes sense when the workflow matters enough that forcing it through generic tools creates more friction than it removes.</p></div>
+            <div class="service-list">
+                <article class="service-list__item"><span class="service-list__index">01</span><div><h3 class="service-list__title">Internal tools</h3><p class="service-list__copy">Purpose-built operational software for managing workflows, records, approvals and repeated tasks without spreadsheet sprawl.</p></div></article>
+                <article class="service-list__item"><span class="service-list__index">02</span><div><h3 class="service-list__title">Client portals</h3><p class="service-list__copy">Secure workspaces that give clients access to the information, files, projects or actions relevant to them.</p></div></article>
+                <article class="service-list__item"><span class="service-list__index">03</span><div><h3 class="service-list__title">Workflow applications</h3><p class="service-list__copy">Applications built around a specific sequence of decisions, data and hand-offs where generic software becomes cumbersome.</p></div></article>
+                <article class="service-list__item"><span class="service-list__index">04</span><div><h3 class="service-list__title">Existing systems</h3><p class="service-list__copy">Improving or replacing brittle processes when an existing application has become difficult to understand, maintain or extend.</p></div></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="site-container">
+            <div class="service-intro-grid"><div><p class="eyebrow">02 / Architecture</p><h2 class="service-title">Complex enough to solve it. <span class="service-accent">No more.</span></h2></div><p class="service-copy--large">I prefer explicit data models, small application layers and interfaces that expose the workflow clearly instead of hiding it behind unnecessary abstractions.</p></div>
+            <div class="service-card-grid">
+                <article class="interactive-card service-card"><p class="metric-label">Clarity</p><h3 class="service-card__title">Make responsibilities obvious.</h3><p class="service-card__copy">Separate concerns so future changes have a predictable place to live and are easier to reason about.</p></article>
+                <article class="interactive-card service-card"><p class="metric-label">Reliability</p><h3 class="service-card__title">Treat failure as a state.</h3><p class="service-card__copy">Validation, errors, persistence and recovery should be deliberate parts of the product rather than surprises.</p></article>
+                <article class="interactive-card service-card"><p class="metric-label">Maintainability</p><h3 class="service-card__title">Optimise for tomorrow.</h3><p class="service-card__copy">Readable code and straightforward architecture make the next feature less expensive than cleverness does.</p></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="site-container service-split service-split--balanced">
+            <div><p class="eyebrow">03 / Capabilities</p><h2 class="service-title">From interface to <span class="service-accent">persistence.</span></h2><p class="service-copy">I work across the product rather than treating the frontend and backend as unrelated pieces.</p></div>
+            <div class="glass-panel service-panel"><div class="service-panel-grid">
+                <div class="service-panel-card"><p class="metric-label">Application logic</p><p class="service-panel-card__title">Go services</p><p class="service-panel-card__copy">Business rules, HTTP handlers and application boundaries kept explicit.</p></div>
+                <div class="service-panel-card"><p class="metric-label">Data</p><p class="service-panel-card__title">Relational persistence</p><p class="service-panel-card__copy">SQL, migrations and data models designed around the actual workflow.</p></div>
+                <div class="service-panel-card"><p class="metric-label">Interface</p><p class="service-panel-card__title">Server-rendered UI</p><p class="service-panel-card__copy">Semantic HTML and focused interactions that keep browser complexity under control.</p></div>
+                <div class="service-panel-card"><p class="metric-label">Delivery</p><p class="service-panel-card__title">Testing + deployment</p><p class="service-panel-card__copy">Automated checks, container builds and production deployment considered part of the system.</p></div>
+            </div></div>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="site-container"><div class="service-intro-grid service-intro-grid--work"><div><p class="eyebrow">04 / Selected work</p><h2 class="service-title">A working system, not a <span class="service-accent">mock-up.</span></h2></div><p class="service-copy--large">The portfolio itself includes a private operational workspace for clients, projects, contracts, publishing and administrative workflows.</p></div>
+            <a href="/work/portfolio" class="interactive-card service-case"><div class="service-case__grid"><div class="service-case__copy"><div class="service-case__meta"><span class="service-case__badge">Software case study</span></div><h3 class="service-case__title">Portfolio &amp; <span class="service-case__title-accent">Client Workspace</span></h3><p class="service-case__description">A real application combining public content with authenticated operations, persistence, publishing and deployment.</p><div class="service-case__tags"><span class="service-case__tag">Go</span><span class="service-case__tag">HTMX</span><span class="service-case__tag">SQLite</span><span class="service-case__tag">Auth</span><span class="service-case__tag">CI/CD</span></div><p class="service-case__link">Read the case study <span class="service-case__arrow" aria-hidden="true">→</span></p></div><div class="service-case__visual"><div class="service-case__visual-glow" aria-hidden="true"></div><div class="service-case__visual-panel"><div><p class="metric-label">Operational workspace</p><p class="service-case__visual-title">Real workflows. <span class="service-case__visual-accent">Real state.</span></p><p class="service-case__visual-copy">Clients, projects, contracts and publishing are handled inside the same application.</p></div><div class="service-case__mini-grid"><div class="service-case__mini-card"><p class="metric-label">Clients</p><p class="service-case__mini-value">Records</p></div><div class="service-case__mini-card"><p class="metric-label">Projects</p><p class="service-case__mini-value">Workflow</p></div><div class="service-case__mini-card"><p class="metric-label">Contracts</p><p class="service-case__mini-value">State</p></div><div class="service-case__mini-card"><p class="metric-label">Journal</p><p class="service-case__mini-value">Publishing</p></div></div></div></div></div></a>
+        </div>
+    </section>
+
+    <section class="service-section">
+        <div class="site-container"><div class="service-intro-grid service-intro-grid--process"><div><p class="eyebrow">05 / Process</p><h2 class="service-title">Understand the work before writing the <span class="service-accent">software.</span></h2></div><p class="service-copy--large">The best implementation starts with a clear model of the workflow, users and constraints — not a premature list of technologies.</p></div>
+            <div class="service-process-grid">
+                <article class="interactive-card service-process-card"><span class="service-process-card__index">01</span><h3 class="service-process-card__title">Discover</h3><p class="service-process-card__copy">Understand the process, data, pain points and desired outcome.</p></article>
+                <article class="interactive-card service-process-card"><span class="service-process-card__index">02</span><h3 class="service-process-card__title">Model</h3><p class="service-process-card__copy">Turn the workflow into clear states, entities and application boundaries.</p></article>
+                <article class="interactive-card service-process-card"><span class="service-process-card__index">03</span><h3 class="service-process-card__title">Build</h3><p class="service-process-card__copy">Implement incrementally with testing, security and maintainability built in.</p></article>
+                <article class="interactive-card service-process-card"><span class="service-process-card__index">04</span><h3 class="service-process-card__title">Improve</h3><p class="service-process-card__copy">Observe real use and evolve the software where it creates measurable value.</p></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="service-cta">
+        <div class="site-container"><div class="service-cta__panel"><div class="service-cta__glow" aria-hidden="true"></div><div class="service-cta__grid"><div class="service-cta__copy"><p class="eyebrow">06 / Start a project</p><h2 class="service-title">Have a workflow that deserves <span class="service-accent">better software?</span></h2><p class="service-cta__description">If your team is fighting spreadsheets, disconnected tools or a system that no longer fits the work, tell me what the process actually needs to do.</p></div><div class="service-cta__actions"><a href="/#contact" class="button-primary">Start a project <span aria-hidden="true">↗</span></a><a href="/blog/" class="button-secondary">Read the journal <span aria-hidden="true">→</span></a></div></div></div></div>
+    </section>
+</main>
+{{end}}
