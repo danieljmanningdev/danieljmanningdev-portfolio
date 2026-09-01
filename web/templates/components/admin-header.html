@@ -1,49 +1,38 @@
 {{define "header"}}
-<header class="sticky top-0 z-50 border-b border-white/8 bg-[#050b18]/88 backdrop-blur-2xl">
-    <nav class="mx-auto flex min-h-18 w-[calc(100%_-_1.5rem)] max-w-[96rem] items-center justify-between gap-4" aria-label="Workspace navigation">
-        <a href="/dashboard/" class="group inline-flex items-center gap-3" aria-label="Workspace dashboard">
-            <span class="grid size-10 place-items-center overflow-hidden rounded-xl border border-blue-300/18 bg-blue-400/6 p-1.5 transition group-hover:border-blue-300/35 group-hover:bg-blue-400/10">
-                <img
-                    src="/static/djmdev-svg-assets/djmdev-mark-dark.svg"
-                    alt=""
-                    class="size-full object-contain"
-                    width="40"
-                    height="40"
-                >
+<header class="admin-header">
+    <nav class="admin-nav" aria-label="Workspace navigation">
+        <a href="/dashboard/" class="admin-brand" aria-label="Workspace dashboard">
+            <span class="admin-brand__mark">
+                <img src="/static/djmdev-svg-assets/djmdev-mark-dark.svg" alt="" class="admin-brand__logo" width="40" height="40">
             </span>
-            <span class="hidden sm:block">
-                <span class="block text-[0.68rem] font-bold tracking-[0.2em] text-mist-100">WORKSPACE</span>
-                <span class="mt-0.5 block text-[0.68rem] text-mist-700">Daniel J. Manning</span>
+            <span class="admin-brand__text">
+                <span class="admin-brand__title">WORKSPACE</span>
+                <span class="admin-brand__subtitle">Daniel J. Manning</span>
             </span>
         </a>
 
-        <div class="hidden items-center gap-1 rounded-full border border-white/8 bg-white/3 p-1 md:flex">
-            <a href="/dashboard/" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Overview</a>
-            <a href="/dashboard/clients" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Clients</a>
-            <a href="/dashboard/projects" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Projects</a>
-            <a href="/dashboard/contracts" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Contracts</a>
-            <a href="/dashboard/blog" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Journal</a>
-            <a href="/dashboard/activity" class="rounded-full px-3.5 py-2 text-xs font-semibold text-mist-500 transition hover:bg-white/6 hover:text-white">Activity</a>
+        <div class="admin-desktop-nav">
+            <a href="/dashboard/" class="admin-nav-link">Overview</a>
+            <a href="/dashboard/clients" class="admin-nav-link">Clients</a>
+            <a href="/dashboard/projects" class="admin-nav-link">Projects</a>
+            <a href="/dashboard/contracts" class="admin-nav-link">Contracts</a>
+            <a href="/dashboard/blog" class="admin-nav-link">Journal</a>
+            <a href="/dashboard/activity" class="admin-nav-link">Activity</a>
         </div>
 
-        <div class="flex items-center gap-2">
-            <a href="/" target="_blank" rel="noopener noreferrer" class="button-secondary min-h-10 px-4 text-xs">
-                View site
-                <span aria-hidden="true">↗</span>
-            </a>
+        <div class="admin-actions">
+            <a href="/" target="_blank" rel="noopener noreferrer" class="button-secondary admin-view-site">View site <span aria-hidden="true">↗</span></a>
 
-            <details class="group relative md:hidden">
-                <summary class="grid size-10 list-none place-items-center rounded-full border border-white/10 bg-white/4 text-mist-100 marker:content-none" aria-label="Open workspace navigation">
-                    <span aria-hidden="true">⌘</span>
-                </summary>
-                <div class="glass-panel absolute right-0 top-12 w-60 rounded-3xl p-3">
-                    <div class="grid gap-1">
-                        <a href="/dashboard/" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Overview</a>
-                        <a href="/dashboard/clients" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Clients</a>
-                        <a href="/dashboard/projects" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Projects</a>
-                        <a href="/dashboard/contracts" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Contracts</a>
-                        <a href="/dashboard/blog" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Journal</a>
-                        <a href="/dashboard/activity" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Activity</a>
+            <details class="admin-mobile-nav">
+                <summary aria-label="Open workspace navigation"><span aria-hidden="true">⌘</span></summary>
+                <div class="glass-panel admin-mobile-nav__panel">
+                    <div class="admin-mobile-nav__links">
+                        <a href="/dashboard/" class="admin-mobile-nav__link">Overview</a>
+                        <a href="/dashboard/clients" class="admin-mobile-nav__link">Clients</a>
+                        <a href="/dashboard/projects" class="admin-mobile-nav__link">Projects</a>
+                        <a href="/dashboard/contracts" class="admin-mobile-nav__link">Contracts</a>
+                        <a href="/dashboard/blog" class="admin-mobile-nav__link">Journal</a>
+                        <a href="/dashboard/activity" class="admin-mobile-nav__link">Activity</a>
                     </div>
                 </div>
             </details>
