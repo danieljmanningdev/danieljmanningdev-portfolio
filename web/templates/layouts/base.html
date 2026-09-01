@@ -1,6 +1,6 @@
 {{define "base"}}
 <!DOCTYPE html>
-<html lang="en" class="bg-ink-950">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,25 +50,26 @@
     {{end}}
 
     <link rel="stylesheet" href="/static/css/app.css?v=4">
+    <link rel="stylesheet" href="/static/css/vanilla/main.css?v=1">
     <script src="/static/scripts/min.htmx.js" defer></script>
     <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
 </head>
 
 <body
-    class="site-shell flex min-h-dvh flex-col overflow-x-clip bg-ink-950 text-mist-50 antialiased"
+    class="site-shell"
     hx-indicator="#page-progress"
 >
     <a href="#main-content" class="skip-link">Skip to content</a>
 
     <div
         id="page-progress"
-        class="htmx-indicator fixed inset-x-0 top-0 z-[100] h-0.5 origin-left bg-signal-300 shadow-[0_0_22px_rgba(96,165,250,0.68)]"
+        class="htmx-indicator page-progress"
         aria-hidden="true"
     ></div>
 
     {{template "header" .}}
 
-    <div id="main-content" class="flex-1" tabindex="-1">
+    <div id="main-content" class="site-main" tabindex="-1">
         {{template "content" .}}
     </div>
 
