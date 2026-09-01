@@ -18,6 +18,12 @@
 
 .admin-panel { border: 1px solid var(--color-border); border-radius: 2rem; background: var(--color-surface); }
 
+.workspace-money { display: flex; overflow: hidden; border: 1px solid var(--color-border-strong); border-radius: 1rem; background: rgb(0 0 0 / .2); transition: border-color var(--duration-fast) var(--ease-fluid), box-shadow var(--duration-fast) var(--ease-fluid); }
+.workspace-money:focus-within { border-color: color-mix(in oklab, var(--color-signal-300) 45%, transparent); box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-signal-300) 12%, transparent); }
+.workspace-money__prefix { display: flex; flex-shrink: 0; align-items: center; padding-inline: 1rem; border-right: 1px solid var(--color-border); color: var(--color-mist-500); }
+.workspace-money__input { min-width: 0; flex: 1; padding: .8rem 1rem; border: 0; background: transparent; color: var(--color-mist-50); outline: none; }
+.workspace-money__input::placeholder { color: var(--color-mist-700); }
+
 @media (min-width: 40rem) {
     .activity-header { flex-direction: row; align-items: end; justify-content: space-between; }
     .activity-row { grid-template-columns: 9rem minmax(0, 1fr) auto; align-items: start; }
