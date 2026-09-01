@@ -1,0 +1,202 @@
+/* ========================================================================== 
+   ADMIN WORKSPACE POLISH
+   ========================================================================== */
+
+/* Give the workspace a little more breathing room without changing its
+   structure or interaction model. */
+.workspace-page {
+    padding-block: 2rem 4rem;
+}
+
+.workspace-hero {
+    padding: 2rem;
+}
+
+.workspace-hero__inner {
+    gap: 3rem;
+}
+
+.workspace-lede {
+    margin-top: 1.75rem;
+}
+
+.workspace-summary {
+    margin-top: 2rem;
+}
+
+.workspace-summary__item {
+    padding: 1.75rem;
+}
+
+.workspace-section {
+    margin-top: 4.5rem;
+}
+
+.workspace-section--bordered {
+    padding-top: 3.5rem;
+}
+
+.workspace-section__header {
+    gap: 1.25rem;
+}
+
+.workspace-section__title {
+    margin-top: 1.5rem;
+}
+
+.workspace-section__copy {
+    margin-top: 1.5rem;
+}
+
+.workspace-card-grid,
+.workspace-list,
+.crud-panel {
+    margin-top: 2rem;
+}
+
+.workspace-card,
+.workspace-link-card {
+    padding: 1.5rem;
+}
+
+.workspace-card__copy,
+.workspace-link-card__footer {
+    line-height: 1.5;
+}
+
+.workspace-list__row,
+.crud-row {
+    gap: 1.25rem;
+    padding: 1.5rem;
+}
+
+.workspace-list__title {
+    margin-top: 0.875rem;
+    line-height: 1.4;
+}
+
+.workspace-list__detail,
+.crud-row__meta {
+    margin-top: 0.5rem;
+    line-height: 1.45;
+}
+
+.crud-header {
+    gap: 1.75rem;
+}
+
+.crud-header__copy {
+    margin-top: 1rem;
+}
+
+.crud-row__title {
+    line-height: 1.4;
+}
+
+.crud-row__actions {
+    gap: 0.75rem;
+}
+
+.workspace-form-header {
+    gap: 1.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.workspace-form-header__copy {
+    margin-top: 1rem;
+}
+
+.workspace-form {
+    gap: 1.75rem;
+    padding: 1.75rem;
+}
+
+.workspace-form-grid {
+    gap: 1.5rem;
+}
+
+.workspace-field__label {
+    margin-bottom: 0.75rem;
+}
+
+.workspace-field__control {
+    padding: 0.9rem 1.05rem;
+    line-height: 1.5;
+}
+
+textarea.workspace-field__control {
+    min-height: 10rem;
+}
+
+.workspace-field__help,
+.workspace-field__error {
+    margin-top: 0.625rem;
+    line-height: 1.5;
+}
+
+.workspace-form-actions {
+    gap: 1rem;
+    padding-top: 0.75rem;
+}
+
+.workspace-danger {
+    padding: 1.75rem;
+}
+
+.workspace-danger__copy {
+    margin-top: 0.75rem;
+}
+
+.workspace-detail {
+    gap: 2rem;
+}
+
+.workspace-detail__panel {
+    padding: 1.75rem;
+}
+
+.workspace-detail__meta {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.workspace-detail__grid {
+    margin-top: 1.75rem;
+}
+
+.workspace-detail__item {
+    padding: 1.5rem;
+}
+
+.workspace-detail__value {
+    margin-top: 0.625rem;
+    line-height: 1.5;
+}
+
+.workspace-detail__copy {
+    margin-top: 1.75rem;
+}
+
+@media (min-width: 40rem) {
+    .workspace-page {
+        padding-block: 2.5rem 5rem;
+    }
+
+    .workspace-hero {
+        padding: 2.75rem;
+    }
+
+    .workspace-form {
+        padding: 2.25rem;
+    }
+
+    .workspace-detail__panel {
+        padding: 2rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .workspace-hero {
+        padding: 3.25rem;
+    }
+}
