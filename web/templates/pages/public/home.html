@@ -10,9 +10,7 @@
             <div class="home-hero__copy">
                 <div class="home-hero__identity">
                     <span class="home-hero__identity-line"></span>
-                    <p class="home-hero__identity-text">
-                        UI/UX Designer &amp; Full-Stack Developer
-                    </p>
+                    <p class="home-hero__identity-text">UI/UX Designer &amp; Full-Stack Developer</p>
                 </div>
 
                 <h1 class="home-hero__title">
@@ -121,77 +119,84 @@
         </div>
     </section>
 
-    <section id="work" class="scroll-mt-24 border-b border-white/8 py-24 sm:py-30 lg:py-36">
+    <section id="work" class="home-section">
         <div class="site-container">
-            <div class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+            <div class="home-section__intro home-work-intro">
                 <div>
                     <p class="eyebrow">01 / Selected work</p>
-                    <h2 class="mt-7 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                    <h2 class="home-section__title">
                         Product thinking you can
-                        <span class="bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">inspect.</span>
+                        <span class="home-gradient-text">inspect.</span>
                     </h2>
                 </div>
-                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">A working product, its decisions, and the private tools supporting the work behind it.</p>
+                <p class="home-section__copy">A working product, its decisions, and the private tools supporting the work behind it.</p>
             </div>
 
-            <a href="/work/portfolio" class="interactive-card group mt-14 block rounded-5xl p-4 sm:p-7">
-                <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
-                    <div class="relative z-10 py-5 sm:px-3">
-                        <div class="flex items-center gap-3">
-                            <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-[0.67rem] font-bold uppercase tracking-[0.18em] text-blue-200">Featured case study</span>
-                            <span class="text-xs text-mist-700">2026</span>
+            <a href="/work/portfolio" class="interactive-card home-work-card">
+                <div class="home-work-card__layout">
+                    <div class="home-work-card__copy">
+                        <div class="home-work-card__meta">
+                            <span class="home-work-card__badge">Featured case study</span>
+                            <span class="home-work-card__year">2026</span>
                         </div>
 
-                        <h3 class="mt-8 text-balance text-4xl font-medium leading-[0.98] tracking-[-0.045em] text-mist-50 sm:text-5xl">
+                        <h3 class="home-work-card__title">
                             Portfolio &amp;
-                            <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">Client Workspace</span>
+                            <span class="home-gradient-text home-work-card__title-accent">Client Workspace</span>
                         </h3>
 
-                        <p class="mt-6 max-w-xl leading-7 text-mist-500">A public portfolio and private workspace designed as one coherent product, including authentication, clients, projects, contracts and publishing.</p>
+                        <p class="home-work-card__description">A public portfolio and private workspace designed as one coherent product, including authentication, clients, projects, contracts and publishing.</p>
 
-                        <div class="mt-8 flex flex-wrap gap-2 text-xs text-mist-300">
-                            <span class="rounded-full border border-white/9 px-3 py-1.5">Go</span>
-                            <span class="rounded-full border border-white/9 px-3 py-1.5">HTMX</span>
-                            <span class="rounded-full border border-white/9 px-3 py-1.5">SQLite</span>
-                            <span class="rounded-full border border-white/9 px-3 py-1.5">Security</span>
+                        <div class="home-work-card__tags">
+                            <span class="home-work-card__tag">Go</span>
+                            <span class="home-work-card__tag">HTMX</span>
+                            <span class="home-work-card__tag">SQLite</span>
+                            <span class="home-work-card__tag">Security</span>
                         </div>
 
-                        <p class="mt-10 inline-flex items-center gap-3 text-sm font-bold text-mist-100">Read the case study <span class="text-blue-300 transition group-hover:translate-x-1" aria-hidden="true">→</span></p>
+                        <p class="home-work-card__link">Read the case study <span class="home-work-card__arrow" aria-hidden="true">→</span></p>
                     </div>
 
-                    <div class="relative min-h-108 overflow-hidden rounded-4xl border border-white/9 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/7 p-5 sm:min-h-136 sm:p-7">
-                        <div class="absolute -right-16 -top-16 size-64 rounded-full bg-blue-400/14 blur-3xl" aria-hidden="true"></div>
+                    <div class="home-work-preview">
+                        <div class="home-work-preview__glow" aria-hidden="true"></div>
 
-                        <div class="relative grid h-full grid-rows-[auto_1fr] overflow-hidden rounded-3xl border border-white/10 bg-[#050b18]/92 shadow-2xl shadow-black/40">
-                            <div class="flex items-center justify-between border-b border-white/8 px-5 py-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="size-2 rounded-full bg-white/18"></span>
-                                    <span class="size-2 rounded-full bg-white/18"></span>
-                                    <span class="size-2 rounded-full bg-blue-300/70"></span>
+                        <div class="home-work-preview__window">
+                            <div class="home-work-preview__toolbar">
+                                <div class="home-work-preview__dots">
+                                    <span class="home-work-preview__dot"></span>
+                                    <span class="home-work-preview__dot"></span>
+                                    <span class="home-work-preview__dot home-work-preview__dot--accent"></span>
                                 </div>
-                                <span class="font-mono text-[0.62rem] uppercase tracking-[0.15em] text-mist-700">Client workspace</span>
+                                <span class="home-work-preview__label">Client workspace</span>
                             </div>
 
-                            <div class="grid gap-4 p-5 sm:grid-cols-[0.38fr_1fr]">
-                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
-                                    <div class="h-2 w-16 rounded-full bg-blue-300/35"></div>
-                                    <div class="mt-7 space-y-3">
-                                        <div class="h-8 rounded-xl bg-white/5"></div>
-                                        <div class="h-8 rounded-xl bg-blue-400/10"></div>
-                                        <div class="h-8 rounded-xl bg-white/5"></div>
-                                        <div class="h-8 rounded-xl bg-white/5"></div>
+                            <div class="home-work-preview__body">
+                                <div class="home-work-preview__sidebar">
+                                    <div class="home-work-preview__accent-line"></div>
+                                    <div class="home-work-preview__nav">
+                                        <div class="home-work-preview__nav-line"></div>
+                                        <div class="home-work-preview__nav-line home-work-preview__nav-line--active"></div>
+                                        <div class="home-work-preview__nav-line"></div>
+                                        <div class="home-work-preview__nav-line"></div>
                                     </div>
                                 </div>
 
-                                <div class="grid content-start gap-4">
-                                    <div class="grid grid-cols-3 gap-3">
-                                        <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><div class="h-2 w-10 rounded-full bg-white/12"></div><div class="mt-5 h-7 w-12 rounded-lg bg-blue-300/25"></div></div>
-                                        <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><div class="h-2 w-10 rounded-full bg-white/12"></div><div class="mt-5 h-7 w-12 rounded-lg bg-cyan-300/20"></div></div>
-                                        <div class="rounded-2xl border border-white/8 bg-white/3 p-4"><div class="h-2 w-10 rounded-full bg-white/12"></div><div class="mt-5 h-7 w-12 rounded-lg bg-indigo-300/20"></div></div>
+                                <div class="home-work-preview__content">
+                                    <div class="home-work-preview__stats">
+                                        <div class="home-work-preview__stat"><div class="home-work-preview__stat-line"></div><div class="home-work-preview__stat-value"></div></div>
+                                        <div class="home-work-preview__stat"><div class="home-work-preview__stat-line"></div><div class="home-work-preview__stat-value home-work-preview__stat-value--electric"></div></div>
+                                        <div class="home-work-preview__stat"><div class="home-work-preview__stat-line"></div><div class="home-work-preview__stat-value home-work-preview__stat-value--indigo"></div></div>
                                     </div>
-                                    <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
-                                        <div class="flex items-center justify-between"><div class="h-2 w-24 rounded-full bg-white/12"></div><div class="h-7 w-20 rounded-full bg-blue-400/12"></div></div>
-                                        <div class="mt-5 space-y-3"><div class="h-12 rounded-xl bg-white/5"></div><div class="h-12 rounded-xl bg-white/5"></div><div class="h-12 rounded-xl bg-white/5"></div></div>
+                                    <div class="home-work-preview__surface">
+                                        <div class="home-work-preview__surface-header">
+                                            <div class="home-work-preview__surface-title"></div>
+                                            <div class="home-work-preview__surface-action"></div>
+                                        </div>
+                                        <div class="home-work-preview__rows">
+                                            <div class="home-work-preview__row"></div>
+                                            <div class="home-work-preview__row"></div>
+                                            <div class="home-work-preview__row"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -202,71 +207,102 @@
         </div>
     </section>
 
-    <section id="services" class="scroll-mt-24 border-b border-white/8 py-24 sm:py-30 lg:py-36">
-        <div class="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
-            <div class="lg:sticky lg:top-28 lg:self-start">
+    <section id="services" class="home-section">
+        <div class="site-container home-capabilities__layout">
+            <div class="home-capabilities__intro">
                 <p class="eyebrow">02 / Capabilities</p>
-                <h2 class="mt-7 max-w-xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                <h2 class="home-section__title home-capabilities__intro-title">
                     One accountable loop from idea to
-                    <span class="text-blue-300">release.</span>
+                    <span class="home-accent-text">release.</span>
                 </h2>
-                <p class="mt-7 max-w-lg leading-7 text-mist-500">Design and engineering decisions stay connected, so the interface, system and product story reinforce each other.</p>
+                <p class="home-capabilities__intro-copy">Design and engineering decisions stay connected, so the interface, system and product story reinforce each other.</p>
             </div>
 
-            <div class="divide-y divide-white/9 border-y border-white/9">
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]"><span class="font-mono text-sm text-blue-300">01</span><div><h3 class="text-2xl font-medium text-mist-50 sm:text-3xl">Product &amp; UX strategy</h3><p class="mt-4 max-w-2xl leading-7 text-mist-500">Clarify the outcome, map the workflow and decide what the product should make easy.</p></div></article>
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]"><span class="font-mono text-sm text-blue-300">02</span><div><h3 class="text-2xl font-medium text-mist-50 sm:text-3xl">Interface systems</h3><p class="mt-4 max-w-2xl leading-7 text-mist-500">Accessible layouts, components, states and content hierarchy that remain coherent as the product grows.</p></div></article>
-                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]"><span class="font-mono text-sm text-blue-300">03</span><div><h3 class="text-2xl font-medium text-mist-50 sm:text-3xl">Full-stack product engineering</h3><p class="mt-4 max-w-2xl leading-7 text-mist-500">Fast server-rendered applications, database workflows and secure operational tooling without unnecessary frontend weight.</p></div></article>
+            <div class="home-capabilities__list">
+                <article class="home-capability">
+                    <span class="home-capability__number">01</span>
+                    <div>
+                        <h3 class="home-capability__title">Product &amp; UX strategy</h3>
+                        <p class="home-capability__copy">Clarify the outcome, map the workflow and decide what the product should make easy.</p>
+                    </div>
+                </article>
+                <article class="home-capability">
+                    <span class="home-capability__number">02</span>
+                    <div>
+                        <h3 class="home-capability__title">Interface systems</h3>
+                        <p class="home-capability__copy">Accessible layouts, components, states and content hierarchy that remain coherent as the product grows.</p>
+                    </div>
+                </article>
+                <article class="home-capability">
+                    <span class="home-capability__number">03</span>
+                    <div>
+                        <h3 class="home-capability__title">Full-stack product engineering</h3>
+                        <p class="home-capability__copy">Fast server-rendered applications, database workflows and secure operational tooling without unnecessary frontend weight.</p>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
 
-    <section id="about" class="scroll-mt-24 border-b border-white/8 py-24 sm:py-30 lg:py-36">
-        <div class="site-container grid gap-14 lg:grid-cols-12">
-            <div class="lg:col-span-5">
+    <section id="about" class="home-section">
+        <div class="site-container home-style__layout">
+            <div class="home-style__intro">
                 <p class="eyebrow">03 / Working style</p>
-                <h2 class="mt-7 text-balance text-4xl font-medium leading-[1.03] tracking-[-0.045em] text-mist-50 sm:text-6xl">Close to the work. Clear about the trade-offs.</h2>
-                <p class="mt-7 max-w-xl text-lg leading-8 text-mist-500">I follow an idea from the rough first question through interface design, implementation and the details that make it trustworthy in use.</p>
+                <h2 class="home-section__title">Close to the work. Clear about the trade-offs.</h2>
+                <p class="home-style__intro-copy">I follow an idea from the rough first question through interface design, implementation and the details that make it trustworthy in use.</p>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-3 lg:col-span-7">
-                <article class="glass-panel rounded-4xl p-6 sm:min-h-72"><p class="font-mono text-sm text-blue-300">01</p><h3 class="mt-16 text-xl font-semibold text-mist-50">Frame</h3><p class="mt-3 text-sm leading-6 text-mist-500">Define the real user decision, constraints and evidence of success.</p></article>
-                <article class="glass-panel rounded-4xl p-6 sm:min-h-72 sm:translate-y-8"><p class="font-mono text-sm text-cyan-300">02</p><h3 class="mt-16 text-xl font-semibold text-mist-50">Shape</h3><p class="mt-3 text-sm leading-6 text-mist-500">Design the information, interaction and technical boundaries together.</p></article>
-                <article class="glass-panel rounded-4xl p-6 sm:min-h-72 sm:translate-y-16"><p class="font-mono text-sm text-blue-300">03</p><h3 class="mt-16 text-xl font-semibold text-mist-50">Ship</h3><p class="mt-3 text-sm leading-6 text-mist-500">Build, test, harden and refine the moments that affect confidence.</p></article>
+            <div class="home-style__cards">
+                <article class="glass-panel home-style__card">
+                    <p class="home-style__number">01</p>
+                    <h3 class="home-style__card-title">Frame</h3>
+                    <p class="home-style__card-copy">Define the real user decision, constraints and evidence of success.</p>
+                </article>
+                <article class="glass-panel home-style__card">
+                    <p class="home-style__number home-style__number--electric">02</p>
+                    <h3 class="home-style__card-title">Shape</h3>
+                    <p class="home-style__card-copy">Design the information, interaction and technical boundaries together.</p>
+                </article>
+                <article class="glass-panel home-style__card">
+                    <p class="home-style__number">03</p>
+                    <h3 class="home-style__card-title">Ship</h3>
+                    <p class="home-style__card-copy">Build, test, harden and refine the moments that affect confidence.</p>
+                </article>
             </div>
         </div>
     </section>
 
-    <section class="border-b border-white/8 py-24 sm:py-30">
+    <section class="home-journal-section">
         <div class="site-container">
-            <a href="/blog/" class="interactive-card group grid gap-10 rounded-5xl p-8 sm:p-12 lg:grid-cols-[1fr_auto] lg:items-end lg:p-16">
-                <div class="relative z-10">
+            <a href="/blog/" class="interactive-card home-journal-card">
+                <div>
                     <p class="eyebrow">04 / Journal</p>
-                    <h2 class="mt-7 max-w-4xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                    <h2 class="home-section__title home-journal-card__title">
                         Notes from the decisions behind the
-                        <span class="text-blue-300">work.</span>
+                        <span class="home-accent-text">work.</span>
                     </h2>
-                    <p class="mt-6 max-w-2xl text-lg leading-8 text-mist-500">Design reasoning, Go engineering, security learning and practical product notes.</p>
+                    <p class="home-journal-card__copy">Design reasoning, Go engineering, security learning and practical product notes.</p>
                 </div>
-                <span class="relative z-10 grid size-16 place-items-center rounded-full border border-blue-300/25 bg-blue-300/8 text-2xl text-blue-200 transition group-hover:bg-blue-400 group-hover:text-white" aria-hidden="true">↗</span>
+                <span class="home-journal-card__arrow" aria-hidden="true">↗</span>
             </a>
         </div>
     </section>
-    <section id="contact" class="scroll-mt-24 py-24 sm:py-32 lg:py-40">
+
+    <section id="contact" class="home-contact">
         <div class="site-container">
-            <div class="relative overflow-hidden rounded-5xl border border-white/9 bg-linear-to-br from-white/6 via-white/2 to-blue-400/7 p-8 sm:p-12 lg:p-16">
-                <div class="pointer-events-none absolute -right-28 -top-28 size-96 rounded-full bg-blue-400/12 blur-3xl" aria-hidden="true"></div>
-                <div class="relative grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div class="home-contact__panel">
+                <div class="home-contact__glow" aria-hidden="true"></div>
+                <div class="home-contact__layout">
                     <div>
                         <p class="eyebrow">05 / Contact</p>
-                        <h2 class="mt-7 max-w-5xl text-balance text-[clamp(3rem,7vw,7rem)] font-medium leading-[0.9] tracking-[-0.06em] text-mist-50">
+                        <h2 class="home-contact__title">
                             Have something
-                            <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">worth building?</span>
+                            <span class="home-gradient-text home-contact__title-accent">worth building?</span>
                         </h2>
                     </div>
-                    <div class="max-w-sm">
-                        <p class="leading-7 text-mist-500">Bring the difficult workflow, the early idea or the product that needs to become much clearer.</p>
-                        <a href="mailto:daniel@danieljmanningdev.com" class="button-primary mt-7">Start a conversation <span aria-hidden="true">↗</span></a>
+                    <div class="home-contact__aside">
+                        <p class="home-contact__copy">Bring the difficult workflow, the early idea or the product that needs to become much clearer.</p>
+                        <a href="mailto:daniel@danieljmanningdev.com" class="button-primary home-contact__button">Start a conversation <span aria-hidden="true">↗</span></a>
                     </div>
                 </div>
             </div>
