@@ -1,0 +1,538 @@
+{{define "content"}}
+<main class="overflow-clip">
+    <!-- Hero -->
+    <section class="relative isolate border-b border-white/8">
+        <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+            <div class="absolute left-[8%] top-16 size-72 rounded-full bg-signal-500/14 blur-3xl sm:size-112"></div>
+            <div class="absolute -right-28 top-1/4 size-80 rounded-full bg-electric-400/10 blur-3xl sm:size-120"></div>
+        </div>
+
+        <div class="site-container grid min-h-[calc(100svh-5rem)] items-center gap-14 py-20 lg:grid-cols-[1.04fr_0.96fr] lg:gap-20 lg:py-24">
+            <div class="max-w-5xl">
+                <div class="mb-8 flex items-center gap-4">
+                    <span class="h-px w-10 bg-blue-400"></span>
+                    <p class="text-xs uppercase tracking-[0.3em] text-blue-300/70">
+                        Full-Stack Web Development
+                    </p>
+                </div>
+
+                <h1 class="text-[4.1rem] font-medium leading-[0.92] tracking-[-0.045em] text-mist-50 sm:text-8xl lg:text-9xl">
+                    <span class="block">Web development</span>
+                    <span class="block text-blue-400">built to last.</span>
+                </h1>
+
+                <p class="mt-9 max-w-2xl text-lg leading-8 text-mist-300 sm:text-xl">
+                    I build fast, accessible and maintainable websites, web applications and digital products — combining thoughtful interfaces with dependable full-stack engineering.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href="/#contact" class="button-primary">
+                        Start a project <span aria-hidden="true">↗</span>
+                    </a>
+
+                    <a href="/work/portfolio" class="button-secondary">
+                        View selected work <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+
+                <dl class="mt-12 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/9 pt-7 sm:grid-cols-3">
+                    <div>
+                        <dt class="metric-label">Frontend</dt>
+                        <dd class="mt-2 text-sm font-semibold text-mist-100">HTML / CSS / HTMX</dd>
+                    </div>
+
+                    <div>
+                        <dt class="metric-label">Backend</dt>
+                        <dd class="mt-2 text-sm font-semibold text-mist-100">Go</dd>
+                    </div>
+
+                    <div class="col-span-2 sm:col-span-1">
+                        <dt class="metric-label">Data</dt>
+                        <dd class="mt-2 text-sm font-semibold text-mist-100">SQLite / SQL</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <!-- Hero engineering panel -->
+            <div class="relative mx-auto w-full max-w-xl lg:justify-self-end">
+                <div class="absolute -inset-8 -z-10 rounded-[3rem] bg-linear-to-br from-signal-500/16 via-transparent to-electric-400/10 blur-3xl" aria-hidden="true"></div>
+
+                <div class="glass-panel overflow-hidden rounded-5xl">
+                    <div class="flex items-center justify-between border-b border-white/8 px-5 py-4">
+                        <div class="flex gap-2" aria-hidden="true">
+                            <span class="size-2 rounded-full bg-white/18"></span>
+                            <span class="size-2 rounded-full bg-white/18"></span>
+                            <span class="size-2 rounded-full bg-blue-300/70"></span>
+                        </div>
+
+                        <p class="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-mist-700">
+                            application / architecture
+                        </p>
+                    </div>
+
+                    <div class="p-5 sm:p-7">
+                        <div class="flex items-start justify-between gap-5">
+                            <div>
+                                <p class="metric-label">Engineering principle</p>
+                                <p class="mt-2 text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                                    Small layers. Clear responsibilities.
+                                </p>
+                            </div>
+
+                            <span class="inline-flex shrink-0 items-center gap-2 rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-xs font-bold text-blue-200">
+                                <span class="size-1.5 rounded-full bg-blue-300"></span>
+                                Live
+                            </span>
+                        </div>
+
+                        <div class="mt-7 space-y-3">
+                            <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                                <div class="flex items-center gap-4">
+                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">
+                                        01
+                                    </span>
+
+                                    <div>
+                                        <p class="font-semibold text-mist-100">Interface</p>
+                                        <p class="mt-1 text-xs leading-5 text-mist-500">
+                                            Semantic HTML, responsive layouts and focused interactions.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                                <div class="flex items-center gap-4">
+                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">
+                                        02
+                                    </span>
+
+                                    <div>
+                                        <p class="font-semibold text-mist-100">Application</p>
+                                        <p class="mt-1 text-xs leading-5 text-mist-500">
+                                            Server-side logic with explicit boundaries and predictable behaviour.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-3xl border border-white/8 bg-[#050915] p-5">
+                                <div class="flex items-center gap-4">
+                                    <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-blue-400/12 font-mono text-xs text-blue-200">
+                                        03
+                                    </span>
+
+                                    <div>
+                                        <p class="font-semibold text-mist-100">Data &amp; delivery</p>
+                                        <p class="mt-1 text-xs leading-5 text-mist-500">
+                                            Persistence, testing, security and deployment treated as part of the product.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+        <div class="site-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+                <p class="eyebrow">01 / Development</p>
+
+                <h2 class="mt-7 max-w-xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                    More than putting a frontend on a
+                    <span class="text-blue-300">backend.</span>
+                </h2>
+
+                <p class="mt-7 max-w-lg leading-7 text-mist-500">
+                    The strongest web products treat the interface, application logic, data and infrastructure as parts of the same system.
+                </p>
+            </div>
+
+            <div class="divide-y divide-white/9 border-y border-white/9">
+                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
+                    <span class="font-mono text-sm text-blue-300">01</span>
+
+                    <div>
+                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                            Websites
+                        </h3>
+
+                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">
+                            Responsive, accessible websites built around clear information architecture, strong performance and maintainable implementation.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
+                    <span class="font-mono text-sm text-blue-300">02</span>
+
+                    <div>
+                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                            Web applications
+                        </h3>
+
+                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">
+                            Authenticated areas, dashboards, client workspaces and data-backed workflows where the browser is part of a larger application.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
+                    <span class="font-mono text-sm text-blue-300">03</span>
+
+                    <div>
+                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                            Backend systems
+                        </h3>
+
+                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">
+                            Application logic, persistence, authentication, validation and integrations built around explicit responsibilities rather than unnecessary complexity.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="grid gap-5 py-9 sm:grid-cols-[4rem_1fr]">
+                    <span class="font-mono text-sm text-blue-300">04</span>
+
+                    <div>
+                        <h3 class="text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                            Existing products
+                        </h3>
+
+                        <p class="mt-4 max-w-2xl leading-7 text-mist-500">
+                            Extending, restructuring and improving existing applications when the product has outgrown its original implementation.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Principles -->
+    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+        <div class="site-container">
+            <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+                <div>
+                    <p class="eyebrow">02 / Engineering principles</p>
+
+                    <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                        Fast shouldn't mean
+                        <span class="text-blue-300">fragile.</span>
+                    </h2>
+                </div>
+
+                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">
+                    I favour straightforward architecture, server-rendered interfaces and small layers that are easy to understand, test and change.
+                </p>
+            </div>
+
+            <div class="mt-14 grid gap-4 lg:grid-cols-3">
+                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+                    <p class="metric-label">Performance</p>
+
+                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                        Send less.
+                    </h3>
+
+                    <p class="mt-4 leading-7 text-mist-500">
+                        Keep browser work deliberate, minimise unnecessary JavaScript and make the server do the work it is good at.
+                    </p>
+                </article>
+
+                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+                    <p class="metric-label">Maintainability</p>
+
+                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                        Make change predictable.
+                    </h3>
+
+                    <p class="mt-4 leading-7 text-mist-500">
+                        Clear boundaries and boring, understandable code beat clever abstractions that make tomorrow's change harder.
+                    </p>
+                </article>
+
+                <article class="interactive-card rounded-4xl p-7 sm:p-8">
+                    <p class="metric-label">Security</p>
+
+                    <h3 class="mt-5 text-2xl font-medium tracking-[-0.035em] text-mist-50">
+                        Build it in.
+                    </h3>
+
+                    <p class="mt-4 leading-7 text-mist-500">
+                        Authentication, CSRF protection, secure sessions, validation and defensive HTTP behaviour belong in the architecture from the beginning.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stack -->
+    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+        <div class="site-container grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+                <p class="eyebrow">03 / Technology</p>
+
+                <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                    A deliberately
+                    <span class="block text-blue-300">small stack.</span>
+                </h2>
+
+                <p class="mt-7 max-w-xl leading-7 text-mist-500">
+                    Technology is chosen to support the product rather than become the product.
+                </p>
+            </div>
+
+            <div class="glass-panel rounded-5xl p-7 sm:p-10">
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                        <p class="metric-label">Go</p>
+                        <p class="mt-3 font-semibold text-mist-100">Application layer</p>
+                        <p class="mt-2 text-sm leading-6 text-mist-500">
+                            HTTP services, business logic, middleware and server-side rendering.
+                        </p>
+                    </div>
+
+                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                        <p class="metric-label">HTMX</p>
+                        <p class="mt-3 font-semibold text-mist-100">Interaction layer</p>
+                        <p class="mt-2 text-sm leading-6 text-mist-500">
+                            Focused dynamic interactions without turning every page into a JavaScript application.
+                        </p>
+                    </div>
+
+                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                        <p class="metric-label">SQLite / SQL</p>
+                        <p class="mt-3 font-semibold text-mist-100">Persistence</p>
+                        <p class="mt-2 text-sm leading-6 text-mist-500">
+                            Straightforward relational data with explicit queries and migrations.
+                        </p>
+                    </div>
+
+                    <div class="rounded-3xl border border-white/8 bg-black/18 p-5">
+                        <p class="metric-label">HTML / CSS</p>
+                        <p class="mt-3 font-semibold text-mist-100">Interface foundation</p>
+                        <p class="mt-2 text-sm leading-6 text-mist-500">
+                            Semantic markup, responsive layouts and accessible browser-native behaviour.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case study -->
+    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+        <div class="site-container">
+            <div class="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+                <div>
+                    <p class="eyebrow">04 / Selected work</p>
+
+                    <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                        See the architecture in a
+                        <span class="text-blue-300">working product.</span>
+                    </h2>
+                </div>
+
+                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">
+                    This portfolio combines a public website with a private operational workspace, authentication, persistence, publishing and deployment.
+                </p>
+            </div>
+
+            <a href="/work/portfolio" class="interactive-card group mt-14 block rounded-5xl p-4 sm:p-7">
+                <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+                    <div class="relative z-10 py-5 sm:px-3">
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 text-[0.67rem] font-bold uppercase tracking-[0.18em] text-blue-200">
+                                Full-stack case study
+                            </span>
+                        </div>
+
+                                               <h3 class="mt-8 text-balance text-4xl font-medium leading-[0.98] tracking-[-0.045em] text-mist-50 sm:text-5xl">
+                            Portfolio &amp;
+                            <span class="block bg-linear-to-r from-signal-300 to-electric-300 bg-clip-text text-transparent">
+                                Client Workspace
+                            </span>
+                        </h3>
+
+                        <p class="mt-6 max-w-xl leading-7 text-mist-500">
+                            A public portfolio and private workspace built as one coherent system, including authentication, clients, projects, contracts, publishing and application security.
+                        </p>
+
+                        <div class="mt-8 flex flex-wrap gap-2 text-xs text-mist-300">
+                            <span class="rounded-full border border-white/9 px-3 py-1.5">Go</span>
+                            <span class="rounded-full border border-white/9 px-3 py-1.5">HTMX</span>
+                            <span class="rounded-full border border-white/9 px-3 py-1.5">SQLite</span>
+                            <span class="rounded-full border border-white/9 px-3 py-1.5">Authentication</span>
+                            <span class="rounded-full border border-white/9 px-3 py-1.5">Security</span>
+                        </div>
+
+                        <p class="mt-10 inline-flex items-center gap-3 text-sm font-bold text-mist-100">
+                            Read the case study
+                            <span class="text-blue-300 transition group-hover:translate-x-1" aria-hidden="true">
+                                →
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="relative min-h-96 overflow-hidden rounded-4xl border border-white/9 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/7 p-5 sm:min-h-112 sm:p-7">
+                        <div class="absolute -right-16 -top-16 size-64 rounded-full bg-blue-400/14 blur-3xl" aria-hidden="true"></div>
+
+                        <div class="relative grid h-full content-between overflow-hidden rounded-3xl border border-white/10 bg-[#050b18]/92 p-6 shadow-2xl shadow-black/40 sm:p-8">
+                            <div>
+                                <div class="flex items-center justify-between gap-5">
+                                    <div>
+                                        <p class="metric-label">Application architecture</p>
+                                        <p class="mt-3 text-3xl font-medium tracking-[-0.04em] text-mist-50">
+                                            One product.
+                                            <span class="block text-blue-300">Multiple layers.</span>
+                                        </p>
+                                    </div>
+
+                                    <span class="rounded-full border border-blue-300/20 bg-blue-300/7 px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-blue-200">
+                                        Production
+                                    </span>
+                                </div>
+
+                                <p class="mt-5 max-w-md text-sm leading-6 text-mist-500">
+                                    Public pages and private operations share the same application while keeping responsibilities clearly separated.
+                                </p>
+                            </div>
+
+                            <div class="mt-10 grid grid-cols-2 gap-3">
+                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
+                                    <p class="metric-label">Interface</p>
+                                    <p class="mt-3 text-sm font-semibold text-mist-100">
+                                        Server-rendered UI
+                                    </p>
+                                </div>
+
+                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
+                                    <p class="metric-label">Application</p>
+                                    <p class="mt-3 text-sm font-semibold text-mist-100">
+                                        Go services
+                                    </p>
+                                </div>
+
+                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
+                                    <p class="metric-label">Persistence</p>
+                                    <p class="mt-3 text-sm font-semibold text-mist-100">
+                                        SQLite
+                                    </p>
+                                </div>
+
+                                <div class="rounded-2xl border border-white/8 bg-white/3 p-4">
+                                    <p class="metric-label">Security</p>
+                                    <p class="mt-3 text-sm font-semibold text-mist-100">
+                                        Sessions + CSRF
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="border-b border-white/8 py-24 sm:py-30 lg:py-36">
+        <div class="site-container">
+            <div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+                <div>
+                    <p class="eyebrow">05 / Process</p>
+
+                    <h2 class="mt-7 max-w-3xl text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                        Build the right thing,
+                        <span class="text-blue-300">then build it well.</span>
+                    </h2>
+                </div>
+
+                <p class="max-w-2xl text-lg leading-8 text-mist-500 lg:justify-self-end">
+                    Development starts with understanding what the application actually needs to achieve, then choosing the simplest architecture that can support it reliably.
+                </p>
+            </div>
+
+            <div class="mt-14 grid gap-4 lg:grid-cols-4">
+                <article class="interactive-card rounded-4xl p-7">
+                    <span class="font-mono text-sm text-blue-300">01</span>
+                    <h3 class="mt-6 text-xl font-medium tracking-[-0.03em] text-mist-50">
+                        Understand
+                    </h3>
+                    <p class="mt-4 text-sm leading-6 text-mist-500">
+                        Clarify users, workflows, constraints and the outcome the product needs to support.
+                    </p>
+                </article>
+
+                <article class="interactive-card rounded-4xl p-7">
+                    <span class="font-mono text-sm text-blue-300">02</span>
+                    <h3 class="mt-6 text-xl font-medium tracking-[-0.03em] text-mist-50">
+                        Structure
+                    </h3>
+                    <p class="mt-4 text-sm leading-6 text-mist-500">
+                        Define the interface, data model and application boundaries before complexity starts accumulating.
+                    </p>
+                </article>
+
+                <article class="interactive-card rounded-4xl p-7">
+                    <span class="font-mono text-sm text-blue-300">03</span>
+                    <h3 class="mt-6 text-xl font-medium tracking-[-0.03em] text-mist-50">
+                        Build
+                    </h3>
+                    <p class="mt-4 text-sm leading-6 text-mist-500">
+                        Implement the product incrementally with testing, accessibility and security considered throughout.
+                    </p>
+                </article>
+
+                <article class="interactive-card rounded-4xl p-7">
+                    <span class="font-mono text-sm text-blue-300">04</span>
+                    <h3 class="mt-6 text-xl font-medium tracking-[-0.03em] text-mist-50">
+                        Ship
+                    </h3>
+                    <p class="mt-4 text-sm leading-6 text-mist-500">
+                        Deploy, measure the real behaviour and improve the system based on evidence rather than assumptions.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-24 sm:py-30 lg:py-36">
+        <div class="site-container">
+            <div class="relative overflow-hidden rounded-5xl border border-white/10 bg-linear-to-br from-blue-500/12 via-[#071127] to-cyan-400/8 px-6 py-14 sm:px-10 sm:py-18 lg:px-14 lg:py-20">
+                <div class="pointer-events-none absolute -right-20 -top-24 size-80 rounded-full bg-blue-400/16 blur-3xl" aria-hidden="true"></div>
+
+                <div class="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+                    <div class="max-w-4xl">
+                        <p class="eyebrow">06 / Start a project</p>
+
+                        <h2 class="mt-7 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.045em] text-mist-50 sm:text-6xl">
+                            Need something more capable than a
+                            <span class="text-blue-300">basic website?</span>
+                        </h2>
+
+                        <p class="mt-7 max-w-2xl text-lg leading-8 text-mist-300">
+                            If you're planning a website, web application or custom digital product, tell me what the system needs to do and where the current approach is getting in the way.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 lg:justify-end">
+                        <a href="/#contact" class="button-primary">
+                            Start a project <span aria-hidden="true">↗</span>
+                        </a>
+
+                        <a href="/blog/" class="button-secondary">
+                            Read the journal <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{{end}}
