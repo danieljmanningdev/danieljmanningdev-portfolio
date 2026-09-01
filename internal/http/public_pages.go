@@ -94,7 +94,13 @@ func (h *PublicPageHandler) ServeHTTP(
 	var structuredData any
 
 	if h.definition.Path == "/web-development/" {
-		structuredData = webDevelopmentStructuredData()
+		structuredData = serviceStructuredData(
+			"Web Development",
+			"/web-development/",
+			"Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
+			"Web development",
+			"United Kingdom",
+		)
 	}
 
 	data := newPublicPageData(

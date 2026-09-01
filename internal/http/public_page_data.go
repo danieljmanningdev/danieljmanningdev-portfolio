@@ -88,12 +88,10 @@ func personStructuredData() schema.Person {
 }
 
 func websiteStructuredData() schema.WebSite {
-	website := schema.NewWebsite(
+	return schema.NewWebsite(
 		"Daniel J. Manning",
 		publicSiteURL,
 	)
-
-	return website
 }
 
 func homeStructuredData() schema.Graph {
@@ -103,15 +101,19 @@ func homeStructuredData() schema.Graph {
 	)
 }
 
-func webDevelopmentStructuredData() schema.Service {
-	service := schema.NewService("Web Development")
+func serviceStructuredData(
+	name string,
+	path string,
+	description string,
+	serviceType string,
+	areaServed ...string,
+) schema.Service {
+	service := schema.NewService(name)
 
-	service.URL = publicSiteURL + "/web-development/"
-	service.Description = "Full-stack web development for fast, accessible and maintainable websites, web applications and digital products."
-	service.ServiceType = "Web development"
-	service.AreaServed = []string{
-		"United Kingdom",
-	}
+	service.URL = publicSiteURL + path
+	service.Description = description
+	service.ServiceType = serviceType
+	service.AreaServed = areaServed
 
 	return service
 }
