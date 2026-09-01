@@ -1,6 +1,6 @@
 {{define "base"}}
 <!DOCTYPE html>
-<html lang="en" class="bg-ink-950">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,15 +15,14 @@
     {{end}}
 
     <link rel="stylesheet" href="/static/css/app.css?v=4">
+    <link rel="stylesheet" href="/static/css/vanilla/main.css">
+    <link rel="stylesheet" href="/static/css/vanilla/admin.css">
     <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
 </head>
 
-<body class="auth-shell min-h-dvh overflow-x-clip bg-ink-950 text-mist-50 antialiased">
+<body class="auth-shell">
     <a href="#main-content" class="skip-link">Skip to sign in</a>
-
-    <div id="main-content" tabindex="-1">
-        {{template "content" .}}
-    </div>
+    <div id="main-content" tabindex="-1">{{template "content" .}}</div>
 </body>
 </html>
 {{end}}
