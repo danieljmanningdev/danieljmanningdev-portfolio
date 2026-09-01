@@ -1,0 +1,234 @@
+/* ========================================================================== 
+   POST-MIGRATION PUBLIC PARITY
+   ========================================================================== */
+
+/* Keep the duplicated capability track moving continuously as it did before
+   the Tailwind migration. */
+.home-capability-strip {
+    overflow: hidden;
+}
+
+.home-capability-strip__track {
+    animation: home-capability-marquee 28s linear infinite;
+    will-change: transform;
+}
+
+@keyframes home-capability-marquee {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+/* Markdown article typography. These selectors intentionally live in a
+   late-loaded parity layer so generated Markdown HTML cannot fall back to
+   reset/base heading styles in production. */
+.article-content {
+    min-width: 0;
+}
+
+.article-prose {
+    color: var(--color-mist-300);
+    font-size: 1.0625rem;
+    line-height: 1.9;
+}
+
+.article-prose > :first-child {
+    margin-top: 0;
+}
+
+.article-prose > * + * {
+    margin-top: 1.5rem;
+}
+
+.article-prose h1,
+.article-prose h2,
+.article-prose h3,
+.article-prose h4 {
+    max-width: 42rem;
+    color: var(--color-mist-50);
+    font-weight: 500;
+    text-wrap: balance;
+    scroll-margin-top: 7rem;
+}
+
+.article-prose h1,
+.article-prose h2 {
+    margin-top: 3.5rem;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+}
+
+.article-prose h3 {
+    margin-top: 3rem;
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+}
+
+.article-prose h4 {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.article-prose p,
+.article-prose ul,
+.article-prose ol,
+.article-prose blockquote {
+    max-width: 46rem;
+}
+
+.article-prose p {
+    line-height: 1.9;
+}
+
+.article-prose strong {
+    color: var(--color-mist-100);
+    font-weight: 700;
+}
+
+.article-prose em {
+    color: var(--color-mist-200);
+}
+
+.article-prose a {
+    color: var(--color-signal-300);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--color-signal-300) 45%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+}
+
+.article-prose a:hover {
+    color: var(--color-signal-200);
+    text-decoration-color: currentColor;
+}
+
+.article-prose ul,
+.article-prose ol {
+    padding-left: 1.5rem;
+}
+
+.article-prose ul {
+    list-style: disc;
+}
+
+.article-prose ol {
+    list-style: decimal;
+}
+
+.article-prose li {
+    padding-left: 0.25rem;
+}
+
+.article-prose li + li {
+    margin-top: 0.625rem;
+}
+
+.article-prose li::marker {
+    color: var(--color-signal-300);
+}
+
+.article-prose blockquote {
+    margin-block: 2rem;
+    padding: 0.25rem 0 0.25rem 1.5rem;
+    border-left: 2px solid var(--color-signal-300);
+    color: var(--color-mist-400);
+    font-style: italic;
+}
+
+.article-prose code {
+    padding: 0.14rem 0.38rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    background: color-mix(in oklab, var(--color-surface) 88%, black);
+    color: var(--color-signal-200);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+.article-prose pre {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-block: 2rem;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 1.25rem;
+    background: #050915;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03);
+    line-height: 1.65;
+}
+
+.article-prose pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-mist-100);
+    font-size: 0.875rem;
+    white-space: pre;
+}
+
+.article-prose hr {
+    margin-block: 3rem;
+    border: 0;
+    border-top: 1px solid var(--color-border-strong);
+}
+
+.article-prose img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-block: 2.5rem;
+    border-radius: 1.5rem;
+}
+
+.article-prose table {
+    width: 100%;
+    margin-block: 2rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+}
+
+.article-prose th,
+.article-prose td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.article-prose th {
+    color: var(--color-mist-100);
+    font-weight: 700;
+}
+
+@media (max-width: 39.999rem) {
+    .article-prose {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .article-prose h1,
+    .article-prose h2 {
+        margin-top: 3rem;
+    }
+
+    .article-prose pre {
+        margin-inline: -0.25rem;
+        padding: 1.125rem;
+        border-radius: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-capability-strip__track {
+        animation: none;
+        transform: none;
+    }
+}
