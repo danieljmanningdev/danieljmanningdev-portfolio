@@ -1,3 +1,18 @@
+// -----------------------------------------------------------------------------
+// Daniel J. Manning
+// https://danieljmanningdev.com
+//
+// Copyright © 2026 Daniel J. Manning.
+//
+// Description
+// -----------
+// Authentication and session handling for the application.
+//
+// Security
+// --------
+// Changes to this package may affect authentication, session integrity,
+// credential handling, and access control.
+// -----------------------------------------------------------------------------
 package auth
 
 import (
