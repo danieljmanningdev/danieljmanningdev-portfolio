@@ -1,44 +1,44 @@
 {{define "header"}}
-<header class="sticky top-0 z-50 border-b border-white/8 bg-[#050b18]/82 backdrop-blur-2xl">
-    <nav class="site-container flex min-h-20 items-center justify-between gap-5" aria-label="Primary navigation">
-        <a href="/" class="inline-flex shrink-0 items-center" aria-label="Daniel J. Manning, homepage">
+<header class="site-header">
+    <nav class="site-container primary-nav" aria-label="Primary navigation">
+        <a href="/" class="brand-link" aria-label="Daniel J. Manning, homepage">
             <img
                 src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg"
                 alt="Daniel J. Manning"
-                class="h-9 w-auto sm:h-10"
+                class="brand-logo"
                 width="196"
                 height="48"
             >
         </a>
 
-        <div class="hidden items-center gap-7 lg:flex">
-            <a href="/#work" class="text-sm text-mist-500 transition hover:text-mist-50">Work</a>
-            <a href="/#services" class="text-sm text-mist-500 transition hover:text-mist-50">Capabilities</a>
-            <a href="/#about" class="text-sm text-mist-500 transition hover:text-mist-50">About</a>
-            <a href="/blog/" class="text-sm text-mist-500 transition hover:text-mist-50">Journal</a>
+        <div class="desktop-nav">
+            <a href="/#work" class="nav-link">Work</a>
+            <a href="/#services" class="nav-link">Capabilities</a>
+            <a href="/#about" class="nav-link">About</a>
+            <a href="/blog/" class="nav-link">Journal</a>
         </div>
 
-        <div class="flex items-center gap-2.5">
-            <a href="/#contact" class="button-secondary hidden min-h-10 px-4 sm:inline-flex">
+        <div class="nav-actions">
+            <a href="/#contact" class="button-secondary header-project-link">
                 Start a project
                 <span aria-hidden="true">↗</span>
             </a>
 
-            <details class="group relative lg:hidden">
-                <summary class="grid size-10 list-none place-items-center rounded-full border border-white/12 bg-white/4 text-mist-100 marker:content-none" aria-label="Open navigation menu">
-                    <span class="grid gap-1.5" aria-hidden="true">
-                        <span class="h-px w-4 bg-current transition group-open:translate-y-[0.21875rem] group-open:rotate-45"></span>
-                        <span class="h-px w-4 bg-current transition group-open:-translate-y-[0.21875rem] group-open:-rotate-45"></span>
+            <details class="mobile-nav">
+                <summary aria-label="Open navigation menu">
+                    <span class="mobile-nav-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
                     </span>
                 </summary>
 
-                <div class="glass-panel absolute right-0 top-12 w-64 rounded-3xl p-3">
-                    <div class="grid gap-1">
-                        <a href="/#work" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Work</a>
-                        <a href="/#services" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Capabilities</a>
-                        <a href="/#about" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">About</a>
-                        <a href="/blog/" class="rounded-2xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-white">Journal</a>
-                        <a href="/#contact" class="mt-2 rounded-2xl bg-signal-400 px-4 py-3 text-center text-sm font-bold text-white">Start a project</a>
+                <div class="glass-panel mobile-nav-panel">
+                    <div class="mobile-nav-links">
+                        <a href="/#work" class="mobile-nav-link">Work</a>
+                        <a href="/#services" class="mobile-nav-link">Capabilities</a>
+                        <a href="/#about" class="mobile-nav-link">About</a>
+                        <a href="/blog/" class="mobile-nav-link">Journal</a>
+                        <a href="/#contact" class="mobile-nav-cta">Start a project</a>
                     </div>
                 </div>
             </details>
