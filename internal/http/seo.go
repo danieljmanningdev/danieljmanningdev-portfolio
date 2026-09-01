@@ -72,6 +72,11 @@ func (h *BlogHandler) Sitemap(
 			ChangeFrequency: "weekly",
 			Priority:        "0.8",
 		},
+		{
+			Location:        publicSiteURL + "/web-design-leeds/",
+			ChangeFrequency: "monthly",
+			Priority:        "0.9",
+		},
 	}
 
 	for _, post := range posts {
