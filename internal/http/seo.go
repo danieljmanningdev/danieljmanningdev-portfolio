@@ -20,10 +20,8 @@ type sitemapURLSet struct {
 }
 
 type sitemapURL struct {
-	Location        string `xml:"loc"`
-	LastModified    string `xml:"lastmod,omitempty"`
-	ChangeFrequency string `xml:"changefreq,omitempty"`
-	Priority        string `xml:"priority,omitempty"`
+	Location     string `xml:"loc"`
+	LastModified string `xml:"lastmod,omitempty"`
 }
 
 func RobotsHandler(
@@ -64,30 +62,16 @@ func (h *BlogHandler) Sitemap(
 	}
 
 	urls := []sitemapURL{
-		{
-			Location:        publicSiteURL + "/",
-			ChangeFrequency: "weekly",
-			Priority:        "1.0",
-		},
-		{
-			Location:        publicSiteURL + "/work/portfolio",
-			ChangeFrequency: "monthly",
-			Priority:        "0.9",
-		},
-		{
-			Location:        publicSiteURL + "/blog/",
-			ChangeFrequency: "weekly",
-			Priority:        "0.8",
-		},
+		{Location: publicSiteURL + "/"},
+		{Location: publicSiteURL + "/work/portfolio"},
+		{Location: publicSiteURL + "/blog/"},
 	}
 
 	for _, page := range PublicPages {
 		urls = append(
 			urls,
 			sitemapURL{
-				Location:        publicSiteURL + page.Path,
-				ChangeFrequency: page.ChangeFrequency,
-				Priority:        page.Priority,
+				Location: publicSiteURL + page.Path,
 			},
 		)
 	}
@@ -99,9 +83,7 @@ func (h *BlogHandler) Sitemap(
 		}
 
 		entry := sitemapURL{
-			Location:        publicSiteURL + "/blog/" + post.Slug,
-			ChangeFrequency: "monthly",
-			Priority:        "0.7",
+			Location: publicSiteURL + "/blog/" + post.Slug,
 		}
 
 		if !lastModified.IsZero() {
