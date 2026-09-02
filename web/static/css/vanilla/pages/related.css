@@ -1,0 +1,108 @@
+/* -----------------------------------------------------------------------------
+   RELATED CONTENT
+   Daniel J. Manning
+   https://danieljmanningdev.com
+   ----------------------------------------------------------------------------- */
+
+.related-content {
+    border-top: 1px solid color-mix(in oklab, white 8%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+    padding-block: 5rem;
+    background: color-mix(in oklab, white 1.5%, transparent);
+}
+
+.related-content__intro {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 48rem;
+}
+
+.related-content__title {
+    color: var(--color-mist-50);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 500;
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+}
+
+.related-content__grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.related-content__card {
+    display: flex;
+    min-width: 0;
+    min-height: 18rem;
+    flex-direction: column;
+    padding: 1.75rem;
+    border-radius: 2rem;
+}
+
+.related-content__label {
+    color: var(--color-signal-300);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.related-content__card-title {
+    margin-top: 2.75rem;
+    color: var(--color-mist-50);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+
+.related-content__description {
+    margin-top: 1rem;
+    color: var(--color-mist-500);
+    line-height: 1.7;
+}
+
+.related-content__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: auto;
+    padding-top: 2rem;
+    color: var(--color-mist-100);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.related-content__link span {
+    color: var(--color-signal-300);
+    transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.related-content__card:hover .related-content__link span,
+.related-content__card:focus-visible .related-content__link span {
+    transform: translateX(0.25rem);
+}
+
+@media (min-width: 40rem) {
+    .related-content {
+        padding-block: 7rem;
+    }
+
+    .related-content__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 64rem) {
+    .related-content {
+        padding-block: 8rem;
+    }
+
+    .related-content__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

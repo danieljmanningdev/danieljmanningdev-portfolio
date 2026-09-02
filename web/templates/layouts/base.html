@@ -48,7 +48,7 @@
     {{if .StructuredData}}
     <script type="application/ld+json" nonce="{{.CSPNonce}}">{{.StructuredData}}</script>
     {{end}}
-  
+
     <link rel="stylesheet" href="/static/css/vanilla/main.css?v=1">
     <link rel="stylesheet" href="/static/css/vanilla/parity.css?v=1">
     <script src="/static/scripts/min.htmx.js" defer></script>
@@ -71,6 +71,33 @@
 
     <div id="main-content" class="site-main" tabindex="-1">
         {{template "content" .}}
+
+        {{with .RelatedLinks}}
+        <section class="related-content" aria-labelledby="related-content-title">
+            <div class="site-container">
+                <div class="related-content__intro">
+                    <p class="eyebrow">Continue exploring</p>
+                    <h2 id="related-content-title" class="related-content__title">
+                        Related work and capabilities.
+                    </h2>
+                </div>
+
+                <div class="related-content__grid">
+                    {{range .}}
+                    <a href="{{.URL}}" class="interactive-card related-content__card">
+                        <p class="related-content__label">{{.Label}}</p>
+                        <h3 class="related-content__card-title">{{.Title}}</h3>
+                        <p class="related-content__description">{{.Description}}</p>
+                        <span class="related-content__link">
+                            Explore
+                            <span aria-hidden="true">→</span>
+                        </span>
+                    </a>
+                    {{end}}
+                </div>
+            </div>
+        </section>
+        {{end}}
     </div>
 
     {{template "footer" .}}
