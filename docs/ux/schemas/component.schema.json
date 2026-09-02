@@ -1,32 +1,31 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-
   "title": "UX Component",
   "description": "Describes a reusable interface component, its behaviour, states, accessibility, design references, and UX rationale.",
-
   "type": "object",
-
   "properties": {
     "id": {
       "type": "string",
       "pattern": "^CMP-[A-Z0-9-]+$"
     },
-
     "name": {
       "type": "string",
       "minLength": 1
     },
-
     "purpose": {
       "type": "string",
       "minLength": 1
     },
-
     "status": {
       "type": "string",
-      "enum": ["concept", "draft", "approved", "implemented", "deprecated"]
+      "enum": [
+        "concept",
+        "draft",
+        "approved",
+        "implemented",
+        "deprecated"
+      ]
     },
-
     "type": {
       "type": "string",
       "enum": [
@@ -49,14 +48,26 @@
         "custom"
       ]
     },
-
     "content": {
       "$ref": "../definitions/content.schema.json"
     },
-
-    "template": {
-      "type": "string",
-      "minLength": 1
+    "implementation": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "type": "string"
+        },
+        "handler": {
+          "type": "string"
+        },
+        "partial": {
+          "type": "boolean"
+        },
+        "htmx": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
     },
 
     "states": {
@@ -65,47 +76,39 @@
         "$ref": "../definitions/state.schema.json"
       }
     },
-
     "accessibility": {
       "$ref": "../definitions/accessibility.schema.json"
     },
-
     "responsive": {
       "$ref": "../definitions/responsive.schema.json"
     },
-
     "tokens": {
       "type": "object",
       "additionalProperties": {
         "type": "string"
       }
     },
-
     "variants": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/variant"
       }
     },
-
     "properties": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/componentProperty"
       }
     },
-
     "behaviour": {
       "$ref": "#/$defs/behaviour"
     },
-
     "decisions": {
       "type": "array",
       "items": {
         "$ref": "../definitions/decision.schema.json"
       }
     },
-
     "references": {
       "type": "array",
       "items": {
@@ -113,25 +116,24 @@
       }
     }
   },
-
-  "required": ["id", "name", "purpose", "type"],
-
+  "required": [
+    "id",
+    "name",
+    "purpose",
+    "type"
+  ],
   "additionalProperties": false,
-
   "$defs": {
     "variant": {
       "type": "object",
-
       "properties": {
         "name": {
           "type": "string",
           "minLength": 1
         },
-
         "description": {
           "type": "string"
         },
-
         "tokens": {
           "type": "object",
           "additionalProperties": {
@@ -139,69 +141,62 @@
           }
         }
       },
-
-      "required": ["name"],
-
+      "required": [
+        "name"
+      ],
       "additionalProperties": false
     },
-
     "componentProperty": {
       "type": "object",
-
       "properties": {
         "name": {
           "type": "string",
           "minLength": 1
         },
-
         "type": {
           "type": "string",
-          "enum": ["string", "number", "boolean", "enum"]
+          "enum": [
+            "string",
+            "number",
+            "boolean",
+            "enum"
+          ]
         },
-
         "required": {
           "type": "boolean"
         },
-
         "description": {
           "type": "string"
         },
-
         "allowedValues": {
           "type": "array"
         }
       },
-
-      "required": ["name", "type"],
-
+      "required": [
+        "name",
+        "type"
+      ],
       "additionalProperties": false
     },
-
     "behaviour": {
       "type": "object",
-
       "properties": {
         "pointer": {
           "type": "string"
         },
-
         "keyboard": {
           "type": "string"
         },
-
         "touch": {
           "type": "string"
         },
-
         "focus": {
           "type": "string"
         },
-
         "interaction": {
           "type": "string"
         }
       },
-
       "additionalProperties": false
     }
   }
