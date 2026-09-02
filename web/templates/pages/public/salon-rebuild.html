@@ -1,0 +1,377 @@
+{{define "content"}}
+<main class="portfolio-page">
+    <section class="portfolio-section portfolio-hero">
+        <div class="portfolio-hero__glow" aria-hidden="true"></div>
+
+        <div class="site-container portfolio-hero__inner">
+            <a href="/#work" class="button-quiet portfolio-back-link">← Selected work</a>
+
+            <div class="portfolio-hero__grid">
+                <div>
+                    <p class="eyebrow">Case study / 2026</p>
+
+                    <h1 class="portfolio-hero__title">
+                        Salon
+                        <span class="portfolio-hero__title-accent">Rebuild</span>
+                    </h1>
+                </div>
+
+                <div>
+                    <p class="portfolio-hero__summary">
+                        The project revisits the type of salon website work I produced early in my freelance career
+                        and explores how I would approach the same broad category today using a more considered
+                        UI/UX and engineering process.
+                    </p>
+
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Website Redesign</span>
+                        <span class="portfolio-tag">Go</span>
+                        <span class="portfolio-tag">Server-rendered HTML</span>
+                        <span class="portfolio-tag">UI / UX</span>
+                    </div>
+                </div>
+            </div>
+
+            <dl class="portfolio-metrics">
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Project</dt>
+                    <dd class="portfolio-metric__value">Full Site Rebuild</dd>
+                </div>
+
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Content</dt>
+                    <dd class="portfolio-metric__value">Fictional Concept</dd>
+                </div>
+
+                <div class="portfolio-metric">
+                    <dt class="metric-label">Experience</dt>
+                    <dd class="portfolio-metric__value">Sleek Luxury</dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="site-container portfolio-editorial">
+            <div class="portfolio-editorial__label">
+                <p class="eyebrow">01 / The problem</p>
+            </div>
+
+            <div class="portfolio-editorial__content">
+                <h2>Revisiting the kind of salon website I originally built with WordPress.</h2>
+
+                <div class="portfolio-editorial__body">
+                    <p>
+                        One of my earliest freelance projects was a salon website built with WordPress.
+                        Several years later, I wanted to revisit the same broad type of brief and see how
+                        differently I would approach it with the design and engineering experience I have now.
+                    </p>
+
+                    <p>
+                        This rebuild is not a redesign commissioned by the original business and does not reuse
+                        its content, staff information, pricing, testimonials or branding. Instead, it is a
+                        fictional salon concept designed specifically as a retrospective portfolio project.
+                    </p>
+
+                    <p>
+                        The aim was to create a much more modern, responsive and deliberate experience while
+                        keeping the visual direction restrained: premium enough to feel appropriate for a
+                        contemporary salon without becoming decorative for the sake of it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section portfolio-section--soft">
+        <div class="site-container">
+            <p class="eyebrow">02 / Design direction</p>
+
+            <div class="portfolio-model__grid">
+                <article class="interactive-card portfolio-model__card">
+                    <p class="portfolio-model__index">01</p>
+
+                    <h3 class="portfolio-model__title">
+                        Luxury without excess
+                    </h3>
+
+                    <p class="portfolio-model__copy">
+                        A restrained palette, large editorial typography and generous spacing create a premium
+                        feel without relying on excessive decoration or visual noise.
+                    </p>
+                </article>
+
+                <article class="interactive-card portfolio-model__card portfolio-model__card--offset">
+                    <p class="portfolio-model__index portfolio-model__index--electric">02</p>
+
+                    <h3 class="portfolio-model__title">
+                        Mobile-first hierarchy
+                    </h3>
+
+                    <p class="portfolio-model__copy">
+                        Content is structured to remain clear on smaller screens, with strong visual hierarchy,
+                        readable typography and responsive layouts that adapt rather than simply shrink.
+                    </p>
+                </article>
+
+                <article class="interactive-card portfolio-model__card">
+                    <p class="portfolio-model__index">03</p>
+
+                    <h3 class="portfolio-model__title">
+                        Clear booking journey
+                    </h3>
+
+                    <p class="portfolio-model__copy">
+                        Services, team information, gallery content and appointment calls-to-action are organised
+                        around the actions a potential salon customer is most likely to take.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="site-container portfolio-architecture">
+            <div class="portfolio-architecture__copy">
+                <p class="eyebrow">03 / Technical approach</p>
+
+                <h2 class="portfolio-architecture__title">
+                    Simple architecture for a simple product.
+                </h2>
+
+                <p>
+                    The rebuild does not need a database, authentication system or
+                    client-side application framework. Go handles routing and renders
+                    reusable HTML templates on the server, while Tailwind provides
+                    the styling layer.
+                </p>
+
+                <p>
+                    Keeping the implementation deliberately small makes the project
+                    easy to understand, maintain and deploy while still demonstrating
+                    a structured Go web application rather than a collection of
+                    disconnected static files.
+                </p>
+            </div>
+
+            <div class="glass-panel portfolio-architecture__diagram">
+                <div class="portfolio-architecture__layer">
+                    <span class="portfolio-architecture__number">01</span>
+
+                    <div>
+                        <p class="portfolio-architecture__layer-label">
+                            Request
+                        </p>
+
+                        <p class="portfolio-architecture__layer-value">
+                            Go ServeMux
+                        </p>
+                    </div>
+                </div>
+
+                <div class="portfolio-architecture__connector" aria-hidden="true">
+                    ↓
+                </div>
+
+                <div class="portfolio-architecture__layer">
+                    <span class="portfolio-architecture__number">02</span>
+
+                    <div>
+                        <p class="portfolio-architecture__layer-label">
+                            Application
+                        </p>
+
+                        <p class="portfolio-architecture__layer-value">
+                            Page handlers + PageData
+                        </p>
+                    </div>
+                </div>
+
+                <div class="portfolio-architecture__connector" aria-hidden="true">
+                    ↓
+                </div>
+
+                <div class="portfolio-architecture__layer">
+                    <span class="portfolio-architecture__number">03</span>
+
+                    <div>
+                        <p class="portfolio-architecture__layer-label">
+                            Presentation
+                        </p>
+
+                        <p class="portfolio-architecture__layer-value">
+                            Shared Go templates + Tailwind
+                        </p>
+                    </div>
+                </div>
+
+                <div class="portfolio-architecture__connector" aria-hidden="true">
+                    ↓
+                </div>
+
+                <div class="portfolio-architecture__layer portfolio-architecture__layer--accent">
+                    <span class="portfolio-architecture__number">04</span>
+
+                    <div>
+                        <p class="portfolio-architecture__layer-label">
+                            Response
+                        </p>
+
+                        <p class="portfolio-architecture__layer-value">
+                            Server-rendered HTML
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="site-container portfolio-trust">
+            <div class="portfolio-trust__label">
+                <p class="eyebrow">04 / What changed</p>
+            </div>
+
+            <div class="portfolio-trust__content">
+                <h2>Same category. Completely different process.</h2>
+
+                <div class="portfolio-trust__list">
+                    <p class="portfolio-trust__item">
+                        Stronger typography and visual hierarchy
+                    </p>
+
+                    <p class="portfolio-trust__item">
+                        Responsive layouts designed intentionally for mobile
+                    </p>
+
+                    <p class="portfolio-trust__item">
+                        Clearer information architecture and calls-to-action
+                    </p>
+
+                    <p class="portfolio-trust__item">
+                        Reusable Go layouts and page templates
+                    </p>
+
+                    <p class="portfolio-trust__item">
+                        Version-controlled development with signed Git history
+                    </p>
+
+                    <p class="portfolio-trust__item">
+                        Defined scope instead of allowing the project to expand indefinitely
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section portfolio-section--soft">
+        <div class="site-container portfolio-editorial">
+            <div class="portfolio-editorial__label">
+                <p class="eyebrow">05 / Retrospective</p>
+            </div>
+
+            <div class="portfolio-editorial__content">
+                <h2>
+                    The rebuild is as much about process as visual improvement.
+                </h2>
+
+                <div class="portfolio-editorial__body">
+                    <p>
+                        The original salon project came from a point in my career where simply completing
+                        a real client website felt like the achievement. I had much less confidence around
+                        pricing, scope, design systems and the value of my own time.
+                    </p>
+
+                    <p>
+                        Rebuilding the idea now made the progression easier to see. The difference is not
+                        just cleaner typography or a more contemporary colour palette. I approach structure,
+                        responsiveness, maintainability and project boundaries differently too.
+                    </p>
+
+                    <p>
+                        That makes this project useful to me as more than a visual redesign. It is a record
+                        of how both my design thinking and engineering process have developed.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="site-container">
+            <div class="portfolio-explore">
+                <div class="portfolio-explore__copy">
+                    <p class="eyebrow">06 / Explore</p>
+
+                    <h2 class="portfolio-explore__title">
+                        See the finished rebuild
+                        <span>and the implementation behind it.</span>
+                    </h2>
+
+                    <p class="portfolio-explore__description">
+                        The complete concept is deployed as a live Go web service,
+                        while the public repository exposes the implementation and
+                        development history behind the finished design.
+                    </p>
+                </div>
+
+                <div class="portfolio-explore__actions">
+                    <a
+                        href="https://salon-rebuild.onrender.com/"
+                        class="button-primary portfolio-explore__button"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <span>View live site</span>
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                    <a
+                        href="https://github.com/danieljmanningdev/salon-rebuild"
+                        class="button-quiet portfolio-explore__button portfolio-explore__button--secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <span>View source</span>
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+
+                <p class="portfolio-explore__note">
+                    Live demo hosted on Render's free tier. The first request may
+                    take a moment if the service has been idle.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-outcome">
+        <div class="site-container">
+            <div class="portfolio-outcome__panel">
+                <div class="portfolio-outcome__glow" aria-hidden="true"></div>
+
+                <div class="portfolio-outcome__grid">
+                    <div>
+                        <p class="eyebrow">Outcome</p>
+
+                        <h2 class="portfolio-outcome__title">
+                            A modern salon experience that shows how much my approach has changed
+                            <span class="portfolio-outcome__accent">
+                                since my earliest freelance work.
+                            </span>
+                        </h2>
+                    </div>
+
+                    <a
+                        href="mailto:daniel@danieljmanningdev.com"
+                        class="button-primary portfolio-outcome__cta"
+                    >
+                        Discuss a project
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{{end}}
