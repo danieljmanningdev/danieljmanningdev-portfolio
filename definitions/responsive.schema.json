@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "Responsive Behaviour",
+  "description": "Describes how a screen or component adapts across viewport sizes, input modes, and layout contexts.",
+
+  "type": "object",
+
+  "properties": {
+    "strategy": {
+      "type": "string",
+      "enum": [
+        "fluid",
+        "adaptive",
+        "fixed",
+        "container-based",
+        "custom"
+      ]
+    },
+
+    "breakpoints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/breakpoint"
+      }
+    },
+
+    "layoutChanges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layoutChange"
+      }
+    },
+
+    "contentChanges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contentChange"
+      }
+    },
+
+    "inputModes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "mouse",
+          "keyboard",
+          "touch",
+          "stylus",
+          "voice"
+        ]
+      },
+      "uniqueItems": true
+    },
+
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+
+  "additionalProperties": false,
+
+  "$defs": {
+    "breakpoint": {
+      "type": "object",
+
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "minWidth": {
+          "type": "string"
+        },
+
+        "maxWidth": {
+          "type": "string"
+        },
+
+        "description": {
+          "type": "string"
+        }
+      },
+
+      "required": [
+        "name"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "layoutChange": {
+      "type": "object",
+
+      "properties": {
+        "at": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "property": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "from": {
+          "type": "string"
+        },
+
+        "to": {
+          "type": "string"
+        },
+
+        "reason": {
+          "type": "string"
+        }
+      },
+
+      "required": [
+        "at",
+        "property",
+        "to"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "contentChange": {
+      "type": "object",
+
+      "properties": {
+        "at": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "change": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "reason": {
+          "type": "string"
+        }
+      },
+
+      "required": [
+        "at",
+        "change"
+      ],
+
+      "additionalProperties": false
+    }
+  }
+}

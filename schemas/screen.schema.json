@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "UX Screen",
+  "description": "Describes the UX, UI, behaviour, implementation and rationale of a product screen.",
+
+  "type": "object",
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^SCR-[A-Z0-9-]+$"
+    },
+
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "route": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "handler": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "template": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "status": {
+      "type": "string",
+      "enum": [
+        "concept",
+        "wireframe",
+        "design",
+        "approved",
+        "implemented",
+        "deprecated"
+      ]
+    },
+
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CMP-[A-Z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "../definitions/state.schema.json"
+      }
+    },
+
+    "accessibility": {
+      "$ref": "../definitions/accessibility.schema.json"
+    },
+
+    "responsive": {
+      "$ref": "../definitions/responsive.schema.json"
+    },
+
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "../definitions/decision.schema.json"
+      }
+    },
+
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "../definitions/reference.schema.json"
+      }
+    },
+
+    "implementation": {
+      "type": "object",
+
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+
+        "serverRendered": {
+          "type": "boolean"
+        },
+
+        "javascriptRequired": {
+          "type": "boolean"
+        },
+
+        "htmx": {
+          "type": "boolean"
+        },
+
+        "target": {
+          "type": "string"
+        },
+
+        "swap": {
+          "type": "string"
+        },
+
+        "fallback": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    }
+  },
+
+  "required": [
+    "id",
+    "name",
+    "purpose"
+  ],
+
+  "additionalProperties": false
+}

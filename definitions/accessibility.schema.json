@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "Accessibility",
+  "description": "Describes accessibility requirements and behaviour for a screen or component.",
+
+  "type": "object",
+
+  "properties": {
+    "standard": {
+      "type": "string",
+      "enum": [
+        "WCAG-2.2-A",
+        "WCAG-2.2-AA",
+        "WCAG-2.2-AAA",
+        "custom"
+      ]
+    },
+
+    "semantics": {
+      "$ref": "#/$defs/semantics"
+    },
+
+    "keyboard": {
+      "$ref": "#/$defs/keyboard"
+    },
+
+    "focus": {
+      "$ref": "#/$defs/focus"
+    },
+
+    "screenReader": {
+      "$ref": "#/$defs/screenReader"
+    },
+
+    "colour": {
+      "$ref": "#/$defs/colour"
+    },
+
+    "motion": {
+      "$ref": "#/$defs/motion"
+    },
+
+    "touch": {
+      "$ref": "#/$defs/touch"
+    },
+
+    "errors": {
+      "$ref": "#/$defs/errors"
+    },
+
+    "zoomAndReflow": {
+      "$ref": "#/$defs/zoomAndReflow"
+    },
+
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+
+  "additionalProperties": false,
+
+  "$defs": {
+    "semantics": {
+      "type": "object",
+
+      "properties": {
+        "element": {
+          "type": "string"
+        },
+
+        "role": {
+          "type": "string"
+        },
+
+        "label": {
+          "type": "string"
+        },
+
+        "ariaLabel": {
+          "type": "string"
+        },
+
+        "ariaDescribedBy": {
+          "type": "string"
+        },
+
+        "ariaLive": {
+          "type": "string",
+          "enum": [
+            "off",
+            "polite",
+            "assertive"
+          ]
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "keyboard": {
+      "type": "object",
+
+      "properties": {
+        "accessible": {
+          "type": "boolean"
+        },
+
+        "activationKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+
+        "navigationKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+
+        "escapeBehaviour": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "focus": {
+      "type": "object",
+
+      "properties": {
+        "visible": {
+          "type": "boolean"
+        },
+
+        "initialFocus": {
+          "type": "string"
+        },
+
+        "returnFocus": {
+          "type": "string"
+        },
+
+        "trapFocus": {
+          "type": "boolean"
+        },
+
+        "order": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "screenReader": {
+      "type": "object",
+
+      "properties": {
+        "supported": {
+          "type": "boolean"
+        },
+
+        "announcement": {
+          "type": "string"
+        },
+
+        "instructions": {
+          "type": "string"
+        },
+
+        "decorativeContentHidden": {
+          "type": "boolean"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "colour": {
+      "type": "object",
+
+      "properties": {
+        "notColourOnly": {
+          "type": "boolean"
+        },
+
+        "minimumContrast": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 21
+        },
+
+        "focusContrast": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 21
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "motion": {
+      "type": "object",
+
+      "properties": {
+        "hasMotion": {
+          "type": "boolean"
+        },
+
+        "reducedMotionSupported": {
+          "type": "boolean"
+        },
+
+        "essential": {
+          "type": "boolean"
+        },
+
+        "description": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "touch": {
+      "type": "object",
+
+      "properties": {
+        "minimumTargetWidth": {
+          "type": "string"
+        },
+
+        "minimumTargetHeight": {
+          "type": "string"
+        },
+
+        "spacing": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "errors": {
+      "type": "object",
+
+      "properties": {
+        "identifiedInText": {
+          "type": "boolean"
+        },
+
+        "associatedWithField": {
+          "type": "boolean"
+        },
+
+        "summaryProvided": {
+          "type": "boolean"
+        },
+
+        "focusTarget": {
+          "type": "string"
+        },
+
+        "liveRegion": {
+          "type": "boolean"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "zoomAndReflow": {
+      "type": "object",
+
+      "properties": {
+        "supportsZoom": {
+          "type": "boolean"
+        },
+
+        "supportsTextResize": {
+          "type": "boolean"
+        },
+
+        "supportsReflow": {
+          "type": "boolean"
+        },
+
+        "horizontalScrollingRequired": {
+          "type": "boolean"
+        }
+      },
+
+      "additionalProperties": false
+    }
+  }
+}

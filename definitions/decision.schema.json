@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "UX Decision",
+  "description": "Describes a UX decision and its rationale.",
+
+  "type": "object",
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^UXD-[A-Z0-9-]+$"
+    },
+
+    "decision": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "superseded"
+      ]
+    }
+  },
+
+  "required": [
+    "id",
+    "decision",
+    "reason"
+  ],
+
+  "additionalProperties": false
+}
