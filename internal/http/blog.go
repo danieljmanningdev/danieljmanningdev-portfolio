@@ -13,11 +13,13 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+	"time"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/blog"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/rendering"
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
+	"github.com/danieljmanningdev/go-jsonld-schema/schema"
 )
 
 type BlogHandler struct {
@@ -108,19 +110,14 @@ func (h *BlogHandler) List(
 				description,
 				"/blog/",
 				"website",
-				map[string]any{
-					"@context":    "https://schema.org",
-					"@type":       "Blog",
-					"name":        title,
-					"description": description,
-					"url":         publicSiteURL + "/blog/",
-					"image":       defaultOGImage,
-					"author": map[string]any{
-						"@type": "Person",
-						"name":  "Daniel J. Manning",
-						"url":   publicSiteURL,
-					},
-				},
+				blogStructuredData(
+					title,
+					description,
+				),
+			).withRelatedLinks(
+				salonCaseStudyRelatedLink(),
+				portfolioCaseStudyRelatedLink(),
+				webDevelopmentRelatedLink(),
 			).withRequest(r),
 			Posts: posts,
 		},
@@ -171,36 +168,10 @@ func (h *BlogHandler) Show(
 	}
 
 	canonicalPath := "/blog/" + post.Slug
-	structuredData := map[string]any{
-		"@context":         "https://schema.org",
-		"@type":            "BlogPosting",
-		"headline":         post.Title,
-		"description":      description,
-		"url":              publicSiteURL + canonicalPath,
-		"mainEntityOfPage": publicSiteURL + canonicalPath,
-		"image":            defaultOGImage,
-		"dateModified":     post.UpdatedAt.UTC().Format("2006-01-02T15:04:05Z07:00"),
-		"author": map[string]any{
-			"@type": "Person",
-			"name":  "Daniel J. Manning",
-			"url":   publicSiteURL,
-		},
-		"publisher": map[string]any{
-			"@type": "Person",
-			"name":  "Daniel J. Manning",
-			"url":   publicSiteURL,
-		},
-	}
-
-	if post.PublishedAt != nil {
-		structuredData["datePublished"] = post.PublishedAt.UTC().Format(
-			"2006-01-02T15:04:05Z07:00",
-		)
-	}
 
 	w.Header().Set(
 		"Link",
-		"<"+publicSiteURL+canonicalPath+">; rel=\"canonical\"",
+		"<"+absolutePublicURL(canonicalPath)+">; rel=\"canonical\"",
 	)
 
 	h.render(
@@ -212,11 +183,71 @@ func (h *BlogHandler) Show(
 				description,
 				canonicalPath,
 				"article",
-				structuredData,
+				blogPostStructuredData(
+					post,
+					description,
+					canonicalPath,
+				),
+			).withRelatedLinks(
+				relatedLinksForJournalPost(post.Slug)...,
 			).withRequest(r),
 			Post:        post,
 			ContentHTML: contentHTML,
 		},
+	)
+}
+
+func blogPostStructuredData(
+	post models.BlogPost,
+	description string,
+	canonicalPath string,
+) schema.Graph {
+	pageURL := absolutePublicURL(canonicalPath)
+	posting := map[string]any{
+		"@id":         pageURL + "#blog-posting",
+		"@type":       "BlogPosting",
+		"headline":    post.Title,
+		"description": description,
+		"url":         pageURL,
+		"mainEntityOfPage": map[string]any{
+			"@type": "WebPage",
+			"@id":   pageURL,
+		},
+		"image":      defaultOGImage,
+		"author":     personStructuredDataReference(),
+		"publisher":  personStructuredDataReference(),
+		"inLanguage": "en-GB",
+	}
+
+	if !post.UpdatedAt.IsZero() {
+		posting["dateModified"] = post.UpdatedAt.UTC().Format(
+			time.RFC3339,
+		)
+	}
+
+	if post.PublishedAt != nil {
+		posting["datePublished"] = post.PublishedAt.UTC().Format(
+			time.RFC3339,
+		)
+	}
+
+	return schema.NewGraph(
+		posting,
+		breadcrumbStructuredData(
+			pageURL,
+			breadcrumbLink{
+				Name: "Home",
+				URL:  publicSiteURL + "/",
+			},
+			breadcrumbLink{
+				Name: "Journal",
+				URL:  publicSiteURL + "/blog/",
+			},
+			breadcrumbLink{
+				Name: post.Title,
+				URL:  pageURL,
+			},
+		),
 	)
 }
 

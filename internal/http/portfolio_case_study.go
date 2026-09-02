@@ -52,44 +52,41 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 		return
 	}
 
-	title := "Go Portfolio & Client Workspace Case Study | Daniel J. Manning"
-	description := "Case study of a secure portfolio and client workspace built with Go, HTMX and SQLite, covering product design, authentication, security and full-stack engineering."
+	const (
+		name        = "Portfolio & Client Workspace"
+		path        = "/work/portfolio"
+		title       = "Go Portfolio & Client Workspace Case Study | Daniel J. Manning"
+		description = "Case study of a secure portfolio and client workspace built with Go, HTMX and SQLite, covering product design, authentication, security and full-stack engineering."
+	)
 
 	data := newPublicPageData(
 		title,
 		description,
-		"/work/portfolio",
+		path,
 		"article",
-		map[string]any{
-			"@context":    "https://schema.org",
-			"@type":       "CreativeWork",
-			"name":        title,
-			"description": description,
-			"url":         publicSiteURL + "/work/portfolio",
-			"image":       defaultOGImage,
-			"author": map[string]any{
-				"@type": "Person",
-				"name":  "Daniel J. Manning",
-				"url":   publicSiteURL,
-			},
-			"keywords": []string{
-				"digital product design",
-				"Go",
-				"HTMX",
-				"SQLite",
-				"web application security",
-			},
-		},
+		caseStudyStructuredData(
+			name,
+			path,
+			description,
+			"digital product design",
+			"Go",
+			"HTMX",
+			"SQLite",
+			"web application security",
+		),
+	).withRelatedLinks(
+		webDevelopmentRelatedLink(),
+		softwareDevelopmentRelatedLink(),
+		journalRelatedLink(),
 	).withRequest(r)
 
 	w.Header().Set(
 		"Content-Type",
 		"text/html; charset=utf-8",
 	)
-
 	w.Header().Set(
 		"Link",
-		`<https://danieljmanningdev.com/work/portfolio>; rel="canonical"`,
+		"<"+absolutePublicURL(path)+">; rel=\"canonical\"",
 	)
 
 	if err := h.template.ExecuteTemplate(
