@@ -142,6 +142,7 @@ func TestSitemapIncludesOnlyPublishedJournalPosts(
 		"https://danieljmanningdev.com/",
 		"https://danieljmanningdev.com/work/portfolio",
 		"https://danieljmanningdev.com/blog/",
+		"https://danieljmanningdev.com/work/salon-rebuild/",
 		"https://danieljmanningdev.com/blog/published-post",
 		"<lastmod>2026-08-21</lastmod>",
 	} {
@@ -154,7 +155,17 @@ func TestSitemapIncludesOnlyPublishedJournalPosts(
 		}
 	}
 
-	if strings.Contains(body, "draft-post") {
-		t.Fatalf("expected draft post to be excluded, got %q", body)
+	for _, unexpected := range []string{
+		"draft-post",
+		"<changefreq>",
+		"<priority>",
+	} {
+		if strings.Contains(body, unexpected) {
+			t.Fatalf(
+				"expected sitemap not to contain %q, got %q",
+				unexpected,
+				body,
+			)
+		}
 	}
 }
