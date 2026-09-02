@@ -1,0 +1,110 @@
+/* -----------------------------------------------------------------------------
+   Salon rebuild integration polish
+   Keeps the homepage featured card and case study in the same visual language.
+   ----------------------------------------------------------------------------- */
+
+/* The original homepage preview was designed as a tall application mock-up.
+   The salon card uses a real landscape screenshot, so let the media define its
+   own height instead of inheriting the old workspace proportions. */
+.home-work-card__layout {
+    align-items: center;
+}
+
+.home-work-preview {
+    position: relative;
+    align-self: center;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.home-work-preview__glow {
+    position: absolute;
+    inset: 10% 8%;
+    width: auto;
+    height: auto;
+    border-radius: 2rem;
+    background: color-mix(in oklab, var(--color-signal-400) 13%, transparent);
+    filter: blur(52px);
+    pointer-events: none;
+}
+
+.home-work-preview__image-frame {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    width: 100%;
+    border: 1px solid color-mix(in oklab, white 10%, transparent);
+    border-radius: 2rem;
+    background: #071127;
+    box-shadow:
+        0 1.5rem 4rem rgb(0 0 0 / 0.26),
+        inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+.home-work-preview__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: inherit;
+    object-fit: contain;
+    transition:
+        transform 450ms ease,
+        filter 450ms ease;
+}
+
+.home-work-card:hover .home-work-preview__image {
+    transform: scale(1.012);
+    filter: brightness(1.03);
+}
+
+/* Keep the screenshot visually connected to the copy instead of letting the
+   image column dominate the featured card. */
+@media (min-width: 64rem) {
+    .home-work-card__layout {
+        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+        gap: 3.5rem;
+        align-items: center;
+    }
+}
+
+/* Editorial paragraphs benefit from a little separation at wide sizes. */
+@media (min-width: 64rem) {
+    .portfolio-editorial__body {
+        gap: 0;
+    }
+
+    .portfolio-editorial__body > p {
+        padding-inline: 2rem;
+    }
+
+    .portfolio-editorial__body > p:first-child {
+        padding-left: 0;
+    }
+
+    .portfolio-editorial__body > p:last-child {
+        padding-right: 0;
+    }
+
+    .portfolio-editorial__body > p + p {
+        border-left: 1px solid color-mix(in oklab, white 8%, transparent);
+    }
+}
+
+/* Make the secondary source action feel like a deliberate companion to the
+   primary live-demo action. */
+.portfolio-explore__button--secondary {
+    padding: 0.95rem 1.35rem;
+    background: color-mix(in oklab, white 2%, transparent);
+}
+
+/* Keep comparison rows visually even when one label wraps. */
+.portfolio-trust__item {
+    min-height: 4.75rem;
+    align-items: flex-start;
+    line-height: 1.55;
+}
