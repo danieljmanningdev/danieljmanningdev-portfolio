@@ -1,0 +1,23 @@
+{
+    "id": "SCR-BLOG",
+    "name": "Blog Page",
+    "purpose": "Showcase my blogs and improve search engine optimisation",
+    "status": "implemented",
+
+    "components": [
+        "CMP-HEADER",
+        "CMP-FOOTER"
+    ],
+
+    "states": [
+        {
+            "name": "Default",
+            "type": "default"
+        }
+    ],
+
+    "handler": "deps.blogHandler",
+    "route": "/blog",
+    "template": "web/templates/pages/blog.html"
+    
+}
