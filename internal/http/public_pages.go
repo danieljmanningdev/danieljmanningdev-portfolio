@@ -8,12 +8,10 @@ import (
 )
 
 type PublicPageDefinition struct {
-	Path            string
-	Template        string
-	Title           string
-	Description     string
-	ChangeFrequency string
-	Priority        string
+	Path        string
+	Template    string
+	Title       string
+	Description string
 }
 
 type PublicPageRoute struct {
@@ -23,52 +21,40 @@ type PublicPageRoute struct {
 
 var PublicPages = []PublicPageDefinition{
 	{
-		Path:            "/web-design-leeds/",
-		Template:        "public/web-design-leeds.html",
-		Title:           "Web Design & Development in Leeds | Daniel J. Manning",
-		Description:     "Web design and development in Leeds for businesses that need fast, accessible and maintainable websites and digital products.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/web-design-leeds/",
+		Template:    "public/web-design-leeds.html",
+		Title:       "Web Design & Development in Leeds | Daniel J. Manning",
+		Description: "Web design and development in Leeds for businesses that need fast, accessible and maintainable websites and digital products.",
 	},
 	{
-		Path:            "/web-development/",
-		Template:        "public/web-development.html",
-		Title:           "Web Development | Daniel J. Manning",
-		Description:     "Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/web-development/",
+		Template:    "public/web-development.html",
+		Title:       "Web Development | Daniel J. Manning",
+		Description: "Full-stack web development for fast, accessible and maintainable websites, web applications and digital products.",
 	},
 	{
-		Path:            "/web-design/",
-		Template:        "public/web-design.html",
-		Title:           "Web Design | Daniel J. Manning",
-		Description:     "Web design for fast, accessible and maintainable websites, web applications and digital products.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/web-design/",
+		Template:    "public/web-design.html",
+		Title:       "Web Design | Daniel J. Manning",
+		Description: "Web design for fast, accessible and maintainable websites, web applications and digital products.",
 	},
 	{
-		Path:            "/software-development/",
-		Template:        "public/software-development.html",
-		Title:           "Software Development | Daniel J. Manning",
-		Description:     "Software development for fast, accessible and maintainable websites, web applications and digital products.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/software-development/",
+		Template:    "public/software-development.html",
+		Title:       "Software Development | Daniel J. Manning",
+		Description: "Software development for fast, accessible and maintainable websites, web applications and digital products.",
 	},
 	{
-		Path:            "/ui-ux-design/",
-		Template:        "public/ui-ux-design.html",
-		Title:           "UI & UX Design | Daniel J. Manning",
-		Description:     "UI and UX design for fast, accessible and maintainable websites, web applications and digital products.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/ui-ux-design/",
+		Template:    "public/ui-ux-design.html",
+		Title:       "UI & UX Design | Daniel J. Manning",
+		Description: "UI and UX design for fast, accessible and maintainable websites, web applications and digital products.",
 	},
 	{
-		Path:            "/work/salon-rebuild/",
-		Template:        "public/salon-rebuild.html",
-		Title:           "Salon Rebuild | Daniel J. Manning",
-		Description:     "Revisiting an early freelance salon project with a modern UI/UX, responsive design and server-rendered Go implementation.",
-		ChangeFrequency: "monthly",
-		Priority:        "0.9",
+		Path:        "/work/salon-rebuild/",
+		Template:    "public/salon-rebuild.html",
+		Title:       "Salon Rebuild | Daniel J. Manning",
+		Description: "Revisiting an early freelance salon project with a modern UI/UX, responsive design and server-rendered Go implementation.",
 	},
 }
 
@@ -124,6 +110,7 @@ func (h *PublicPageHandler) ServeHTTP(
 		)
 	}
 }
+
 func BuildPublicPageRoutes(
 	templateDir string,
 ) ([]PublicPageRoute, error) {
