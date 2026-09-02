@@ -1,0 +1,157 @@
+{
+  "id": "FLOW-CONTRACT-MANAGEMENT",
+  "name": "Contract Management",
+  "purpose": "Create, review, update and cancel contracts while preserving valid client and project relationships.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-CONTRACTS-INDEX"
+  ],
+  "steps": [
+    {
+      "id": "INDEX",
+      "type": "screen",
+      "name": "Browse contracts",
+      "screen": "SCR-ADMIN-CONTRACTS-INDEX"
+    },
+    {
+      "id": "NEW",
+      "type": "screen",
+      "name": "Enter a new contract",
+      "screen": "SCR-ADMIN-CONTRACTS-NEW"
+    },
+    {
+      "id": "VALIDATE-RELATIONSHIPS",
+      "type": "system-action",
+      "name": "Validate the selected client and optional project"
+    },
+    {
+      "id": "CREATE",
+      "type": "system-action",
+      "name": "Validate terms and create the contract"
+    },
+    {
+      "id": "SHOW",
+      "type": "screen",
+      "name": "Review the contract",
+      "screen": "SCR-ADMIN-CONTRACTS-SHOW"
+    },
+    {
+      "id": "EDIT",
+      "type": "screen",
+      "name": "Edit the contract",
+      "screen": "SCR-ADMIN-CONTRACTS-EDIT"
+    },
+    {
+      "id": "UPDATE",
+      "type": "system-action",
+      "name": "Validate and update the contract"
+    },
+    {
+      "id": "CANCEL",
+      "type": "user-action",
+      "name": "Cancel the contract"
+    },
+    {
+      "id": "VALIDATION-ERROR",
+      "type": "failure",
+      "name": "Show contract validation errors"
+    },
+    {
+      "id": "NOT-FOUND",
+      "type": "failure",
+      "name": "Return a not-found response"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "INDEX",
+      "to": "NEW",
+      "trigger": "The administrator selects Add contract"
+    },
+    {
+      "from": "NEW",
+      "to": "VALIDATE-RELATIONSHIPS",
+      "trigger": "The administrator submits the form"
+    },
+    {
+      "from": "VALIDATE-RELATIONSHIPS",
+      "to": "CREATE",
+      "condition": "The client and project relationship is valid"
+    },
+    {
+      "from": "VALIDATE-RELATIONSHIPS",
+      "to": "VALIDATION-ERROR",
+      "condition": "The relationship is invalid"
+    },
+    {
+      "from": "CREATE",
+      "to": "SHOW",
+      "condition": "Terms validate and creation succeeds"
+    },
+    {
+      "from": "CREATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Values or dates are invalid"
+    },
+    {
+      "from": "INDEX",
+      "to": "SHOW",
+      "trigger": "The administrator opens a contract"
+    },
+    {
+      "from": "SHOW",
+      "to": "EDIT",
+      "trigger": "The administrator selects Edit"
+    },
+    {
+      "from": "EDIT",
+      "to": "UPDATE",
+      "trigger": "The administrator submits changes"
+    },
+    {
+      "from": "UPDATE",
+      "to": "SHOW",
+      "condition": "Validation passes and the update succeeds"
+    },
+    {
+      "from": "UPDATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Validation fails"
+    },
+    {
+      "from": "SHOW",
+      "to": "CANCEL",
+      "trigger": "The administrator selects Cancel contract"
+    },
+    {
+      "from": "CANCEL",
+      "to": "SHOW",
+      "condition": "Cancellation succeeds"
+    },
+    {
+      "from": "SHOW",
+      "to": "NOT-FOUND",
+      "condition": "The contract no longer exists"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Contract route handler",
+      "path": "internal/contracts/handler.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Contract commands",
+      "path": "internal/contracts/commands.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Contract relationship validation",
+      "path": "internal/contracts/relationships.go",
+      "relationship": "implements"
+    }
+  ]
+}

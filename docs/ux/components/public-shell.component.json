@@ -1,0 +1,72 @@
+{
+  "id": "CMP-PUBLIC-SHELL",
+  "name": "Public Site Shell",
+  "purpose": "Provide shared metadata, assets, skip navigation, request progress, header, content and footer around public pages.",
+  "type": "custom",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "HTMX request in progress",
+      "type": "loading",
+      "trigger": "An HTMX-enhanced request is active."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "body"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true,
+      "initialFocus": "The requested page retains normal browser focus unless explicitly managed."
+    },
+    "screenReader": {
+      "supported": true,
+      "decorativeContentHidden": true
+    },
+    "motion": {
+      "hasMotion": true,
+      "reducedMotionSupported": true,
+      "essential": false
+    },
+    "zoomAndReflow": {
+      "supportsZoom": true,
+      "supportsTextResize": true,
+      "supportsReflow": true,
+      "horizontalScrollingRequired": false
+    }
+  },
+  "implementation": {
+    "template": "web/templates/layouts/base.html",
+    "partial": false,
+    "htmx": true,
+    "selectors": [
+      ".site-shell",
+      ".skip-link",
+      ".site-main",
+      "#page-progress"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/main.css",
+      "web/static/css/vanilla/parity.css"
+    ],
+    "scripts": [
+      "web/static/scripts/min.htmx.js"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "UXD-SHELL-001",
+      "decision": "Keep core public navigation and content usable as normal links and server-rendered pages.",
+      "reason": "The public experience must not depend on a client-side router or hydration runtime.",
+      "status": "accepted"
+    }
+  ]
+}

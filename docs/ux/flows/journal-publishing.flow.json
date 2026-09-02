@@ -1,0 +1,196 @@
+{
+  "id": "FLOW-JOURNAL-PUBLISHING",
+  "name": "Journal Publishing",
+  "purpose": "Create, revise, publish, unpublish, preview and delete journal posts.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-JOURNAL-INDEX"
+  ],
+  "steps": [
+    {
+      "id": "INDEX",
+      "type": "screen",
+      "name": "Browse all posts",
+      "screen": "SCR-ADMIN-JOURNAL-INDEX"
+    },
+    {
+      "id": "NEW",
+      "type": "screen",
+      "name": "Write a new post",
+      "screen": "SCR-ADMIN-JOURNAL-NEW"
+    },
+    {
+      "id": "CREATE",
+      "type": "system-action",
+      "name": "Validate and create the post"
+    },
+    {
+      "id": "EDIT",
+      "type": "screen",
+      "name": "Edit the post",
+      "screen": "SCR-ADMIN-JOURNAL-EDIT"
+    },
+    {
+      "id": "SAVE",
+      "type": "system-action",
+      "name": "Validate and save changes"
+    },
+    {
+      "id": "PUBLISH",
+      "type": "user-action",
+      "name": "Publish the post"
+    },
+    {
+      "id": "UNPUBLISH",
+      "type": "user-action",
+      "name": "Return the post to draft"
+    },
+    {
+      "id": "VIEW-LIVE",
+      "type": "screen",
+      "name": "Read the public article",
+      "screen": "SCR-JOURNAL-ARTICLE"
+    },
+    {
+      "id": "DELETE",
+      "type": "user-action",
+      "name": "Confirm permanent deletion"
+    },
+    {
+      "id": "REMOVE",
+      "type": "system-action",
+      "name": "Delete the post"
+    },
+    {
+      "id": "VALIDATION-ERROR",
+      "type": "failure",
+      "name": "Show article validation errors"
+    },
+    {
+      "id": "NOT-FOUND",
+      "type": "failure",
+      "name": "Return a not-found response"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "INDEX",
+      "to": "NEW",
+      "trigger": "The administrator selects New post"
+    },
+    {
+      "from": "NEW",
+      "to": "CREATE",
+      "trigger": "The administrator submits the form"
+    },
+    {
+      "from": "CREATE",
+      "to": "EDIT",
+      "condition": "Validation passes and creation succeeds"
+    },
+    {
+      "from": "CREATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Required content fails validation"
+    },
+    {
+      "from": "INDEX",
+      "to": "EDIT",
+      "trigger": "The administrator selects Edit"
+    },
+    {
+      "from": "EDIT",
+      "to": "SAVE",
+      "trigger": "The administrator submits changes"
+    },
+    {
+      "from": "SAVE",
+      "to": "EDIT",
+      "condition": "Validation passes and the update succeeds"
+    },
+    {
+      "from": "SAVE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Required content fails validation"
+    },
+    {
+      "from": "EDIT",
+      "to": "PUBLISH",
+      "trigger": "The administrator chooses Publish"
+    },
+    {
+      "from": "PUBLISH",
+      "to": "EDIT",
+      "condition": "Publishing succeeds"
+    },
+    {
+      "from": "EDIT",
+      "to": "UNPUBLISH",
+      "trigger": "The administrator chooses Unpublish"
+    },
+    {
+      "from": "UNPUBLISH",
+      "to": "EDIT",
+      "condition": "Unpublishing succeeds"
+    },
+    {
+      "from": "EDIT",
+      "to": "VIEW-LIVE",
+      "trigger": "The administrator opens the published article"
+    },
+    {
+      "from": "EDIT",
+      "to": "DELETE",
+      "trigger": "The administrator activates Delete"
+    },
+    {
+      "from": "DELETE",
+      "to": "REMOVE",
+      "trigger": "The confirmation is accepted"
+    },
+    {
+      "from": "REMOVE",
+      "to": "INDEX",
+      "condition": "Deletion succeeds"
+    },
+    {
+      "from": "EDIT",
+      "to": "NOT-FOUND",
+      "condition": "The post no longer exists"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "UXD-JOURNAL-001",
+      "decision": "Keep Markdown as the article authoring format.",
+      "reason": "Markdown supports fast writing while the server controls the public article structure and sanitised rendering.",
+      "status": "accepted"
+    },
+    {
+      "id": "UXD-JOURNAL-002",
+      "decision": "Separate draft and published lifecycle states.",
+      "reason": "Writing can remain private until it is explicitly ready for the public journal.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Journal administration routes",
+      "path": "internal/blog/handler.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Journal commands",
+      "path": "internal/blog/commands.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Journal page rendering",
+      "path": "internal/blog/pages.go",
+      "relationship": "implements"
+    }
+  ]
+}

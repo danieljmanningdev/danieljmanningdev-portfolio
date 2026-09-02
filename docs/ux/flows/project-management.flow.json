@@ -1,0 +1,142 @@
+{
+  "id": "FLOW-PROJECT-MANAGEMENT",
+  "name": "Project Management",
+  "purpose": "Create, review, update and archive projects linked to clients.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-PROJECTS-INDEX"
+  ],
+  "steps": [
+    {
+      "id": "INDEX",
+      "type": "screen",
+      "name": "Browse projects",
+      "screen": "SCR-ADMIN-PROJECTS-INDEX"
+    },
+    {
+      "id": "NEW",
+      "type": "screen",
+      "name": "Enter a new project",
+      "screen": "SCR-ADMIN-PROJECTS-NEW"
+    },
+    {
+      "id": "CREATE",
+      "type": "system-action",
+      "name": "Validate dates and create the project"
+    },
+    {
+      "id": "SHOW",
+      "type": "screen",
+      "name": "Review the project",
+      "screen": "SCR-ADMIN-PROJECTS-SHOW"
+    },
+    {
+      "id": "EDIT",
+      "type": "screen",
+      "name": "Edit the project",
+      "screen": "SCR-ADMIN-PROJECTS-EDIT"
+    },
+    {
+      "id": "UPDATE",
+      "type": "system-action",
+      "name": "Validate and update the project"
+    },
+    {
+      "id": "ARCHIVE",
+      "type": "user-action",
+      "name": "Archive the project"
+    },
+    {
+      "id": "VALIDATION-ERROR",
+      "type": "failure",
+      "name": "Show project validation errors"
+    },
+    {
+      "id": "NOT-FOUND",
+      "type": "failure",
+      "name": "Return a not-found response"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "INDEX",
+      "to": "NEW",
+      "trigger": "The administrator selects Add project"
+    },
+    {
+      "from": "NEW",
+      "to": "CREATE",
+      "trigger": "The administrator submits the form"
+    },
+    {
+      "from": "CREATE",
+      "to": "SHOW",
+      "condition": "Validation passes and creation succeeds"
+    },
+    {
+      "from": "CREATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Values or dates are invalid"
+    },
+    {
+      "from": "INDEX",
+      "to": "SHOW",
+      "trigger": "The administrator opens a project"
+    },
+    {
+      "from": "SHOW",
+      "to": "EDIT",
+      "trigger": "The administrator selects Edit"
+    },
+    {
+      "from": "EDIT",
+      "to": "UPDATE",
+      "trigger": "The administrator submits changes"
+    },
+    {
+      "from": "UPDATE",
+      "to": "SHOW",
+      "condition": "Validation passes and the update succeeds"
+    },
+    {
+      "from": "UPDATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Values or dates are invalid"
+    },
+    {
+      "from": "SHOW",
+      "to": "ARCHIVE",
+      "trigger": "The administrator selects Archive"
+    },
+    {
+      "from": "ARCHIVE",
+      "to": "SHOW",
+      "condition": "Archiving succeeds"
+    },
+    {
+      "from": "SHOW",
+      "to": "NOT-FOUND",
+      "condition": "The project no longer exists"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Project route handler",
+      "path": "internal/projects/handler.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Project commands",
+      "path": "internal/projects/commands.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Project pages",
+      "path": "internal/projects/pages.go",
+      "relationship": "implements"
+    }
+  ]
+}

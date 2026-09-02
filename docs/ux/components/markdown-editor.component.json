@@ -1,0 +1,58 @@
+{
+  "id": "CMP-MARKDOWN-EDITOR",
+  "name": "Markdown Article Editor",
+  "purpose": "Let the administrator write and revise journal content that is rendered into the public article layout.",
+  "type": "textarea",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Focus",
+      "type": "focus",
+      "trigger": "The editor receives focus."
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Required article content is missing or invalid."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "textarea",
+      "label": "Article content"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "errors": {
+      "identifiedInText": true,
+      "associatedWithField": true
+    },
+    "zoomAndReflow": {
+      "supportsZoom": true,
+      "supportsTextResize": true,
+      "supportsReflow": true,
+      "horizontalScrollingRequired": false
+    }
+  },
+  "implementation": {
+    "template": "web/templates/pages/admin/blog/edit.html",
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".publisher-editor",
+      ".publisher-field__hint"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-special.css"
+    ]
+  }
+}

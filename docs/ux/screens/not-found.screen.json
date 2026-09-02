@@ -1,0 +1,35 @@
+{
+  "id": "SCR-NOT-FOUND",
+  "name": "Page Not Found",
+  "purpose": "Explain that the requested public route does not exist without exposing it to search indexing.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "not-found"
+    }
+  ],
+  "handler": "http.renderNotFoundPage",
+  "route": "unmatched public route",
+  "template": "web/templates/pages/public/404.html",
+  "layout": "web/templates/layouts/base.html",
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Not-found renderer",
+      "path": "internal/http/not_found.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

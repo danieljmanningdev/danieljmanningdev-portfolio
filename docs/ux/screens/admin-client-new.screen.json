@@ -1,0 +1,54 @@
+{
+  "id": "SCR-ADMIN-CLIENTS-NEW",
+  "name": "New Client",
+  "purpose": "Collect the information required to create an active client record.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM"
+  ],
+  "states": [
+    {
+      "name": "Default form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted client values fail validation."
+    },
+    {
+      "name": "Submission failed",
+      "type": "error",
+      "trigger": "The client record cannot be created."
+    }
+  ],
+  "handler": "(*clients.ClientsHandler).renderNewClient",
+  "route": "/dashboard/clients/new",
+  "template": "web/templates/pages/admin/clients/new.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CLIENT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "New Client handler",
+      "path": "internal/clients/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ]
+  }
+}

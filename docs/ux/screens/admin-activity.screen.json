@@ -1,0 +1,64 @@
+{
+  "id": "SCR-ADMIN-ACTIVITY",
+  "name": "Workspace Activity",
+  "purpose": "Show recent audit events and let the administrator narrow them by supported entity type.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-RECORD-LIST",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Recent activity",
+      "type": "default"
+    },
+    {
+      "name": "Filtered activity",
+      "type": "selected",
+      "trigger": "A supported activity type is selected."
+    },
+    {
+      "name": "No matching activity",
+      "type": "empty",
+      "trigger": "No events match the selected filter."
+    },
+    {
+      "name": "Activity unavailable",
+      "type": "error",
+      "trigger": "Audit events cannot be loaded."
+    }
+  ],
+  "handler": "(*http.DashboardHandler).showActivity",
+  "route": "/dashboard/activity",
+  "template": "web/templates/pages/admin/activity.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-ADMIN-WORKSPACE"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Dashboard and activity handler",
+      "path": "internal/http/dashboard.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.AuditRepository.ListRecent"
+    ]
+  }
+}

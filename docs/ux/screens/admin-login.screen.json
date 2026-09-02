@@ -1,0 +1,108 @@
+{
+  "id": "SCR-ADMIN-LOGIN",
+  "name": "Admin Login",
+  "purpose": "Authenticate the administrator before granting access to the private workspace.",
+  "status": "implemented",
+  "components": [
+    "CMP-AUTH-SHELL",
+    "CMP-EMAIL-INPUT",
+    "CMP-PASSWORD-INPUT"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Invalid credentials",
+      "type": "error",
+      "trigger": "The supplied email or password is missing or does not authenticate."
+    },
+    {
+      "name": "Rate limited",
+      "type": "rate-limited",
+      "trigger": "The client and credential attempt limit has been exceeded."
+    },
+    {
+      "name": "Authenticated redirect",
+      "type": "custom",
+      "trigger": "A valid existing session is detected before the form is shown."
+    }
+  ],
+  "handler": "(*http.AdminAuthHandler).handleLogin",
+  "route": "/login",
+  "template": "web/templates/pages/admin/login.html",
+  "layout": "web/templates/layouts/auth-base.html",
+  "flows": [
+    "FLOW-ADMIN-AUTHENTICATION"
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "form",
+      "label": "Workspace sign in"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "errors": {
+      "identifiedInText": true,
+      "associatedWithField": false,
+      "liveRegion": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "decisions": [
+    {
+      "id": "UXD-AUTH-001",
+      "decision": "Use one generic invalid-credentials message.",
+      "reason": "The response must not reveal whether an email address exists.",
+      "status": "accepted"
+    },
+    {
+      "id": "UXD-AUTH-002",
+      "decision": "Preserve the entered email after an unsuccessful sign-in.",
+      "reason": "Users should not need to re-enter information that may already be correct.",
+      "status": "accepted"
+    },
+    {
+      "id": "UXD-AUTH-003",
+      "decision": "Rate-limit repeated sign-in failures.",
+      "reason": "The private workspace needs protection from repeated credential attempts.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Authentication handler",
+      "path": "internal/http/admin_auth.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "test",
+      "label": "Authentication tests",
+      "path": "internal/http/admin_auth_test.go",
+      "relationship": "tests"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex"
+    ],
+    "dataSources": [
+      "repository.AdminRepository.GetByEmail",
+      "auth.SessionService.Authenticate",
+      "auth.LoginLimiter"
+    ]
+  }
+}

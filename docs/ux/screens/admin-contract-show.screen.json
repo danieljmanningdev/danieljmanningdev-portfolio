@@ -1,0 +1,63 @@
+{
+  "id": "SCR-ADMIN-CONTRACTS-SHOW",
+  "name": "Contract Detail",
+  "purpose": "Show one contract's client and project relationships, lifecycle status, terms, value, notes and cancellation action.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-DETAIL",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Contract available",
+      "type": "default"
+    },
+    {
+      "name": "Contract cancelled",
+      "type": "custom",
+      "trigger": "The contract status is cancelled and the cancellation action is hidden."
+    },
+    {
+      "name": "Contract not found",
+      "type": "not-found",
+      "trigger": "The requested contract ID does not exist."
+    },
+    {
+      "name": "Contract unavailable",
+      "type": "error",
+      "trigger": "The contract record cannot be loaded."
+    }
+  ],
+  "handler": "(*contracts.ContractsHandler).showContract",
+  "route": "/dashboard/contracts/{id}",
+  "template": "web/templates/pages/admin/contracts/show.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CONTRACT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Contract Detail handler",
+      "path": "internal/contracts/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ContractRepository.GetByID"
+    ]
+  }
+}

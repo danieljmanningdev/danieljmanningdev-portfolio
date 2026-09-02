@@ -1,0 +1,60 @@
+{
+  "id": "SCR-ADMIN-JOURNAL-INDEX",
+  "name": "Journal Administration",
+  "purpose": "List every journal post and provide actions to create, edit, publish, unpublish, view or delete it.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-RECORD-LIST",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Posts available",
+      "type": "default"
+    },
+    {
+      "name": "No posts",
+      "type": "empty",
+      "trigger": "No journal records exist."
+    },
+    {
+      "name": "Posts unavailable",
+      "type": "error",
+      "trigger": "Journal records cannot be loaded."
+    }
+  ],
+  "handler": "(*blog.AdminHandler).listPosts",
+  "route": "/dashboard/blog",
+  "template": "web/templates/pages/admin/blog/index.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-JOURNAL-PUBLISHING"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Journal Administration handler",
+      "path": "internal/blog/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": true,
+    "fallback": "Listing, editing, publishing and unpublishing use standard navigation and forms; deletion is HTMX-enhanced.",
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.BlogRepository.ListAll"
+    ]
+  }
+}

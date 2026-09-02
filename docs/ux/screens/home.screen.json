@@ -1,0 +1,60 @@
+{
+  "id": "SCR-HOME",
+  "name": "Home",
+  "purpose": "Introduce Daniel's product design and development work, surface selected work and guide visitors to the journal or contact.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    }
+  ],
+  "handler": "(*http.HomeHandler).ServeHTTP",
+  "route": "/",
+  "template": "web/templates/pages/public/home.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "responsive": {
+    "strategy": "fluid",
+    "inputModes": [
+      "mouse",
+      "keyboard",
+      "touch"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "UXD-HOME-001",
+      "decision": "Place selected work, capabilities, process and contact in one guided page.",
+      "reason": "A visitor should understand the offer and reach a useful next action without needing to discover a separate marketing structure.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Home handler",
+      "path": "internal/http/home.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "test",
+      "label": "Home handler tests",
+      "path": "internal/http/home_test.go",
+      "relationship": "tests"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

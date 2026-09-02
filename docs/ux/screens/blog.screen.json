@@ -1,0 +1,59 @@
+{
+  "id": "SCR-JOURNAL-INDEX",
+  "name": "Journal Index",
+  "purpose": "Help visitors browse published writing on development, UI/UX, product design and security.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Published posts available",
+      "type": "default"
+    },
+    {
+      "name": "No published posts",
+      "type": "empty",
+      "trigger": "The published-post query returns no records."
+    },
+    {
+      "name": "Posts unavailable",
+      "type": "error",
+      "trigger": "Published posts cannot be loaded from the repository."
+    }
+  ],
+  "handler": "(*http.BlogHandler).List",
+  "route": "/blog/",
+  "template": "web/templates/pages/blog.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-JOURNAL",
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public journal handler",
+      "path": "internal/http/blog.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Journal template",
+      "path": "web/templates/pages/blog.html",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "dataSources": [
+      "repository.BlogRepository.ListPublished"
+    ]
+  }
+}

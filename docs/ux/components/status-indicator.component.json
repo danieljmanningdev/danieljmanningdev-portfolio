@@ -1,0 +1,49 @@
+{
+  "id": "CMP-STATUS-INDICATOR",
+  "name": "Status Indicator",
+  "purpose": "Show the lifecycle or attention state of a workspace record using text and supporting visual treatment.",
+  "type": "badge",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Neutral",
+      "type": "default"
+    },
+    {
+      "name": "Active or published",
+      "type": "success"
+    },
+    {
+      "name": "Needs attention",
+      "type": "warning"
+    },
+    {
+      "name": "Cancelled, archived or destructive",
+      "type": "error"
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "screenReader": {
+      "supported": true,
+      "decorativeContentHidden": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "implementation": {
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".crud-row__status",
+      ".publisher-post__status",
+      ".publisher-status",
+      ".workspace-chip"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-pages.css",
+      "web/static/css/vanilla/admin-special.css"
+    ]
+  }
+}

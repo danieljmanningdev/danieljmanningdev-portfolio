@@ -1,0 +1,199 @@
+{
+  "id": "FLOW-ADMIN-AUTHENTICATION",
+  "name": "Admin Authentication",
+  "purpose": "Authenticate the administrator, protect the workspace and return clear recoverable states when sign-in fails.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-LOGIN"
+  ],
+  "steps": [
+    {
+      "id": "CHECK-EXISTING-SESSION",
+      "type": "system-action",
+      "name": "Check for an existing valid administrator session"
+    },
+    {
+      "id": "LOGIN",
+      "type": "screen",
+      "name": "View sign-in form",
+      "screen": "SCR-ADMIN-LOGIN"
+    },
+    {
+      "id": "SUBMIT-CREDENTIALS",
+      "type": "user-action",
+      "name": "Submit email, password and CSRF token"
+    },
+    {
+      "id": "PARSE-FORM",
+      "type": "system-action",
+      "name": "Parse the submitted form"
+    },
+    {
+      "id": "VERIFY-CSRF",
+      "type": "system-action",
+      "name": "Verify the login CSRF token"
+    },
+    {
+      "id": "CHECK-RATE-LIMIT",
+      "type": "system-action",
+      "name": "Check credential attempt limits"
+    },
+    {
+      "id": "AUTHENTICATE",
+      "type": "system-action",
+      "name": "Load the administrator and verify the password"
+    },
+    {
+      "id": "CREATE-SESSION",
+      "type": "system-action",
+      "name": "Revoke any existing browser session and create a new administrator session"
+    },
+    {
+      "id": "DASHBOARD",
+      "type": "success",
+      "name": "Enter the private workspace",
+      "screen": "SCR-ADMIN-DASHBOARD"
+    },
+    {
+      "id": "BAD-REQUEST",
+      "type": "failure",
+      "name": "Reject an unreadable form submission"
+    },
+    {
+      "id": "CSRF-REJECTED",
+      "type": "failure",
+      "name": "Reject the request with a forbidden response"
+    },
+    {
+      "id": "INVALID-CREDENTIALS",
+      "type": "failure",
+      "name": "Show the generic invalid-credentials state",
+      "screen": "SCR-ADMIN-LOGIN"
+    },
+    {
+      "id": "RATE-LIMITED",
+      "type": "failure",
+      "name": "Show the retry-later state",
+      "screen": "SCR-ADMIN-LOGIN"
+    },
+    {
+      "id": "SERVER-ERROR",
+      "type": "failure",
+      "name": "Return an internal server error"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "CHECK-EXISTING-SESSION",
+      "to": "DASHBOARD",
+      "condition": "The request already has a valid administrator session"
+    },
+    {
+      "from": "CHECK-EXISTING-SESSION",
+      "to": "LOGIN",
+      "condition": "No valid administrator session is present"
+    },
+    {
+      "from": "LOGIN",
+      "to": "SUBMIT-CREDENTIALS",
+      "trigger": "The administrator submits the form"
+    },
+    {
+      "from": "SUBMIT-CREDENTIALS",
+      "to": "PARSE-FORM"
+    },
+    {
+      "from": "PARSE-FORM",
+      "to": "BAD-REQUEST",
+      "condition": "The form cannot be parsed"
+    },
+    {
+      "from": "PARSE-FORM",
+      "to": "VERIFY-CSRF",
+      "condition": "The form is parsed successfully"
+    },
+    {
+      "from": "VERIFY-CSRF",
+      "to": "CSRF-REJECTED",
+      "condition": "The submitted token does not match the login CSRF cookie"
+    },
+    {
+      "from": "VERIFY-CSRF",
+      "to": "CHECK-RATE-LIMIT",
+      "condition": "The CSRF token is valid"
+    },
+    {
+      "from": "CHECK-RATE-LIMIT",
+      "to": "RATE-LIMITED",
+      "condition": "The attempt is not allowed"
+    },
+    {
+      "from": "CHECK-RATE-LIMIT",
+      "to": "AUTHENTICATE",
+      "condition": "The attempt is allowed"
+    },
+    {
+      "from": "AUTHENTICATE",
+      "to": "CREATE-SESSION",
+      "condition": "The administrator is active and the password is valid"
+    },
+    {
+      "from": "AUTHENTICATE",
+      "to": "INVALID-CREDENTIALS",
+      "condition": "The email, account state or password is invalid"
+    },
+    {
+      "from": "AUTHENTICATE",
+      "to": "SERVER-ERROR",
+      "condition": "The administrator record cannot be loaded"
+    },
+    {
+      "from": "CREATE-SESSION",
+      "to": "DASHBOARD",
+      "condition": "The session is created successfully"
+    },
+    {
+      "from": "CREATE-SESSION",
+      "to": "SERVER-ERROR",
+      "condition": "The session cannot be created"
+    },
+    {
+      "from": "INVALID-CREDENTIALS",
+      "to": "SUBMIT-CREDENTIALS",
+      "trigger": "The administrator corrects the credentials and retries"
+    },
+    {
+      "from": "RATE-LIMITED",
+      "to": "LOGIN",
+      "trigger": "The retry period expires"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "UXD-AUTH-FLOW-001",
+      "decision": "Use the same visible failure message for unknown emails and incorrect passwords.",
+      "reason": "Authentication must not disclose whether a specific administrator email exists.",
+      "status": "accepted"
+    },
+    {
+      "id": "UXD-AUTH-FLOW-002",
+      "decision": "Issue a freshly generated session after successful authentication.",
+      "reason": "A new sign-in should not continue using an existing browser session token.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Authentication handler",
+      "path": "internal/http/admin_auth.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Session service",
+      "path": "internal/auth/session_service.go",
+      "relationship": "implements"
+    }
+  ]
+}

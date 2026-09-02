@@ -1,0 +1,28 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "**/*.screen.json"
+      ],
+      "url": "./docs/ux/schemas/screen.schema.json"
+    },
+    {
+      "fileMatch": [
+        "**/*.component.json"
+      ],
+      "url": "./docs/ux/schemas/component.schema.json"
+    },
+    {
+      "fileMatch": [
+        "**/*.flow.json"
+      ],
+      "url": "./docs/ux/schemas/flow.schema.json"
+    },
+    {
+      "fileMatch": [
+        "**/*.tokens.json"
+      ],
+      "url": "./docs/ux/schemas/tokens.schema.json"
+    }
+  ]
+}

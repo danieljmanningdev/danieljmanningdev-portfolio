@@ -1,0 +1,59 @@
+{
+  "id": "SCR-JOURNAL-ARTICLE",
+  "name": "Journal Article",
+  "purpose": "Present one published article with readable Markdown content and relevant continuation paths.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Article available",
+      "type": "default"
+    },
+    {
+      "name": "Article not found",
+      "type": "not-found",
+      "trigger": "No published post matches the requested slug."
+    },
+    {
+      "name": "Article unavailable",
+      "type": "error",
+      "trigger": "The post cannot be loaded or its Markdown cannot be rendered."
+    }
+  ],
+  "handler": "(*http.BlogHandler).Show",
+  "route": "/blog/{slug}",
+  "template": "web/templates/pages/blog-post.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-JOURNAL"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public journal handler",
+      "path": "internal/http/blog.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Article template",
+      "path": "web/templates/pages/blog-post.html",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "dataSources": [
+      "repository.BlogRepository.GetBySlug",
+      "blog.RenderMarkdown"
+    ]
+  }
+}

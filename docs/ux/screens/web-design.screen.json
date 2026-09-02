@@ -1,0 +1,44 @@
+{
+  "id": "SCR-WEB-DESIGN",
+  "name": "Web Design",
+  "purpose": "Explain the web design offer and connect visitors to relevant case studies, capabilities and contact.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Render failed",
+      "type": "error",
+      "trigger": "The page template cannot be rendered."
+    }
+  ],
+  "handler": "(*http.PublicPageHandler).ServeHTTP",
+  "route": "/web-design/",
+  "template": "web/templates/pages/public/web-design.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public page registry and handler",
+      "path": "internal/http/public_pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

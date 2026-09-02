@@ -1,0 +1,74 @@
+{
+  "id": "CMP-WORKSPACE-DETAIL",
+  "name": "Workspace Record Detail",
+  "purpose": "Present one client, project or contract with its relationships, status and available actions.",
+  "type": "custom",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Record not found",
+      "type": "not-found",
+      "trigger": "The requested record ID does not exist."
+    },
+    {
+      "name": "Loading failed",
+      "type": "error",
+      "trigger": "The repository cannot load the record."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "main"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "responsive": {
+    "strategy": "fluid"
+  },
+  "implementation": {
+    "partial": false,
+    "htmx": true,
+    "selectors": [
+      ".workspace-detail",
+      ".workspace-detail__panel",
+      ".workspace-detail__grid",
+      ".workspace-detail__item"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-pages.css"
+    ]
+  },
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Client detail example",
+      "path": "web/templates/pages/admin/clients/show.html",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Project detail example",
+      "path": "web/templates/pages/admin/projects/show.html",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Contract detail example",
+      "path": "web/templates/pages/admin/contracts/show.html",
+      "relationship": "implements"
+    }
+  ]
+}

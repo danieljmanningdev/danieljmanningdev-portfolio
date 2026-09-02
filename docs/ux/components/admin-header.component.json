@@ -1,0 +1,75 @@
+{
+  "id": "CMP-ADMIN-HEADER",
+  "name": "Workspace Header Navigation",
+  "purpose": "Give the authenticated administrator persistent access to each workspace area and the public site.",
+  "type": "navigation",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Desktop navigation",
+      "type": "default"
+    },
+    {
+      "name": "Mobile menu closed",
+      "type": "default"
+    },
+    {
+      "name": "Mobile menu open",
+      "type": "active",
+      "trigger": "The user activates the workspace navigation disclosure."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "nav",
+      "label": "Workspace navigation"
+    },
+    "keyboard": {
+      "accessible": true,
+      "activationKeys": [
+        "Enter",
+        "Space"
+      ]
+    },
+    "focus": {
+      "visible": true
+    },
+    "screenReader": {
+      "supported": true,
+      "decorativeContentHidden": true
+    }
+  },
+  "responsive": {
+    "strategy": "adaptive",
+    "layoutChanges": [
+      {
+        "at": "mobile",
+        "property": "workspace navigation",
+        "from": "horizontal navigation",
+        "to": "native details disclosure",
+        "reason": "The full workspace route list needs a compact narrow-screen form."
+      }
+    ],
+    "inputModes": [
+      "mouse",
+      "keyboard",
+      "touch"
+    ]
+  },
+  "implementation": {
+    "template": "web/templates/components/admin-header.html",
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".admin-header",
+      ".admin-nav",
+      ".admin-desktop-nav",
+      ".admin-mobile-nav"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin.css",
+      "web/static/css/vanilla/admin-polish.css"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "id": "SCR-ADMIN-PROJECTS-EDIT",
+  "name": "Edit Project",
+  "purpose": "Update a project's client, name, description, status and delivery dates.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Project form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted project values or dates fail validation."
+    },
+    {
+      "name": "Project not found",
+      "type": "not-found",
+      "trigger": "The requested project ID does not exist."
+    },
+    {
+      "name": "Update failed",
+      "type": "error",
+      "trigger": "The project record cannot be updated."
+    }
+  ],
+  "handler": "(*projects.ProjectsHandler).editProject",
+  "route": "/dashboard/projects/{id}/edit",
+  "template": "web/templates/pages/admin/projects/edit.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-PROJECT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Edit Project handler",
+      "path": "internal/projects/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ProjectRepository.GetByID",
+      "repository.ClientRepository.List"
+    ]
+  }
+}

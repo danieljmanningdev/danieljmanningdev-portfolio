@@ -1,0 +1,59 @@
+{
+  "id": "SCR-ADMIN-CONTRACTS-NEW",
+  "name": "New Contract",
+  "purpose": "Create a contract linked to a client and optional project with dates, status and value.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Default form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted contract values, dates or relationships fail validation."
+    },
+    {
+      "name": "Submission failed",
+      "type": "error",
+      "trigger": "The contract record cannot be created."
+    }
+  ],
+  "handler": "(*contracts.ContractsHandler).renderNewContract",
+  "route": "/dashboard/contracts/new",
+  "template": "web/templates/pages/admin/contracts/new.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CONTRACT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "New Contract handler",
+      "path": "internal/contracts/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ClientRepository.List",
+      "repository.ProjectRepository.List"
+    ]
+  }
+}

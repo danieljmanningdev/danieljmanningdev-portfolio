@@ -1,0 +1,69 @@
+{
+  "id": "CMP-WORKSPACE-FORM",
+  "name": "Workspace Form",
+  "purpose": "Collect and validate data for creating or editing workspace records.",
+  "type": "form",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted values fail server-side validation."
+    },
+    {
+      "name": "Submitting",
+      "type": "submitting",
+      "trigger": "The form is being submitted."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "form"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "errors": {
+      "identifiedInText": true,
+      "associatedWithField": true,
+      "summaryProvided": false,
+      "liveRegion": false
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "responsive": {
+    "strategy": "fluid"
+  },
+  "implementation": {
+    "partial": false,
+    "htmx": false,
+    "selectors": [
+      ".workspace-form-shell",
+      ".workspace-field__label",
+      ".workspace-field__control",
+      ".workspace-field__error"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-pages.css",
+      "web/static/css/vanilla/admin-special.css"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "UXD-WORKSPACE-FORM-001",
+      "decision": "Keep record creation and editing functional as standard server-rendered forms.",
+      "reason": "Core workspace changes should not depend on JavaScript.",
+      "status": "accepted"
+    }
+  ]
+}

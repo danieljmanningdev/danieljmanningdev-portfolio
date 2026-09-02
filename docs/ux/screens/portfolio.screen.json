@@ -1,0 +1,55 @@
+{
+  "id": "SCR-PORTFOLIO-CASE-STUDY",
+  "name": "Portfolio and Client Workspace Case Study",
+  "purpose": "Explain the product design, architecture, security and implementation of the portfolio and private workspace.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Route not found",
+      "type": "not-found",
+      "trigger": "The requested path does not exactly match the case-study route."
+    },
+    {
+      "name": "Render failed",
+      "type": "error",
+      "trigger": "The page template cannot be rendered."
+    }
+  ],
+  "handler": "(*http.PortfolioCaseStudyHandler).ServeHTTP",
+  "route": "/work/portfolio",
+  "template": "web/templates/pages/public/portfolio.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Portfolio case-study handler",
+      "path": "internal/http/portfolio_case_study.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "test",
+      "label": "Portfolio case-study tests",
+      "path": "internal/http/portfolio_case_study_test.go",
+      "relationship": "tests"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

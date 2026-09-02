@@ -1,0 +1,59 @@
+{
+  "id": "SCR-ADMIN-CONTRACTS-INDEX",
+  "name": "Contracts Index",
+  "purpose": "List contract records with client, project, lifecycle status and value context.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-RECORD-LIST",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Contracts available",
+      "type": "default"
+    },
+    {
+      "name": "No contracts",
+      "type": "empty",
+      "trigger": "No contract records exist."
+    },
+    {
+      "name": "Contracts unavailable",
+      "type": "error",
+      "trigger": "Contract records cannot be loaded."
+    }
+  ],
+  "handler": "(*contracts.ContractsHandler).listContracts",
+  "route": "/dashboard/contracts",
+  "template": "web/templates/pages/admin/contracts/index.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CONTRACT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Contracts Index handler",
+      "path": "internal/contracts/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ContractRepository.List"
+    ]
+  }
+}

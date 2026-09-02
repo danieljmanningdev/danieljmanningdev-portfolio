@@ -1,0 +1,108 @@
+{
+  "id": "FLOW-ADMIN-WORKSPACE",
+  "name": "Workspace Navigation",
+  "purpose": "Let the authenticated administrator move between the overview, records, publishing and activity areas.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-DASHBOARD"
+  ],
+  "steps": [
+    {
+      "id": "DASHBOARD",
+      "type": "screen",
+      "name": "View workspace overview",
+      "screen": "SCR-ADMIN-DASHBOARD"
+    },
+    {
+      "id": "CLIENTS",
+      "type": "screen",
+      "name": "Manage clients",
+      "screen": "SCR-ADMIN-CLIENTS-INDEX"
+    },
+    {
+      "id": "PROJECTS",
+      "type": "screen",
+      "name": "Manage projects",
+      "screen": "SCR-ADMIN-PROJECTS-INDEX"
+    },
+    {
+      "id": "CONTRACTS",
+      "type": "screen",
+      "name": "Manage contracts",
+      "screen": "SCR-ADMIN-CONTRACTS-INDEX"
+    },
+    {
+      "id": "JOURNAL",
+      "type": "screen",
+      "name": "Manage journal posts",
+      "screen": "SCR-ADMIN-JOURNAL-INDEX"
+    },
+    {
+      "id": "ACTIVITY",
+      "type": "screen",
+      "name": "Review workspace history",
+      "screen": "SCR-ADMIN-ACTIVITY"
+    },
+    {
+      "id": "SIGN-OUT",
+      "type": "user-action",
+      "name": "Submit the sign-out form"
+    },
+    {
+      "id": "LOGIN",
+      "type": "success",
+      "name": "Return to sign in",
+      "screen": "SCR-ADMIN-LOGIN"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "DASHBOARD",
+      "to": "CLIENTS",
+      "trigger": "The administrator chooses Clients"
+    },
+    {
+      "from": "DASHBOARD",
+      "to": "PROJECTS",
+      "trigger": "The administrator chooses Projects"
+    },
+    {
+      "from": "DASHBOARD",
+      "to": "CONTRACTS",
+      "trigger": "The administrator chooses Contracts"
+    },
+    {
+      "from": "DASHBOARD",
+      "to": "JOURNAL",
+      "trigger": "The administrator chooses Journal"
+    },
+    {
+      "from": "DASHBOARD",
+      "to": "ACTIVITY",
+      "trigger": "The administrator chooses Activity"
+    },
+    {
+      "from": "DASHBOARD",
+      "to": "SIGN-OUT",
+      "trigger": "The administrator submits Sign out"
+    },
+    {
+      "from": "SIGN-OUT",
+      "to": "LOGIN"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Workspace router",
+      "path": "cmd/server/router.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Workspace header",
+      "path": "web/templates/components/admin-header.html",
+      "relationship": "implements"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "CMP-HEADER",
+  "name": "Public Header Navigation",
+  "purpose": "Give visitors persistent access to the main public destinations and the project contact action.",
+  "type": "navigation",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Desktop navigation",
+      "type": "default"
+    },
+    {
+      "name": "Mobile menu closed",
+      "type": "default"
+    },
+    {
+      "name": "Mobile menu open",
+      "type": "active",
+      "trigger": "The user activates the native navigation disclosure."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "nav",
+      "label": "Primary navigation"
+    },
+    "keyboard": {
+      "accessible": true,
+      "activationKeys": [
+        "Enter",
+        "Space"
+      ],
+      "escapeBehaviour": "Uses native details and summary behaviour."
+    },
+    "focus": {
+      "visible": true
+    },
+    "screenReader": {
+      "supported": true,
+      "decorativeContentHidden": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "responsive": {
+    "strategy": "adaptive",
+    "layoutChanges": [
+      {
+        "at": "mobile",
+        "property": "primary navigation",
+        "from": "visible horizontal links",
+        "to": "native details disclosure",
+        "reason": "The full navigation does not fit comfortably at narrow widths."
+      }
+    ],
+    "inputModes": [
+      "mouse",
+      "keyboard",
+      "touch"
+    ]
+  },
+  "implementation": {
+    "template": "web/templates/components/header.html",
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".site-header",
+      ".primary-nav",
+      ".desktop-nav",
+      ".mobile-nav"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/shell.css",
+      "web/static/css/vanilla/components.css"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "UXD-NAV-001",
+      "decision": "Use a native details element for the mobile navigation.",
+      "reason": "It works without custom JavaScript and retains browser keyboard behaviour.",
+      "status": "accepted"
+    },
+    {
+      "id": "UXD-NAV-002",
+      "decision": "Keep one visible project CTA in the header.",
+      "reason": "Visitors should always have an obvious route to begin a conversation.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public base layout",
+      "path": "web/templates/layouts/base.html",
+      "relationship": "depends-on"
+    }
+  ]
+}

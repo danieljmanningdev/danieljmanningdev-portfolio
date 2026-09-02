@@ -1,0 +1,63 @@
+{
+  "id": "SCR-ADMIN-PROJECTS-SHOW",
+  "name": "Project Detail",
+  "purpose": "Show one project's client relationship, status, timeline, description and archive action.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-DETAIL",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Project available",
+      "type": "default"
+    },
+    {
+      "name": "Project archived",
+      "type": "custom",
+      "trigger": "The project status is archived and the archive action is hidden."
+    },
+    {
+      "name": "Project not found",
+      "type": "not-found",
+      "trigger": "The requested project ID does not exist."
+    },
+    {
+      "name": "Project unavailable",
+      "type": "error",
+      "trigger": "The project record cannot be loaded."
+    }
+  ],
+  "handler": "(*projects.ProjectsHandler).showProject",
+  "route": "/dashboard/projects/{id}",
+  "template": "web/templates/pages/admin/projects/show.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-PROJECT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Project Detail handler",
+      "path": "internal/projects/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ProjectRepository.GetByID"
+    ]
+  }
+}

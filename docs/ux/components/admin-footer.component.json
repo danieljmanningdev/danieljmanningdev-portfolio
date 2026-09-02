@@ -1,0 +1,25 @@
+{
+  "id": "CMP-ADMIN-FOOTER",
+  "name": "Workspace Footer",
+  "purpose": "Provide a compact product identity and copyright marker at the end of workspace pages.",
+  "type": "custom",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    }
+  ],
+  "implementation": {
+    "template": "web/templates/components/admin-footer.html",
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".admin-footer",
+      ".admin-footer__inner"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin.css"
+    ]
+  }
+}
