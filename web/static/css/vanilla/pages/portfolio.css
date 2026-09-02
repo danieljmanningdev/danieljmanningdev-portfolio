@@ -1,4 +1,4 @@
-/* ========================================================================== 
+/* ==========================================================================
    PORTFOLIO CASE STUDY
    Daniel J. Manning
    https://danieljmanningdev.com
@@ -16,6 +16,9 @@
 .portfolio-section--soft {
     background: color-mix(in oklab, white 2%, transparent);
 }
+
+
+/* Hero */
 
 .portfolio-hero {
     position: relative;
@@ -35,7 +38,11 @@
     left: 33.333%;
     width: 34rem;
     height: 34rem;
-    background: color-mix(in oklab, var(--color-signal-500) 12%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-signal-500) 12%,
+        transparent
+    );
 }
 
 .portfolio-hero__inner {
@@ -66,7 +73,12 @@
 
 .portfolio-hero__title-accent {
     display: block;
-    background: linear-gradient(90deg, var(--color-signal-300), var(--color-electric-300), var(--color-signal-400));
+    background: linear-gradient(
+        90deg,
+        var(--color-signal-300),
+        var(--color-electric-300),
+        var(--color-signal-400)
+    );
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -105,7 +117,11 @@
 
 .portfolio-metric {
     padding: 1.5rem;
-    background: color-mix(in oklab, var(--color-ink-900) 94%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-ink-900) 94%,
+        transparent
+    );
 }
 
 .portfolio-metric__value {
@@ -115,7 +131,9 @@
     font-weight: 600;
 }
 
+
 /* Showcase */
+
 .portfolio-showcase {
     position: relative;
     max-width: 72rem;
@@ -124,7 +142,21 @@
     padding: 1.25rem;
     border: 1px solid color-mix(in oklab, white 9%, transparent);
     border-radius: 2.75rem;
-    background: linear-gradient(135deg, color-mix(in oklab, var(--color-signal-500) 12%, transparent), #071127, color-mix(in oklab, var(--color-electric-400) 6%, transparent));
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(
+                in oklab,
+                var(--color-signal-500) 12%,
+                transparent
+            ),
+            #071127,
+            color-mix(
+                in oklab,
+                var(--color-electric-400) 6%,
+                transparent
+            )
+        );
 }
 
 .portfolio-showcase__glow {
@@ -132,7 +164,11 @@
     right: -6rem;
     width: 24rem;
     height: 24rem;
-    background: color-mix(in oklab, var(--color-signal-400) 14%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 14%,
+        transparent
+    );
 }
 
 .portfolio-showcase__grid {
@@ -193,7 +229,11 @@
 }
 
 .portfolio-sidebar__item--active {
-    background: color-mix(in oklab, var(--color-signal-400) 12%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 12%,
+        transparent
+    );
     color: var(--color-signal-100, var(--color-signal-200));
     font-weight: 600;
 }
@@ -221,9 +261,17 @@
 .portfolio-dashboard__status {
     width: fit-content;
     padding: 0.375rem 0.75rem;
-    border: 1px solid color-mix(in oklab, var(--color-signal-300) 20%, transparent);
+    border: 1px solid color-mix(
+        in oklab,
+        var(--color-signal-300) 20%,
+        transparent
+    );
     border-radius: 999px;
-    background: color-mix(in oklab, var(--color-signal-300) 7%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-signal-300) 7%,
+        transparent
+    );
     color: var(--color-signal-200);
     font-size: 0.75rem;
     font-weight: 600;
@@ -262,12 +310,45 @@
     border-radius: inherit;
 }
 
-.portfolio-progress__bar--clients { width: 75%; background: color-mix(in oklab, var(--color-signal-400) 55%, transparent); }
-.portfolio-progress__bar--projects { width: 50%; background: color-mix(in oklab, var(--color-electric-400) 50%, transparent); }
-.portfolio-progress__bar--contracts { width: 66.666%; background: color-mix(in oklab, #818cf8 45%, transparent); }
-.portfolio-progress__bar--journal { width: 80%; background: color-mix(in oklab, var(--color-signal-300) 55%, transparent); }
+.portfolio-progress__bar--clients {
+    width: 75%;
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 55%,
+        transparent
+    );
+}
+
+.portfolio-progress__bar--projects {
+    width: 50%;
+    background: color-mix(
+        in oklab,
+        var(--color-electric-400) 50%,
+        transparent
+    );
+}
+
+.portfolio-progress__bar--contracts {
+    width: 66.666%;
+    background: color-mix(
+        in oklab,
+        #818cf8 45%,
+        transparent
+    );
+}
+
+.portfolio-progress__bar--journal {
+    width: 80%;
+    background: color-mix(
+        in oklab,
+        var(--color-signal-300) 55%,
+        transparent
+    );
+}
+
 
 /* Editorial sections */
+
 .portfolio-editorial {
     display: grid;
     gap: 3.5rem;
@@ -293,6 +374,9 @@
     font-size: 1.125rem;
     line-height: 2rem;
 }
+
+
+/* Design direction */
 
 .portfolio-model__grid {
     display: grid;
@@ -329,6 +413,9 @@
     line-height: 1.75rem;
 }
 
+
+/* Architecture */
+
 .portfolio-architecture {
     display: grid;
     gap: 3.5rem;
@@ -338,7 +425,7 @@
     margin-top: 1.75rem;
 }
 
-.portfolio-architecture__copy p:last-child {
+.portfolio-architecture__copy p:not(.eyebrow) {
     max-width: 36rem;
     margin-top: 1.75rem;
     color: var(--color-mist-500);
@@ -346,39 +433,213 @@
 }
 
 .portfolio-architecture__diagram {
-    padding: 1.75rem;
+    display: grid;
+    align-content: center;
+    gap: 0;
+    padding: clamp(1.5rem, 4vw, 3rem);
     border-radius: 2.75rem;
-    color: var(--color-mist-300);
     font-family: var(--font-mono);
-    font-size: 0.875rem;
-    line-height: 1.75rem;
 }
 
-.portfolio-architecture__step {
-    padding-left: 1.25rem;
+.portfolio-architecture__layer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid color-mix(in oklab, white 8%, transparent);
+    border-radius: 1.25rem;
+    background: color-mix(in oklab, white 3%, transparent);
+}
+
+.portfolio-architecture__layer--accent {
+    border-color: color-mix(
+        in oklab,
+        var(--color-signal-300) 24%,
+        transparent
+    );
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 7%,
+        transparent
+    );
+}
+
+.portfolio-architecture__number {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid color-mix(
+        in oklab,
+        var(--color-electric-300) 18%,
+        transparent
+    );
+    border-radius: 1rem;
+    background: color-mix(
+        in oklab,
+        var(--color-electric-400) 8%,
+        transparent
+    );
+    color: var(--color-electric-300);
+    font-size: 0.75rem;
+}
+
+.portfolio-architecture__layer-label {
     color: var(--color-mist-700);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
 }
 
-.portfolio-architecture__accent--electric { color: var(--color-electric-300); }
-.portfolio-architecture__accent--signal { color: var(--color-signal-300); }
+.portfolio-architecture__layer-value {
+    margin-top: 0.35rem;
+    color: var(--color-mist-100);
+    font-family: var(--font-sans);
+    font-size: 1.075rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+.portfolio-architecture__connector {
+    height: 1.5rem;
+    padding-left: 3.15rem;
+    color: var(--color-mist-700);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.5rem;
+    opacity: 0.6;
+}
+
+
+/* What changed */
 
 .portfolio-trust {
     display: grid;
     gap: 3.5rem;
 }
 
+.portfolio-trust__content {
+    align-self: center;
+}
+
 .portfolio-trust__list {
     display: grid;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .portfolio-trust__item {
-    padding-block: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    min-height: 4.75rem;
+    padding: 1.15rem 1rem 1.15rem 0;
     border-bottom: 1px solid color-mix(in oklab, white 9%, transparent);
     color: var(--color-mist-500);
+    line-height: 1.55;
 }
 
+
+/* Explore */
+
+.portfolio-explore {
+    position: relative;
+    display: grid;
+    gap: 3rem;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 4rem);
+    border: 1px solid color-mix(in oklab, white 9%, transparent);
+    border-radius: 2.75rem;
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            color-mix(
+                in oklab,
+                var(--color-signal-400) 9%,
+                transparent
+            ),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            color-mix(in oklab, white 3.5%, transparent),
+            color-mix(
+                in oklab,
+                var(--color-electric-400) 4%,
+                transparent
+            )
+        );
+}
+
+.portfolio-explore__copy {
+    max-width: 48rem;
+}
+
+.portfolio-explore__title {
+    max-width: 14ch;
+    margin-top: 1.75rem;
+    color: var(--color-mist-50);
+    font-size: clamp(2.25rem, 4vw, 4rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+}
+
+.portfolio-explore__title span {
+    display: block;
+    color: var(--color-signal-300);
+}
+
+.portfolio-explore__description {
+    max-width: 40rem;
+    margin-top: 2rem;
+    color: var(--color-mist-500);
+    font-size: 1.075rem;
+    line-height: 1.9;
+}
+
+.portfolio-explore__actions {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.portfolio-explore__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
+    min-width: 13rem;
+}
+
+.portfolio-explore__button--secondary {
+    padding: 0.95rem 1.35rem;
+    border: 1px solid color-mix(in oklab, white 10%, transparent);
+    border-radius: 999px;
+    background: color-mix(in oklab, white 2%, transparent);
+    color: var(--color-mist-200);
+}
+
+.portfolio-explore__button--secondary:hover {
+    background: color-mix(in oklab, white 5%, transparent);
+    color: var(--color-mist-50);
+}
+
+.portfolio-explore__note {
+    margin: 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in oklab, white 8%, transparent);
+    color: var(--color-mist-700);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    opacity: 0.7;
+}
+
+
 /* Outcome */
+
 .portfolio-outcome {
     padding-block: 5rem;
 }
@@ -389,7 +650,16 @@
     padding: 2rem;
     border: 1px solid color-mix(in oklab, white 9%, transparent);
     border-radius: 2.75rem;
-    background: linear-gradient(135deg, color-mix(in oklab, white 6%, transparent), color-mix(in oklab, var(--color-signal-400) 7%, transparent));
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in oklab, white 6%, transparent),
+            color-mix(
+                in oklab,
+                var(--color-signal-400) 7%,
+                transparent
+            )
+        );
 }
 
 .portfolio-outcome__glow {
@@ -397,7 +667,11 @@
     right: -7rem;
     width: 24rem;
     height: 24rem;
-    background: color-mix(in oklab, var(--color-signal-400) 12%, transparent);
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 12%,
+        transparent
+    );
 }
 
 .portfolio-outcome__grid {
@@ -419,6 +693,9 @@
 .portfolio-outcome__cta {
     width: fit-content;
 }
+
+
+/* Responsive */
 
 @media (min-width: 40rem) {
     .portfolio-section {
@@ -448,6 +725,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .portfolio-trust__list {
+        column-gap: 2rem;
+    }
+
     .portfolio-model__card {
         min-height: 20rem;
     }
@@ -457,10 +738,6 @@
     .portfolio-trust__content h2,
     .portfolio-outcome__title {
         font-size: 3.75rem;
-    }
-
-    .portfolio-architecture__diagram {
-        padding: 2.5rem;
     }
 
     .portfolio-outcome {
@@ -476,11 +753,15 @@
     .portfolio-editorial__body {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .portfolio-explore__actions {
+        align-items: center;
+    }
 }
 
 @media (min-width: 64rem) {
     .portfolio-section {
-        padding-block: 9rem;
+        padding-block: 8rem;
     }
 
     .portfolio-hero__grid {
@@ -511,6 +792,31 @@
         grid-column: span 8;
     }
 
+    .portfolio-editorial__body {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+    }
+
+    .portfolio-editorial__body > p {
+        padding-inline: 2rem;
+    }
+
+    .portfolio-editorial__body > p:first-child {
+        padding-left: 0;
+    }
+
+    .portfolio-editorial__body > p:last-child {
+        padding-right: 0;
+    }
+
+    .portfolio-editorial__body > p + p {
+        border-left: 1px solid color-mix(
+            in oklab,
+            white 8%,
+            transparent
+        );
+    }
+
     .portfolio-model__grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -521,6 +827,22 @@
 
     .portfolio-architecture {
         grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+        align-items: center;
+    }
+
+    .portfolio-explore {
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 5rem;
+        align-items: end;
+    }
+
+    .portfolio-explore__actions {
+        align-items: stretch;
+        min-width: 14rem;
+    }
+
+    .portfolio-explore__note {
+        grid-column: 1 / -1;
     }
 
     .portfolio-outcome__panel {
