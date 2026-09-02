@@ -1,0 +1,56 @@
+{
+  "id": "CMP-AUTH-SHELL",
+  "name": "Authentication Shell",
+  "purpose": "Provide a focused no-indexed layout for private workspace authentication.",
+  "type": "custom",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "body"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "zoomAndReflow": {
+      "supportsZoom": true,
+      "supportsTextResize": true,
+      "supportsReflow": true,
+      "horizontalScrollingRequired": false
+    }
+  },
+  "responsive": {
+    "strategy": "adaptive"
+  },
+  "implementation": {
+    "template": "web/templates/layouts/auth-base.html",
+    "partial": false,
+    "htmx": false,
+    "selectors": [
+      ".auth-shell",
+      ".auth-layout",
+      ".auth-form-section"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/main.css",
+      "web/static/css/vanilla/admin.css"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "UXD-AUTH-SHELL-001",
+      "decision": "Use a distraction-free authentication shell.",
+      "reason": "Sign-in should not expose workspace navigation before authentication or compete with unrelated public navigation.",
+      "status": "accepted"
+    }
+  ]
+}

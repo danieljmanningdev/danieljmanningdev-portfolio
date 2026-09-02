@@ -1,0 +1,94 @@
+{
+  "id": "CMP-EMAIL-INPUT",
+  "name": "Email Input",
+  "purpose": "Collect an email address from the user.",
+  "type": "input",
+  "status": "implemented",
+  "content": {
+    "label": {
+      "value": "Email address",
+      "required": true
+    },
+    "placeholder": {
+      "value": "you@example.com"
+    }
+  },
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Hover",
+      "type": "hover",
+      "trigger": "A pointing device is positioned over the input."
+    },
+    {
+      "name": "Focus",
+      "type": "focus",
+      "trigger": "The input receives focus."
+    },
+    {
+      "name": "Invalid email",
+      "type": "error",
+      "trigger": "The entered value is missing or is not a valid email address."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "input",
+      "label": "Email address"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "errors": {
+      "identifiedInText": true,
+      "associatedWithField": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "properties": [
+    {
+      "name": "type",
+      "type": "enum",
+      "required": true,
+      "allowedValues": [
+        "email"
+      ]
+    },
+    {
+      "name": "autocomplete",
+      "type": "enum",
+      "required": true,
+      "allowedValues": [
+        "username",
+        "email"
+      ]
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "required": true
+    }
+  ],
+  "implementation": {
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      "input[type=\"email\"]",
+      ".auth-field__input",
+      ".workspace-field__control"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin.css",
+      "web/static/css/vanilla/admin-pages.css"
+    ]
+  }
+}

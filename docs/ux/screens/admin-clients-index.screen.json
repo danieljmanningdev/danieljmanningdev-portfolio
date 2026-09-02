@@ -1,0 +1,59 @@
+{
+  "id": "SCR-ADMIN-CLIENTS-INDEX",
+  "name": "Clients Index",
+  "purpose": "List client records and provide routes to create or open a client.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-RECORD-LIST",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Clients available",
+      "type": "default"
+    },
+    {
+      "name": "No clients",
+      "type": "empty",
+      "trigger": "No client records exist."
+    },
+    {
+      "name": "Clients unavailable",
+      "type": "error",
+      "trigger": "Client records cannot be loaded."
+    }
+  ],
+  "handler": "(*clients.ClientsHandler).listClients",
+  "route": "/dashboard/clients",
+  "template": "web/templates/pages/admin/clients/index.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CLIENT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Clients Index handler",
+      "path": "internal/clients/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ClientRepository.List"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "SCR-ADMIN-CLIENTS-SHOW",
+  "name": "Client Detail",
+  "purpose": "Show one client's contact details, company, notes, status and available actions.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-DETAIL",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Client available",
+      "type": "default"
+    },
+    {
+      "name": "Client not found",
+      "type": "not-found",
+      "trigger": "The requested client ID does not exist."
+    },
+    {
+      "name": "Client unavailable",
+      "type": "error",
+      "trigger": "The client record cannot be loaded."
+    }
+  ],
+  "handler": "(*clients.ClientsHandler).showClient",
+  "route": "/dashboard/clients/{id}",
+  "template": "web/templates/pages/admin/clients/show.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CLIENT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Client Detail handler",
+      "path": "internal/clients/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": true,
+    "fallback": "Viewing and editing remain standard navigation; deletion is HTMX-enhanced.",
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ClientRepository.GetByID"
+    ]
+  }
+}

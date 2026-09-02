@@ -1,0 +1,59 @@
+{
+  "id": "SCR-ADMIN-PROJECTS-INDEX",
+  "name": "Projects Index",
+  "purpose": "List project records with client, status and delivery context.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-RECORD-LIST",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Projects available",
+      "type": "default"
+    },
+    {
+      "name": "No projects",
+      "type": "empty",
+      "trigger": "No project records exist."
+    },
+    {
+      "name": "Projects unavailable",
+      "type": "error",
+      "trigger": "Project records cannot be loaded."
+    }
+  ],
+  "handler": "(*projects.ProjectsHandler).listProjects",
+  "route": "/dashboard/projects",
+  "template": "web/templates/pages/admin/projects/index.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-PROJECT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Projects Index handler",
+      "path": "internal/projects/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ProjectRepository.List"
+    ]
+  }
+}

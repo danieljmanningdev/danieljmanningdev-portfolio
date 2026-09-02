@@ -1,0 +1,44 @@
+{
+  "id": "SCR-SOFTWARE-DEVELOPMENT",
+  "name": "Software Development",
+  "purpose": "Explain the software development offer for maintainable digital products and applications.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Render failed",
+      "type": "error",
+      "trigger": "The page template cannot be rendered."
+    }
+  ],
+  "handler": "(*http.PublicPageHandler).ServeHTTP",
+  "route": "/software-development/",
+  "template": "web/templates/pages/public/software-development.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public page registry and handler",
+      "path": "internal/http/public_pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

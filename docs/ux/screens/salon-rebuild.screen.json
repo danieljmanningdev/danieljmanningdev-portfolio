@@ -1,0 +1,44 @@
+{
+  "id": "SCR-SALON-REBUILD",
+  "name": "Salon Rebuild Case Study",
+  "purpose": "Show how an early salon project was reconsidered through modern UI/UX, responsive design and server-rendered Go.",
+  "status": "implemented",
+  "components": [
+    "CMP-PUBLIC-SHELL",
+    "CMP-HEADER",
+    "CMP-FOOTER",
+    "CMP-RELATED-CONTENT"
+  ],
+  "states": [
+    {
+      "name": "Default",
+      "type": "default"
+    },
+    {
+      "name": "Render failed",
+      "type": "error",
+      "trigger": "The page template cannot be rendered."
+    }
+  ],
+  "handler": "(*http.PublicPageHandler).ServeHTTP",
+  "route": "/work/salon-rebuild/",
+  "template": "web/templates/pages/public/salon-rebuild.html",
+  "layout": "web/templates/layouts/base.html",
+  "flows": [
+    "FLOW-PUBLIC-EXPLORATION"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public page registry and handler",
+      "path": "internal/http/public_pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "CMP-WORKSPACE-RECORD-LIST",
+  "name": "Workspace Record List",
+  "purpose": "Present collections of clients, projects, contracts, posts or activity records with status and actions.",
+  "type": "list",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Populated",
+      "type": "default"
+    },
+    {
+      "name": "Empty",
+      "type": "empty",
+      "trigger": "The underlying collection contains no records."
+    },
+    {
+      "name": "Loading failed",
+      "type": "error",
+      "trigger": "The repository cannot return the collection."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "section"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    },
+    "colour": {
+      "notColourOnly": true
+    }
+  },
+  "responsive": {
+    "strategy": "fluid"
+  },
+  "implementation": {
+    "partial": true,
+    "htmx": true,
+    "selectors": [
+      ".crud-list",
+      ".crud-row",
+      ".publisher-post-list",
+      ".workspace-list"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-pages.css",
+      "web/static/css/vanilla/admin-special.css"
+    ]
+  },
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Client index example",
+      "path": "web/templates/pages/admin/clients/index.html",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Journal index example",
+      "path": "web/templates/pages/admin/blog/index.html",
+      "relationship": "implements"
+    }
+  ]
+}

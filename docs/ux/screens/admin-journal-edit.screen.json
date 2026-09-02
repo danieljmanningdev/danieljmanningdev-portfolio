@@ -1,0 +1,70 @@
+{
+  "id": "SCR-ADMIN-JOURNAL-EDIT",
+  "name": "Edit Journal Post",
+  "purpose": "Revise article content and publication state, preview a live post, or permanently delete it.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-MARKDOWN-EDITOR",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Draft post",
+      "type": "default"
+    },
+    {
+      "name": "Published post",
+      "type": "success",
+      "trigger": "The post status is published."
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Required post fields fail validation."
+    },
+    {
+      "name": "Post not found",
+      "type": "not-found",
+      "trigger": "The requested post ID does not exist."
+    },
+    {
+      "name": "Update failed",
+      "type": "error",
+      "trigger": "The journal post cannot be updated."
+    }
+  ],
+  "handler": "(*blog.AdminHandler).editPost",
+  "route": "/dashboard/blog/{id}/edit",
+  "template": "web/templates/pages/admin/blog/edit.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-JOURNAL-PUBLISHING"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Edit Journal Post handler",
+      "path": "internal/blog/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": true,
+    "fallback": "Editing, publishing and unpublishing use standard forms; deletion is HTMX-enhanced.",
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.BlogRepository.GetByID"
+    ]
+  }
+}

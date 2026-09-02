@@ -1,0 +1,58 @@
+{
+  "id": "SCR-ADMIN-PROJECTS-NEW",
+  "name": "New Project",
+  "purpose": "Create a project linked to a client with delivery status and optional dates.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Default form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted project values or dates fail validation."
+    },
+    {
+      "name": "Submission failed",
+      "type": "error",
+      "trigger": "The project record cannot be created."
+    }
+  ],
+  "handler": "(*projects.ProjectsHandler).renderNewProject",
+  "route": "/dashboard/projects/new",
+  "template": "web/templates/pages/admin/projects/new.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-PROJECT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "New Project handler",
+      "path": "internal/projects/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ClientRepository.List"
+    ]
+  }
+}

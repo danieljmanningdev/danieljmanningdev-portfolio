@@ -1,0 +1,58 @@
+{
+  "id": "SCR-ADMIN-DASHBOARD",
+  "name": "Workspace Dashboard",
+  "purpose": "Summarise active work, attention items, recent changes and direct routes to common workspace actions.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-EMPTY-STATE",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Summary available",
+      "type": "default"
+    },
+    {
+      "name": "No recent activity",
+      "type": "empty",
+      "trigger": "No audit events have been recorded yet."
+    },
+    {
+      "name": "Dashboard unavailable",
+      "type": "error",
+      "trigger": "The summary query cannot be completed."
+    }
+  ],
+  "handler": "(*http.DashboardHandler).showDashboard",
+  "route": "/dashboard/",
+  "template": "web/templates/pages/admin/dashboard.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-ADMIN-WORKSPACE"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Dashboard handler",
+      "path": "internal/http/dashboard.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.DashboardRepository.Summary"
+    ]
+  }
+}

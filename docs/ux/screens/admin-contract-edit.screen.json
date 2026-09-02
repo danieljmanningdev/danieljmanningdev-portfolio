@@ -1,0 +1,65 @@
+{
+  "id": "SCR-ADMIN-CONTRACTS-EDIT",
+  "name": "Edit Contract",
+  "purpose": "Update a contract's relationships, title, status, terms, value and notes.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Contract form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Submitted contract values, dates or relationships fail validation."
+    },
+    {
+      "name": "Contract not found",
+      "type": "not-found",
+      "trigger": "The requested contract ID does not exist."
+    },
+    {
+      "name": "Update failed",
+      "type": "error",
+      "trigger": "The contract record cannot be updated."
+    }
+  ],
+  "handler": "(*contracts.ContractsHandler).editContract",
+  "route": "/dashboard/contracts/{id}/edit",
+  "template": "web/templates/pages/admin/contracts/edit.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-CONTRACT-MANAGEMENT"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Edit Contract handler",
+      "path": "internal/contracts/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ],
+    "dataSources": [
+      "repository.ContractRepository.GetByID",
+      "repository.ClientRepository.List",
+      "repository.ProjectRepository.List"
+    ]
+  }
+}

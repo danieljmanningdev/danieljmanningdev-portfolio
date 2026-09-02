@@ -1,0 +1,79 @@
+{
+  "id": "FLOW-PUBLIC-JOURNAL",
+  "name": "Read the Journal",
+  "purpose": "Let a visitor browse published posts, open an article and continue to related work or another article.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-JOURNAL-INDEX",
+    "SCR-JOURNAL-ARTICLE"
+  ],
+  "steps": [
+    {
+      "id": "JOURNAL-INDEX",
+      "type": "screen",
+      "name": "Browse published posts",
+      "screen": "SCR-JOURNAL-INDEX"
+    },
+    {
+      "id": "SELECT-ARTICLE",
+      "type": "user-action",
+      "name": "Choose an article"
+    },
+    {
+      "id": "LOAD-ARTICLE",
+      "type": "system-action",
+      "name": "Load the published post and render its Markdown"
+    },
+    {
+      "id": "ARTICLE",
+      "type": "screen",
+      "name": "Read the article",
+      "screen": "SCR-JOURNAL-ARTICLE"
+    },
+    {
+      "id": "ARTICLE-NOT-FOUND",
+      "type": "failure",
+      "name": "Show page not found",
+      "screen": "SCR-NOT-FOUND"
+    },
+    {
+      "id": "CONTINUE",
+      "type": "user-action",
+      "name": "Choose a related destination"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "JOURNAL-INDEX",
+      "to": "SELECT-ARTICLE",
+      "trigger": "The visitor selects a post"
+    },
+    {
+      "from": "SELECT-ARTICLE",
+      "to": "LOAD-ARTICLE"
+    },
+    {
+      "from": "LOAD-ARTICLE",
+      "to": "ARTICLE",
+      "condition": "A published post matches the slug"
+    },
+    {
+      "from": "LOAD-ARTICLE",
+      "to": "ARTICLE-NOT-FOUND",
+      "condition": "No published post matches the slug"
+    },
+    {
+      "from": "ARTICLE",
+      "to": "CONTINUE",
+      "trigger": "The visitor selects a related link"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public journal handler",
+      "path": "internal/http/blog.go",
+      "relationship": "implements"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "CMP-WORKSPACE-EMPTY-STATE",
+  "name": "Workspace Empty State",
+  "purpose": "Explain when a workspace collection or activity feed has no records and provide the most useful next action.",
+  "type": "custom",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Visible",
+      "type": "empty",
+      "trigger": "A collection or feed contains no records."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "div"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    }
+  },
+  "implementation": {
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".workspace-empty"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/admin-pages.css",
+      "web/static/css/vanilla/admin-special.css"
+    ]
+  }
+}

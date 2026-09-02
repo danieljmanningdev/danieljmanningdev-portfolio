@@ -1,0 +1,56 @@
+{
+  "id": "SCR-ADMIN-JOURNAL-NEW",
+  "name": "New Journal Post",
+  "purpose": "Create a draft or published journal post with title, slug, excerpt and Markdown content.",
+  "status": "implemented",
+  "components": [
+    "CMP-ADMIN-SHELL",
+    "CMP-ADMIN-HEADER",
+    "CMP-ADMIN-FOOTER",
+    "CMP-WORKSPACE-FORM",
+    "CMP-MARKDOWN-EDITOR",
+    "CMP-STATUS-INDICATOR"
+  ],
+  "states": [
+    {
+      "name": "Draft form",
+      "type": "default"
+    },
+    {
+      "name": "Validation error",
+      "type": "error",
+      "trigger": "Required post fields fail validation."
+    },
+    {
+      "name": "Submission failed",
+      "type": "error",
+      "trigger": "The journal post cannot be created."
+    }
+  ],
+  "handler": "(*blog.AdminHandler).renderNewPost",
+  "route": "/dashboard/blog/new",
+  "template": "web/templates/pages/admin/blog/new.html",
+  "layout": "web/templates/layouts/admin-base.html",
+  "flows": [
+    "FLOW-JOURNAL-PUBLISHING"
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "New Journal Post handler",
+      "path": "internal/blog/pages.go",
+      "relationship": "implements"
+    }
+  ],
+  "implementation": {
+    "method": "GET",
+    "serverRendered": true,
+    "javascriptRequired": false,
+    "htmx": false,
+    "middleware": [
+      "NoIndex",
+      "NoStore",
+      "RequireAdmin"
+    ]
+  }
+}

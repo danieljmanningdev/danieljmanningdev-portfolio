@@ -1,0 +1,48 @@
+{
+  "id": "CMP-RELATED-CONTENT",
+  "name": "Related Content Section",
+  "purpose": "Give visitors a relevant next step after finishing a public page.",
+  "type": "list",
+  "status": "implemented",
+  "states": [
+    {
+      "name": "Populated",
+      "type": "default"
+    },
+    {
+      "name": "Not rendered",
+      "type": "empty",
+      "trigger": "The page data contains no related links."
+    }
+  ],
+  "accessibility": {
+    "standard": "WCAG-2.2-AA",
+    "semantics": {
+      "element": "section",
+      "ariaLabel": "Related work and capabilities"
+    },
+    "keyboard": {
+      "accessible": true
+    },
+    "focus": {
+      "visible": true
+    }
+  },
+  "responsive": {
+    "strategy": "fluid"
+  },
+  "implementation": {
+    "template": "web/templates/layouts/base.html",
+    "partial": true,
+    "htmx": false,
+    "selectors": [
+      ".related-content",
+      ".related-content__grid",
+      ".related-content__card"
+    ],
+    "stylesheets": [
+      "web/static/css/vanilla/pages/related.css",
+      "web/static/css/vanilla/components.css"
+    ]
+  }
+}

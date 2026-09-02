@@ -1,0 +1,126 @@
+{
+  "id": "FLOW-PUBLIC-EXPLORATION",
+  "name": "Public Site Exploration",
+  "purpose": "Let visitors move from the homepage to relevant work, services, writing or direct contact.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-HOME"
+  ],
+  "steps": [
+    {
+      "id": "HOME",
+      "type": "screen",
+      "name": "View homepage",
+      "screen": "SCR-HOME"
+    },
+    {
+      "id": "EXPLORE-WORK",
+      "type": "user-action",
+      "name": "Choose selected work"
+    },
+    {
+      "id": "VIEW-PORTFOLIO",
+      "type": "screen",
+      "name": "Read portfolio case study",
+      "screen": "SCR-PORTFOLIO-CASE-STUDY"
+    },
+    {
+      "id": "VIEW-SALON",
+      "type": "screen",
+      "name": "Read salon rebuild case study",
+      "screen": "SCR-SALON-REBUILD"
+    },
+    {
+      "id": "EXPLORE-SERVICE",
+      "type": "user-action",
+      "name": "Choose a capability"
+    },
+    {
+      "id": "VIEW-SERVICE",
+      "type": "screen",
+      "name": "Read a service page",
+      "screen": "SCR-WEB-DEVELOPMENT"
+    },
+    {
+      "id": "READ-JOURNAL",
+      "type": "user-action",
+      "name": "Open the journal"
+    },
+    {
+      "id": "VIEW-JOURNAL",
+      "type": "screen",
+      "name": "Browse journal posts",
+      "screen": "SCR-JOURNAL-INDEX"
+    },
+    {
+      "id": "CONTACT",
+      "type": "user-action",
+      "name": "Start a conversation"
+    },
+    {
+      "id": "EMAIL-CLIENT",
+      "type": "success",
+      "name": "Open the user's email client"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "HOME",
+      "to": "EXPLORE-WORK",
+      "trigger": "The visitor selects work"
+    },
+    {
+      "from": "EXPLORE-WORK",
+      "to": "VIEW-PORTFOLIO",
+      "condition": "The portfolio workspace case study is selected"
+    },
+    {
+      "from": "EXPLORE-WORK",
+      "to": "VIEW-SALON",
+      "condition": "The salon rebuild case study is selected"
+    },
+    {
+      "from": "HOME",
+      "to": "EXPLORE-SERVICE",
+      "trigger": "The visitor selects a capability"
+    },
+    {
+      "from": "EXPLORE-SERVICE",
+      "to": "VIEW-SERVICE"
+    },
+    {
+      "from": "HOME",
+      "to": "READ-JOURNAL",
+      "trigger": "The visitor selects the journal"
+    },
+    {
+      "from": "READ-JOURNAL",
+      "to": "VIEW-JOURNAL"
+    },
+    {
+      "from": "HOME",
+      "to": "CONTACT",
+      "trigger": "The visitor selects a project or conversation CTA"
+    },
+    {
+      "from": "CONTACT",
+      "to": "EMAIL-CLIENT"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "UXD-PUBLIC-FLOW-001",
+      "decision": "Keep public journeys as standard links and anchors.",
+      "reason": "Visitors should be able to explore the site without a client-side router or JavaScript dependency.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Public navigation template",
+      "path": "web/templates/components/header.html",
+      "relationship": "implements"
+    }
+  ]
+}

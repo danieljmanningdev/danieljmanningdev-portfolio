@@ -1,0 +1,160 @@
+{
+  "id": "FLOW-CLIENT-MANAGEMENT",
+  "name": "Client Management",
+  "purpose": "Create, review, update and delete client records in the private workspace.",
+  "status": "implemented",
+  "entryPoints": [
+    "SCR-ADMIN-CLIENTS-INDEX"
+  ],
+  "steps": [
+    {
+      "id": "INDEX",
+      "type": "screen",
+      "name": "Browse clients",
+      "screen": "SCR-ADMIN-CLIENTS-INDEX"
+    },
+    {
+      "id": "NEW",
+      "type": "screen",
+      "name": "Enter a new client",
+      "screen": "SCR-ADMIN-CLIENTS-NEW"
+    },
+    {
+      "id": "CREATE",
+      "type": "system-action",
+      "name": "Validate and create the client record"
+    },
+    {
+      "id": "SHOW",
+      "type": "screen",
+      "name": "Review the client",
+      "screen": "SCR-ADMIN-CLIENTS-SHOW"
+    },
+    {
+      "id": "EDIT",
+      "type": "screen",
+      "name": "Edit the client",
+      "screen": "SCR-ADMIN-CLIENTS-EDIT"
+    },
+    {
+      "id": "UPDATE",
+      "type": "system-action",
+      "name": "Validate and update the client record"
+    },
+    {
+      "id": "DELETE",
+      "type": "user-action",
+      "name": "Confirm deletion"
+    },
+    {
+      "id": "REMOVE",
+      "type": "system-action",
+      "name": "Delete the client record"
+    },
+    {
+      "id": "VALIDATION-ERROR",
+      "type": "failure",
+      "name": "Show field or general validation errors"
+    },
+    {
+      "id": "NOT-FOUND",
+      "type": "failure",
+      "name": "Return a not-found response"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "INDEX",
+      "to": "NEW",
+      "trigger": "The administrator selects Add client"
+    },
+    {
+      "from": "NEW",
+      "to": "CREATE",
+      "trigger": "The administrator submits the form"
+    },
+    {
+      "from": "CREATE",
+      "to": "SHOW",
+      "condition": "Validation passes and creation succeeds"
+    },
+    {
+      "from": "CREATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Parsing or validation fails"
+    },
+    {
+      "from": "INDEX",
+      "to": "SHOW",
+      "trigger": "The administrator opens a client"
+    },
+    {
+      "from": "SHOW",
+      "to": "EDIT",
+      "trigger": "The administrator selects Edit"
+    },
+    {
+      "from": "EDIT",
+      "to": "UPDATE",
+      "trigger": "The administrator submits changes"
+    },
+    {
+      "from": "UPDATE",
+      "to": "SHOW",
+      "condition": "Validation passes and the update succeeds"
+    },
+    {
+      "from": "UPDATE",
+      "to": "VALIDATION-ERROR",
+      "condition": "Validation fails"
+    },
+    {
+      "from": "SHOW",
+      "to": "DELETE",
+      "trigger": "The administrator activates Delete"
+    },
+    {
+      "from": "DELETE",
+      "to": "REMOVE",
+      "trigger": "The confirmation is accepted"
+    },
+    {
+      "from": "REMOVE",
+      "to": "INDEX",
+      "condition": "Deletion succeeds"
+    },
+    {
+      "from": "SHOW",
+      "to": "NOT-FOUND",
+      "condition": "The client no longer exists"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "UXD-CLIENT-001",
+      "decision": "Create new clients with active status.",
+      "reason": "The create form should not accept a client-controlled initial lifecycle status.",
+      "status": "accepted"
+    }
+  ],
+  "references": [
+    {
+      "type": "implementation",
+      "label": "Client route handler",
+      "path": "internal/clients/handler.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Client commands",
+      "path": "internal/clients/commands.go",
+      "relationship": "implements"
+    },
+    {
+      "type": "implementation",
+      "label": "Client pages",
+      "path": "internal/clients/pages.go",
+      "relationship": "implements"
+    }
+  ]
+}
