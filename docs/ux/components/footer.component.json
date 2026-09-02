@@ -1,0 +1,13 @@
+{
+    "id": "CMP-FOOTER",
+    "name": "Footer",
+    "purpose": "Provide additional information and links at the bottom of the page",
+    "type": "navigation",
+    "status": "implemented",
+
+    "implementation": {
+        "template": "web/templates/components/footer.html",
+        "partial": true,
+        "htmx": false
+    }
+}

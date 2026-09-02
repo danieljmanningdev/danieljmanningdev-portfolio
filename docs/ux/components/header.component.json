@@ -1,0 +1,13 @@
+{
+    "id": "CMP-HEADER",
+    "name": "Header Navigation",
+    "purpose": "Allow users to browse through the website with ease",
+    "type": "navigation",
+    "status": "implemented",
+    
+    "implementation": {
+        "template": "web/templates/components/header.html",
+        "partial": true,
+        "htmx": false
+    }
+}
