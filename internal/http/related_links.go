@@ -32,6 +32,15 @@ func portfolioCaseStudyRelatedLink() relatedLink {
 	}
 }
 
+func portfolioRepositoryRelatedLink() relatedLink {
+	return relatedLink{
+		Label:       "Source code",
+		Title:       "Inspect the portfolio repository",
+		Description: "Review the Go application, tests, templates, security controls and deployment configuration behind this case study.",
+		URL:         "https://github.com/danieljmanningdev/danieljmanningdev-portfolio",
+	}
+}
+
 func webDesignRelatedLink() relatedLink {
 	return relatedLink{
 		Label:       "Service",

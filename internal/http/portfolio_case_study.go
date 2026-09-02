@@ -75,9 +75,9 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 			"web application security",
 		),
 	).withRelatedLinks(
+		portfolioRepositoryRelatedLink(),
 		webDevelopmentRelatedLink(),
 		softwareDevelopmentRelatedLink(),
-		journalRelatedLink(),
 	).withRequest(r)
 
 	w.Header().Set(
