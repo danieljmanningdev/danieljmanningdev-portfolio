@@ -18,7 +18,9 @@
 }
 
 
-/* Hero */
+/* ==========================================================================
+   Hero
+   ========================================================================== */
 
 .portfolio-hero {
     position: relative;
@@ -38,6 +40,7 @@
     left: 33.333%;
     width: 34rem;
     height: 34rem;
+
     background: color-mix(
         in oklab,
         var(--color-signal-500) 12%,
@@ -63,29 +66,36 @@
 
 .portfolio-hero__title {
     margin-top: 2rem;
+
     color: var(--color-mist-50);
+
     font-size: clamp(3.7rem, 8vw, 8rem);
     font-weight: 500;
     line-height: 0.88;
     letter-spacing: -0.065em;
+
     text-wrap: balance;
 }
 
 .portfolio-hero__title-accent {
     display: block;
+
     background: linear-gradient(
         90deg,
         var(--color-signal-300),
         var(--color-electric-300),
         var(--color-signal-400)
     );
+
     background-clip: text;
     -webkit-background-clip: text;
+
     color: transparent;
 }
 
 .portfolio-hero__summary {
     color: var(--color-mist-300);
+
     font-size: 1.125rem;
     line-height: 2rem;
 }
@@ -94,29 +104,52 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+
     margin-top: 2rem;
+
     color: var(--color-mist-300);
+
     font-size: 0.75rem;
 }
 
 .portfolio-tag {
     padding: 0.375rem 0.75rem;
-    border: 1px solid color-mix(in oklab, white 9%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 9%,
+        transparent
+    );
+
     border-radius: 999px;
 }
 
 .portfolio-metrics {
     display: grid;
     gap: 1px;
+
     overflow: hidden;
+
     margin-top: 3.5rem;
-    border: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
+
     border-radius: 2rem;
-    background: color-mix(in oklab, white 8%, transparent);
+
+    background: color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
 }
 
 .portfolio-metric {
     padding: 1.5rem;
+
     background: color-mix(
         in oklab,
         var(--color-ink-900) 94%,
@@ -126,22 +159,36 @@
 
 .portfolio-metric__value {
     margin-top: 0.75rem;
+
     color: var(--color-mist-50);
+
     font-size: 1.125rem;
     font-weight: 600;
 }
 
 
-/* Showcase */
+/* ==========================================================================
+   Showcase
+   ========================================================================== */
 
 .portfolio-showcase {
     position: relative;
+
     max-width: 72rem;
     margin-inline: auto;
+
     overflow: hidden;
+
     padding: 1.25rem;
-    border: 1px solid color-mix(in oklab, white 9%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 9%,
+        transparent
+    );
+
     border-radius: 2.75rem;
+
     background:
         linear-gradient(
             135deg,
@@ -162,8 +209,10 @@
 .portfolio-showcase__glow {
     top: -6rem;
     right: -6rem;
+
     width: 24rem;
     height: 24rem;
+
     background: color-mix(
         in oklab,
         var(--color-signal-400) 14%,
@@ -173,15 +222,26 @@
 
 .portfolio-showcase__grid {
     position: relative;
+
     display: grid;
     gap: 1.25rem;
 }
 
 .portfolio-sidebar,
 .portfolio-dashboard {
-    border: 1px solid color-mix(in oklab, white 8%, transparent);
+    border: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
+
     border-radius: 2rem;
-    background: color-mix(in oklab, #050b18 82%, transparent);
+
+    background: color-mix(
+        in oklab,
+        #050b18 82%,
+        transparent
+    );
 }
 
 .portfolio-sidebar {
@@ -192,18 +252,26 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border-bottom: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
 }
 
 .portfolio-sidebar__logo {
     width: 2.5rem;
     height: 2.5rem;
+
     object-fit: contain;
 }
 
 .portfolio-sidebar__title {
     color: var(--color-mist-100);
+
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -211,20 +279,26 @@
 
 .portfolio-sidebar__subtitle {
     margin-top: 0.25rem;
+
     color: var(--color-mist-700);
+
     font-size: 0.75rem;
 }
 
 .portfolio-sidebar__nav {
     display: grid;
     gap: 0.5rem;
+
     margin-top: 1.5rem;
 }
 
 .portfolio-sidebar__item {
     padding: 0.75rem 1rem;
+
     border-radius: 1rem;
+
     color: var(--color-mist-500);
+
     font-size: 0.875rem;
 }
 
@@ -234,7 +308,12 @@
         var(--color-signal-400) 12%,
         transparent
     );
-    color: var(--color-signal-100, var(--color-signal-200));
+
+    color: var(
+        --color-signal-100,
+        var(--color-signal-200)
+    );
+
     font-weight: 600;
 }
 
@@ -246,13 +325,21 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border-bottom: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
 }
 
 .portfolio-dashboard__title {
     margin-top: 0.75rem;
+
     color: var(--color-mist-50);
+
     font-size: 1.875rem;
     font-weight: 500;
     letter-spacing: -0.04em;
@@ -260,19 +347,25 @@
 
 .portfolio-dashboard__status {
     width: fit-content;
+
     padding: 0.375rem 0.75rem;
+
     border: 1px solid color-mix(
         in oklab,
         var(--color-signal-300) 20%,
         transparent
     );
+
     border-radius: 999px;
+
     background: color-mix(
         in oklab,
         var(--color-signal-300) 7%,
         transparent
     );
+
     color: var(--color-signal-200);
+
     font-size: 0.75rem;
     font-weight: 600;
 }
@@ -280,38 +373,62 @@
 .portfolio-dashboard__cards {
     display: grid;
     gap: 1rem;
+
     margin-top: 1.5rem;
 }
 
 .portfolio-dashboard__card {
     padding: 1.25rem;
-    border: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
+
     border-radius: 1.5rem;
-    background: color-mix(in oklab, white 3%, transparent);
+
+    background: color-mix(
+        in oklab,
+        white 3%,
+        transparent
+    );
 }
 
 .portfolio-dashboard__card-title {
     margin-top: 2rem;
+
     color: var(--color-mist-50);
+
     font-size: 1.5rem;
     font-weight: 500;
 }
 
 .portfolio-progress {
     height: 0.375rem;
+
     margin-top: 1.25rem;
+
     overflow: hidden;
+
     border-radius: 999px;
-    background: color-mix(in oklab, white 6%, transparent);
+
+    background: color-mix(
+        in oklab,
+        white 6%,
+        transparent
+    );
 }
 
 .portfolio-progress__bar {
     height: 100%;
+
     border-radius: inherit;
 }
 
 .portfolio-progress__bar--clients {
     width: 75%;
+
     background: color-mix(
         in oklab,
         var(--color-signal-400) 55%,
@@ -321,6 +438,7 @@
 
 .portfolio-progress__bar--projects {
     width: 50%;
+
     background: color-mix(
         in oklab,
         var(--color-electric-400) 50%,
@@ -330,6 +448,7 @@
 
 .portfolio-progress__bar--contracts {
     width: 66.666%;
+
     background: color-mix(
         in oklab,
         #818cf8 45%,
@@ -339,6 +458,7 @@
 
 .portfolio-progress__bar--journal {
     width: 80%;
+
     background: color-mix(
         in oklab,
         var(--color-signal-300) 55%,
@@ -347,7 +467,9 @@
 }
 
 
-/* Editorial sections */
+/* ==========================================================================
+   Editorial sections
+   ========================================================================== */
 
 .portfolio-editorial {
     display: grid;
@@ -359,38 +481,48 @@
 .portfolio-trust__content h2,
 .portfolio-outcome__title {
     color: var(--color-mist-50);
+
     font-size: 2.25rem;
     font-weight: 500;
     line-height: 1.04;
     letter-spacing: -0.045em;
+
     text-wrap: balance;
 }
 
 .portfolio-editorial__body {
     display: grid;
     gap: 2rem;
+
     margin-top: 2.5rem;
+
     color: var(--color-mist-500);
+
     font-size: 1.125rem;
     line-height: 2rem;
 }
 
 
-/* Design direction */
+/* ==========================================================================
+   Design direction
+   ========================================================================== */
 
 .portfolio-model__grid {
     display: grid;
     gap: 1rem;
+
     margin-top: 3rem;
 }
 
 .portfolio-model__card {
     padding: 1.75rem;
+
     border-radius: 2rem;
 }
 
 .portfolio-model__index {
     color: var(--color-signal-300);
+
     font-family: var(--font-mono);
     font-size: 0.875rem;
 }
@@ -401,7 +533,9 @@
 
 .portfolio-model__title {
     margin-top: 4rem;
+
     color: var(--color-mist-50);
+
     font-size: 1.875rem;
     font-weight: 500;
     letter-spacing: -0.04em;
@@ -409,12 +543,16 @@
 
 .portfolio-model__copy {
     margin-top: 1.25rem;
+
     color: var(--color-mist-500);
+
     line-height: 1.75rem;
 }
 
 
-/* Architecture */
+/* ==========================================================================
+   Architecture
+   ========================================================================== */
 
 .portfolio-architecture {
     display: grid;
@@ -427,8 +565,11 @@
 
 .portfolio-architecture__copy p:not(.eyebrow) {
     max-width: 36rem;
+
     margin-top: 1.75rem;
+
     color: var(--color-mist-500);
+
     line-height: 1.75rem;
 }
 
@@ -436,21 +577,37 @@
     display: grid;
     align-content: center;
     gap: 0;
+
     padding: clamp(1.5rem, 4vw, 3rem);
+
     border-radius: 2.75rem;
+
     font-family: var(--font-mono);
 }
 
 .portfolio-architecture__layer {
     position: relative;
+
     display: grid;
     grid-template-columns: 3rem minmax(0, 1fr);
-    gap: 1.25rem;
     align-items: center;
+    gap: 1.25rem;
+
     padding: 1.5rem 1.75rem;
-    border: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
+
     border-radius: 1.25rem;
-    background: color-mix(in oklab, white 3%, transparent);
+
+    background: color-mix(
+        in oklab,
+        white 3%,
+        transparent
+    );
 }
 
 .portfolio-architecture__layer--accent {
@@ -459,6 +616,7 @@
         var(--color-signal-300) 24%,
         transparent
     );
+
     background: color-mix(
         in oklab,
         var(--color-signal-400) 7%,
@@ -469,25 +627,32 @@
 .portfolio-architecture__number {
     display: grid;
     place-items: center;
+
     width: 3rem;
     height: 3rem;
+
     border: 1px solid color-mix(
         in oklab,
         var(--color-electric-300) 18%,
         transparent
     );
+
     border-radius: 1rem;
+
     background: color-mix(
         in oklab,
         var(--color-electric-400) 8%,
         transparent
     );
+
     color: var(--color-electric-300);
+
     font-size: 0.75rem;
 }
 
 .portfolio-architecture__layer-label {
     color: var(--color-mist-700);
+
     font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -496,7 +661,9 @@
 
 .portfolio-architecture__layer-value {
     margin-top: 0.35rem;
+
     color: var(--color-mist-100);
+
     font-family: var(--font-sans);
     font-size: 1.075rem;
     font-weight: 600;
@@ -505,16 +672,22 @@
 
 .portfolio-architecture__connector {
     height: 1.5rem;
+
     padding-left: 3.15rem;
+
     color: var(--color-mist-700);
+
     font-family: var(--font-mono);
     font-size: 0.8rem;
     line-height: 1.5rem;
+
     opacity: 0.6;
 }
 
 
-/* What changed */
+/* ==========================================================================
+   What changed
+   ========================================================================== */
 
 .portfolio-trust {
     display: grid;
@@ -527,30 +700,52 @@
 
 .portfolio-trust__list {
     display: grid;
+
     margin-top: 2rem;
 }
 
 .portfolio-trust__item {
     display: flex;
     align-items: flex-start;
+
     min-height: 4.75rem;
+
     padding: 1.15rem 1rem 1.15rem 0;
-    border-bottom: 1px solid color-mix(in oklab, white 9%, transparent);
+
+    border-bottom: 1px solid color-mix(
+        in oklab,
+        white 9%,
+        transparent
+    );
+
     color: var(--color-mist-500);
+
     line-height: 1.55;
 }
 
 
-/* Explore */
+/* ==========================================================================
+   Explore
+   ========================================================================== */
 
 .portfolio-explore {
     position: relative;
+
     display: grid;
     gap: 3rem;
+
     overflow: hidden;
+
     padding: clamp(2rem, 5vw, 4rem);
-    border: 1px solid color-mix(in oklab, white 9%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 9%,
+        transparent
+    );
+
     border-radius: 2.75rem;
+
     background:
         radial-gradient(
             circle at 90% 10%,
@@ -563,7 +758,11 @@
         ),
         linear-gradient(
             135deg,
-            color-mix(in oklab, white 3.5%, transparent),
+            color-mix(
+                in oklab,
+                white 3.5%,
+                transparent
+            ),
             color-mix(
                 in oklab,
                 var(--color-electric-400) 4%,
@@ -578,24 +777,32 @@
 
 .portfolio-explore__title {
     max-width: 14ch;
+
     margin-top: 1.75rem;
+
     color: var(--color-mist-50);
+
     font-size: clamp(2.25rem, 4vw, 4rem);
     font-weight: 500;
     line-height: 1;
     letter-spacing: -0.05em;
+
     text-wrap: balance;
 }
 
 .portfolio-explore__title span {
     display: block;
+
     color: var(--color-signal-300);
 }
 
 .portfolio-explore__description {
     max-width: 40rem;
+
     margin-top: 2rem;
+
     color: var(--color-mist-500);
+
     font-size: 1.075rem;
     line-height: 1.9;
 }
@@ -610,35 +817,64 @@
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
+
     width: 100%;
     min-width: 13rem;
 }
 
 .portfolio-explore__button--secondary {
     padding: 0.95rem 1.35rem;
-    border: 1px solid color-mix(in oklab, white 10%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 10%,
+        transparent
+    );
+
     border-radius: 999px;
-    background: color-mix(in oklab, white 2%, transparent);
+
+    background: color-mix(
+        in oklab,
+        white 2%,
+        transparent
+    );
+
     color: var(--color-mist-200);
 }
 
 .portfolio-explore__button--secondary:hover {
-    background: color-mix(in oklab, white 5%, transparent);
+    background: color-mix(
+        in oklab,
+        white 5%,
+        transparent
+    );
+
     color: var(--color-mist-50);
 }
 
 .portfolio-explore__note {
     margin: 0;
+
     padding-top: 1.5rem;
-    border-top: 1px solid color-mix(in oklab, white 8%, transparent);
+
+    border-top: 1px solid color-mix(
+        in oklab,
+        white 8%,
+        transparent
+    );
+
     color: var(--color-mist-700);
+
     font-size: 0.75rem;
     line-height: 1.6;
+
     opacity: 0.7;
 }
 
 
-/* Outcome */
+/* ==========================================================================
+   Outcome
+   ========================================================================== */
 
 .portfolio-outcome {
     padding-block: 5rem;
@@ -646,14 +882,27 @@
 
 .portfolio-outcome__panel {
     position: relative;
+
     overflow: hidden;
+
     padding: 2rem;
-    border: 1px solid color-mix(in oklab, white 9%, transparent);
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 9%,
+        transparent
+    );
+
     border-radius: 2.75rem;
+
     background:
         linear-gradient(
             135deg,
-            color-mix(in oklab, white 6%, transparent),
+            color-mix(
+                in oklab,
+                white 6%,
+                transparent
+            ),
             color-mix(
                 in oklab,
                 var(--color-signal-400) 7%,
@@ -665,8 +914,10 @@
 .portfolio-outcome__glow {
     top: -7rem;
     right: -7rem;
+
     width: 24rem;
     height: 24rem;
+
     background: color-mix(
         in oklab,
         var(--color-signal-400) 12%,
@@ -676,13 +927,16 @@
 
 .portfolio-outcome__grid {
     position: relative;
+
     display: grid;
     gap: 2.5rem;
 }
 
 .portfolio-outcome__title {
-    margin-top: 1.75rem;
     max-width: 64rem;
+
+    margin-top: 1.75rem;
+
     line-height: 1.02;
 }
 
@@ -695,83 +949,75 @@
 }
 
 
-/* Homepage featured Salon Rebuild preview */
+/* ==========================================================================
+   Homepage featured Salon Rebuild
+   ========================================================================== */
 
 .home-work-card__layout {
     display: grid;
-    gap: 3rem;
     align-items: center;
+    gap: 3rem;
 }
 
 .home-work-preview {
     position: relative;
+
     align-self: center;
+
     width: 100%;
-    min-height: 0;
-    height: fit-content;
-    padding: 0;
-    background: transparent;
+    min-width: 0;
 }
 
 .home-work-preview__glow {
     position: absolute;
-    inset: 8%;
+    inset: 12% 10%;
     z-index: 0;
+
     border-radius: 2rem;
+
     background: color-mix(
         in oklab,
-        var(--color-signal-400) 16%,
+        var(--color-signal-400) 14%,
         transparent
     );
-    filter: blur(48px);
+
+    filter: blur(52px);
+
     pointer-events: none;
 }
 
 .home-work-preview__image-frame {
     position: relative;
     z-index: 1;
+
     width: 100%;
+
     overflow: hidden;
-    padding: 1.25rem;
 
     border: 1px solid color-mix(
         in oklab,
-        white 10%,
+        white 9%,
         transparent
     );
 
     border-radius: 2rem;
 
-    background:
-        linear-gradient(
-            135deg,
-            color-mix(
-                in oklab,
-                var(--color-signal-500) 8%,
-                transparent
-            ),
-            color-mix(
-                in oklab,
-                var(--color-ink-900) 96%,
-                transparent
-            )
-        );
+    background: #071127;
 
     box-shadow:
-        0 1.5rem 4rem rgb(0 0 0 / 0.24),
+        0 1.5rem 4rem rgb(0 0 0 / 0.28),
         inset 0 1px 0 rgb(255 255 255 / 0.04);
 }
 
 .home-work-preview__image {
     display: block;
+
     width: 100%;
     height: auto;
-    object-fit: contain;
 
-    border-radius: 0.85rem;
+    border-radius: inherit;
 
-    box-shadow:
-        0 1rem 2.5rem rgb(0 0 0 / 0.28);
+    object-fit: cover;
 
     transition:
         transform 450ms ease,
@@ -779,12 +1025,15 @@
 }
 
 .home-work-card:hover .home-work-preview__image {
-    transform: scale(1.015);
-    filter: brightness(1.04);
+    transform: scale(1.012);
+
+    filter: brightness(1.03);
 }
 
 
-/* Responsive */
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
 
 @media (min-width: 40rem) {
     .portfolio-section {
@@ -792,7 +1041,11 @@
     }
 
     .portfolio-metrics {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
     }
 
     .portfolio-showcase {
@@ -811,7 +1064,11 @@
 
     .portfolio-dashboard__cards,
     .portfolio-trust__list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
     }
 
     .portfolio-trust__list {
@@ -838,9 +1095,14 @@
     }
 }
 
+
 @media (min-width: 48rem) {
     .portfolio-editorial__body {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
     }
 
     .portfolio-explore__actions {
@@ -848,13 +1110,17 @@
     }
 }
 
+
 @media (min-width: 64rem) {
     .portfolio-section {
         padding-block: 8rem;
     }
 
     .portfolio-hero__grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        grid-template-columns:
+            minmax(0, 1.15fr)
+            minmax(0, 0.85fr);
+
         align-items: end;
     }
 
@@ -863,12 +1129,18 @@
     }
 
     .portfolio-showcase__grid {
-        grid-template-columns: minmax(0, 0.36fr) minmax(0, 1fr);
+        grid-template-columns:
+            minmax(0, 0.36fr)
+            minmax(0, 1fr);
     }
 
     .portfolio-editorial,
     .portfolio-trust {
-        grid-template-columns: repeat(12, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                12,
+                minmax(0, 1fr)
+            );
     }
 
     .portfolio-editorial__label,
@@ -882,7 +1154,12 @@
     }
 
     .portfolio-editorial__body {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
+
         gap: 0;
     }
 
@@ -907,7 +1184,11 @@
     }
 
     .portfolio-model__grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
     }
 
     .portfolio-model__card--offset {
@@ -915,18 +1196,26 @@
     }
 
     .portfolio-architecture {
-        grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+        grid-template-columns:
+            minmax(0, 0.78fr)
+            minmax(0, 1.22fr);
+
         align-items: center;
     }
 
     .portfolio-explore {
-        grid-template-columns: minmax(0, 1fr) auto;
-        column-gap: 5rem;
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto;
+
         align-items: end;
+
+        column-gap: 5rem;
     }
 
     .portfolio-explore__actions {
         align-items: stretch;
+
         min-width: 14rem;
     }
 
@@ -939,12 +1228,20 @@
     }
 
     .portfolio-outcome__grid {
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto;
+
         align-items: end;
     }
 
     .home-work-card__layout {
-        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        grid-template-columns:
+            minmax(0, 0.88fr)
+            minmax(0, 1.12fr);
+
         align-items: center;
+
+        gap: 3.5rem;
     }
 }
