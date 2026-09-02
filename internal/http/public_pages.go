@@ -63,10 +63,10 @@ var PublicPages = []PublicPageDefinition{
 		Priority:        "0.9",
 	},
 	{
-		Path:            "/salon-rebuild/",
+		Path:            "/work/salon-rebuild/",
 		Template:        "public/salon-rebuild.html",
-		Title:           "Portfolio & Salon Rebuild | Daniel J. Manning",
-		Description:     "A portfolio and secure personal workspace designed as one coherent product — clear in public, focused in private and deliberately lightweight throughout.",
+		Title:           "Salon Rebuild | Daniel J. Manning",
+		Description:     "Revisiting an early freelance salon project with a modern UI/UX, responsive design and server-rendered Go implementation.",
 		ChangeFrequency: "monthly",
 		Priority:        "0.9",
 	},

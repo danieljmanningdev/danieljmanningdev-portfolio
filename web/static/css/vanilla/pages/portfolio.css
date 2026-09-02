@@ -695,6 +695,95 @@
 }
 
 
+/* Homepage featured Salon Rebuild preview */
+
+.home-work-card__layout {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+}
+
+.home-work-preview {
+    position: relative;
+    align-self: center;
+    width: 100%;
+    min-height: 0;
+    height: fit-content;
+    padding: 0;
+    background: transparent;
+}
+
+.home-work-preview__glow {
+    position: absolute;
+    inset: 8%;
+    z-index: 0;
+    border-radius: 2rem;
+    background: color-mix(
+        in oklab,
+        var(--color-signal-400) 16%,
+        transparent
+    );
+    filter: blur(48px);
+    pointer-events: none;
+}
+
+.home-work-preview__image-frame {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    overflow: hidden;
+    padding: 1.25rem;
+
+    border: 1px solid color-mix(
+        in oklab,
+        white 10%,
+        transparent
+    );
+
+    border-radius: 2rem;
+
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(
+                in oklab,
+                var(--color-signal-500) 8%,
+                transparent
+            ),
+            color-mix(
+                in oklab,
+                var(--color-ink-900) 96%,
+                transparent
+            )
+        );
+
+    box-shadow:
+        0 1.5rem 4rem rgb(0 0 0 / 0.24),
+        inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+.home-work-preview__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+
+    border-radius: 0.85rem;
+
+    box-shadow:
+        0 1rem 2.5rem rgb(0 0 0 / 0.28);
+
+    transition:
+        transform 450ms ease,
+        filter 450ms ease;
+}
+
+.home-work-card:hover .home-work-preview__image {
+    transform: scale(1.015);
+    filter: brightness(1.04);
+}
+
+
 /* Responsive */
 
 @media (min-width: 40rem) {
@@ -852,5 +941,10 @@
     .portfolio-outcome__grid {
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: end;
+    }
+
+    .home-work-card__layout {
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        align-items: center;
     }
 }
