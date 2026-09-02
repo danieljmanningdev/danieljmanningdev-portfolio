@@ -1,0 +1,22 @@
+{
+    "id": "SCR-001",
+    "name": "Home Screen",
+    "purpose": "Showcase main work and explain why danieljmanningdev.com exists",
+
+    "components": [
+        "CMP-HEADER",
+        "CMP-FOOTER"
+    ],
+
+    "states": [
+        {
+            "name": "Default",
+            "type": "default"
+        }
+    ],
+
+    "handler": "deps.HomeHandler",
+    "route": "/",
+    "status": "implemented",
+    "template": "web/templates/pages/public/home.html"
+}
