@@ -24,13 +24,7 @@
 
     "status": {
       "type": "string",
-      "enum": [
-        "concept",
-        "draft",
-        "approved",
-        "implemented",
-        "deprecated"
-      ]
+      "enum": ["concept", "draft", "approved", "implemented", "deprecated"]
     },
 
     "type": {
@@ -58,6 +52,11 @@
 
     "content": {
       "$ref": "../definitions/content.schema.json"
+    },
+
+    "template": {
+      "type": "string",
+      "minLength": 1
     },
 
     "states": {
@@ -115,12 +114,7 @@
     }
   },
 
-  "required": [
-    "id",
-    "name",
-    "purpose",
-    "type"
-  ],
+  "required": ["id", "name", "purpose", "type"],
 
   "additionalProperties": false,
 
@@ -146,9 +140,7 @@
         }
       },
 
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
 
       "additionalProperties": false
     },
@@ -164,12 +156,7 @@
 
         "type": {
           "type": "string",
-          "enum": [
-            "string",
-            "number",
-            "boolean",
-            "enum"
-          ]
+          "enum": ["string", "number", "boolean", "enum"]
         },
 
         "required": {
@@ -185,10 +172,7 @@
         }
       },
 
-      "required": [
-        "name",
-        "type"
-      ],
+      "required": ["name", "type"],
 
       "additionalProperties": false
     },
