@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "Content",
+  "description": "Describes interface content, labels, messages, and content constraints for a screen or component.",
+
+  "type": "object",
+
+  "properties": {
+    "heading": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "subheading": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "body": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "label": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "helperText": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "placeholder": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "ariaLabel": {
+      "$ref": "#/$defs/textContent"
+    },
+
+    "messages": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/message"
+      }
+    },
+
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/actionContent"
+      }
+    },
+
+    "constraints": {
+      "$ref": "#/$defs/contentConstraints"
+    },
+
+    "localisation": {
+      "$ref": "#/$defs/localisation"
+    },
+
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+
+  "additionalProperties": false,
+
+  "$defs": {
+    "textContent": {
+      "type": "object",
+
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+
+        "purpose": {
+          "type": "string"
+        },
+
+        "tone": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "informative",
+            "instructional",
+            "encouraging",
+            "warning",
+            "error",
+            "success",
+            "custom"
+          ]
+        },
+
+        "required": {
+          "type": "boolean"
+        }
+      },
+
+      "required": [
+        "value"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "message": {
+      "type": "object",
+
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "info",
+            "success",
+            "warning",
+            "error",
+            "empty",
+            "loading"
+          ]
+        },
+
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "trigger": {
+          "type": "string"
+        },
+
+        "recovery": {
+          "type": "string"
+        }
+      },
+
+      "required": [
+        "type",
+        "value"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "actionContent": {
+      "type": "object",
+
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+
+        "ariaLabel": {
+          "type": "string"
+        },
+
+        "purpose": {
+          "type": "string"
+        }
+      },
+
+      "required": [
+        "id",
+        "label"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "contentConstraints": {
+      "type": "object",
+
+      "properties": {
+        "maxLength": {
+          "type": "integer",
+          "minimum": 1
+        },
+
+        "minLength": {
+          "type": "integer",
+          "minimum": 0
+        },
+
+        "singleLine": {
+          "type": "boolean"
+        },
+
+        "plainLanguage": {
+          "type": "boolean"
+        },
+
+        "avoidJargon": {
+          "type": "boolean"
+        },
+
+        "sentenceCase": {
+          "type": "boolean"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "localisation": {
+      "type": "object",
+
+      "properties": {
+        "translatable": {
+          "type": "boolean"
+        },
+
+        "allowExpansion": {
+          "type": "boolean"
+        },
+
+        "rtlSupported": {
+          "type": "boolean"
+        },
+
+        "notes": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    }
+  }
+}

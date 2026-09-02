@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "UX State",
+  "description": "Describes a meaningful state of a screen or component, including its trigger, behaviour, content, accessibility, and recovery.",
+
+  "type": "object",
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^STATE-[A-Z0-9-]+$"
+    },
+
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "type": {
+      "type": "string",
+      "enum": [
+        "default",
+        "hover",
+        "focus",
+        "active",
+        "selected",
+        "disabled",
+        "loading",
+        "submitting",
+        "success",
+        "warning",
+        "error",
+        "empty",
+        "offline",
+        "unauthorised",
+        "forbidden",
+        "not-found",
+        "expired",
+        "rate-limited",
+        "custom"
+      ]
+    },
+
+    "trigger": {
+      "type": "string"
+    },
+
+    "description": {
+      "type": "string"
+    },
+
+    "content": {
+      "$ref": "./content.schema.json"
+    },
+
+    "accessibility": {
+      "$ref": "./accessibility.schema.json"
+    },
+
+    "tokens": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+
+    "behaviour": {
+      "type": "object",
+
+      "properties": {
+        "interactionAllowed": {
+          "type": "boolean"
+        },
+
+        "focusTarget": {
+          "type": "string"
+        },
+
+        "announcement": {
+          "type": "string"
+        },
+
+        "recovery": {
+          "type": "string"
+        }
+      },
+
+      "additionalProperties": false
+    },
+
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "./decision.schema.json"
+      }
+    }
+  },
+
+  "required": [
+    "name",
+    "type"
+  ],
+
+  "additionalProperties": false
+}

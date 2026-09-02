@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "Design Tokens",
+  "description": "Defines reusable visual design values used throughout a product interface.",
+
+  "type": "object",
+
+  "additionalProperties": {
+    "$ref": "#/$defs/groupOrToken"
+  },
+
+  "$defs": {
+    "groupOrToken": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/token"
+        },
+        {
+          "$ref": "#/$defs/group"
+        }
+      ]
+    },
+
+    "group": {
+      "type": "object",
+      "minProperties": 1,
+
+      "additionalProperties": {
+        "$ref": "#/$defs/groupOrToken"
+      }
+    },
+
+    "token": {
+      "type": "object",
+
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/tokenValue"
+        },
+
+        "type": {
+          "type": "string",
+          "enum": [
+            "color",
+            "dimension",
+            "number",
+            "fontFamily",
+            "fontWeight",
+            "duration",
+            "cubicBezier",
+            "shadow",
+            "gradient",
+            "border",
+            "typography",
+            "string",
+            "boolean"
+          ]
+        },
+
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+
+      "required": [
+        "value",
+        "type"
+      ],
+
+      "additionalProperties": false
+    },
+
+    "tokenValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    }
+  }
+}
