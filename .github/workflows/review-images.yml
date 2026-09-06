@@ -35,7 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/image-reports"
-          for batch in responsive lossless-0 lossless-1; do
+          for batch in social lossless-0 lossless-1; do
             echo "::group::Image batch $batch"
             python scripts/build_responsive_images.py "$batch" | tee "$RUNNER_TEMP/image-reports/$batch.json"
             git add web/static/images/
