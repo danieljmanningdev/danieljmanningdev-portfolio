@@ -3,6 +3,7 @@ name: CI
 on:
   pull_request:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,58 +12,49 @@ jobs:
   quality:
     name: Test, vet and build
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
-
       - name: Check Go formatting
         run: |
-          unformatted="$(gofmt -l .)"
-          if [ -n "$unformatted" ]; then
-            printf 'The following Go files need gofmt:\n%s\n' "$unformatted"
-            exit 1
-          fi
-
+          set -euo pipefail
+          unformatted="$(git ls-files -z '*.go' | xargs -0 gofmt -l)"
+          if [ -n "$unformatted" ]; then printf '%s\n' "$unformatted"; exit 1; fi
+          git diff --check
       - name: Vet Go packages
         run: go vet ./...
-
-      - name: Test Go packages
-        run: go test ./...
-
+      - name: Race-test Go packages and retain coverage
+        run: go test -race -coverprofile="$RUNNER_TEMP/coverage.out" ./...
+      - name: Check reachable known vulnerabilities
+        run: |
+          set -euo pipefail
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck -show verbose ./... | tee "$RUNNER_TEMP/vulnerabilities.txt"
       - name: Build production image
         run: docker build --tag portfolio-ci .
-
       - name: Smoke-test production image and non-root process
         run: |
+          set -euo pipefail
           container_id="$(docker run --detach --publish 127.0.0.1:18080:8080 portfolio-ci)"
-
           cleanup() {
             docker logs "$container_id" || true
             docker rm --force "$container_id" >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
-
           healthy=false
           for attempt in $(seq 1 30); do
-            if curl --fail --silent http://127.0.0.1:18080/health >/dev/null; then
-              healthy=true
-              break
-            fi
+            if curl --fail --silent http://127.0.0.1:18080/health >/dev/null; then healthy=true; break; fi
             sleep 1
           done
-
-          if [ "$healthy" != "true" ]; then
-            echo "Production container did not become healthy"
-            exit 1
-          fi
-
+          if [ "$healthy" != true ]; then echo 'Production container did not become healthy'; exit 1; fi
           docker exec "$container_id" sh -c '
             while read -r key real_uid remaining; do
               if [ "$key" = "Uid:" ]; then
@@ -73,3 +65,13 @@ jobs:
             done < /proc/1/status
             exit 1
           '
+      - name: Retain coverage and vulnerability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-verification-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/coverage.out
+            ${{ runner.temp }}/vulnerabilities.txt
+          retention-days: 14
+          if-no-files-found: warn
