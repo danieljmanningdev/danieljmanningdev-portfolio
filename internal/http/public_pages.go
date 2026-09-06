@@ -163,6 +163,16 @@ func (h *PublicPageHandler) ServeHTTP(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	if r.URL.Path != h.definition.Path {
+		http.NotFound(w, r)
+		return
+	}
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		w.Header().Set("Allow", "GET, HEAD")
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
 	structuredData := h.structuredData()
 
 	data := newPublicPageData(
@@ -184,17 +194,7 @@ func (h *PublicPageHandler) ServeHTTP(
 		"<"+absolutePublicURL(h.definition.Path)+">; rel=\"canonical\"",
 	)
 
-	if err := h.template.ExecuteTemplate(
-		w,
-		"base",
-		data,
-	); err != nil {
-		http.Error(
-			w,
-			http.StatusText(http.StatusInternalServerError),
-			http.StatusInternalServerError,
-		)
-	}
+	renderPublicHTML(w, r, h.template, data)
 }
 
 func (h *PublicPageHandler) structuredData() any {

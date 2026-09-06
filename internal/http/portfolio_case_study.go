@@ -43,7 +43,8 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 		return
 	}
 
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		w.Header().Set("Allow", "GET, HEAD")
 		http.Error(
 			w,
 			http.StatusText(http.StatusMethodNotAllowed),
@@ -89,15 +90,5 @@ func (h *PortfolioCaseStudyHandler) ServeHTTP(
 		"<"+absolutePublicURL(path)+">; rel=\"canonical\"",
 	)
 
-	if err := h.template.ExecuteTemplate(
-		w,
-		"base",
-		data,
-	); err != nil {
-		http.Error(
-			w,
-			http.StatusText(http.StatusInternalServerError),
-			http.StatusInternalServerError,
-		)
-	}
+	renderPublicHTML(w, r, h.template, data)
 }

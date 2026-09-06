@@ -299,21 +299,25 @@ func parseContractValueCents(
 		return 0, nil
 	}
 
-	amount, err := strconv.ParseFloat(
-		value,
-		64,
-	)
+	// Parse minor units directly: binary floats can round money incorrectly,
+	// and ParseFloat accepts non-finite values such as NaN and Inf.
+	whole, fraction, decimal := strings.Cut(value, ".")
+	if whole == "" || len(value) > 64 || (decimal && (len(fraction) == 0 || len(fraction) > 2)) {
+		return 0, fmt.Errorf("invalid contract value")
+	}
+	for _, part := range []string{whole, fraction} {
+		for _, digit := range part {
+			if digit < '0' || digit > '9' {
+				return 0, fmt.Errorf("invalid contract value")
+			}
+		}
+	}
+	fraction += strings.Repeat("0", 2-len(fraction))
+	cents, err := strconv.ParseInt(whole+fraction, 10, 64)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("contract value is outside the supported range: %w", err)
 	}
-
-	if amount < 0 {
-		return 0, fmt.Errorf(
-			"contract value cannot be negative",
-		)
-	}
-
-	return int64(amount*100 + 0.5), nil
+	return cents, nil
 }
 
 func contractValueCentsPointer(
@@ -367,10 +371,7 @@ func contractFormFromModel(
 	}
 
 	if contract.ValueCents != nil {
-		form.Value = fmt.Sprintf(
-			"%.2f",
-			float64(*contract.ValueCents)/100,
-		)
+		form.Value = fmt.Sprintf("%d.%02d", *contract.ValueCents/100, *contract.ValueCents%100)
 	}
 
 	return form
