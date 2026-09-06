@@ -1,0 +1,63 @@
+name: Browser regression checks
+
+on:
+  pull_request:
+  push:
+    branches: ['improvement/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install development-only browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/browser-tools" --no-save --no-package-lock playwright@1.55.0 @axe-core/playwright@4.10.2
+          node "$RUNNER_TEMP/browser-tools/node_modules/playwright/cli.js" install --with-deps chromium firefox webkit
+      - name: Build application
+        run: go build -o "$RUNNER_TEMP/portfolio-server" ./cmd/server
+      - name: Test isolated application in three browser engines
+        shell: bash
+        run: |
+          set -euo pipefail
+          export APP_ENV=development APP_PORT=18760
+          export DATABASE_PATH="$RUNNER_TEMP/portfolio-browser.db"
+          export REVIEW_DATABASE_PATH="$DATABASE_PATH"
+          export REVIEW_BASE_URL=http://127.0.0.1:18760
+          export NODE_PATH="$RUNNER_TEMP/browser-tools/node_modules"
+          mkdir -p artifacts/browser
+          "$RUNNER_TEMP/portfolio-server" > artifacts/browser/server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail "$REVIEW_BASE_URL/health" >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --silent --fail "$REVIEW_BASE_URL/health" >/dev/null
+          node scripts/check-browser.cjs
+      - name: Retain test results and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-results-${{ github.sha }}
+          path: artifacts/browser/
+          if-no-files-found: warn
+          retention-days: 14
