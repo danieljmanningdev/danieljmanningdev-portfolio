@@ -27,9 +27,9 @@ jobs:
           if [ -f .review/next.patch ]; then
             count="$(git apply --numstat .review/next.patch | wc -l)"
             test "$count" -le 10
-            git apply --check --whitespace=error-all .review/next.patch
-            git apply --index --whitespace=error-all .review/next.patch
-            echo "Review batch changes $count files"
+            git apply --exclude='.github/workflows/*' --check --whitespace=error-all .review/next.patch
+            git apply --exclude='.github/workflows/*' --index --whitespace=error-all .review/next.patch
+            echo "Review batch changes $count files; workflow files require a separate authorised edit"
             git diff --cached --stat
           fi
 
