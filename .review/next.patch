@@ -1,0 +1,524 @@
+diff --git a/Dockerfile b/Dockerfile
+index 9da67cf..90faa6a 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -1,5 +1,5 @@
+ # Build Go application
+-FROM golang:1.26.5-bookworm AS go-builder
++FROM golang:1.27.1-bookworm AS go-builder
+ 
+ WORKDIR /usr/src/app
+ 
+diff --git a/cmd/server/lifecycle_test.go b/cmd/server/lifecycle_test.go
+new file mode 100644
+index 0000000..378065a
+--- /dev/null
++++ b/cmd/server/lifecycle_test.go
+@@ -0,0 +1,30 @@
++package main
++
++import (
++	"context"
++	"net"
++	"net/http"
++	"testing"
++	"time"
++)
++
++func TestServerReportsPortBindingFailure(t *testing.T) {
++	listener, err := net.Listen("tcp", "127.0.0.1:0")
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer listener.Close()
++	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
++	defer cancel()
++	if err := runHTTPServer(ctx, &http.Server{Addr: listener.Addr().String()}); err == nil {
++		t.Fatal("startup failure was swallowed")
++	}
++}
++
++func TestServerStopsOnContextCancellation(t *testing.T) {
++	ctx, cancel := context.WithCancel(context.Background())
++	cancel()
++	if err := runHTTPServer(ctx, &http.Server{Addr: "127.0.0.1:0"}); err != nil {
++		t.Fatalf("graceful stop: %v", err)
++	}
++}
+diff --git a/cmd/server/main.go b/cmd/server/main.go
+index b7159f6..a5aab42 100644
+--- a/cmd/server/main.go
++++ b/cmd/server/main.go
+@@ -10,6 +10,7 @@ package main
+ import (
+ 	"context"
+ 	"errors"
++	"log/slog"
+ 	"net/http"
+ 	"os"
+ 	"os/signal"
+@@ -29,7 +30,9 @@ import (
+ 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
+ )
+ 
+-func main() {
++func main() { os.Exit(run()) }
++
++func run() int {
+ 	cfg := config.Load()
+ 
+ 	logger := logging.New(
+@@ -37,6 +40,8 @@ func main() {
+ 		cfg.LogLevel,
+ 	)
+ 
++	slog.SetDefault(logger)
++
+ 	logger.Info(
+ 		"starting application",
+ 		"environment", cfg.Environment,
+@@ -59,7 +64,7 @@ func main() {
+ 			"failed to open database",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	defer func() {
+@@ -79,7 +84,7 @@ func main() {
+ 			"failed to run migrations",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	homeHandler, err := apphttp.NewHomeHandler(
+@@ -90,7 +95,7 @@ func main() {
+ 			"failed to create home handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	portfolioCaseStudyHandler, err :=
+@@ -102,7 +107,7 @@ func main() {
+ 			"failed to create portfolio case study handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	dashboardHandler, err := apphttp.NewDashboardHandler(
+@@ -114,7 +119,7 @@ func main() {
+ 			"failed to create dashboard handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	clientsHandler, err := clients.NewClientsHandler(
+@@ -126,7 +131,7 @@ func main() {
+ 			"failed to create clients handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	projectsHandler, err := projects.NewProjectsHandler(
+@@ -138,7 +143,7 @@ func main() {
+ 			"failed to create projects handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	contractsHandler, err := contracts.NewContractsHandler(
+@@ -150,7 +155,7 @@ func main() {
+ 			"failed to create contracts handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	blogHandler, err := apphttp.NewBlogHandler(
+@@ -162,7 +167,7 @@ func main() {
+ 			"failed to create blog handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	blogAdminHandler, err := blog.NewAdminHandler(
+@@ -174,7 +179,7 @@ func main() {
+ 			"failed to create blog admin handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	publicPageRoutes, err :=
+@@ -187,7 +192,7 @@ func main() {
+ 			"failed to create public page routes",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	secureCookies :=
+@@ -204,7 +209,7 @@ func main() {
+ 			"failed to create admin auth handler",
+ 			"error", err,
+ 		)
+-		os.Exit(1)
++		return 1
+ 	}
+ 
+ 	adminRepository :=
+@@ -269,38 +274,33 @@ func main() {
+ 		MaxHeaderBytes:    1 << 20,
+ 	}
+ 
+-	go func() {
+-		logger.Info(
+-			"server starting",
+-			"url", "http://localhost:"+strconv.Itoa(cfg.Port),
+-			"environment", cfg.Environment,
+-		)
+-
+-		if err := server.ListenAndServe(); err != nil &&
+-			!errors.Is(err, http.ErrServerClosed) {
+-			logger.Error(
+-				"server error",
+-				"error", err,
+-			)
++	logger.Info("server starting", "url", "http://localhost:"+strconv.Itoa(cfg.Port), "environment", cfg.Environment)
++	if err := runHTTPServer(ctx, server); err != nil {
++		logger.Error("server stopped with error", "error", err)
++		return 1
++	}
++	logger.Info("server stopped")
++	return 0
++}
+ 
+-			stop()
++// runHTTPServer reports startup failures to the process and closes connections
++// if the graceful-shutdown deadline expires. Tests can exercise it without a DB.
++func runHTTPServer(ctx context.Context, server *http.Server) error {
++	result := make(chan error, 1)
++	go func() { result <- server.ListenAndServe() }()
++	select {
++	case err := <-result:
++		if errors.Is(err, http.ErrServerClosed) {
++			return nil
+ 		}
+-	}()
+-
+-	<-ctx.Done()
+-
+-	logger.Info("shutting down server")
+-
+-	shutdownCtx, cancel := context.WithTimeout(
+-		context.Background(),
+-		10*time.Second,
+-	)
++		return err
++	case <-ctx.Done():
++	}
++	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+ 	defer cancel()
+-
+ 	if err := server.Shutdown(shutdownCtx); err != nil {
+-		logger.Error(
+-			"server shutdown error",
+-			"error", err,
+-		)
++		_ = server.Close()
++		return err
+ 	}
++	return nil
+ }
+diff --git a/go.mod b/go.mod
+index 0decfd4..35c5373 100644
+--- a/go.mod
++++ b/go.mod
+@@ -1,6 +1,6 @@
+ module github.com/danieljmanningdev/danieljmanningdev-portfolio
+ 
+-go 1.26.5
++go 1.27.1
+ 
+ require modernc.org/sqlite v1.56.0
+ 
+diff --git a/internal/database/backup.go b/internal/database/backup.go
+index 7e27951..7903bca 100644
+--- a/internal/database/backup.go
++++ b/internal/database/backup.go
+@@ -12,6 +12,7 @@ import (
+ 	"database/sql"
+ 	"fmt"
+ 	"io"
++	"net/url"
+ 	"os"
+ 	"path/filepath"
+ )
+@@ -25,6 +26,14 @@ func Backup(
+ 		return fmt.Errorf("backup requires a file-backed database")
+ 	}
+ 
++	info, err := os.Stat(databasePath)
++	if err != nil {
++		return fmt.Errorf("inspect source database: %w", err)
++	}
++	if !info.Mode().IsRegular() {
++		return fmt.Errorf("source database must be a regular file")
++	}
++
+ 	if destinationPath == "" {
+ 		return fmt.Errorf("backup destination is required")
+ 	}
+@@ -56,11 +65,12 @@ func Backup(
+ 		return fmt.Errorf("inspect backup destination: %w", err)
+ 	}
+ 
+-	temporaryPath := destinationAbsolute + ".tmp"
+-	_ = os.Remove(temporaryPath)
+-	defer func() {
+-		_ = os.Remove(temporaryPath)
+-	}()
++	temporaryDirectory, err := os.MkdirTemp(filepath.Dir(destinationAbsolute), ".backup-*")
++	if err != nil {
++		return fmt.Errorf("create private backup workspace: %w", err)
++	}
++	defer func() { _ = os.RemoveAll(temporaryDirectory) }()
++	temporaryPath := filepath.Join(temporaryDirectory, "snapshot.db")
+ 
+ 	database, err := Open(ctx, sourceAbsolute)
+ 	if err != nil {
+@@ -86,10 +96,9 @@ func Backup(
+ 		return fmt.Errorf("secure backup permissions: %w", err)
+ 	}
+ 
+-	if err := os.Rename(
+-		temporaryPath,
+-		destinationAbsolute,
+-	); err != nil {
++	// A hard link publishes the completed file atomically without replacing a
++	// destination created concurrently after the initial existence check.
++	if err := os.Link(temporaryPath, destinationAbsolute); err != nil {
+ 		return fmt.Errorf("publish backup atomically: %w", err)
+ 	}
+ 
+@@ -104,16 +113,28 @@ func VerifyBackup(
+ 		return fmt.Errorf("backup path is required")
+ 	}
+ 
+-	if _, err := os.Stat(path); err != nil {
++	info, err := os.Stat(path)
++	if err != nil {
+ 		return fmt.Errorf("inspect backup file: %w", err)
+ 	}
++	if !info.Mode().IsRegular() {
++		return fmt.Errorf("backup must be a regular file")
++	}
+ 
+ 	dsn, err := sqliteDSN(path)
+ 	if err != nil {
+ 		return err
+ 	}
+ 
+-	database, err := sql.Open("sqlite", dsn)
++	uri, err := url.Parse(dsn)
++	if err != nil {
++		return fmt.Errorf("parse backup URI: %w", err)
++	}
++	query := uri.Query()
++	query.Set("mode", "ro")
++	uri.RawQuery = query.Encode()
++
++	database, err := sql.Open("sqlite", uri.String())
+ 	if err != nil {
+ 		return fmt.Errorf("open backup for verification: %w", err)
+ 	}
+@@ -181,11 +202,21 @@ func Restore(
+ 		return fmt.Errorf("create database directory: %w", err)
+ 	}
+ 
+-	temporaryPath := databaseAbsolute + ".restore.tmp"
+-	_ = os.Remove(temporaryPath)
+-	defer func() {
+-		_ = os.Remove(temporaryPath)
+-	}()
++	// Do not replace a database while SQLite may have live recovery state.
++	// The operator must stop the application and checkpoint/recover it first.
++	for _, suffix := range []string{"-wal", "-shm", "-journal"} {
++		if _, err := os.Stat(databaseAbsolute + suffix); err == nil {
++			return fmt.Errorf("destination has SQLite sidecar %s; stop and checkpoint the application before restoring", suffix)
++		} else if !os.IsNotExist(err) {
++			return fmt.Errorf("inspect SQLite sidecar: %w", err)
++		}
++	}
++	temporaryDirectory, err := os.MkdirTemp(filepath.Dir(databaseAbsolute), ".restore-*")
++	if err != nil {
++		return fmt.Errorf("create private restore workspace: %w", err)
++	}
++	defer func() { _ = os.RemoveAll(temporaryDirectory) }()
++	temporaryPath := filepath.Join(temporaryDirectory, "snapshot.db")
+ 
+ 	if err := copyFile(
+ 		backupAbsolute,
+@@ -198,11 +229,13 @@ func Restore(
+ 		return err
+ 	}
+ 
+-	if err := os.Rename(
+-		temporaryPath,
+-		databaseAbsolute,
+-	); err != nil {
+-		return fmt.Errorf("replace database atomically: %w", err)
++	if force {
++		err = os.Rename(temporaryPath, databaseAbsolute)
++	} else {
++		err = os.Link(temporaryPath, databaseAbsolute)
++	}
++	if err != nil {
++		return fmt.Errorf("publish restored database atomically: %w", err)
+ 	}
+ 
+ 	return nil
+diff --git a/internal/database/migrations.go b/internal/database/migrations.go
+index 88f3771..fb94416 100644
+--- a/internal/database/migrations.go
++++ b/internal/database/migrations.go
+@@ -64,6 +64,7 @@ func discoverMigrations(directory string) ([]Migration, error) {
+ 	}
+ 
+ 	var migrations []Migration
++	seen := make(map[int]string)
+ 
+ 	for _, entry := range entries {
+ 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".sql") {
+@@ -84,6 +85,14 @@ func discoverMigrations(directory string) ([]Migration, error) {
+ 			)
+ 		}
+ 
++		if version <= 0 || strings.TrimSuffix(parts[1], ".sql") == "" {
++			return nil, fmt.Errorf("migration %q needs a positive version and a name", entry.Name())
++		}
++		if previous, exists := seen[version]; exists {
++			return nil, fmt.Errorf("duplicate migration version %d: %s and %s", version, previous, entry.Name())
++		}
++		seen[version] = entry.Name()
++
+ 		migrations = append(migrations, Migration{
+ 			Version: version,
+ 			Name:    strings.TrimSuffix(parts[1], ".sql"),
+diff --git a/internal/database/safety_test.go b/internal/database/safety_test.go
+new file mode 100644
+index 0000000..e671654
+--- /dev/null
++++ b/internal/database/safety_test.go
+@@ -0,0 +1,74 @@
++package database
++
++import (
++	"context"
++	"os"
++	"path/filepath"
++	"testing"
++)
++
++func TestBackupDoesNotCreateMissingSource(t *testing.T) {
++	root := t.TempDir()
++	source := filepath.Join(root, "missing.db")
++	if err := Backup(context.Background(), source, filepath.Join(root, "backup.db")); err == nil {
++		t.Fatal("missing source accepted")
++	}
++	if _, err := os.Stat(source); !os.IsNotExist(err) {
++		t.Fatal("missing source was created")
++	}
++}
++
++func TestBackupAndRestoreLeaveUnrelatedTemporaryFilesAlone(t *testing.T) {
++	ctx := context.Background()
++	root := t.TempDir()
++	source := filepath.Join(root, "source.db")
++	backup := filepath.Join(root, "backup.db")
++	restored := filepath.Join(root, "restored.db")
++	db, err := Open(ctx, source)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if _, err := db.SQL.Exec("CREATE TABLE example (id INTEGER PRIMARY KEY)"); err != nil {
++		t.Fatal(err)
++	}
++	if err := db.Close(); err != nil {
++		t.Fatal(err)
++	}
++	for _, path := range []string{backup + ".tmp", restored + ".restore.tmp"} {
++		if err := os.WriteFile(path, []byte("keep"), 0o600); err != nil {
++			t.Fatal(err)
++		}
++	}
++	if err := Backup(ctx, source, backup); err != nil {
++		t.Fatal(err)
++	}
++	if err := Restore(ctx, backup, restored, false); err != nil {
++		t.Fatal(err)
++	}
++	for _, path := range []string{backup + ".tmp", restored + ".restore.tmp"} {
++		body, err := os.ReadFile(path)
++		if err != nil || string(body) != "keep" {
++			t.Fatalf("unrelated file altered: %s", path)
++		}
++	}
++	if err := os.WriteFile(restored+"-wal", []byte("pending"), 0o600); err != nil {
++		t.Fatal(err)
++	}
++	if err := Restore(ctx, backup, restored, true); err == nil {
++		t.Fatal("restore accepted recovery sidecar")
++	}
++}
++
++func TestMigrationNamesHaveUniquePositiveVersions(t *testing.T) {
++	for _, files := range [][]string{{"001_a.sql", "001_b.sql"}, {"000_a.sql"}, {"-1_a.sql"}, {"001_.sql"}} {
++		root := t.TempDir()
++		for _, file := range files {
++			if err := os.WriteFile(filepath.Join(root, file), []byte("SELECT 1;"), 0o600); err != nil {
++				t.Fatal(err)
++			}
++		}
++		if _, err := discoverMigrations(root); err == nil {
++			t.Fatalf("accepted invalid migration set: %v", files)
++		}
++	}
++}
+diff --git a/internal/http/response.go b/internal/http/response.go
+index ef1ec33..e7f698d 100644
+--- a/internal/http/response.go
++++ b/internal/http/response.go
+@@ -3,6 +3,7 @@ import (
+ 	"bytes"
+ 	"html/template"
++	"log/slog"
+ 	"net/http"
+ 	"strconv"
+ )
+@@ -12,6 +13,7 @@ import (
+ func renderPublicHTML(w http.ResponseWriter, r *http.Request, tmpl *template.Template, data any) {
+ 	var body bytes.Buffer
+ 	if err := tmpl.ExecuteTemplate(&body, "base", data); err != nil {
++		slog.ErrorContext(r.Context(), "render public page", "error", err, "request_id", RequestIDFromContext(r.Context()))
+ 		w.Header().Set("Cache-Control", "no-store")
+ 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+ 		return
