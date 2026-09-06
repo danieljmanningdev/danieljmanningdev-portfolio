@@ -1,0 +1,238 @@
+diff --git a/scripts/check-browser.cjs b/scripts/check-browser.cjs
+index 90fc9ca..f2ea1ce 100644
+--- a/scripts/check-browser.cjs
++++ b/scripts/check-browser.cjs
+@@ -132,6 +132,10 @@ function overflowInPage() {
+       await page.goto(base + '/');
+       const image = page.locator('.home-work-preview__image');
+       await image.scrollIntoViewIfNeeded();
++      await page.waitForFunction(() => {
++        const el = document.querySelector('.home-work-preview__image');
++        return el && el.complete && el.naturalWidth > 0;
++      });
+       await image.evaluate(el => el.decode());
+       const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
+       assert.ok(info.width > 0 && info.height > 0);
+@@ -141,9 +145,10 @@ function overflowInPage() {
+     await check(`${engine} no JavaScript content and navigation`, async () => {
+       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
+       const noJSPage = await noJS.newPage();
+-      await noJSPage.goto(base + '/');
++      await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
+       assert.ok(await noJSPage.locator('#workspace-project-title').isVisible());
+       assert.ok(await noJSPage.locator('#tooling-title').isVisible());
++      await noJSPage.locator('body').waitFor({ state: 'visible' });
+       await noJSPage.locator('.mobile-nav summary').click();
+       assert.ok(await noJSPage.locator('.mobile-nav-link').first().isVisible());
+       await noJS.close();
+diff --git a/web/static/css/vanilla/admin.css b/web/static/css/vanilla/admin.css
+index 4ffdff1..1380f2d 100644
+--- a/web/static/css/vanilla/admin.css
++++ b/web/static/css/vanilla/admin.css
+@@ -80,7 +80,7 @@
+ .admin-brand__logo { width: 100%; height: 100%; object-fit: contain; }
+ .admin-brand__text { display: none; }
+ .admin-brand__title { display: block; color: var(--color-mist-100); font-size: .68rem; font-weight: 700; letter-spacing: .2em; }
+-.admin-brand__subtitle { display: block; margin-top: .125rem; color: var(--color-mist-700); font-size: .68rem; }
++.admin-brand__subtitle { display: block; margin-top: .125rem; color: var(--color-mist-300); font-size: .68rem; }
+ 
+ .admin-desktop-nav {
+     display: none;
+@@ -113,7 +113,7 @@
+ .admin-mobile-nav__link:hover { background: var(--color-surface-hover); color: white; }
+ 
+ .admin-footer { margin-top: auto; border-top: 1px solid var(--color-border-subtle); background: rgb(3 8 20 / .28); }
+-.admin-footer__inner { display: flex; flex-direction: column; gap: .5rem; padding-block: 1.25rem; color: var(--color-mist-700); font-size: .75rem; }
++.admin-footer__inner { display: flex; flex-direction: column; gap: .5rem; padding-block: 1.25rem; color: var(--color-mist-300); font-size: .75rem; }
+ 
+ /* Auth */
+ .auth-layout { display: grid; min-height: 100dvh; }
+@@ -127,7 +127,7 @@
+ .auth-story__title { margin-top: 2rem; color: var(--color-mist-50); font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 500; line-height: .86; letter-spacing: -.065em; text-wrap: balance; }
+ .auth-story__accent { display: block; background: linear-gradient(90deg, var(--color-signal-300), var(--color-electric-300)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+ .auth-story__copy { max-width: 36rem; margin-top: 2rem; color: var(--color-mist-300); font-size: 1.125rem; line-height: 2rem; }
+-.auth-story__note { position: relative; color: var(--color-mist-700); font-size: .75rem; }
++.auth-story__note { position: relative; color: var(--color-mist-300); font-size: .75rem; }
+ .auth-form-section { display: flex; min-height: 100dvh; align-items: center; justify-content: center; padding: 3rem 1.25rem; }
+ .auth-form-wrap { width: 100%; max-width: 32rem; }
+ .auth-mobile-logo { display: inline-flex; margin-bottom: 3rem; align-items: center; }
+@@ -139,10 +139,10 @@
+ .auth-form { display: grid; gap: 1.5rem; margin-top: 2.25rem; }
+ .auth-field__label { display: block; color: var(--color-mist-300); font-size: .875rem; font-weight: 600; }
+ .auth-field__input { display: block; width: 100%; margin-top: .75rem; padding: .875rem 1rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; background: rgb(0 0 0 / .22); color: var(--color-mist-50); font-size: 1rem; outline: none; transition: border-color var(--duration-fast) var(--ease-fluid), box-shadow var(--duration-fast) var(--ease-fluid); }
+-.auth-field__input::placeholder { color: var(--color-mist-700); }
++.auth-field__input::placeholder { color: var(--color-mist-300); }
+ .auth-field__input:focus { border-color: color-mix(in oklab, var(--color-signal-300) 45%, transparent); box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-signal-300) 12%, transparent); }
+ .auth-submit { width: 100%; }
+-.auth-card__footer { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-mist-700); font-size: .75rem; line-height: 1.25rem; text-align: center; }
++.auth-card__footer { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-mist-300); font-size: .75rem; line-height: 1.25rem; text-align: center; }
+ 
+ @media (min-width: 40rem) {
+     .admin-brand__text { display: block; }
+@@ -167,3 +167,5 @@
+ @media (min-width: 80rem) {
+     .auth-story { padding: 4rem; }
+ }
++
++.auth-field__input:focus-visible { outline: 2px solid var(--color-signal-300); outline-offset: 3px; }
+diff --git a/web/static/css/vanilla/main.css b/web/static/css/vanilla/main.css
+index 4671ab6..139f9ca 100644
+--- a/web/static/css/vanilla/main.css
++++ b/web/static/css/vanilla/main.css
+@@ -1,14 +1,14 @@
+-@import url("./tokens.css");
+-@import url("./reset.css");
+-@import url("./base.css");
+-@import url("./layout.css");
+-@import url("./components.css");
+-@import url("./shell.css");
+-@import url("./pages/home.css");
+-@import url("./pages/portfolio.css");
+-@import url("./pages/service.css");
+-@import url("./pages/service-polish.css");
+-@import url("./pages/journal.css");
+-@import url("./pages/related.css");
+-@import url("./pages/error.css");
+-@import url("./pages/case-study-polish.css");
+\ No newline at end of file
++@import url("/static/css/vanilla/tokens.css");
++@import url("/static/css/vanilla/reset.css");
++@import url("/static/css/vanilla/base.css");
++@import url("/static/css/vanilla/layout.css");
++@import url("/static/css/vanilla/components.css");
++@import url("/static/css/vanilla/shell.css");
++@import url("/static/css/vanilla/pages/home.css");
++@import url("/static/css/vanilla/pages/portfolio.css");
++@import url("/static/css/vanilla/pages/service.css");
++@import url("/static/css/vanilla/pages/service-polish.css");
++@import url("/static/css/vanilla/pages/journal.css");
++@import url("/static/css/vanilla/pages/related.css");
++@import url("/static/css/vanilla/pages/error.css");
++@import url("/static/css/vanilla/pages/case-study-polish.css");
+diff --git a/web/static/css/vanilla/pages/error.css b/web/static/css/vanilla/pages/error.css
+index 5ea79e3..392e0f5 100644
+--- a/web/static/css/vanilla/pages/error.css
++++ b/web/static/css/vanilla/pages/error.css
+@@ -3,6 +3,7 @@
+    ========================================================================== */
+ 
+ .error-page {
++    overflow: clip;
+     display: grid;
+     min-height: calc(100svh - 5rem);
+     place-items: center;
+@@ -77,7 +78,7 @@
+     border: 1px solid var(--color-border);
+     border-radius: 999px;
+     background: var(--color-surface);
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+     font-family: var(--font-mono);
+     font-size: .75rem;
+     text-overflow: ellipsis;
+diff --git a/web/static/css/vanilla/pages/journal.css b/web/static/css/vanilla/pages/journal.css
+index 69a5aff..aab72b6 100644
+--- a/web/static/css/vanilla/pages/journal.css
++++ b/web/static/css/vanilla/pages/journal.css
+@@ -19,7 +19,7 @@
+ .journal-list { border-top: 1px solid var(--color-border-strong); }
+ .journal-entry { padding-block: 2.25rem; border-bottom: 1px solid var(--color-border-strong); }
+ .journal-entry__link { display: grid; gap: 1.5rem; }
+-.journal-entry__date { color: var(--color-mist-700); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
++.journal-entry__date { color: var(--color-mist-300); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+ .journal-entry__title { max-width: 48rem; color: var(--color-mist-50); font-size: 1.5rem; font-weight: 500; line-height: 1.2; letter-spacing: -.035em; text-wrap: balance; transition: color var(--duration-normal) var(--ease-fluid); }
+ .journal-entry:hover .journal-entry__title { color: var(--color-signal-300); }
+ .journal-entry__excerpt { max-width: 42rem; margin-top: 1rem; color: var(--color-mist-500); line-height: 1.75rem; }
+diff --git a/web/static/css/vanilla/pages/portfolio.css b/web/static/css/vanilla/pages/portfolio.css
+index 54e7ca8..3fa3da6 100644
+--- a/web/static/css/vanilla/pages/portfolio.css
++++ b/web/static/css/vanilla/pages/portfolio.css
+@@ -280,7 +280,7 @@
+ .portfolio-sidebar__subtitle {
+     margin-top: 0.25rem;
+ 
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+ 
+     font-size: 0.75rem;
+ }
+@@ -651,7 +651,7 @@
+ }
+ 
+ .portfolio-architecture__layer-label {
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+ 
+     font-size: 0.65rem;
+     font-weight: 600;
+@@ -675,7 +675,7 @@
+ 
+     padding-left: 3.15rem;
+ 
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+ 
+     font-family: var(--font-mono);
+     font-size: 0.8rem;
+@@ -863,7 +863,7 @@
+         transparent
+     );
+ 
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+ 
+     font-size: 0.75rem;
+     line-height: 1.6;
+diff --git a/web/static/css/vanilla/pages/service.css b/web/static/css/vanilla/pages/service.css
+index c899ed7..87a4883 100644
+--- a/web/static/css/vanilla/pages/service.css
++++ b/web/static/css/vanilla/pages/service.css
+@@ -56,6 +56,7 @@
+ }
+ 
+ .service-hero__copy {
++    min-width: 0;
+     max-width: 64rem;
+ }
+ 
+@@ -73,6 +74,8 @@
+ }
+ 
+ .service-kicker__text {
++    min-width: 0;
++    overflow-wrap: anywhere;
+     color: color-mix(in oklab, var(--color-signal-300) 70%, transparent);
+     font-size: 0.75rem;
+     letter-spacing: 0.3em;
+@@ -178,7 +181,7 @@
+ }
+ 
+ .service-preview__label {
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+     font-family: var(--font-mono);
+     font-size: 0.66rem;
+     letter-spacing: 0.18em;
+@@ -437,7 +440,7 @@
+ }
+ 
+ .service-case__meta-text {
+-    color: var(--color-mist-700);
++    color: var(--color-mist-300);
+     font-size: 0.75rem;
+ }
+ 
+diff --git a/web/static/css/vanilla/reset.css b/web/static/css/vanilla/reset.css
+index ba0cf59..432a595 100644
+--- a/web/static/css/vanilla/reset.css
++++ b/web/static/css/vanilla/reset.css
+@@ -67,7 +67,8 @@ ol {
+ }
+ 
+ :focus-visible {
+-    outline: none;
++    outline: 2px solid var(--color-signal-300);
++    outline-offset: 3px;
+     box-shadow: var(--focus-ring);
+ }
+ 
