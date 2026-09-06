@@ -56,7 +56,6 @@ function overflowInPage() {
     if (el.matches('.skip-link:not(:focus)')) continue;
     if (box.width < 1 || box.height < 1 || el.closest('[aria-hidden="true"]') ||
         getComputedStyle(el).visibility === 'hidden') continue;
-    // A closed native details menu has no client rect for its hidden content.
     if (el.getClientRects().length === 0) continue;
     if (box.right > width + 1 || box.left < -1) {
       bad.push({ element: el.tagName, class: el.className, left: box.left, right: box.right });
@@ -144,14 +143,17 @@ function overflowInPage() {
     });
     await check(`${engine} no JavaScript content and navigation`, async () => {
       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
-      const noJSPage = await noJS.newPage();
-      await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
-      assert.ok(await noJSPage.locator('#workspace-project-title').isVisible());
-      assert.ok(await noJSPage.locator('#tooling-title').isVisible());
-      await noJSPage.locator('body').waitFor({ state: 'visible' });
-      await noJSPage.locator('.mobile-nav summary').click();
-      assert.ok(await noJSPage.locator('.mobile-nav-link').first().isVisible());
-      await noJS.close();
+      try {
+        const noJSPage = await noJS.newPage();
+        await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
+        // DOM readiness can precede stylesheet layout, especially in Firefox.
+        await noJSPage.locator('#workspace-project-title').waitFor({ state: 'visible' });
+        await noJSPage.locator('#tooling-title').waitFor({ state: 'visible' });
+        await noJSPage.locator('.mobile-nav summary').click();
+        await noJSPage.locator('.mobile-nav-link').first().waitFor({ state: 'visible' });
+      } finally {
+        await noJS.close();
+      }
     });
     await check(`${engine} private routes require authentication and drafts stay private`, async () => {
       const privateResponse = await context.request.get(base + '/dashboard/', { maxRedirects: 0 });
@@ -166,7 +168,6 @@ function overflowInPage() {
       const response = await context.request.get(base + '/dashboard/');
       assert.match(response.headers()['cache-control'] || '', /no-store/);
       assert.match(response.headers()['x-robots-tag'] || '', /noindex/);
-      // Do not revoke the shared fixture: subsequent engines use the same session.
       await context.clearCookies();
     });
     await check(`${engine} no script or asset failures`, async () => {
