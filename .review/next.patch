@@ -507,7 +507,8 @@ diff --git a/internal/http/response.go b/internal/http/response.go
 index ef1ec33..e7f698d 100644
 --- a/internal/http/response.go
 +++ b/internal/http/response.go
-@@ -3,6 +3,7 @@ import (
+@@ -3,6 +3,7 @@ package http
+ import (
  	"bytes"
  	"html/template"
 +	"log/slog"
