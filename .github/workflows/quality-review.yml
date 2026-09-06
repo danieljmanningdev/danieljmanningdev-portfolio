@@ -39,6 +39,19 @@ jobs:
       - run: go test -race -coverprofile=coverage.out ./...
       - run: go build ./...
 
+      - name: Build isolated review executables
+        run: |
+          mkdir -p review-bin
+          CGO_ENABLED=0 go build -trimpath -o review-bin/server ./cmd/server
+          CGO_ENABLED=0 go build -trimpath -o review-bin/adminctl ./cmd/adminctl
+
+      - name: Save review executables
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-bin-${{ github.sha }}
+          path: review-bin/
+          retention-days: 3
+
       - name: Check reachable known vulnerabilities
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
