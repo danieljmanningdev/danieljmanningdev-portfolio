@@ -248,3 +248,5 @@
     .home-contact__panel { padding: 1.25rem; }
     .home-contact__title { font-size: clamp(2.25rem, 10vw, 3rem); line-height: 1.05; }
 }
+
+.home-work-preview__image-frame picture { display: block; width: 100%; }

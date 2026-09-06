@@ -175,9 +175,17 @@
                         <div class="home-work-preview__glow" aria-hidden="true"></div>
 
                         <div class="home-work-preview__image-frame">
-                            <img src="/static/images/salon-rebuild-home.png"
-                                alt="Preview of the Salon Rebuild website" class="home-work-preview__image"
-                                loading="lazy">
+                            <picture>
+                                <source type="image/avif"
+                                    srcset="/static/images/salon-rebuild-home-480.avif 480w, /static/images/salon-rebuild-home-960.avif 960w, /static/images/salon-rebuild-home-1600.avif 1600w"
+                                    sizes="(min-width: 1024px) 40vw, 88vw">
+                                <source type="image/webp"
+                                    srcset="/static/images/salon-rebuild-home-480.webp 480w, /static/images/salon-rebuild-home-960.webp 960w, /static/images/salon-rebuild-home-1600.webp 1600w"
+                                    sizes="(min-width: 1024px) 40vw, 88vw">
+                                <img src="/static/images/salon-rebuild-home.png"
+                                    alt="Preview of the Salon Rebuild website" class="home-work-preview__image"
+                                    width="2880" height="1561" loading="lazy" decoding="async">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -236,7 +244,7 @@
                     <p class="eyebrow">Developer workflow</p>
                     <h3><a href="https://github.com/danieljmanningdev/djm-cli">djm-cli <span aria-hidden="true">↗</span></a></h3>
                     <p>Create a Go project, add a module and run the development checks from one command-line tool.</p>
-                    <pre aria-label="Example project setup"><code>djm new my-app
+                    <pre><code>djm new my-app
 cd my-app
 djm check</code></pre>
                 </article>
@@ -255,7 +263,7 @@ djm check</code></pre>
                     <p class="eyebrow">Structured data</p>
                     <h3><a href="https://github.com/danieljmanningdev/go-jsonld-schema">go-jsonld-schema <span aria-hidden="true">↗</span></a></h3>
                     <p>Typed Go structures for Schema.org JSON-LD, without hand-writing JSON inside HTML templates.</p>
-                    <p class="home-tool-card__note">A focused package, not an SEO ranking guarantee.</p>
+                    <p class="home-tool-card__note">Reusable types for websites, articles, services and breadcrumbs.</p>
                 </article>
             </div>
             <a href="https://github.com/danieljmanningdev" class="button-secondary home-tooling__all">View all projects on GitHub <span aria-hidden="true">↗</span></a>
@@ -339,7 +347,7 @@ djm check</code></pre>
         <div class="site-container">
             <a href="/blog/" class="interactive-card home-journal-card">
                 <div>
-                    <p class="eyebrow">04 / Journal</p>
+                    <p class="eyebrow">05 / Journal</p>
                     <h2 class="home-section__title home-journal-card__title">
                         Notes from the decisions behind the
                         <span class="home-accent-text">work.</span>
@@ -358,7 +366,7 @@ djm check</code></pre>
                 <div class="home-contact__glow" aria-hidden="true"></div>
                 <div class="home-contact__layout">
                     <div>
-                        <p class="eyebrow">05 / Contact</p>
+                        <p class="eyebrow">06 / Contact</p>
                         <h2 class="home-contact__title">
                             Have something
                             <span class="home-gradient-text home-contact__title-accent">worth building?</span>
