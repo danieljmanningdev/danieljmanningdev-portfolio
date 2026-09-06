@@ -132,6 +132,10 @@ function overflowInPage() {
       await page.goto(base + '/');
       const image = page.locator('.home-work-preview__image');
       await image.scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => {
+        const el = document.querySelector('.home-work-preview__image');
+        return el && el.complete && el.naturalWidth > 0;
+      });
       await image.evaluate(el => el.decode());
       const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
       assert.ok(info.width > 0 && info.height > 0);
@@ -141,9 +145,10 @@ function overflowInPage() {
     await check(`${engine} no JavaScript content and navigation`, async () => {
       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
       const noJSPage = await noJS.newPage();
-      await noJSPage.goto(base + '/');
+      await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
       assert.ok(await noJSPage.locator('#workspace-project-title').isVisible());
       assert.ok(await noJSPage.locator('#tooling-title').isVisible());
+      await noJSPage.locator('body').waitFor({ state: 'visible' });
       await noJSPage.locator('.mobile-nav summary').click();
       assert.ok(await noJSPage.locator('.mobile-nav-link').first().isVisible());
       await noJS.close();

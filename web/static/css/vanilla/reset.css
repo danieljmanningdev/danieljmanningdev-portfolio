@@ -67,7 +67,8 @@ ol {
 }
 
 :focus-visible {
-    outline: none;
+    outline: 2px solid var(--color-signal-300);
+    outline-offset: 3px;
     box-shadow: var(--focus-ring);
 }
 

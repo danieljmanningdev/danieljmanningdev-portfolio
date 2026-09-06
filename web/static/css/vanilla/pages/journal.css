@@ -19,7 +19,7 @@
 .journal-list { border-top: 1px solid var(--color-border-strong); }
 .journal-entry { padding-block: 2.25rem; border-bottom: 1px solid var(--color-border-strong); }
 .journal-entry__link { display: grid; gap: 1.5rem; }
-.journal-entry__date { color: var(--color-mist-700); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+.journal-entry__date { color: var(--color-mist-300); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
 .journal-entry__title { max-width: 48rem; color: var(--color-mist-50); font-size: 1.5rem; font-weight: 500; line-height: 1.2; letter-spacing: -.035em; text-wrap: balance; transition: color var(--duration-normal) var(--ease-fluid); }
 .journal-entry:hover .journal-entry__title { color: var(--color-signal-300); }
 .journal-entry__excerpt { max-width: 42rem; margin-top: 1rem; color: var(--color-mist-500); line-height: 1.75rem; }
