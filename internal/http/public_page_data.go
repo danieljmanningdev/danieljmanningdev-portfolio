@@ -108,7 +108,7 @@ func personStructuredData() schema.Person {
 	)
 
 	person.URL = publicSiteURL + "/"
-	person.JobTitle = "Digital Product Designer & Engineer"
+	person.JobTitle = "Digital Product Designer & Developer"
 	person.SocialProfiles = []schema.SocialProfile{
 		"https://github.com/danieljmanningdev",
 	}
