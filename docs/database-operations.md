@@ -28,7 +28,7 @@ go run ./cmd/dbctl \
   -file ./backups/app-20260829T190000Z.db
 ```
 
-The backup command uses SQLite `VACUUM INTO`, writes through a temporary file, runs `PRAGMA quick_check`, applies `0600` permissions, and publishes the result with an atomic rename.
+The backup command uses SQLite `VACUUM INTO`, writes inside a private temporary directory, runs `PRAGMA quick_check` using a read-only verification connection, applies `0600` permissions, and atomically publishes the result using a same-filesystem hard link. Hard-link support is required. An existing destination is never overwritten by backup.
 
 ## Local restore rehearsal
 
@@ -38,8 +38,7 @@ Restore into a separate path first:
 go run ./cmd/dbctl \
   -action restore \
   -file ./backups/app-20260829T190000Z.db \
-  -database ./data/restore-test.db \
-  -force
+  -database ./data/restore-test.db
 ```
 
 Start a temporary application instance against the restored database:
@@ -119,7 +118,9 @@ For a logical restore in a stopped maintenance container:
   -force
 ```
 
-`-force` is deliberately required. Before invoking it, create another copy of the current database whenever the file remains readable.
+`-force` is required to replace an existing database, not to restore into a new path. Preserve another verified copy of the existing database first.
+
+Restore refuses a destination with `-wal`, `-shm` or `-journal` sidecars. Stop all processes and let SQLite recover/checkpoint cleanly before retrying. **Never delete these files to bypass the guard**: they may contain committed data or recovery state. Preserve the full file set and use a separate maintenance path when uncertain. The command does not itself prove that all writers are stopped.
 
 ## Fly volume snapshots
 
