@@ -17,7 +17,7 @@
 .home-hero__identity { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
 .home-hero__identity-line { width: 2.5rem; height: 1px; background: var(--color-signal-400); }
 .home-hero__identity-text { color: color-mix(in oklab, var(--color-signal-300) 70%, transparent); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; }
-.home-hero__title { font-size: 4.25rem; font-weight: 500; line-height: 0.92; letter-spacing: -0.045em; }
+.home-hero__title { font-size: clamp(3.125rem, 12vw, 4.25rem); font-weight: 500; line-height: 0.92; letter-spacing: -0.045em; }
 .home-hero__title-line { display: block; }
 .home-hero__title-accent { color: var(--color-signal-400); }
 .home-hero__intro { max-width: 42rem; margin-top: 2.25rem; color: var(--color-mist-300); font-size: 1.125rem; line-height: 2rem; }
@@ -173,7 +173,7 @@
 
 @media (min-width: 64rem) {
     .home-hero__layout { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 5rem; padding-block: 6rem; }
-    .home-hero__title { font-size: 8rem; }
+    .home-hero__title { font-size: clamp(4rem, 7.5vw, 7.25rem); }
     .home-workspace { justify-self: end; }
     .home-section { padding-block: 9rem; }
     .home-section__intro { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); }
@@ -188,4 +188,63 @@
     .home-contact { padding-block: 10rem; }
     .home-contact__panel { padding: 4rem; }
     .home-contact__layout { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+}
+
+/* Responsive content and reusable tooling. No autoplaying essential content. */
+.home-capability-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    color: var(--color-mist-300);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+.home-work-card__meta { flex-wrap: wrap; }
+.home-work-card + .home-work-card { margin-top: 2rem; }
+.home-work-card--workspace { border-color: var(--color-accent-border); }
+.home-work-card__copy, .home-hero__copy { min-width: 0; }
+.home-workspace__label, .home-workspace__step-copy, .home-work-card__year {
+    color: var(--color-mist-300);
+}
+
+.home-system-preview {
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-accent-border);
+    border-radius: 1.75rem;
+    background: linear-gradient(135deg, var(--color-ink-850), var(--color-ink-950));
+}
+.home-system-preview__grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.home-system-preview__grid > div { padding: 1.25rem; border: 1px solid var(--color-border-strong); border-radius: 1rem; }
+.home-system-preview dt { color: var(--color-mist-50); font-weight: 600; }
+.home-system-preview dd { margin-top: 0.5rem; color: var(--color-mist-300); font-size: 0.875rem; }
+.home-system-preview__foundation { margin-top: 1.5rem; color: var(--color-signal-200); font-size: 0.8125rem; line-height: 1.75; }
+
+.home-tooling { padding-block: clamp(4rem, 6vw, 6rem); }
+.home-tooling__grid { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+.home-tool-card { min-width: 0; padding: 1.5rem; border: 1px solid var(--color-border-strong); border-radius: 1.5rem; background: var(--color-background-elevated); }
+.home-tool-card h3 { margin-top: 1rem; color: var(--color-mist-50); font-size: 1.25rem; overflow-wrap: anywhere; }
+.home-tool-card h3 a { display: inline-block; padding-block: 0.5rem; }
+.home-tool-card h3 a, .home-tool-card__links a { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+.home-tool-card p:not(.eyebrow) { margin-top: 0.875rem; color: var(--color-mist-300); font-size: 0.9375rem; line-height: 1.75; }
+.home-tool-card pre { margin-top: 1.25rem; padding: 1rem; border-radius: 0.75rem; background: var(--color-ink-950); color: var(--color-signal-200); font-size: 0.875rem; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+.home-tool-card__links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin-top: 1rem; }
+.home-tool-card__links a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--color-signal-200); font-size: 0.875rem; }
+.home-tooling__all { margin-top: 1.5rem; }
+
+@media (min-width: 30rem) {
+    .home-system-preview__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 48rem) {
+    .home-tooling__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 29.999rem) {
+    .home-workspace__heading { flex-wrap: wrap; }
+    .home-workspace__cards { grid-template-columns: 1fr; }
+    .home-workspace__flow { grid-column: auto; }
+    .home-work-card, .home-contact__panel { border-radius: 1.5rem; }
+    .home-contact__panel { padding: 1.25rem; }
+    .home-contact__title { font-size: clamp(2.25rem, 10vw, 3rem); line-height: 1.05; }
 }
