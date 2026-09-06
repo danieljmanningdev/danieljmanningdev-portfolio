@@ -1,0 +1,72 @@
+name: Portfolio quality review
+
+on:
+  push:
+    branches:
+      - 'improvement/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Archive the exact source under review
+        run: git archive --format=zip --output="$RUNNER_TEMP/portfolio-source.zip" HEAD
+
+      - name: Save review source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-source-${{ github.sha }}
+          path: ${{ runner.temp }}/portfolio-source.zip
+          retention-days: 3
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.1'
+          cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build:css
+
+      - name: Check formatting
+        run: |
+          unformatted="$(git ls-files -z '*.go' | xargs -0 gofmt -l)"
+          if [ -n "$unformatted" ]; then
+            printf '%s\n' "$unformatted"
+            exit 1
+          fi
+          git diff --check
+
+      - run: go vet ./...
+      - run: go test -race -coverprofile=coverage.out ./...
+      - run: go build ./...
+
+      - name: Check reachable known vulnerabilities
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+
+      - name: Save coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-coverage-${{ github.sha }}
+          path: coverage.out
+          if-no-files-found: ignore
+          retention-days: 7
