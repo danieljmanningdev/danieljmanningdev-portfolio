@@ -1,6 +1,6 @@
 module github.com/danieljmanningdev/danieljmanningdev-portfolio
 
-go 1.26.5
+go 1.27.1
 
 require modernc.org/sqlite v1.56.0
 

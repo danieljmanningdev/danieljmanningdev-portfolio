@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"html/template"
+	"log/slog"
 	"net/http"
 	"strconv"
 )
@@ -12,6 +13,7 @@ import (
 func renderPublicHTML(w http.ResponseWriter, r *http.Request, tmpl *template.Template, data any) {
 	var body bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&body, "base", data); err != nil {
+		slog.ErrorContext(r.Context(), "render public page", "error", err, "request_id", RequestIDFromContext(r.Context()))
 		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return

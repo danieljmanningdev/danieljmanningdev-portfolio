@@ -10,6 +10,7 @@ package main
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -29,13 +30,17 @@ import (
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/repository"
 )
 
-func main() {
+func main() { os.Exit(run()) }
+
+func run() int {
 	cfg := config.Load()
 
 	logger := logging.New(
 		cfg.Environment,
 		cfg.LogLevel,
 	)
+
+	slog.SetDefault(logger)
 
 	logger.Info(
 		"starting application",
@@ -59,7 +64,7 @@ func main() {
 			"failed to open database",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	defer func() {
@@ -79,7 +84,7 @@ func main() {
 			"failed to run migrations",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	homeHandler, err := apphttp.NewHomeHandler(
@@ -90,7 +95,7 @@ func main() {
 			"failed to create home handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	portfolioCaseStudyHandler, err :=
@@ -102,7 +107,7 @@ func main() {
 			"failed to create portfolio case study handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	dashboardHandler, err := apphttp.NewDashboardHandler(
@@ -114,7 +119,7 @@ func main() {
 			"failed to create dashboard handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	clientsHandler, err := clients.NewClientsHandler(
@@ -126,7 +131,7 @@ func main() {
 			"failed to create clients handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	projectsHandler, err := projects.NewProjectsHandler(
@@ -138,7 +143,7 @@ func main() {
 			"failed to create projects handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	contractsHandler, err := contracts.NewContractsHandler(
@@ -150,7 +155,7 @@ func main() {
 			"failed to create contracts handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	blogHandler, err := apphttp.NewBlogHandler(
@@ -162,7 +167,7 @@ func main() {
 			"failed to create blog handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	blogAdminHandler, err := blog.NewAdminHandler(
@@ -174,7 +179,7 @@ func main() {
 			"failed to create blog admin handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	publicPageRoutes, err :=
@@ -187,7 +192,7 @@ func main() {
 			"failed to create public page routes",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	secureCookies :=
@@ -204,7 +209,7 @@ func main() {
 			"failed to create admin auth handler",
 			"error", err,
 		)
-		os.Exit(1)
+		return 1
 	}
 
 	adminRepository :=
@@ -269,38 +274,33 @@ func main() {
 		MaxHeaderBytes:    1 << 20,
 	}
 
-	go func() {
-		logger.Info(
-			"server starting",
-			"url", "http://localhost:"+strconv.Itoa(cfg.Port),
-			"environment", cfg.Environment,
-		)
-
-		if err := server.ListenAndServe(); err != nil &&
-			!errors.Is(err, http.ErrServerClosed) {
-			logger.Error(
-				"server error",
-				"error", err,
-			)
-
-			stop()
-		}
-	}()
-
-	<-ctx.Done()
-
-	logger.Info("shutting down server")
-
-	shutdownCtx, cancel := context.WithTimeout(
-		context.Background(),
-		10*time.Second,
-	)
-	defer cancel()
-
-	if err := server.Shutdown(shutdownCtx); err != nil {
-		logger.Error(
-			"server shutdown error",
-			"error", err,
-		)
+	logger.Info("server starting", "url", "http://localhost:"+strconv.Itoa(cfg.Port), "environment", cfg.Environment)
+	if err := runHTTPServer(ctx, server); err != nil {
+		logger.Error("server stopped with error", "error", err)
+		return 1
 	}
+	logger.Info("server stopped")
+	return 0
+}
+
+// runHTTPServer reports startup failures to the process and closes connections
+// if the graceful-shutdown deadline expires. Tests can exercise it without a DB.
+func runHTTPServer(ctx context.Context, server *http.Server) error {
+	result := make(chan error, 1)
+	go func() { result <- server.ListenAndServe() }()
+	select {
+	case err := <-result:
+		if errors.Is(err, http.ErrServerClosed) {
+			return nil
+		}
+		return err
+	case <-ctx.Done():
+	}
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		_ = server.Close()
+		return err
+	}
+	return nil
 }
