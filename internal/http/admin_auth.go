@@ -209,6 +209,11 @@ func (h *AdminAuthHandler) submitLogin(
 
 	password := r.FormValue("password")
 
+	if len(email) > 320 || len(password) > 72 {
+		http.Error(w, "Invalid login details.", http.StatusBadRequest)
+		return
+	}
+
 	clientIP := loginClientIP(r)
 
 	if allowed, retryAfter :=
@@ -285,10 +290,10 @@ func (h *AdminAuthHandler) submitLogin(
 	if existingCookie, err := r.Cookie(
 		adminSessionCookieName,
 	); err == nil {
-		_ = h.sessionService.RevokeSession(
-			r.Context(),
-			existingCookie.Value,
-		)
+		if err := h.sessionService.RevokeSession(r.Context(), existingCookie.Value); err != nil {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	rawToken, expiresAt, err :=
@@ -377,10 +382,11 @@ func (h *AdminAuthHandler) handleLogout(
 		return
 	}
 
-	_ = h.sessionService.RevokeSession(
-		r.Context(),
-		cookie.Value,
-	)
+	if err := h.sessionService.RevokeSession(r.Context(), cookie.Value); err != nil {
+		// Do not claim successful logout while the bearer token remains valid.
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
 
 	h.clearSessionCookie(w)
 
