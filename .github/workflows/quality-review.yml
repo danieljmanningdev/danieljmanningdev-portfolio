@@ -16,10 +16,22 @@ jobs:
   review:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+
+      - name: Apply isolated review batch
+        if: github.ref == 'refs/heads/improvement/portfolio-quality-review'
+        run: |
+          if [ -f .review/next.patch ]; then
+            count="$(git apply --numstat .review/next.patch | wc -l)"
+            test "$count" -le 10
+            git apply --check --whitespace=error-all .review/next.patch
+            git apply --index --whitespace=error-all .review/next.patch
+            echo "Review batch changes $count files"
+            git diff --cached --stat
+          fi
 
       - uses: actions/setup-go@v5
         with:
@@ -34,6 +46,7 @@ jobs:
             exit 1
           fi
           git diff --check
+          git diff --cached --check
 
       - run: go vet ./...
       - run: go test -race -coverprofile=coverage.out ./...
@@ -56,6 +69,15 @@ jobs:
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
           govulncheck ./...
+
+      - name: Commit validated review batch
+        if: github.ref == 'refs/heads/improvement/portfolio-quality-review'
+        run: |
+          if [ -f .review/next.patch ]; then
+            git rm .review/next.patch
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix: apply validated portfolio quality batch'
+            git push origin HEAD:refs/heads/improvement/portfolio-quality-review
+          fi
 
       - name: Save coverage report
         if: always()
