@@ -48,6 +48,19 @@ async function check(name, callback) {
   catch (error) { failures.push({ name, error: String(error.stack || error) }); results.push({ name, passed: false }); }
 }
 
+async function decodeVisibleImage(page, image) {
+  await image.scrollIntoViewIfNeeded();
+  const element = await image.elementHandle();
+  try {
+    // Scrolling schedules native lazy loading; Firefox may not have a valid
+    // image request yet. Wait for loaded pixels instead of racing decode().
+    await page.waitForFunction(el => el.complete && el.naturalWidth > 0, element);
+    await image.evaluate(el => el.decode());
+  } finally {
+    await element.dispose();
+  }
+}
+
 function overflowInPage() {
   const width = document.documentElement.clientWidth;
   const bad = [];
@@ -88,8 +101,7 @@ function overflowInPage() {
             // A full-page screenshot alone does not trigger every lazy image.
             // Scroll and decode all homepage assets, then restore the top.
             for (const image of await page.locator('img').all()) {
-              await image.scrollIntoViewIfNeeded();
-              await image.evaluate(el => el.decode());
+              await decodeVisibleImage(page, image);
             }
             await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
           }
@@ -141,8 +153,7 @@ function overflowInPage() {
       await page.goto(base + '/');
       for (const selector of ['.editorial-feature__media img', '.editorial-project--lead .editorial-project__media img']) {
         const image = page.locator(selector);
-        await image.scrollIntoViewIfNeeded();
-        await image.evaluate(el => el.decode());
+        await decodeVisibleImage(page, image);
         const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
         assert.ok(info.width > 0 && info.height > 0);
         assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
