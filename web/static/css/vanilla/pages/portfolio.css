@@ -280,7 +280,7 @@
 .portfolio-sidebar__subtitle {
     margin-top: 0.25rem;
 
-    color: var(--color-mist-700);
+    color: var(--color-mist-300);
 
     font-size: 0.75rem;
 }
@@ -651,7 +651,7 @@
 }
 
 .portfolio-architecture__layer-label {
-    color: var(--color-mist-700);
+    color: var(--color-mist-300);
 
     font-size: 0.65rem;
     font-weight: 600;
@@ -675,7 +675,7 @@
 
     padding-left: 3.15rem;
 
-    color: var(--color-mist-700);
+    color: var(--color-mist-300);
 
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -863,7 +863,7 @@
         transparent
     );
 
-    color: var(--color-mist-700);
+    color: var(--color-mist-300);
 
     font-size: 0.75rem;
     line-height: 1.6;

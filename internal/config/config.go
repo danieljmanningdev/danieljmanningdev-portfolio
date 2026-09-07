@@ -10,6 +10,7 @@ package config
 import (
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Config struct {
@@ -26,7 +27,7 @@ func Load() Config {
 		templateDir = "web/templates"
 	}
 	return Config{
-		Environment:  getEnv("APP_ENV", "development"),
+		Environment:  strings.ToLower(strings.TrimSpace(getEnv("APP_ENV", "development"))),
 		Port:         getEnvInt("APP_PORT", 8080),
 		LogLevel:     getEnv("LOG_LEVEL", "info"),
 		DatabasePath: getEnv("DATABASE_PATH", "./data/app.db"),
@@ -51,7 +52,7 @@ func getEnvInt(key string, fallback int) int {
 	}
 
 	parsed, err := strconv.Atoi(value)
-	if err != nil || parsed <= 0 {
+	if err != nil || parsed <= 0 || parsed > 65535 {
 		return fallback
 	}
 

@@ -33,6 +33,12 @@ func TestLoadPageTemplateParsesApplicationPages(
 
 	pages := []string{
 		"public/home.html",
+		"public/web-design.html",
+		"public/web-design-leeds.html",
+		"public/web-development.html",
+		"public/software-development.html",
+		"public/ui-ux-design.html",
+		"public/salon-rebuild.html",
 		"public/portfolio.html",
 		"public/404.html",
 		"blog.html",

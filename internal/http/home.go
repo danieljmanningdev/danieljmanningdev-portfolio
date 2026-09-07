@@ -57,7 +57,8 @@ func (h *HomeHandler) ServeHTTP(
 		return
 	}
 
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		w.Header().Set("Allow", "GET, HEAD")
 		http.Error(
 			w,
 			http.StatusText(http.StatusMethodNotAllowed),
@@ -83,15 +84,5 @@ func (h *HomeHandler) ServeHTTP(
 		`<https://danieljmanningdev.com/>; rel="canonical"`,
 	)
 
-	if err := h.homeTemplate.ExecuteTemplate(
-		w,
-		"base",
-		data,
-	); err != nil {
-		http.Error(
-			w,
-			http.StatusText(http.StatusInternalServerError),
-			http.StatusInternalServerError,
-		)
-	}
+	renderPublicHTML(w, r, h.homeTemplate, data)
 }

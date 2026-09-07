@@ -12,6 +12,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 )
@@ -23,6 +24,14 @@ func Backup(
 ) error {
 	if databasePath == "" || databasePath == ":memory:" {
 		return fmt.Errorf("backup requires a file-backed database")
+	}
+
+	info, err := os.Stat(databasePath)
+	if err != nil {
+		return fmt.Errorf("inspect source database: %w", err)
+	}
+	if !info.Mode().IsRegular() {
+		return fmt.Errorf("source database must be a regular file")
 	}
 
 	if destinationPath == "" {
@@ -56,11 +65,12 @@ func Backup(
 		return fmt.Errorf("inspect backup destination: %w", err)
 	}
 
-	temporaryPath := destinationAbsolute + ".tmp"
-	_ = os.Remove(temporaryPath)
-	defer func() {
-		_ = os.Remove(temporaryPath)
-	}()
+	temporaryDirectory, err := os.MkdirTemp(filepath.Dir(destinationAbsolute), ".backup-*")
+	if err != nil {
+		return fmt.Errorf("create private backup workspace: %w", err)
+	}
+	defer func() { _ = os.RemoveAll(temporaryDirectory) }()
+	temporaryPath := filepath.Join(temporaryDirectory, "snapshot.db")
 
 	database, err := Open(ctx, sourceAbsolute)
 	if err != nil {
@@ -86,10 +96,9 @@ func Backup(
 		return fmt.Errorf("secure backup permissions: %w", err)
 	}
 
-	if err := os.Rename(
-		temporaryPath,
-		destinationAbsolute,
-	); err != nil {
+	// A hard link publishes the completed file atomically without replacing a
+	// destination created concurrently after the initial existence check.
+	if err := os.Link(temporaryPath, destinationAbsolute); err != nil {
 		return fmt.Errorf("publish backup atomically: %w", err)
 	}
 
@@ -104,8 +113,12 @@ func VerifyBackup(
 		return fmt.Errorf("backup path is required")
 	}
 
-	if _, err := os.Stat(path); err != nil {
+	info, err := os.Stat(path)
+	if err != nil {
 		return fmt.Errorf("inspect backup file: %w", err)
+	}
+	if !info.Mode().IsRegular() {
+		return fmt.Errorf("backup must be a regular file")
 	}
 
 	dsn, err := sqliteDSN(path)
@@ -113,7 +126,15 @@ func VerifyBackup(
 		return err
 	}
 
-	database, err := sql.Open("sqlite", dsn)
+	uri, err := url.Parse(dsn)
+	if err != nil {
+		return fmt.Errorf("parse backup URI: %w", err)
+	}
+	query := uri.Query()
+	query.Set("mode", "ro")
+	uri.RawQuery = query.Encode()
+
+	database, err := sql.Open("sqlite", uri.String())
 	if err != nil {
 		return fmt.Errorf("open backup for verification: %w", err)
 	}
@@ -181,11 +202,21 @@ func Restore(
 		return fmt.Errorf("create database directory: %w", err)
 	}
 
-	temporaryPath := databaseAbsolute + ".restore.tmp"
-	_ = os.Remove(temporaryPath)
-	defer func() {
-		_ = os.Remove(temporaryPath)
-	}()
+	// Do not replace a database while SQLite may have live recovery state.
+	// The operator must stop the application and checkpoint/recover it first.
+	for _, suffix := range []string{"-wal", "-shm", "-journal"} {
+		if _, err := os.Stat(databaseAbsolute + suffix); err == nil {
+			return fmt.Errorf("destination has SQLite sidecar %s; stop and checkpoint the application before restoring", suffix)
+		} else if !os.IsNotExist(err) {
+			return fmt.Errorf("inspect SQLite sidecar: %w", err)
+		}
+	}
+	temporaryDirectory, err := os.MkdirTemp(filepath.Dir(databaseAbsolute), ".restore-*")
+	if err != nil {
+		return fmt.Errorf("create private restore workspace: %w", err)
+	}
+	defer func() { _ = os.RemoveAll(temporaryDirectory) }()
+	temporaryPath := filepath.Join(temporaryDirectory, "snapshot.db")
 
 	if err := copyFile(
 		backupAbsolute,
@@ -198,11 +229,13 @@ func Restore(
 		return err
 	}
 
-	if err := os.Rename(
-		temporaryPath,
-		databaseAbsolute,
-	); err != nil {
-		return fmt.Errorf("replace database atomically: %w", err)
+	if force {
+		err = os.Rename(temporaryPath, databaseAbsolute)
+	} else {
+		err = os.Link(temporaryPath, databaseAbsolute)
+	}
+	if err != nil {
+		return fmt.Errorf("publish restored database atomically: %w", err)
 	}
 
 	return nil

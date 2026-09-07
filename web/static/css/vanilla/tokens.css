@@ -178,7 +178,7 @@
        ---------------------------------------------------------------------- */
 
     --container-width: 82rem;
-    --container-gutter: 1rem;
+    --container-gutter: clamp(1.25rem, 6vw, 3rem);
 
     --content-xs: 24rem;
     --content-sm: 32rem;

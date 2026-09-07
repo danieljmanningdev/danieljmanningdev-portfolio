@@ -64,6 +64,7 @@ func discoverMigrations(directory string) ([]Migration, error) {
 	}
 
 	var migrations []Migration
+	seen := make(map[int]string)
 
 	for _, entry := range entries {
 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".sql") {
@@ -83,6 +84,14 @@ func discoverMigrations(directory string) ([]Migration, error) {
 				err,
 			)
 		}
+
+		if version <= 0 || strings.TrimSuffix(parts[1], ".sql") == "" {
+			return nil, fmt.Errorf("migration %q needs a positive version and a name", entry.Name())
+		}
+		if previous, exists := seen[version]; exists {
+			return nil, fmt.Errorf("duplicate migration version %d: %s and %s", version, previous, entry.Name())
+		}
+		seen[version] = entry.Name()
 
 		migrations = append(migrations, Migration{
 			Version: version,

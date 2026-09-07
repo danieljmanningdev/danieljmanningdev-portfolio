@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/auth"
 	apphttp "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/http"
@@ -51,12 +52,16 @@ func newRouter(deps routerDependencies) http.Handler {
 		deps.portfolioCaseStudyHandler,
 	)
 
+	// Preserve older trailing-slash links without serving duplicate content.
+	mux.Handle("GET /work/portfolio/{$}", http.RedirectHandler("/work/portfolio", http.StatusPermanentRedirect))
+
 	// Register static public/SEO pages.
 	for _, route := range deps.publicPageRoutes {
-		mux.Handle(
-			route.Path,
-			route.Handler,
-		)
+		pattern := route.Path
+		if strings.HasSuffix(pattern, "/") {
+			pattern += "{$}"
+		}
+		mux.Handle(pattern, route.Handler)
 	}
 
 	// -------------------------------------------------------------------------
@@ -190,9 +195,7 @@ func newRouter(deps routerDependencies) http.Handler {
 	// Static files
 	// -------------------------------------------------------------------------
 
-	fileServer := http.FileServer(
-		http.Dir("web/static"),
-	)
+	fileServer := apphttp.StaticFiles("web/static")
 
 	mux.Handle(
 		"/static/",
@@ -225,5 +228,5 @@ func newRouter(deps routerDependencies) http.Handler {
 		deps.homeHandler,
 	)
 
-	return mux
+	return apphttp.LimitRequestBody(mux, 4<<20)
 }

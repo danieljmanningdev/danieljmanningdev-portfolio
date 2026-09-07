@@ -233,3 +233,33 @@ func TestHomeHandlerRejectsNonGet(
 		)
 	}
 }
+
+func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
+	handler, err := NewHomeHandler(filepath.Join("..", "..", "web", "templates"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/", nil))
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d", rec.Code)
+	}
+	body := rec.Body.String()
+	for _, expected := range []string{
+		`href="/work/salon-rebuild/"`, `href="/work/portfolio"`,
+		`id="workspace-project-title"`, `id="tooling-title"`,
+		`https://github.com/danieljmanningdev/djm-cli`,
+		`https://github.com/danieljmanningdev/go-jsonld-schema`,
+		`https://github.com/danieljmanningdev/go-web-core`,
+		`https://github.com/danieljmanningdev/go-web-security`,
+		`https://github.com/danieljmanningdev/go-web-auth`,
+		`https://github.com/danieljmanningdev/go-starter-auth-app`,
+	} {
+		if !strings.Contains(body, expected) {
+			t.Errorf("missing %q", expected)
+		}
+	}
+	if strings.Contains(body, `marquee-track`) {
+		t.Error("homepage must not autoplay an unpausable capability list")
+	}
+}

@@ -1,9 +1,21 @@
-/* ========================================================================== 
-   SERVICE PAGE POLISH
-   ========================================================================== */
+/* Service layouts: constrain the actual grid track, not only its copy. */
+.service-hero__layout {
+    grid-template-columns: minmax(0, 1fr);
+}
 
-.service-hero__copy {
+.service-hero__copy,
+.service-preview {
     min-width: 0;
+}
+
+.service-kicker__line { flex-shrink: 0; }
+.service-preview__toolbar { gap: 0.5rem; flex-wrap: wrap; }
+
+@media (max-width: 39.999rem) {
+    .service-hero__title {
+        font-size: clamp(2.5rem, 10vw, 4.1rem);
+        overflow-wrap: anywhere;
+    }
 }
 
 @media (min-width: 64rem) {

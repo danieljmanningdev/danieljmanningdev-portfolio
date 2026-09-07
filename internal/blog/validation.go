@@ -10,6 +10,7 @@ package blog
 import (
 	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 type FormErrors struct {
@@ -61,6 +62,19 @@ func ValidateForm(form Form) FormErrors {
 	case "draft", "published":
 	default:
 		errors.Status = "Status must be draft or published."
+	}
+
+	if !utf8.ValidString(title) || utf8.RuneCountInString(title) > 200 {
+		errors.Title = "Title must be valid text of at most 200 characters."
+	}
+	if len(slug) > 200 {
+		errors.Slug = "Slug must be at most 200 characters."
+	}
+	if !utf8.ValidString(excerpt) || utf8.RuneCountInString(excerpt) > 500 {
+		errors.Excerpt = "Excerpt must be valid text of at most 500 characters."
+	}
+	if !utf8.ValidString(content) || len(content) > 1<<20 {
+		errors.Content = "Content must be valid UTF-8 text of at most 1 MiB."
 	}
 
 	return errors

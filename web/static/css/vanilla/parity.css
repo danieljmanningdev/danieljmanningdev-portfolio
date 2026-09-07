@@ -2,27 +2,6 @@
    POST-MIGRATION PUBLIC PARITY
    ========================================================================== */
 
-/* Keep the duplicated capability track moving continuously as it did before
-   the Tailwind migration. */
-.home-capability-strip {
-    overflow: hidden;
-}
-
-.home-capability-strip__track {
-    animation: home-capability-marquee 28s linear infinite;
-    will-change: transform;
-}
-
-@keyframes home-capability-marquee {
-    from {
-        transform: translate3d(0, 0, 0);
-    }
-
-    to {
-        transform: translate3d(-50%, 0, 0);
-    }
-}
-
 /* Markdown article typography. These selectors intentionally live in a
    late-loaded parity layer so generated Markdown HTML cannot fall back to
    reset/base heading styles in production. */
@@ -223,12 +202,5 @@
         margin-inline: -0.25rem;
         padding: 1.125rem;
         border-radius: 1rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .home-capability-strip__track {
-        animation: none;
-        transform: none;
     }
 }

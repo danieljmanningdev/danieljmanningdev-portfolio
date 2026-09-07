@@ -58,3 +58,17 @@ func TestLoadInvalidPortUsesDefault(t *testing.T) {
 		t.Errorf("expected invalid port to use default 8080, got %d", cfg.Port)
 	}
 }
+
+func TestProductionEnvironmentIsNormalised(t *testing.T) {
+	t.Setenv("APP_ENV", " Production ")
+	if got := Load().Environment; got != "production" {
+		t.Fatalf("environment = %q", got)
+	}
+}
+
+func TestOutOfRangePortUsesDefault(t *testing.T) {
+	t.Setenv("APP_PORT", "65536")
+	if got := Load().Port; got != 8080 {
+		t.Fatalf("port = %d", got)
+	}
+}

@@ -16,6 +16,8 @@
 package auth
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"strings"
 	"sync"
 	"time"
@@ -25,6 +27,7 @@ const (
 	loginFailureWindow            = 10 * time.Minute
 	maxLoginFailuresPerCredential = 5
 	maxLoginFailuresPerIP         = 20
+	maxLoginLimiterEntries        = 10000
 )
 
 type loginFailureEntry struct {
@@ -41,6 +44,7 @@ type LoginLimiter struct {
 	window           time.Duration
 	maxPerCredential int
 	maxPerIP         int
+	maxEntries       int
 
 	lastCleanup time.Time
 	now         func() time.Time
@@ -57,6 +61,7 @@ func NewLoginLimiter() *LoginLimiter {
 		window:           loginFailureWindow,
 		maxPerCredential: maxLoginFailuresPerCredential,
 		maxPerIP:         maxLoginFailuresPerIP,
+		maxEntries:       maxLoginLimiterEntries,
 		now: func() time.Time {
 			return time.Now().UTC()
 		},
@@ -93,6 +98,14 @@ func (l *LoginLimiter) Check(
 		credentialKey,
 		now,
 	)
+
+	// Reject new keys at capacity rather than evicting active blocks.
+	if _, known := l.ipFailures[ip]; !known && len(l.ipFailures) >= l.maxEntries {
+		return false, l.window
+	}
+	if _, known := l.credentialFailures[credentialKey]; !known && len(l.credentialFailures) >= l.maxEntries {
+		return false, l.window
+	}
 
 	var retryAfter time.Duration
 
@@ -138,22 +151,13 @@ func (l *LoginLimiter) RecordFailure(
 	ip = normalizeLoginLimiterValue(ip)
 	email = normalizeLoginLimiterValue(email)
 
-	incrementLoginFailure(
-		l.ipFailures,
-		ip,
-		now,
-		l.window,
-	)
-
-	incrementLoginFailure(
-		l.credentialFailures,
-		loginCredentialKey(
-			ip,
-			email,
-		),
-		now,
-		l.window,
-	)
+	if _, known := l.ipFailures[ip]; known || len(l.ipFailures) < l.maxEntries {
+		incrementLoginFailure(l.ipFailures, ip, now, l.window)
+	}
+	key := loginCredentialKey(ip, email)
+	if _, known := l.credentialFailures[key]; known || len(l.credentialFailures) < l.maxEntries {
+		incrementLoginFailure(l.credentialFailures, key, now, l.window)
+	}
 }
 
 func (l *LoginLimiter) ResetCredential(
@@ -263,11 +267,9 @@ func normalizeLoginLimiterValue(
 		strings.ToLower(value),
 	)
 
-	if value == "" {
-		return "unknown"
-	}
-
-	return value
+	// Fixed-size map keys avoid retaining arbitrary-length credentials.
+	digest := sha256.Sum256([]byte(value))
+	return hex.EncodeToString(digest[:])
 }
 
 func remainingLoginWindow(
