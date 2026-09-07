@@ -99,10 +99,11 @@ function overflowInPage() {
             const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
             const name = `${engine}-${route.replace(/[^a-z0-9]/gi, '_') || 'home'}-${width}`;
             fs.writeFileSync(path.join(reportDirectory, `${name}.axe.json`), JSON.stringify({ url: route, violations: scan.violations, incomplete: scan.incomplete }, null, 2));
-            assert.deepEqual(scan.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })), [], 'Automated accessibility findings');
+            // Keep screenshots even when an accessibility assertion fails.
             if (route === '/' || (route === '/work/portfolio' && width === 390)) {
               await page.screenshot({ path: path.join(reportDirectory, `${name}.png`), fullPage: true });
             }
+            assert.deepEqual(scan.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })), [], 'Automated accessibility findings');
           }
         });
       }
@@ -127,28 +128,58 @@ function overflowInPage() {
       await page.keyboard.press('Enter');
       assert.equal(await menu.getAttribute('open'), null);
     });
-    await check(`${engine} images decode and use responsive source`, async () => {
+    await check(`${engine} images decode and use responsive sources`, async () => {
       await page.goto(base + '/');
-      const image = page.locator('.home-work-preview__image');
-      await image.scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => {
-        const el = document.querySelector('.home-work-preview__image');
-        return el && el.complete && el.naturalWidth > 0;
-      });
-      await image.evaluate(el => el.decode());
-      const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
-      assert.ok(info.width > 0 && info.height > 0);
-      assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
-      results.push({ name: `${engine} responsive image selected`, ...info, passed: true });
+      for (const selector of ['.editorial-feature__media img', '.editorial-project--lead .editorial-project__media img']) {
+        const image = page.locator(selector);
+        await image.scrollIntoViewIfNeeded();
+        await image.evaluate(el => el.decode());
+        const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
+        assert.ok(info.width > 0 && info.height > 0);
+        assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
+        results.push({ name: `${engine} responsive image selected: ${selector}`, ...info, passed: true });
+      }
     });
+    for (const width of widths) {
+      await check(`${engine} dark homepage ending ${width}px`, async () => {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(base + '/', { waitUntil: 'load' });
+        assert.equal(await page.locator('main[data-theme="light"]').count(), 1);
+        assert.equal(await page.locator('.editorial-hero__avatar').count(), 0, 'Removed avatar must not return');
+        assert.equal(await page.locator('.footer-cta').count(), 0, 'Removed duplicate CTA must not return');
+        assert.equal(await page.locator('#contact').count(), 1);
+        await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const ending = await page.evaluate(() => {
+          const header = document.querySelector('.site-header');
+          const panel = document.querySelector('.site-ending--home');
+          const footer = document.querySelector('.site-footer');
+          return {
+            headerBottom: header.getBoundingClientRect().bottom,
+            panelTop: panel.getBoundingClientRect().top,
+            footerTop: footer.getBoundingClientRect().top,
+            footerBottom: footer.getBoundingClientRect().bottom,
+            viewport: window.innerHeight,
+            colours: [header, panel, document.querySelector('#contact'), footer].map(el => getComputedStyle(el).backgroundColor),
+          };
+        });
+        assert.ok(ending.panelTop <= ending.headerBottom + 1, 'Light content must not show between header and ending');
+        assert.ok(Math.abs(ending.footerBottom - ending.viewport) <= 1, 'Footer must reach the viewport bottom');
+        assert.ok(ending.footerTop > ending.viewport / 2, 'Footer belongs at the end, below the contact content');
+        assert.equal(new Set(ending.colours).size, 1, 'Header, contact and footer must share the shell colour token');
+        if (width === 390 || width === 1440) {
+          await page.screenshot({ path: path.join(reportDirectory, `${engine}-home-ending-${width}.png`) });
+        }
+      });
+    }
     await check(`${engine} no JavaScript content and navigation`, async () => {
       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
       try {
         const noJSPage = await noJS.newPage();
         await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
         // DOM readiness can precede stylesheet layout, especially in Firefox.
-        await noJSPage.locator('#workspace-project-title').waitFor({ state: 'visible' });
-        await noJSPage.locator('#tooling-title').waitFor({ state: 'visible' });
+        await noJSPage.getByRole('heading', { name: 'Portfolio & Client Workspace', exact: true }).waitFor({ state: 'visible' });
+        await noJSPage.getByRole('heading', { name: 'go-jsonld-schema', exact: true }).waitFor({ state: 'visible' });
         await noJSPage.locator('.mobile-nav summary').click();
         await noJSPage.locator('.mobile-nav-link').first().waitFor({ state: 'visible' });
       } finally {
