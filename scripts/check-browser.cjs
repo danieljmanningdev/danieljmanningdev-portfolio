@@ -84,6 +84,15 @@ function overflowInPage() {
           const response = await page.goto(base + route, { waitUntil: 'load' });
           assert.equal(response.status(), status, 'Unexpected document status');
           await page.evaluate(() => document.fonts.ready);
+          if (route === '/') {
+            // A full-page screenshot alone does not trigger every lazy image.
+            // Scroll and decode all homepage assets, then restore the top.
+            for (const image of await page.locator('img').all()) {
+              await image.scrollIntoViewIfNeeded();
+              await image.evaluate(el => el.decode());
+            }
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+          }
           await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
           const overflow = await page.evaluate(overflowInPage);
           assert.ok(overflow.scrollWidth <= width + 1, JSON.stringify(overflow));
