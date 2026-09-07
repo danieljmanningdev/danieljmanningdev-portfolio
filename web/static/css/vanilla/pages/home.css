@@ -191,12 +191,14 @@
 
 .editorial-project-grid {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 3.5rem);
     margin-top: clamp(3rem, 6vw, 5rem);
 }
 
 .editorial-project,
 .editorial-project:visited {
+    min-width: 0;
     text-decoration: none;
 }
 
@@ -263,6 +265,7 @@
 
 .editorial-project-stack {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2rem;
 }
 
@@ -425,8 +428,10 @@
         min-height: 12rem;
     }
 
-    .editorial-project__media--code,
-    .editorial-project__media--terminal {
+    /* Text previews need height for their contents, not a 16:6 minimum width. */
+    .editorial-project--compact .editorial-project__media--code,
+    .editorial-project--compact .editorial-project__media--terminal {
+        aspect-ratio: auto;
         min-height: 10rem;
     }
 }

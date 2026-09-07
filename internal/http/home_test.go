@@ -245,21 +245,37 @@ func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
 		t.Fatalf("status = %d", rec.Code)
 	}
 	body := rec.Body.String()
+	// Verify the current editorial content, not IDs and secondary repository
+	// links belonging to the retired full-length tooling section.
 	for _, expected := range []string{
 		`href="/work/salon-rebuild/"`, `href="/work/portfolio"`,
-		`id="workspace-project-title"`, `id="tooling-title"`,
+		`id="selected-work-title"`, `id="capabilities-title"`,
+		`Portfolio &amp; Client Workspace`,
+		`go-jsonld-schema`, `djm-cli`,
 		`https://github.com/danieljmanningdev/djm-cli`,
 		`https://github.com/danieljmanningdev/go-jsonld-schema`,
-		`https://github.com/danieljmanningdev/go-web-core`,
-		`https://github.com/danieljmanningdev/go-web-security`,
-		`https://github.com/danieljmanningdev/go-web-auth`,
-		`https://github.com/danieljmanningdev/go-starter-auth-app`,
+		`data-theme="light"`,
+		`class="editorial-feature__media"`,
+		`salon-rebuild-home-480.avif`, `salon-rebuild-home-480.webp`,
+		`site-ending--home`,
+		`aria-labelledby="contact-title"`,
+		`href="mailto:daniel@danieljmanningdev.com"`,
 	} {
 		if !strings.Contains(body, expected) {
 			t.Errorf("missing %q", expected)
 		}
 	}
-	if strings.Contains(body, `marquee-track`) {
-		t.Error("homepage must not autoplay an unpausable capability list")
+	for _, removed := range []string{
+		`marquee-track`,
+		`daniel-avatar.svg`,
+		`class="footer-cta"`,
+		`Make the complex feel`,
+	} {
+		if strings.Contains(body, removed) {
+			t.Errorf("homepage must not restore removed content %q", removed)
+		}
+	}
+	if count := strings.Count(body, `id="contact"`); count != 1 {
+		t.Errorf("expected one contact section, got %d", count)
 	}
 }
