@@ -1,385 +1,174 @@
 {{define "content"}}
 <main class="home-page">
-    <section class="home-hero">
-        <div class="home-hero__glow-field" aria-hidden="true">
-            <div class="home-hero__glow home-hero__glow--signal"></div>
-            <div class="home-hero__glow home-hero__glow--electric"></div>
-        </div>
+    <section class="editorial-hero" aria-labelledby="home-title">
+        <div class="site-container editorial-hero__grid">
+            <div class="editorial-hero__identity">
+                <img
+                    src="/static/images/daniel-avatar.svg"
+                    alt="Illustrated portrait of Daniel Manning"
+                    class="editorial-hero__avatar"
+                    width="170"
+                    height="210"
+                    decoding="async"
+                >
 
-        <div class="site-container home-hero__layout">
-            <div class="home-hero__copy">
-                <div class="home-hero__identity">
-                    <span class="home-hero__identity-line"></span>
-                    <p class="home-hero__identity-text">Digital Product Designer &amp; Developer</p>
+                <div class="editorial-hero__copy">
+                    <p class="editorial-kicker">Hello, I’m</p>
+                    <h1 id="home-title" class="editorial-hero__name">Daniel Manning</h1>
+                    <p class="editorial-hero__role">Designer &amp; Developer</p>
+                    <p class="editorial-hero__intro">
+                        I turn complicated workflows into focused digital products, combining thoughtful UI/UX with fast,
+                        secure full-stack engineering.
+                    </p>
+
+                    <div class="editorial-hero__links" aria-label="Profile links">
+                        <a href="https://github.com/danieljmanningdev">GitHub <span aria-hidden="true">↗</span></a>
+                        <a href="/blog/">Journal <span aria-hidden="true">↗</span></a>
+                        <a href="mailto:daniel@danieljmanningdev.com">Email <span aria-hidden="true">↗</span></a>
+                    </div>
                 </div>
-
-                <h1 class="home-hero__title">
-                    <span class="home-hero__title-line">Building</span>
-                    <span class="home-hero__title-line home-hero__title-accent">digital products</span>
-                    <span class="home-hero__title-line">that matter.</span>
-                </h1>
-
-                <p class="reveal reveal-delay-2 home-hero__intro">
-                    I turn complicated workflows into focused digital products, combining thoughtful UI/UX with fast,
-                    secure full-stack engineering.
-                </p>
-
-                <div class="reveal reveal-delay-2 home-hero__actions">
-                    <a href="#work" class="button-primary">Explore selected work <span aria-hidden="true">↓</span></a>
-                    <a href="/blog/" class="button-secondary">Read the journal <span aria-hidden="true">↗</span></a>
-                </div>
-
-                <dl class="reveal reveal-delay-3 home-hero__metrics">
-                    <div>
-                        <dt class="metric-label">Focus</dt>
-                        <dd class="home-hero__metric-value">Product clarity</dd>
-                    </div>
-                    <div>
-                        <dt class="metric-label">Discipline</dt>
-                        <dd class="home-hero__metric-value">Design + engineering</dd>
-                    </div>
-                    <div class="home-hero__metric--wide">
-                        <dt class="metric-label">Core stack</dt>
-                        <dd class="home-hero__metric-value">Go / HTMX / SQLite</dd>
-                    </div>
-                </dl>
             </div>
 
-            <div class="reveal reveal-delay-2 home-workspace">
-                <div class="home-workspace__glow" aria-hidden="true"></div>
+            <a href="/work/salon-rebuild/" class="editorial-feature" aria-label="View the Salon Rebuild featured case study">
+                <div>
+                    <p class="editorial-kicker editorial-kicker--dark">Featured case study</p>
+                    <h2 class="editorial-feature__title">Salon Rebuild</h2>
+                    <p class="editorial-feature__copy">
+                        Reworking an early freelance project with clearer UX, stronger responsive design and a lean Go implementation.
+                    </p>
+                </div>
+                <span class="editorial-arrow">View case study <span aria-hidden="true">⟶</span></span>
+            </a>
+        </div>
+    </section>
 
-                <div class="glass-panel home-workspace__panel">
-                    <div class="home-workspace__toolbar">
-                        <div class="home-workspace__dots" aria-hidden="true">
-                            <span class="home-workspace__dot"></span>
-                            <span class="home-workspace__dot"></span>
-                            <span class="home-workspace__dot home-workspace__dot--accent"></span>
-                        </div>
-                        <p class="home-workspace__label">product workspace</p>
+    <section id="work" class="editorial-work" aria-labelledby="selected-work-title">
+        <div class="site-container">
+            <div class="editorial-section-head">
+                <div>
+                    <p class="editorial-kicker editorial-kicker--dark">Selected work</p>
+                    <h2 id="selected-work-title" class="editorial-section-title">Projects that make<br>a difference.</h2>
+                </div>
+                <a href="/work/portfolio" class="editorial-text-link">View all work <span aria-hidden="true">↗</span></a>
+            </div>
+
+            <div class="editorial-project-grid">
+                <a href="/work/salon-rebuild/" class="editorial-project editorial-project--lead">
+                    <div class="editorial-project__media">
+                        <picture>
+                            <source type="image/avif"
+                                srcset="/static/images/salon-rebuild-home-480.avif 480w, /static/images/salon-rebuild-home-960.avif 960w, /static/images/salon-rebuild-home-1600.avif 1600w"
+                                sizes="(min-width: 64rem) 36rem, 92vw">
+                            <source type="image/webp"
+                                srcset="/static/images/salon-rebuild-home-480.webp 480w, /static/images/salon-rebuild-home-960.webp 960w, /static/images/salon-rebuild-home-1600.webp 1600w"
+                                sizes="(min-width: 64rem) 36rem, 92vw">
+                            <img src="/static/images/salon-rebuild-home.png"
+                                alt="Preview of the Salon Rebuild website"
+                                width="2880"
+                                height="1561"
+                                loading="lazy"
+                                decoding="async">
+                        </picture>
                     </div>
+                    <div class="editorial-project__body">
+                        <div>
+                            <p class="editorial-project__meta">Product design · Go · 2026</p>
+                            <h3>Salon Rebuild</h3>
+                            <p>A cleaner, more considered redesign of an early client project, rebuilt around usability and performance.</p>
+                        </div>
+                        <span class="editorial-project__arrow" aria-hidden="true">↗</span>
+                    </div>
+                </a>
 
-                    <div class="home-workspace__body">
-                        <div class="home-workspace__heading">
+                <div class="editorial-project-stack">
+                    <a href="/work/portfolio" class="editorial-project editorial-project--compact">
+                        <div class="editorial-project__media editorial-project__media--workspace">
+                            <img src="/static/images/internal-workspace.png"
+                                alt="Preview of the portfolio client workspace"
+                                width="1280"
+                                height="720"
+                                loading="lazy"
+                                decoding="async">
+                        </div>
+                        <div class="editorial-project__body">
                             <div>
-                                <p class="metric-label">Design principle</p>
-                                <p class="home-workspace__principle">Make every next step obvious.</p>
+                                <p class="editorial-project__meta">Full-stack product · Go · HTMX</p>
+                                <h3>Portfolio &amp; Client Workspace</h3>
+                                <p>One server-rendered application for public work, clients, projects, contracts and publishing.</p>
                             </div>
-                            <span class="home-workspace__status">
-                                <span class="home-workspace__status-dot"></span>
-                                Focused
-                            </span>
+                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
                         </div>
+                    </a>
 
-                        <div class="home-workspace__cards">
-                            <div class="home-workspace__card">
-                                <p class="metric-label">Interface</p>
-                                <p class="home-workspace__card-title">Premium, not precious</p>
-                                <p class="home-workspace__card-copy">Strong hierarchy, accessible states and restrained
-                                    motion.</p>
+                    <a href="https://github.com/danieljmanningdev/go-jsonld-schema" class="editorial-project editorial-project--compact">
+                        <div class="editorial-project__media editorial-project__media--code" aria-hidden="true">
+                            <span>schema.NewPerson(...)</span>
+                            <span>schema.NewService(...)</span>
+                            <span>schema.Marshal(...)</span>
+                        </div>
+                        <div class="editorial-project__body">
+                            <div>
+                                <p class="editorial-project__meta">Open source · Go · Structured data</p>
+                                <h3>go-jsonld-schema</h3>
+                                <p>Typed Go structures for producing Schema.org JSON-LD without hand-writing JSON in templates.</p>
                             </div>
+                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
+                        </div>
+                    </a>
 
-                            <div class="home-workspace__card">
-                                <p class="metric-label">Engineering</p>
-                                <p class="home-workspace__card-title">Fast, not fragile</p>
-                                <p class="home-workspace__card-copy">Small layers and server-rendered interactions.</p>
+                    <a href="https://github.com/danieljmanningdev/djm-cli" class="editorial-project editorial-project--compact">
+                        <div class="editorial-project__media editorial-project__media--terminal" aria-hidden="true">
+                            <span>$ djm new my-app</span>
+                            <span>$ djm check</span>
+                            <span class="editorial-project__terminal-ok">✓ ready</span>
+                        </div>
+                        <div class="editorial-project__body">
+                            <div>
+                                <p class="editorial-project__meta">Developer tools · Go · CLI</p>
+                                <h3>djm-cli</h3>
+                                <p>A small command-line tool for reducing repeated setup and keeping Go project workflows consistent.</p>
                             </div>
-
-                            <div class="home-workspace__flow">
-                                <div class="home-workspace__flow-header">
-                                    <p class="metric-label">Product flow</p>
-                                    <span class="home-workspace__live">LIVE</span>
-                                </div>
-                                <div class="home-workspace__steps">
-                                    <span class="home-workspace__step-number">01</span>
-                                    <div>
-                                        <p class="home-workspace__step-title">Understand the decision</p>
-                                        <p class="home-workspace__step-copy">Research the real friction.</p>
-                                    </div>
-                                    <span class="home-workspace__step-number">02</span>
-                                    <div>
-                                        <p class="home-workspace__step-title">Shape the experience</p>
-                                        <p class="home-workspace__step-copy">Make information and interaction coherent.
-                                        </p>
-                                    </div>
-                                    <span class="home-workspace__step-number">03</span>
-                                    <div>
-                                        <p class="home-workspace__step-title">Build the product</p>
-                                        <p class="home-workspace__step-copy">Ship a dependable working system.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
-            </div>
-        </div>
-
-        <div class="home-capability-strip">
-            <ul class="site-container home-capability-list" aria-label="Capabilities">
-                <li>Product strategy</li>
-                <li>UI/UX systems</li>
-                <li>Go development</li>
-                <li>HTMX interfaces</li>
-                <li>Security-minded delivery</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="work" class="home-section">
-        <div class="site-container">
-            <div class="home-section__intro home-work-intro">
-                <div>
-                    <p class="eyebrow">01 / Selected work</p>
-                    <h2 class="home-section__title">
-                        Product thinking you can
-                        <span class="home-gradient-text">inspect.</span>
-                    </h2>
-                </div>
-                <p class="home-section__copy">Two different challenges. One connected approach to design and development.</p>
-            </div>
-
-            <a href="/work/salon-rebuild/" class="interactive-card home-work-card">
-                <div class="home-work-card__layout">
-                    <div class="home-work-card__copy">
-                        <div class="home-work-card__meta">
-                            <span class="home-work-card__badge">Featured case study</span>
-                            <span class="home-work-card__year">2026</span>
-                        </div>
-
-                        <h3 class="home-work-card__title">
-                            Salon Rebuild
-                            <span class="home-gradient-text home-work-card__title-accent">
-                                Design with a clearer purpose
-                            </span>
-                        </h3>
-
-                        <p class="home-work-card__description">
-                            A modern salon concept revisiting my early freelance work with a more considered UI/UX,
-                            responsive design and server-rendered Go implementation.
-                        </p>
-
-                        <div class="home-work-card__tags">
-                            <span class="home-work-card__tag">Redesign</span>
-                            <span class="home-work-card__tag">UI/UX</span>
-                            <span class="home-work-card__tag">Go</span>
-                            <span class="home-work-card__tag">Server-rendered HTML</span>
-                        </div>
-
-                        <p class="home-work-card__link">
-                            Read the case study
-                            <span class="home-work-card__arrow" aria-hidden="true">→</span>
-                        </p>
-                    </div>
-
-                    <div class="home-work-preview">
-                        <div class="home-work-preview__glow" aria-hidden="true"></div>
-
-                        <div class="home-work-preview__image-frame">
-                            <picture>
-                                <source type="image/avif"
-                                    srcset="/static/images/salon-rebuild-home-480.avif 480w, /static/images/salon-rebuild-home-960.avif 960w, /static/images/salon-rebuild-home-1600.avif 1600w"
-                                    sizes="(min-width: 1024px) 40vw, 88vw">
-                                <source type="image/webp"
-                                    srcset="/static/images/salon-rebuild-home-480.webp 480w, /static/images/salon-rebuild-home-960.webp 960w, /static/images/salon-rebuild-home-1600.webp 1600w"
-                                    sizes="(min-width: 1024px) 40vw, 88vw">
-                                <img src="/static/images/salon-rebuild-home.png"
-                                    alt="Preview of the Salon Rebuild website" class="home-work-preview__image"
-                                    width="2880" height="1561" loading="lazy" decoding="async">
-                            </picture>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="/work/portfolio" class="interactive-card home-work-card home-work-card--workspace" aria-labelledby="workspace-project-title">
-                <div class="home-work-card__layout">
-                    <div class="home-work-card__copy">
-                        <div class="home-work-card__meta">
-                            <span class="home-work-card__badge">Working application</span>
-                            <span class="home-work-card__year">2026</span>
-                        </div>
-                        <h3 id="workspace-project-title" class="home-work-card__title">
-                            Portfolio &amp;
-                            <span class="home-gradient-text home-work-card__title-accent">Client Workspace</span>
-                        </h3>
-                        <p class="home-work-card__description">
-                            A public portfolio and a private workspace for clients, projects, contracts and publishing.
-                            Designed and built as one server-rendered Go application.
-                        </p>
-                        <div class="home-work-card__tags">
-                            <span class="home-work-card__tag">Go</span>
-                            <span class="home-work-card__tag">SQLite</span>
-                            <span class="home-work-card__tag">HTMX</span>
-                            <span class="home-work-card__tag">Authentication</span>
-                            <span class="home-work-card__tag">Automated tests</span>
-                        </div>
-                        <p class="home-work-card__link">Explore the application <span class="home-work-card__arrow" aria-hidden="true">→</span></p>
-                    </div>
-                    <div class="home-system-preview">
-                        <p class="eyebrow">Application areas</p>
-                        <dl class="home-system-preview__grid">
-                            <div><dt>Clients</dt><dd>Relationships &amp; notes</dd></div>
-                            <div><dt>Projects</dt><dd>Delivery &amp; deadlines</dd></div>
-                            <div><dt>Contracts</dt><dd>Agreements &amp; values</dd></div>
-                            <div><dt>Journal</dt><dd>Draft &amp; publish</dd></div>
-                        </dl>
-                        <p class="home-system-preview__foundation">Server-rendered HTML · Session-based access · Persistent data</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section id="open-source" class="home-section home-tooling" aria-labelledby="tooling-title">
-        <div class="site-container">
-            <div class="home-section__intro home-work-intro">
-                <div>
-                    <p class="eyebrow">02 / Open source</p>
-                    <h2 id="tooling-title" class="home-section__title">Useful tools.<br><span class="home-gradient-text">Reusable foundations.</span></h2>
-                </div>
-                <p class="home-section__copy">Small, focused tools I use to reduce repeated setup and keep implementation consistent.</p>
-            </div>
-            <div class="home-tooling__grid">
-                <article class="home-tool-card">
-                    <p class="eyebrow">Developer workflow</p>
-                    <h3><a href="https://github.com/danieljmanningdev/djm-cli">djm-cli <span aria-hidden="true">↗</span></a></h3>
-                    <p>Create a Go project, add a module and run the development checks from one command-line tool.</p>
-                    <pre><code>djm new my-app
-cd my-app
-djm check</code></pre>
-                </article>
-                <article class="home-tool-card">
-                    <p class="eyebrow">Application foundation</p>
-                    <h3>Go Web Stack</h3>
-                    <p>Independent libraries for configuration, rendering, security and authentication, brought together in a starter.</p>
-                    <ul class="home-tool-card__links" aria-label="Go Web Stack repositories">
-                        <li><a href="https://github.com/danieljmanningdev/go-web-core">Core</a></li>
-                        <li><a href="https://github.com/danieljmanningdev/go-web-security">Security</a></li>
-                        <li><a href="https://github.com/danieljmanningdev/go-web-auth">Authentication</a></li>
-                        <li><a href="https://github.com/danieljmanningdev/go-starter-auth-app">Starter</a></li>
-                    </ul>
-                </article>
-                <article class="home-tool-card">
-                    <p class="eyebrow">Structured data</p>
-                    <h3><a href="https://github.com/danieljmanningdev/go-jsonld-schema">go-jsonld-schema <span aria-hidden="true">↗</span></a></h3>
-                    <p>Typed Go structures for Schema.org JSON-LD, without hand-writing JSON inside HTML templates.</p>
-                    <p class="home-tool-card__note">Reusable types for websites, articles, services and breadcrumbs.</p>
-                </article>
-            </div>
-            <a href="https://github.com/danieljmanningdev" class="button-secondary home-tooling__all">View all projects on GitHub <span aria-hidden="true">↗</span></a>
-        </div>
-    </section>
-
-    <section id="services" class="home-section">
-        <div class="site-container home-capabilities__layout">
-            <div class="home-capabilities__intro">
-                <p class="eyebrow">03 / Capabilities</p>
-                <h2 class="home-section__title home-capabilities__intro-title">
-                    One accountable loop from idea to
-                    <span class="home-accent-text">release.</span>
-                </h2>
-                <p class="home-capabilities__intro-copy">Design and engineering decisions stay connected, so the
-                    interface, system and product story reinforce each other.</p>
-            </div>
-
-            <div class="home-capabilities__list">
-                <article class="home-capability">
-                    <span class="home-capability__number">01</span>
-                    <div>
-                        <h3 class="home-capability__title">Product &amp; UX strategy</h3>
-                        <p class="home-capability__copy">Clarify the outcome, map the workflow and decide what the
-                            product should make easy.</p>
-                    </div>
-                </article>
-                <article class="home-capability">
-                    <span class="home-capability__number">02</span>
-                    <div>
-                        <h3 class="home-capability__title">Interface systems</h3>
-                        <p class="home-capability__copy">Accessible layouts, components, states and content hierarchy
-                            that remain coherent as the product grows.</p>
-                    </div>
-                </article>
-                <article class="home-capability">
-                    <span class="home-capability__number">03</span>
-                    <div>
-                        <h3 class="home-capability__title">Full-stack product engineering</h3>
-                        <p class="home-capability__copy">Fast server-rendered applications, database workflows and
-                            secure operational tooling without unnecessary frontend weight.</p>
-                    </div>
-                </article>
             </div>
         </div>
     </section>
 
-    <section id="about" class="home-section">
-        <div class="site-container home-style__layout">
-            <div class="home-style__intro">
-                <p class="eyebrow">04 / Working style</p>
-                <h2 class="home-section__title">Close to the work. Clear about the trade-offs.</h2>
-                <p class="home-style__intro-copy">I follow an idea from the rough first question through interface
-                    design, implementation and the details that make it trustworthy in use.</p>
+    <section id="services" class="editorial-strip" aria-labelledby="capabilities-title">
+        <div class="site-container editorial-strip__grid">
+            <div>
+                <p class="editorial-kicker editorial-kicker--dark">Capabilities</p>
+                <h2 id="capabilities-title" class="editorial-section-title">From product thinking<br>to working software.</h2>
             </div>
-
-            <div class="home-style__cards">
-                <article class="glass-panel home-style__card">
-                    <p class="home-style__number">01</p>
-                    <h3 class="home-style__card-title">Frame</h3>
-                    <p class="home-style__card-copy">Define the real user decision, constraints and evidence of success.
-                    </p>
-                </article>
-                <article class="glass-panel home-style__card">
-                    <p class="home-style__number home-style__number--electric">02</p>
-                    <h3 class="home-style__card-title">Shape</h3>
-                    <p class="home-style__card-copy">Design the information, interaction and technical boundaries
-                        together.</p>
-                </article>
-                <article class="glass-panel home-style__card">
-                    <p class="home-style__number">03</p>
-                    <h3 class="home-style__card-title">Ship</h3>
-                    <p class="home-style__card-copy">Build, test, harden and refine the moments that affect confidence.
-                    </p>
-                </article>
+            <div class="editorial-capabilities">
+                <a href="/ui-ux-design/"><span>01</span><strong>Product &amp; UI/UX design</strong><span aria-hidden="true">↗</span></a>
+                <a href="/web-development/"><span>02</span><strong>Full-stack development</strong><span aria-hidden="true">↗</span></a>
+                <a href="/software-development/"><span>03</span><strong>Secure product systems</strong><span aria-hidden="true">↗</span></a>
             </div>
         </div>
     </section>
 
-    <section class="home-journal-section">
-        <div class="site-container">
-            <a href="/blog/" class="interactive-card home-journal-card">
-                <div>
-                    <p class="eyebrow">05 / Journal</p>
-                    <h2 class="home-section__title home-journal-card__title">
-                        Notes from the decisions behind the
-                        <span class="home-accent-text">work.</span>
-                    </h2>
-                    <p class="home-journal-card__copy">Design reasoning, Go engineering, security learning and practical
-                        product notes.</p>
-                </div>
-                <span class="home-journal-card__arrow" aria-hidden="true">↗</span>
-            </a>
+    <section id="about" class="editorial-about">
+        <div class="site-container editorial-about__grid">
+            <p class="editorial-kicker editorial-kicker--dark">About</p>
+            <p class="editorial-about__statement">
+                I design interfaces and build the systems behind them. My preference is simple: less visual noise,
+                clearer decisions and software that stays fast and maintainable.
+            </p>
+            <div class="editorial-about__links">
+                <a href="/blog/">Read the journal <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/danieljmanningdev">Browse GitHub <span aria-hidden="true">↗</span></a>
+            </div>
         </div>
     </section>
 
-    <section id="contact" class="home-contact">
-        <div class="site-container">
-            <div class="home-contact__panel">
-                <div class="home-contact__glow" aria-hidden="true"></div>
-                <div class="home-contact__layout">
-                    <div>
-                        <p class="eyebrow">06 / Contact</p>
-                        <h2 class="home-contact__title">
-                            Have something
-                            <span class="home-gradient-text home-contact__title-accent">worth building?</span>
-                        </h2>
-                    </div>
-                    <div class="home-contact__aside">
-                        <p class="home-contact__copy">Bring the difficult workflow, the early idea or the product that
-                            needs to become much clearer.</p>
-                        <a href="mailto:daniel@danieljmanningdev.com" class="button-primary home-contact__button">Start
-                            a conversation <span aria-hidden="true">↗</span></a>
-                    </div>
-                </div>
-            </div>
+    <section id="contact" class="editorial-contact">
+        <div class="site-container editorial-contact__inner">
+            <p class="editorial-kicker">Available for thoughtful product work</p>
+            <h2>Have something worth building?</h2>
+            <a href="mailto:daniel@danieljmanningdev.com">Start a conversation <span aria-hidden="true">⟶</span></a>
         </div>
     </section>
 </main>
