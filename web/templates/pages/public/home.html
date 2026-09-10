@@ -1,23 +1,37 @@
 {{define "content"}}
 <main class="home-page" data-theme="light">
     <section class="editorial-hero" aria-labelledby="home-title">
-        <div class="site-container editorial-hero__grid">
-            <div class="editorial-hero__identity">
-                <div class="editorial-hero__copy">
-                    <p class="editorial-kicker">Hello, I’m</p>
-                    <h1 id="home-title" class="editorial-hero__name">Daniel Manning</h1>
-                    <p class="editorial-hero__role">Designer &amp; Developer</p>
-                    <p class="editorial-hero__intro">
-                        I turn complicated workflows into focused digital products, combining thoughtful UI/UX with fast,
-                        secure full-stack engineering.
-                    </p>
+        <div class="site-container editorial-hero__inner">
+            <div class="editorial-hero__copy">
+                <p class="editorial-kicker">Digital Product Designer &amp; Developer</p>
+                <h1 id="home-title" class="editorial-hero__title">
+                    Building <span>digital products</span><br>
+                    that matter
+                </h1>
+                <p class="editorial-hero__intro">
+                    I turn complicated workflows into focused digital products, combining thoughtful UI/UX with fast,
+                    secure full-stack engineering.
+                </p>
 
-                    <div class="editorial-hero__links" aria-label="Profile links">
-                        <a href="https://github.com/danieljmanningdev">GitHub <span aria-hidden="true">↗</span></a>
-                        <a href="/blog/">Journal <span aria-hidden="true">↗</span></a>
-                        <a href="mailto:daniel@danieljmanningdev.com">Email <span aria-hidden="true">↗</span></a>
-                    </div>
+                <div class="editorial-hero__actions" aria-label="Homepage actions">
+                    <a href="#work" class="editorial-hero__cta editorial-hero__cta--primary">Explore selected work</a>
+                    <a href="/blog/" class="editorial-hero__cta editorial-hero__cta--secondary">Read the journal</a>
                 </div>
+
+                <dl class="editorial-hero__facts">
+                    <div>
+                        <dt>Focus</dt>
+                        <dd>Product clarity</dd>
+                    </div>
+                    <div>
+                        <dt>Discipline</dt>
+                        <dd>Design &amp; development</dd>
+                    </div>
+                    <div>
+                        <dt>Core stack</dt>
+                        <dd>Go + HTMX + SQLite</dd>
+                    </div>
+                </dl>
             </div>
         </div>
     </section>
@@ -29,7 +43,7 @@
                     <p class="editorial-kicker editorial-kicker--dark">Selected work</p>
                     <h2 id="selected-work-title" class="editorial-section-title">Projects that make<br>a difference.</h2>
                 </div>
-                <a href="/work/portfolio" class="editorial-text-link">View all work <span aria-hidden="true">↗</span></a>
+                <a href="/work/portfolio/" class="editorial-text-link">View all work <span aria-hidden="true">↗</span></a>
             </div>
 
             <div class="editorial-project-grid">
@@ -61,7 +75,7 @@
                 </a>
 
                 <div class="editorial-project-stack">
-                    <a href="/work/portfolio" class="editorial-project editorial-project--compact">
+                    <a href="/work/portfolio/" class="editorial-project editorial-project--compact">
                         <div class="editorial-project__media editorial-project__media--workspace">
                             <img src="/static/images/internal-workspace.png"
                                 alt="Preview of the portfolio client workspace"
@@ -106,7 +120,7 @@
                             <div>
                                 <p class="editorial-project__meta">Developer tools · Go · CLI</p>
                                 <h3>djm-cli</h3>
-                                <p>A small command-line tool for reducing repeated setup and keeping Go project workflows consistent.</p>
+                                <p>A Go CLI for repeatable project setup, checks and UX validation across product delivery workflows.</p>
                             </div>
                             <span class="editorial-project__arrow" aria-hidden="true">↗</span>
                         </div>
