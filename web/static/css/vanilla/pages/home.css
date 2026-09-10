@@ -29,7 +29,7 @@
 /* Hero ------------------------------------------------------------------- */
 
 .editorial-hero {
-    padding-block: clamp(5.5rem, 9vw, 8.5rem) clamp(4.75rem, 8vw, 7rem);
+    padding-block: clamp(5rem, 8vw, 7.5rem) clamp(4.5rem, 7vw, 6.5rem);
 }
 
 .editorial-hero__inner {
@@ -41,18 +41,17 @@
 }
 
 .editorial-hero__title {
-    max-width: 68rem;
-    margin-top: 1.5rem;
-    font-size: clamp(3.25rem, 5.7vw, 6rem);
+    max-width: 64rem;
+    margin-top: 1.35rem;
+    font-size: clamp(3rem, 4.1vw, 4.25rem);
     font-weight: 400;
-    line-height: 0.94;
-    letter-spacing: -0.055em;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
     text-transform: uppercase;
-    text-wrap: balance;
 }
 
 .editorial-hero__title span {
-    color: var(--color-accent);
+    color: var(--color-signal-500);
 }
 
 .editorial-hero__intro {
