@@ -120,7 +120,7 @@
 
 .header-project-link {
     padding: 0.45rem 0.95rem;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid var(--color-accent-light);
     border-radius: 0.5rem;
 }
 
