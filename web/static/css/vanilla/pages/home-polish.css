@@ -1,0 +1,118 @@
+/* ========================================================================== 
+   HOME PAGE — FINISHING POLISH
+   Small interaction and readability refinements layered over home.css.
+   ========================================================================== */
+
+/* Keep in-page navigation clear of the sticky header. */
+.editorial-work,
+.editorial-strip,
+.editorial-about {
+    scroll-margin-top: calc(var(--site-header-height) + 1rem);
+}
+
+/* Hero ------------------------------------------------------------------- */
+
+.editorial-hero__intro {
+    text-wrap: pretty;
+}
+
+.editorial-hero__cta--secondary {
+    background: var(--color-surface);
+}
+
+.editorial-hero__cta:active {
+    transform: translateY(0) scale(0.99);
+}
+
+.editorial-hero__facts dd {
+    text-wrap: pretty;
+}
+
+/* Work ------------------------------------------------------------------- */
+
+.editorial-project__media {
+    transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.editorial-project__body h3 {
+    transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.editorial-project__body p:not(.editorial-project__meta) {
+    text-wrap: pretty;
+}
+
+/* Make the whole project card feel interactive without turning it into a
+   heavy UI card. Keyboard users already receive the global focus ring. */
+@media (hover: hover) {
+    .editorial-project:hover .editorial-project__media {
+        border-color: var(--color-border-strong);
+    }
+
+    .editorial-project:hover .editorial-project__body h3 {
+        color: var(--color-accent);
+    }
+}
+
+/* Capabilities ------------------------------------------------------------ */
+
+.editorial-capabilities a {
+    margin-inline: -0.6rem;
+    padding-inline: 0.6rem;
+    border-radius: 0.35rem;
+    transition:
+        background-color var(--duration-fast) var(--ease-standard),
+        color var(--duration-fast) var(--ease-standard);
+}
+
+.editorial-capabilities a > span:last-child {
+    transition:
+        transform var(--duration-fast) var(--ease-standard),
+        color var(--duration-fast) var(--ease-standard);
+}
+
+.editorial-capabilities a > span:first-child {
+    font-variant-numeric: tabular-nums;
+}
+
+@media (hover: hover) {
+    .editorial-capabilities a:hover {
+        background: var(--color-accent-surface);
+    }
+
+    .editorial-capabilities a:hover > span:last-child {
+        transform: translate(0.14rem, -0.14rem);
+    }
+}
+
+/* Mobile ----------------------------------------------------------------- */
+
+@media (max-width: 39.999rem) {
+    .editorial-hero {
+        padding-block: clamp(4rem, 15vw, 5.25rem) clamp(3.75rem, 13vw, 4.75rem);
+    }
+
+    .editorial-hero__facts {
+        gap: 0;
+    }
+
+    .editorial-hero__facts div {
+        padding-block: 1rem;
+    }
+
+    .editorial-hero__facts div:first-child {
+        padding-top: 0;
+    }
+
+    .editorial-hero__facts div + div {
+        border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .editorial-project-grid {
+        margin-top: 3rem;
+    }
+
+    .editorial-project-stack {
+        gap: 2.75rem;
+    }
+}
