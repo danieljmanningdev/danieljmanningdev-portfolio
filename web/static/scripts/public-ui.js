@@ -5,6 +5,7 @@
 
     const menu = document.querySelector('.mobile-nav');
     const summary = menu?.querySelector('summary');
+    let pendingAnchor = null;
 
     function closeMenu(restoreFocus = false) {
         if (!menu?.open) return;
@@ -49,21 +50,35 @@
             try { section = document.getElementById(decodeURIComponent(destination.hash.slice(1))); }
             catch { return; }
             if (!section) return;
-            // Move keyboard focus out of the now-collapsed menu, without
-            // replacing the browser's own anchor navigation or history.
-            requestAnimationFrame(() => {
-                const target = section.querySelector('h1, h2, h3') || section;
-                const temporaryTabindex = !target.hasAttribute('tabindex');
-                if (temporaryTabindex) target.setAttribute('tabindex', '-1');
-                target.focus({ preventScroll: true });
-                if (temporaryTabindex) target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
-            });
+            // Firefox may perform native anchor focus after the click's next
+            // animation frame. Wait for the hash navigation before moving focus
+            // out of the now-collapsed menu, without intercepting the link.
+            pendingAnchor = { section, hash: destination.hash };
+            if (destination.hash === window.location.hash) {
+                // Re-selecting the same anchor does not dispatch hashchange.
+                window.setTimeout(focusPendingAnchor, 0);
+            }
         });
         window.addEventListener('resize', () => {
             if (getComputedStyle(menu).display === 'none') closeMenu();
         });
     }
-    window.addEventListener('hashchange', markHomeSection);
+    function focusPendingAnchor() {
+        if (!pendingAnchor || pendingAnchor.hash !== window.location.hash) return;
+        const { section } = pendingAnchor;
+        pendingAnchor = null;
+        requestAnimationFrame(() => {
+            const target = section.querySelector('h1, h2, h3') || section;
+            const temporaryTabindex = !target.hasAttribute('tabindex');
+            if (temporaryTabindex) target.setAttribute('tabindex', '-1');
+            target.focus({ preventScroll: true });
+            if (temporaryTabindex) target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+        });
+    }
+    window.addEventListener('hashchange', () => {
+        markHomeSection();
+        focusPendingAnchor();
+    });
     markHomeSection();
 
     const copy = document.querySelector('[data-copy-email]');
