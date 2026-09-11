@@ -1,13 +1,18 @@
 {{define "header"}}
 <header class="site-header">
     <nav class="site-container primary-nav" aria-label="Primary navigation">
+        <div class="nav-status">
+            <span class="nav-status__dot" aria-hidden="true"></span>
+            <span class="nav-status__text">Available for Work</span>
+        </div>
+
         <a href="/" class="brand-link" aria-label="Daniel J. Manning, homepage">
             <img
-                src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg"
-                alt="Daniel J. Manning"
+                src="/static/djmdev-svg-assets/djmdev-mark-dark.svg"
+                alt=""
                 class="brand-logo"
-                width="196"
-                height="48"
+                width="640"
+                height="520"
             >
         </a>
 
@@ -16,33 +21,27 @@
             <a href="/#services" class="nav-link">Capabilities</a>
             <a href="/#about" class="nav-link">About</a>
             <a href="/blog/" class="nav-link">Journal</a>
+            <a href="/#contact" class="header-project-link">Get in Touch</a>
         </div>
 
-        <div class="nav-actions">
-            <a href="/#contact" class="button-secondary header-project-link">
-                Start a project
-                <span aria-hidden="true">↗</span>
-            </a>
+        <details class="mobile-nav">
+            <summary aria-label="Navigation menu">
+                <span class="mobile-nav-icon" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                </span>
+            </summary>
 
-            <details class="mobile-nav">
-                <summary aria-label="Navigation menu">
-                    <span class="mobile-nav-icon" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                    </span>
-                </summary>
-
-                <div class="glass-panel mobile-nav-panel">
-                    <div class="mobile-nav-links">
-                        <a href="/#work" class="mobile-nav-link">Work</a>
-                        <a href="/#services" class="mobile-nav-link">Capabilities</a>
-                        <a href="/#about" class="mobile-nav-link">About</a>
-                        <a href="/blog/" class="mobile-nav-link">Journal</a>
-                        <a href="/#contact" class="mobile-nav-cta">Start a project</a>
-                    </div>
+            <div class="mobile-nav-panel">
+                <div class="mobile-nav-links">
+                    <a href="/#work" class="mobile-nav-link">Work</a>
+                    <a href="/#services" class="mobile-nav-link">Capabilities</a>
+                    <a href="/#about" class="mobile-nav-link">About</a>
+                    <a href="/blog/" class="mobile-nav-link">Journal</a>
+                    <a href="/#contact" class="mobile-nav-cta">Get in Touch</a>
                 </div>
-            </details>
-        </div>
+            </div>
+        </details>
     </nav>
 </header>
 {{end}}
