@@ -30,9 +30,10 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/browser-tools" --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.10.2
           node "$RUNNER_TEMP/browser-tools/node_modules/playwright/cli.js" install --with-deps chromium firefox webkit
-      - name: Validate browser script and build application
+      - name: Validate browser scripts and build application
         run: |
           node --check scripts/check-browser.cjs
+          node --check scripts/check-editorial.cjs
           go build -o "$RUNNER_TEMP/portfolio-server" ./cmd/server
       - name: Test isolated application in three browser engines
         shell: bash
@@ -53,6 +54,7 @@ jobs:
           done
           curl --silent --fail "$REVIEW_BASE_URL/health" >/dev/null
           node scripts/check-browser.cjs
+          node scripts/check-editorial.cjs
       - name: Retain test results and screenshots
         if: always()
         uses: actions/upload-artifact@v4

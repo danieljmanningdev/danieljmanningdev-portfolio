@@ -7,8 +7,7 @@
 :root {
     /* ----------------------------------------------------------------------
        COLOUR — FOUNDATIONS
-       Mirrors the existing Tailwind theme while the vanilla CSS migration is
-       in progress. These values are the visual source of truth.
+       Shared brand palette. These values are the visual source of truth.
        ---------------------------------------------------------------------- */
 
     --color-ink-950: oklch(0.12 0.032 257);
@@ -26,6 +25,8 @@
     --color-signal-300: oklch(0.83 0.095 241);
     --color-signal-400: oklch(0.75 0.135 244);
     --color-signal-500: oklch(0.66 0.17 248);
+    /* Same brand hue, deepened for readable links on light surfaces. */
+    --color-signal-700: oklch(0.5 0.17 248);
 
     --color-electric-300: oklch(0.88 0.055 215);
     --color-electric-400: oklch(0.8 0.095 221);
@@ -44,6 +45,8 @@
     --color-background-elevated: var(--color-ink-900);
     --color-background-panel: var(--color-ink-850);
     --color-background-strong: var(--color-ink-800);
+    --color-shell-background: var(--color-black);
+    --color-status-available: var(--color-signal-400);
 
     --color-text-primary: var(--color-mist-50);
     --color-text-secondary: var(--color-mist-100);
@@ -179,6 +182,7 @@
 
     --container-width: 82rem;
     --container-gutter: clamp(1.25rem, 6vw, 3rem);
+    --site-header-height: 3.5rem;
 
     --content-xs: 24rem;
     --content-sm: 32rem;
@@ -275,4 +279,35 @@
 
     --focus-ring:
         0 0 0 3px color-mix(in oklab, var(--color-signal-300) 30%, transparent);
+}
+
+/* Light content opts in without changing the journal, services or workspace.
+   Override the semantic tokens so base headings, paragraphs and strong text
+   resolve to the correct colours, rather than relying on inherited `color`. */
+[data-theme="light"] {
+    color-scheme: light;
+
+    --color-background: var(--color-mist-100);
+    --color-background-elevated: var(--color-mist-50);
+    --color-background-panel: var(--color-mist-50);
+    --color-background-strong: color-mix(in oklab, var(--color-mist-100) 85%, var(--color-mist-300));
+
+    --color-text-primary: var(--color-ink-950);
+    --color-text-secondary: var(--color-ink-800);
+    --color-text-muted: var(--color-mist-700);
+    --color-text-subtle: var(--color-mist-700);
+    --color-text-faint: var(--color-mist-700);
+    --color-text-inverse: var(--color-mist-50);
+
+    --color-accent: var(--color-signal-700);
+    --color-accent-light: var(--color-signal-700);
+    --color-accent-strong: var(--color-signal-700);
+    --color-border: color-mix(in oklab, var(--color-ink-950) 18%, transparent);
+    --color-border-subtle: color-mix(in oklab, var(--color-ink-950) 10%, transparent);
+    --color-border-strong: color-mix(in oklab, var(--color-ink-950) 28%, transparent);
+    --color-surface: var(--color-mist-50);
+    --color-surface-hover: var(--color-signal-200);
+    --color-accent-surface: color-mix(in oklab, var(--color-signal-700) 8%, transparent);
+    --color-accent-border: color-mix(in oklab, var(--color-signal-700) 35%, transparent);
+    --focus-ring: 0 0 0 3px var(--color-signal-700);
 }

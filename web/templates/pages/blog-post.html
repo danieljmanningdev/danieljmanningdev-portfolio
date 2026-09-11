@@ -2,23 +2,18 @@
 <main class="journal-page">
     <article>
         <header class="article-header">
-            <div class="article-header__glow" aria-hidden="true"></div>
             <div class="site-container article-header__grid">
                 <div>
                     <a href="/blog/" class="button-quiet article-back"><span aria-hidden="true">←</span> Journal</a>
                 </div>
-
                 <div class="article-header__content">
                     {{with .Post.PublishedAt}}
                     <time class="eyebrow" datetime="{{.Format "2006-01-02"}}">{{.Format "02 January 2006"}}</time>
                     {{end}}
-
                     <h1 class="article-title">{{.Post.Title}}</h1>
-
                     {{if .Post.Excerpt}}
                     <p class="article-excerpt">{{.Post.Excerpt}}</p>
                     {{end}}
-
                     <div class="article-meta">
                         <span class="article-author">Daniel J. Manning</span>
                         <span aria-hidden="true">•</span>
@@ -29,17 +24,8 @@
         </header>
 
         <div class="site-container article-layout">
-            <aside class="article-sidebar">
-                <div class="article-sidebar__inner">
-                    <p class="metric-label">Article</p>
-                    <p class="article-sidebar__copy">Written directly in the portfolio's own Markdown publishing system.</p>
-                    <a href="mailto:daniel@danieljmanningdev.com" class="article-sidebar__link">Discuss this idea ↗</a>
-                </div>
-            </aside>
-
             <div class="article-content">
                 <div class="article-prose">{{.ContentHTML}}</div>
-
                 <footer class="article-footer">
                     <a href="/blog/" class="article-footer__link">
                         <div>
@@ -50,6 +36,14 @@
                     </a>
                 </footer>
             </div>
+
+            <aside class="article-sidebar">
+                <div class="article-sidebar__inner">
+                    <p class="metric-label">Article</p>
+                    <p class="article-sidebar__copy">Written directly in the portfolio's own Markdown publishing system.</p>
+                    <a href="mailto:daniel@danieljmanningdev.com" class="article-sidebar__link">Discuss this idea <span aria-hidden="true">↗</span></a>
+                </div>
+            </aside>
         </div>
     </article>
 </main>

@@ -1,98 +1,64 @@
-/* ========================================================================== 
-   ERROR PAGES
-   ========================================================================== */
-
+/* Recovery pages use the same editorial language, not a separate visual theme. */
 .error-page {
-    overflow: clip;
     display: grid;
-    min-height: calc(100svh - 5rem);
-    place-items: center;
-    padding-block: 4rem;
+    align-items: center;
+    min-height: calc(100svh - var(--site-header-height));
+    padding-block: var(--editorial-section);
 }
-
-.error-page__section {
-    position: relative;
-}
-
-.error-page__glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 34rem;
-    height: 34rem;
-    transform: translate(-50%, -50%);
-    border-radius: 999px;
-    background: color-mix(in oklab, var(--color-signal-500) 12%, transparent);
-    filter: blur(64px);
-    pointer-events: none;
-}
-
+.error-page__glow { display: none; }
 .error-page__content {
-    position: relative;
-    max-width: 64rem;
+    max-width: var(--content-xl);
     margin-inline: auto;
-    text-align: center;
+    text-align: left;
 }
-
 .error-page__code {
-    margin-top: 2rem;
-    color: color-mix(in oklab, white 5%, transparent);
+    margin-top: var(--space-5);
+    color: var(--color-signal-300);
     font-family: var(--font-mono);
-    font-size: clamp(5rem, 18vw, 13rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -.09em;
+    font-size: var(--text-xl);
+    line-height: var(--leading-body);
+    font-variant-numeric: tabular-nums;
 }
-
 .error-page__title {
-    margin-top: -2rem;
-    color: var(--color-mist-50);
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    font-weight: 500;
-    line-height: .92;
-    letter-spacing: -.055em;
-    text-wrap: balance;
+    max-width: 23ch;
+    margin-top: var(--space-4);
+    padding-block: var(--editorial-heading-inset);
+    color: var(--color-text-primary);
+    font-size: var(--editorial-title);
+    font-weight: var(--font-normal);
+    line-height: var(--editorial-heading-leading);
+    letter-spacing: var(--tracking-heading);
 }
-
-.error-page__accent {
-    background: linear-gradient(90deg, var(--color-signal-300), var(--color-electric-300));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
+.error-page__accent { color: var(--color-signal-400); }
 .error-page__copy {
-    max-width: 42rem;
-    margin: 1.75rem auto 0;
-    color: var(--color-mist-500);
-    font-size: 1.125rem;
-    line-height: 2rem;
+    max-width: var(--editorial-reading-width);
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
 }
-
 .error-page__path {
     width: fit-content;
     max-width: 100%;
-    margin: 1.75rem auto 0;
-    overflow: hidden;
-    padding: .5rem 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    background: var(--color-surface);
-    color: var(--color-mist-300);
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    border: var(--editorial-rule);
+    border-radius: var(--editorial-radius);
+    background: var(--color-background-panel);
+    color: var(--color-text-muted);
     font-family: var(--font-mono);
-    font-size: .75rem;
-    text-overflow: ellipsis;
+    font-size: var(--text-sm);
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
-
 .error-page__actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: .75rem;
-    margin-top: 2.25rem;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
 }
-
-@media (min-width: 40rem) {
-    .error-page { padding-block: 6rem; }
-    .error-page__title { margin-top: -3.5rem; }
+@media (max-width: 39.999rem) {
+    .error-page__copy { font-size: var(--text-base); }
+    .error-page__actions { display: grid; }
 }

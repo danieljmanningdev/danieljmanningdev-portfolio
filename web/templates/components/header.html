@@ -1,48 +1,41 @@
 {{define "header"}}
+{{$journalRoot := "https://danieljmanningdev.com/blog/"}}
+{{$workRoot := "https://danieljmanningdev.com/work/"}}
+{{$inJournal := and (ge (len .CanonicalURL) (len $journalRoot)) (eq (slice .CanonicalURL 0 (len $journalRoot)) $journalRoot)}}
+{{$inWork := and (ge (len .CanonicalURL) (len $workRoot)) (eq (slice .CanonicalURL 0 (len $workRoot)) $workRoot)}}
+{{$inServices := or (eq .CanonicalURL "https://danieljmanningdev.com/ui-ux-design/") (eq .CanonicalURL "https://danieljmanningdev.com/web-development/") (eq .CanonicalURL "https://danieljmanningdev.com/software-development/") (eq .CanonicalURL "https://danieljmanningdev.com/web-design/") (eq .CanonicalURL "https://danieljmanningdev.com/web-design-leeds/")}}
 <header class="site-header">
     <nav class="site-container primary-nav" aria-label="Primary navigation">
+        <div class="nav-status">
+            <span class="nav-status__dot" aria-hidden="true"></span>
+            <span class="nav-status__text">Available for work</span>
+        </div>
         <a href="/" class="brand-link" aria-label="Daniel J. Manning, homepage">
-            <img
-                src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg"
-                alt="Daniel J. Manning"
-                class="brand-logo"
-                width="196"
-                height="48"
-            >
+            <img src="/static/djmdev-svg-assets/djmdev-mark-dark.svg" alt="" class="brand-logo" width="640" height="520">
         </a>
-
         <div class="desktop-nav">
-            <a href="/#work" class="nav-link">Work</a>
-            <a href="/#services" class="nav-link">Capabilities</a>
+            <a href="/#work" class="nav-link"{{if $inWork}} aria-current="location"{{end}}>Work</a>
+            <a href="/#services" class="nav-link"{{if $inServices}} aria-current="location"{{end}}>Services</a>
             <a href="/#about" class="nav-link">About</a>
-            <a href="/blog/" class="nav-link">Journal</a>
+            <a href="/blog/" class="nav-link"{{if $inJournal}} aria-current="{{if eq .CanonicalURL $journalRoot}}page{{else}}location{{end}}"{{end}}>Journal</a>
+            <a href="/#contact" class="header-project-link">Get in touch</a>
         </div>
-
-        <div class="nav-actions">
-            <a href="/#contact" class="button-secondary header-project-link">
-                Start a project
-                <span aria-hidden="true">↗</span>
-            </a>
-
-            <details class="mobile-nav">
-                <summary aria-label="Navigation menu">
-                    <span class="mobile-nav-icon" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                    </span>
-                </summary>
-
-                <div class="glass-panel mobile-nav-panel">
-                    <div class="mobile-nav-links">
-                        <a href="/#work" class="mobile-nav-link">Work</a>
-                        <a href="/#services" class="mobile-nav-link">Capabilities</a>
-                        <a href="/#about" class="mobile-nav-link">About</a>
-                        <a href="/blog/" class="mobile-nav-link">Journal</a>
-                        <a href="/#contact" class="mobile-nav-cta">Start a project</a>
-                    </div>
+        <details class="mobile-nav">
+            <summary aria-controls="mobile-navigation-links">
+                <span class="mobile-nav__open-label">Menu</span>
+                <span class="mobile-nav__close-label">Close</span>
+                <span class="mobile-nav-icon" aria-hidden="true"><span></span><span></span></span>
+            </summary>
+            <div class="mobile-nav-panel" id="mobile-navigation-links">
+                <div class="mobile-nav-links">
+                    <a href="/#work" class="mobile-nav-link"{{if $inWork}} aria-current="location"{{end}}>Work</a>
+                    <a href="/#services" class="mobile-nav-link"{{if $inServices}} aria-current="location"{{end}}>Services</a>
+                    <a href="/#about" class="mobile-nav-link">About</a>
+                    <a href="/blog/" class="mobile-nav-link"{{if $inJournal}} aria-current="{{if eq .CanonicalURL $journalRoot}}page{{else}}location{{end}}"{{end}}>Journal</a>
+                    <a href="/#contact" class="mobile-nav-cta">Get in touch</a>
                 </div>
-            </details>
-        </div>
+            </div>
+        </details>
     </nav>
 </header>
 {{end}}

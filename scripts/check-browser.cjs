@@ -48,10 +48,23 @@ async function check(name, callback) {
   catch (error) { failures.push({ name, error: String(error.stack || error) }); results.push({ name, passed: false }); }
 }
 
+async function decodeVisibleImage(page, image) {
+  await image.scrollIntoViewIfNeeded();
+  const element = await image.elementHandle();
+  try {
+    // Scrolling schedules native lazy loading; Firefox may not have a valid
+    // image request yet. Wait for loaded pixels instead of racing decode().
+    await page.waitForFunction(el => el.complete && el.naturalWidth > 0, element);
+    await image.evaluate(el => el.decode());
+  } finally {
+    await element.dispose();
+  }
+}
+
 function overflowInPage() {
   const width = document.documentElement.clientWidth;
   const bad = [];
-  for (const el of document.querySelectorAll('h1,h2,h3,p,a,button,input,textarea,label,img,pre,ul,ol,dl')) {
+  for (const el of document.querySelectorAll('h1,h2,h3,h4,p,a,button,input,textarea,label,img,pre,ul,ol,dl')) {
     const box = el.getBoundingClientRect();
     if (el.matches('.skip-link:not(:focus)')) continue;
     if (box.width < 1 || box.height < 1 || el.closest('[aria-hidden="true"]') ||
@@ -84,6 +97,14 @@ function overflowInPage() {
           const response = await page.goto(base + route, { waitUntil: 'load' });
           assert.equal(response.status(), status, 'Unexpected document status');
           await page.evaluate(() => document.fonts.ready);
+          if (route === '/') {
+            // A full-page screenshot alone does not trigger every lazy image.
+            // Scroll and decode all homepage assets, then restore the top.
+            for (const image of await page.locator('img').all()) {
+              await decodeVisibleImage(page, image);
+            }
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+          }
           await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
           const overflow = await page.evaluate(overflowInPage);
           assert.ok(overflow.scrollWidth <= width + 1, JSON.stringify(overflow));
@@ -99,10 +120,11 @@ function overflowInPage() {
             const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
             const name = `${engine}-${route.replace(/[^a-z0-9]/gi, '_') || 'home'}-${width}`;
             fs.writeFileSync(path.join(reportDirectory, `${name}.axe.json`), JSON.stringify({ url: route, violations: scan.violations, incomplete: scan.incomplete }, null, 2));
-            assert.deepEqual(scan.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })), [], 'Automated accessibility findings');
+            // Keep screenshots even when an accessibility assertion fails.
             if (route === '/' || (route === '/work/portfolio' && width === 390)) {
               await page.screenshot({ path: path.join(reportDirectory, `${name}.png`), fullPage: true });
             }
+            assert.deepEqual(scan.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })), [], 'Automated accessibility findings');
           }
         });
       }
@@ -127,28 +149,68 @@ function overflowInPage() {
       await page.keyboard.press('Enter');
       assert.equal(await menu.getAttribute('open'), null);
     });
-    await check(`${engine} images decode and use responsive source`, async () => {
+    await check(`${engine} images decode and use responsive sources`, async () => {
       await page.goto(base + '/');
-      const image = page.locator('.home-work-preview__image');
-      await image.scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => {
-        const el = document.querySelector('.home-work-preview__image');
-        return el && el.complete && el.naturalWidth > 0;
-      });
-      await image.evaluate(el => el.decode());
+      const image = page.locator('.editorial-project--lead .editorial-project__media img');
+      await decodeVisibleImage(page, image);
       const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
       assert.ok(info.width > 0 && info.height > 0);
       assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
-      results.push({ name: `${engine} responsive image selected`, ...info, passed: true });
+      results.push({ name: `${engine} responsive case-study image selected`, ...info, passed: true });
+      // Both real interfaces must be shown whole, including their hover state.
+      for (const screenshot of await page.locator('.editorial-project__media img').all()) {
+        await decodeVisibleImage(page, screenshot);
+        await screenshot.hover();
+        const style = await screenshot.evaluate(el => ({ fit: getComputedStyle(el).objectFit, transform: getComputedStyle(el).transform }));
+        assert.equal(style.fit, 'contain', 'Do not crop interface evidence');
+        assert.equal(style.transform, 'none', 'Do not zoom screenshots on hover');
+      }
     });
+    for (const width of widths) {
+      await check(`${engine} dark editorial homepage and ending ${width}px`, async () => {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(base + '/', { waitUntil: 'load' });
+        assert.equal(await page.locator('main[data-theme="dark"]').count(), 1);
+        assert.equal(await page.locator('main[data-theme="light"]').count(), 0);
+        assert.equal(await page.locator('.editorial-hero__avatar').count(), 0, 'Removed avatar must not return');
+        assert.equal(await page.locator('.footer-cta').count(), 0, 'Removed duplicate CTA must not return');
+        assert.equal(await page.locator('#contact').count(), 1);
+        const brand = await page.locator('.brand-link').boundingBox();
+        const header = await page.locator('.site-header').boundingBox();
+        assert.ok(brand && header && brand.y >= header.y && brand.y + brand.height <= header.y + header.height,
+          'The centred mark must stay inside the header, without a circular hanging tab');
+        await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const ending = await page.evaluate(() => {
+          const header = document.querySelector('.site-header');
+          const panel = document.querySelector('.site-ending--home');
+          const footer = document.querySelector('.site-footer');
+          return {
+            headerBottom: header.getBoundingClientRect().bottom,
+            panelTop: panel.getBoundingClientRect().top,
+            footerTop: footer.getBoundingClientRect().top,
+            footerBottom: footer.getBoundingClientRect().bottom,
+            viewport: window.innerHeight,
+            colours: [header, panel, document.querySelector('#contact'), footer].map(el => getComputedStyle(el).backgroundColor),
+          };
+        });
+        assert.ok(ending.panelTop <= ending.headerBottom + 1, 'The contact ending must fill the area below the header');
+        assert.ok(Math.abs(ending.footerBottom - ending.viewport) <= 1, 'Footer must reach the viewport bottom');
+        assert.ok(ending.footerTop > ending.viewport / 2, 'Footer belongs at the end, below the contact content');
+        assert.equal(new Set(ending.colours).size, 1, 'Header, contact and footer must share the shell colour token');
+        if (width === 390 || width === 1440) {
+          await page.screenshot({ path: path.join(reportDirectory, `${engine}-home-ending-${width}.png`) });
+        }
+      });
+    }
     await check(`${engine} no JavaScript content and navigation`, async () => {
       const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
       try {
         const noJSPage = await noJS.newPage();
         await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
         // DOM readiness can precede stylesheet layout, especially in Firefox.
-        await noJSPage.locator('#workspace-project-title').waitFor({ state: 'visible' });
-        await noJSPage.locator('#tooling-title').waitFor({ state: 'visible' });
+        await noJSPage.getByRole('heading', { name: 'Portfolio & Client Workspace', exact: true }).waitFor({ state: 'visible' });
+        await noJSPage.getByRole('heading', { name: 'go-jsonld-schema', exact: true }).waitFor({ state: 'visible' });
         await noJSPage.locator('.mobile-nav summary').click();
         await noJSPage.locator('.mobile-nav-link').first().waitFor({ state: 'visible' });
       } finally {
