@@ -245,17 +245,19 @@ func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
 		t.Fatalf("status = %d", rec.Code)
 	}
 	body := rec.Body.String()
-	// Verify the current editorial content, not IDs and secondary repository
-	// links belonging to the retired full-length tooling section.
+	// Verify the dark editorial design, canonical project links and real images.
+	// The retired light feature panel must not be reintroduced to satisfy tests.
 	for _, expected := range []string{
-		`href="/work/salon-rebuild/"`, `href="/work/portfolio"`,
+		`href="/work/salon-rebuild/"`, `href="/work/portfolio/"`,
 		`id="selected-work-title"`, `id="capabilities-title"`,
 		`Portfolio &amp; Client Workspace`,
 		`go-jsonld-schema`, `djm-cli`,
 		`https://github.com/danieljmanningdev/djm-cli`,
 		`https://github.com/danieljmanningdev/go-jsonld-schema`,
-		`data-theme="light"`,
-		`class="editorial-feature__media"`,
+		`data-theme="dark"`,
+		`class="editorial-project editorial-project--lead"`,
+		`class="editorial-project editorial-project--product"`,
+		`src="/static/images/internal-workspace.png"`,
 		`salon-rebuild-home-480.avif`, `salon-rebuild-home-480.webp`,
 		`site-ending--home`,
 		`aria-labelledby="contact-title"`,
@@ -270,6 +272,8 @@ func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
 		`daniel-avatar.svg`,
 		`class="footer-cta"`,
 		`Make the complex feel`,
+		`data-theme="light"`,
+		`class="editorial-feature__media"`,
 	} {
 		if strings.Contains(body, removed) {
 			t.Errorf("homepage must not restore removed content %q", removed)
