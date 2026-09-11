@@ -3,34 +3,33 @@
     {{if eq .CanonicalURL "https://danieljmanningdev.com/"}}
     <section id="contact" class="editorial-contact" aria-labelledby="contact-title">
         <div class="site-container editorial-contact__inner">
-            <p class="editorial-kicker">Available for thoughtful product work</p>
+            <p class="editorial-kicker">Design &amp; development enquiries</p>
             <h2 id="contact-title">Have something worth building?</h2>
-            <a href="mailto:daniel@danieljmanningdev.com">Start a conversation <span aria-hidden="true">⟶</span></a>
+            <p class="editorial-contact__copy">Tell me what you are building, who it is for and where you need help. A rough idea is enough to start the conversation.</p>
+            <div class="editorial-contact__actions">
+                <a href="mailto:daniel@danieljmanningdev.com" class="button-primary" aria-describedby="contact-email-hint">Email Daniel <span aria-hidden="true">→</span></a>
+                <button type="button" class="button-secondary" data-copy-email="daniel@danieljmanningdev.com" aria-describedby="contact-copy-status" hidden>Copy email address</button>
+            </div>
+            <div>
+                <span class="editorial-contact__address">daniel@danieljmanningdev.com</span>
+                <p class="editorial-contact__hint" id="contact-email-hint">Email Daniel opens your email app. You can also select and copy the address.</p>
+                <p class="editorial-contact__status" id="contact-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+            </div>
         </div>
     </section>
     {{end}}
-
     <footer class="site-footer">
         <div class="site-container footer-inner">
             <div class="footer-meta">
                 <a href="/" class="footer-logo-link" aria-label="Daniel J. Manning, homepage">
-                    <img
-                        src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg"
-                        alt="Daniel J. Manning"
-                        class="footer-logo"
-                        width="196"
-                        height="48"
-                        loading="lazy"
-                    >
+                    <img src="/static/djmdev-svg-assets/djmdev-horizontal-dark.svg" alt="Daniel J. Manning" class="footer-logo" width="196" height="48" loading="lazy">
                 </a>
-
                 <div class="footer-links">
                     <a href="/#work" class="footer-link">Selected work</a>
                     <a href="/blog/" class="footer-link">Journal</a>
                     <a href="https://github.com/danieljmanningdev" class="footer-link">GitHub</a>
-                    <a href="mailto:daniel@danieljmanningdev.com" class="footer-link">Email</a>
+                    <a href="mailto:daniel@danieljmanningdev.com" class="footer-link">Email Daniel</a>
                 </div>
-
                 <p class="footer-copyright">© 2026 Daniel J. Manning · Leeds, United Kingdom</p>
             </div>
         </div>

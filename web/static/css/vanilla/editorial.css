@@ -1,9 +1,46 @@
 /* Public editorial foundations. The private workspace retains its own system.
-   Palette foundations remain in tokens.css; these are repeated visual roles. */
+   The neutral surfaces and a single blue are scoped to this public theme.
+   Rebind semantic aliases here: inherited custom properties are resolved where
+   they are defined, not automatically when their foundation changes below. */
 .site-shell {
-    --color-shell-background: var(--color-ink-850);
+    --color-ink-950: #14181f;
+    --color-ink-900: #191f28;
+    --color-ink-850: #202733;
+    --color-ink-800: #283240;
+    --color-mist-50: #f2f4f7;
+    --color-mist-100: #d6dee8;
+    --color-mist-300: #b1bdcd;
+    --color-mist-500: #929fb0;
+    /* Retain the original Signal 500 hue. Headings, actions and links share
+       its softer tint instead of competing with a separate cyan accent. */
+    --color-signal-300: color-mix(in oklab, var(--color-signal-500) 64%, var(--color-mist-50));
+    --color-signal-400: var(--color-signal-300);
+    --color-signal-200: color-mix(in oklab, var(--color-signal-500) 45%, var(--color-mist-50));
+    --color-electric-300: var(--color-signal-300);
+    --color-electric-400: var(--color-signal-300);
+    --color-background: var(--color-ink-950);
+    --color-background-elevated: var(--color-ink-900);
+    --color-background-panel: var(--color-ink-850);
+    --color-background-strong: var(--color-ink-800);
+    --color-shell-background: var(--color-background);
+    --color-text-primary: var(--color-mist-50);
+    --color-text-secondary: var(--color-mist-100);
+    --color-text-muted: var(--color-mist-300);
     --color-text-subtle: var(--color-mist-300);
     --color-text-faint: var(--color-mist-300);
+    --color-text-inverse: var(--color-ink-950);
+    --color-accent: var(--color-signal-300);
+    --color-accent-light: var(--color-signal-200);
+    --color-accent-strong: var(--color-signal-500);
+    --color-electric: var(--color-accent);
+    --color-status-available: var(--color-accent);
+    --color-border: color-mix(in oklab, var(--color-mist-300) 16%, var(--color-background));
+    --color-border-subtle: color-mix(in oklab, var(--color-mist-300) 10%, var(--color-background));
+    --color-border-strong: color-mix(in oklab, var(--color-mist-300) 25%, var(--color-background));
+    --color-surface: var(--color-background-elevated);
+    --color-surface-hover: var(--color-background-panel);
+    --color-accent-surface: color-mix(in oklab, var(--color-accent) 8%, var(--color-background));
+    --color-accent-border: color-mix(in oklab, var(--color-accent) 45%, var(--color-background));
     --editorial-width: 72rem;
     --editorial-reading-width: 66ch;
     --editorial-title: clamp(2.25rem, 4.8vw, 4.5rem);
@@ -20,8 +57,7 @@
 .site-shell .site-container { max-width: var(--editorial-width); }
 .site-shell :where(h1, h2, h3, h4, h5, h6, p, dt, dd, a) { overflow-wrap: anywhere; }
 .site-shell :where(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
-/* Inline accent spans can have taller font metrics than a tight display line.
-   Reserve space for those metrics rather than clipping or hiding the overflow. */
+/* Reserve adequate line boxes for the original system-font stacks. */
 .site-shell :is(.editorial-hero__title, .editorial-section-title,
     .journal-hero__title, .service-hero__title) {
     padding-block: var(--editorial-heading-inset);
@@ -52,7 +88,7 @@
 }
 :where(.site-shell) .interactive-card:hover { background: transparent; transform: none; }
 .site-shell :where(a, button, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--color-signal-300);
+    outline: 2px solid var(--color-accent);
     outline-offset: var(--space-1);
     box-shadow: none;
 }
@@ -71,20 +107,20 @@
     text-decoration: none;
 }
 .site-shell .button-primary {
-    background: var(--color-signal-300);
-    border-color: var(--color-signal-300);
-    color: var(--color-ink-950);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-inverse);
 }
 .site-shell .button-primary:hover {
-    background: var(--color-signal-200);
-    border-color: var(--color-signal-200);
-    color: var(--color-ink-950);
+    background: var(--color-accent-light);
+    border-color: var(--color-accent-light);
+    color: var(--color-text-inverse);
 }
 .site-shell :where(.button-secondary, .button-quiet) {
     background: transparent;
     color: var(--color-text-secondary);
     text-decoration: underline;
-    text-decoration-color: var(--color-border-strong);
+    text-decoration-color: var(--color-text-muted);
     text-underline-offset: 0.35em;
 }
 .site-shell :where(.button-secondary, .button-quiet):hover {
@@ -94,11 +130,33 @@
     text-decoration-color: currentColor;
 }
 .site-shell :where(.button-quiet) { padding-inline: 0; justify-content: start; }
-/* A blue-ink bar, not an unrelated pure-black strip. */
-.site-header { border-color: var(--color-border-strong); }
+/* One continuous background. Separation comes from the rule, not a colour band. */
+.site-header { border-color: var(--color-border); }
 .site-header .header-project-link { border-color: var(--color-accent-border); }
 .site-header .header-project-link:hover { border-color: var(--color-accent-light); }
-.site-shell .mobile-nav-panel { background: var(--color-shell-background); }
+.site-header a[aria-current] {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.45em;
+}
+.site-shell .mobile-nav summary {
+    display: flex;
+    width: auto;
+    min-width: 5.25rem;
+    gap: var(--space-3);
+    padding-inline: var(--space-3);
+    font-size: var(--text-sm);
+}
+.mobile-nav__close-label { display: none; }
+.mobile-nav[open] .mobile-nav__open-label { display: none; }
+.mobile-nav[open] .mobile-nav__close-label { display: inline; }
+.site-shell .mobile-nav-panel {
+    background: var(--color-background-elevated);
+    max-height: calc(100svh - var(--site-header-height) - var(--space-6));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
 .site-shell .footer-link { display: inline-flex; min-height: 2.75rem; align-items: center; }
 .site-shell .footer-logo-link { min-height: 2.75rem; }
 .site-shell .editorial-contact h2 {
@@ -106,8 +164,40 @@
     line-height: var(--editorial-heading-leading);
     max-width: 20ch;
 }
-/* Keep the approved hero composition, but avoid a forced full-screen intro
-   on short laptop windows and landscape phones (audit UI-001 / UI-003). */
+/* A contact action predicts its outcome. Copying has its own honest status,
+   and the address remains selectable without JavaScript or an email client. */
+.editorial-contact__copy { max-width: 43rem; color: var(--color-text-muted); }
+.editorial-contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.site-shell .editorial-contact__actions a { margin: 0; }
+.editorial-contact__actions button { cursor: pointer; }
+.editorial-contact__address {
+    display: block;
+    max-width: 100%;
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+    user-select: all;
+}
+.editorial-contact__hint { margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); }
+.editorial-contact__status { min-height: 1.75em; color: var(--color-text-secondary); font-size: var(--text-sm); }
+/* Every linked row has a persistent clue, not only a hover colour. */
+.site-shell :is(.editorial-project__link, .related-content__link, .service-case__link) {
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.3em;
+}
+.site-shell :is(.journal-entry__title, .editorial-tool__heading h4) {
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+}
+.site-shell :is(.journal-entry__link, .editorial-tool):is(:hover, :focus-visible) :is(h2, h4) {
+    text-decoration-color: currentColor;
+}
+/* These are explanatory examples, not live status indicators. */
+.service-preview__status { display: none; }
 @media (max-height: 48rem) and (min-width: 48rem) {
     .site-shell .editorial-hero { min-height: auto; padding-block: var(--space-12); }
     .site-shell .editorial-hero__title { font-size: clamp(2.5rem, 4.6vw, 4rem); }
@@ -115,6 +205,14 @@
 }
 @media (max-width: 39.999rem) {
     .site-shell { --editorial-section: var(--space-12); }
+    /* A text-labelled two-item header can reflow at 200% text size, where a
+       centred three-column mark would collide with the menu control. */
+    .site-shell .primary-nav { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); }
+    .site-shell .nav-status { display: none; }
+    .site-shell .brand-link { grid-column: 1; justify-self: start; }
+    .site-shell .mobile-nav { grid-column: 2; }
+    .site-shell .mobile-nav summary { min-width: 0; }
+    .site-shell .mobile-nav-icon { display: none; }
     .site-shell .editorial-hero { padding-block: var(--space-12); }
     .site-shell .editorial-contact__inner { padding-block: var(--space-16); }
 }
@@ -123,5 +221,6 @@
     .site-shell :where(a, button, summary, img, .interactive-card) { transition: none; animation: none; }
 }
 @media (forced-colors: active) {
-    .site-shell :where(.button-primary, .button-secondary, .header-project-link) { border: 1px solid ButtonText; }
+    .site-shell :where(.button-primary, .button-secondary, .header-project-link, .mobile-nav summary) { border: 1px solid ButtonText; }
+    .site-shell :where(.journal-entry__title, .editorial-tool__heading h4) { text-decoration-color: LinkText; }
 }

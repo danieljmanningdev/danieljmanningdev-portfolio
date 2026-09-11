@@ -58,16 +58,12 @@ function layoutEvidence() {
     if (r.left < -1 || r.right > width + 1) bad.push({ tag: el.tagName, class: el.className, left: r.left, right: r.right });
     if (el.matches('h1,h2,h3') && (el.scrollHeight > el.clientHeight + 2 || el.scrollWidth > el.clientWidth + 2)) clipped.push({ class: el.className, clientWidth: el.clientWidth, scrollWidth: el.scrollWidth, clientHeight: el.clientHeight, scrollHeight: el.scrollHeight, lineHeight: getComputedStyle(el).lineHeight });
   }
-  const sample = document.createElement('div');
-  sample.style.background = 'var(--color-ink-850)';
-  document.body.append(sample);
-  const ink = getComputedStyle(sample).backgroundColor;
-  sample.remove();
   const header = document.querySelector('.site-header');
   const logo = document.querySelector('.brand-link');
   const hr = header.getBoundingClientRect(), lr = logo.getBoundingClientRect();
   return { width, scrollWidth: document.documentElement.scrollWidth, bad, clipped,
-    ink, header: getComputedStyle(header).backgroundColor,
+    background: getComputedStyle(document.body).backgroundColor,
+    header: getComputedStyle(header).backgroundColor,
     footer: getComputedStyle(document.querySelector('.site-footer')).backgroundColor,
     flatHeader: lr.top >= hr.top - 1 && lr.bottom <= hr.bottom + 1 };
 }
@@ -76,8 +72,9 @@ async function assertLayout(page) {
   assert.ok(evidence.scrollWidth <= evidence.width + 1, JSON.stringify(evidence));
   assert.deepEqual(evidence.bad, [], 'Visible content outside the viewport');
   assert.deepEqual(evidence.clipped, [], 'A heading is clipped or overflows its box');
-  assert.equal(evidence.header, evidence.ink, 'The header must use Ink 850, not pure black');
-  assert.equal(evidence.footer, evidence.ink, 'The footer must share the header palette');
+  assert.equal(evidence.background, 'rgb(20, 24, 31)', 'The public theme must use the selected charcoal-blue');
+  assert.equal(evidence.header, evidence.background, 'The header must blend with the page, not form a different colour band');
+  assert.equal(evidence.footer, evidence.background, 'The footer must share the header palette');
   assert.ok(evidence.flatHeader, 'The brand must stay inside the header');
 }
 async function imagesReady(page) {
@@ -167,6 +164,95 @@ async function imagesReady(page) {
             await p.locator('.mobile-nav-link').first().waitFor({ state: 'visible' });
           }
         } finally { await noJS.close(); }
+      });
+      await check(`${engine} current-section signifiers are server rendered`, async () => {
+        const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+        try {
+          const p = await noJS.newPage();
+          for (const [route, label, current] of [
+            ['/blog/', 'Journal', 'page'], ['/blog/editorial-long-title', 'Journal', 'location'],
+            ['/work/portfolio', 'Work', 'location'], ['/work/salon-rebuild/', 'Work', 'location'],
+            ['/ui-ux-design/', 'Services', 'location'], ['/web-development/', 'Services', 'location'],
+            ['/software-development/', 'Services', 'location'], ['/web-design/', 'Services', 'location'],
+            ['/web-design-leeds/', 'Services', 'location'],
+          ]) {
+            await p.goto(base + route, { waitUntil: 'load' });
+            const active = p.locator('.desktop-nav [aria-current]');
+            assert.equal(await active.count(), 1, route);
+            assert.equal(await active.textContent(), label, route);
+            assert.equal(await active.getAttribute('aria-current'), current, route);
+            assert.match(await active.evaluate(el => getComputedStyle(el).textDecorationLine), /underline/);
+          }
+          await p.setViewportSize({ width: 390, height: 844 });
+          await p.goto(base + '/', { waitUntil: 'load' });
+          assert.equal(await p.locator('[data-copy-email]').isVisible(), false);
+          assert.ok(await p.locator('.editorial-contact__address').isVisible());
+          assert.match(await p.locator('#contact-email-hint').textContent(), /opens your email app/);
+          await p.locator('.mobile-nav summary').click();
+          assert.ok(await p.locator('.mobile-nav__close-label').isVisible());
+        } finally { await noJS.close(); }
+      });
+      await check(`${engine} menu recovery and same-page focus`, async () => {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto(base + '/', { waitUntil: 'load' });
+        const menu = page.locator('.mobile-nav');
+        const summary = menu.locator('summary');
+        assert.ok(await menu.locator('.mobile-nav__open-label').isVisible());
+        await summary.focus();
+        await page.keyboard.press('Enter');
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Escape');
+        assert.equal(await menu.getAttribute('open'), null);
+        assert.equal(await summary.evaluate(el => el === document.activeElement), true);
+        await summary.click();
+        await menu.locator('a[href="/#work"]').click();
+        await page.waitForFunction(() => document.activeElement?.id === 'selected-work-title');
+        assert.equal(await menu.getAttribute('open'), null);
+        assert.equal(new URL(page.url()).hash, '#work');
+        assert.equal(await menu.locator('a[href="/#work"]').getAttribute('aria-current'), 'location');
+        await summary.click();
+        await page.mouse.click(4, 840);
+        assert.equal(await menu.getAttribute('open'), null);
+      });
+      await check(`${engine} header controls remain separate at enlarged text`, async () => {
+        for (const width of [320, 390]) {
+          await page.setViewportSize({ width, height: 844 });
+          await page.goto(base + '/', { waitUntil: 'load' });
+          await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+          const boxes = await page.evaluate(() => ({
+            brand: document.querySelector('.brand-link').getBoundingClientRect().right,
+            menu: document.querySelector('.mobile-nav summary').getBoundingClientRect().left,
+          }));
+          assert.ok(boxes.brand < boxes.menu, JSON.stringify(boxes));
+          await assertLayout(page);
+        }
+      });
+      await check(`${engine} copy success and denied clipboard have honest feedback`, async () => {
+        // Deterministic API doubles exercise both outcomes in all engines.
+        // They do not claim an OS clipboard or an email client was opened in CI.
+        for (const succeeds of [true, false]) {
+          const c = await browser.newContext({ viewport: { width: 390, height: 844 } });
+          try {
+            await c.addInitScript(success => {
+              Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+                writeText: async text => {
+                  if (!success) throw new DOMException('Denied', 'NotAllowedError');
+                  window.copiedEmailForTest = text;
+                },
+              } });
+            }, succeeds);
+            const p = await c.newPage();
+            await p.goto(base + '/', { waitUntil: 'load' });
+            await p.locator('[data-copy-email]').click();
+            await p.waitForFunction(() => document.getElementById('contact-copy-status').textContent.length > 0);
+            const text = await p.locator('#contact-copy-status').textContent();
+            assert.match(text, succeeds ? /^Email address copied\.$/ : /Could not copy automatically/);
+            if (succeeds) assert.equal(await p.evaluate(() => window.copiedEmailForTest), 'daniel@danieljmanningdev.com');
+            assert.equal(await p.locator('[data-copy-email]').getAttribute('aria-busy'), null);
+            assert.equal(await p.locator('[data-copy-email]').evaluate(el => el === document.activeElement), true);
+            assert.equal(await p.locator('#contact-email-hint').count(), 1);
+          } finally { await c.close(); }
+        }
       });
       await context.close();
     } finally { await browser.close(); }

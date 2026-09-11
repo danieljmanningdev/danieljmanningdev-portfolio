@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#061325">
+    <meta name="theme-color" content="#14181f">
     <meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"selfRequestsOnly":true,"includeIndicatorStyles":false}'>
     <title>{{.Title}}</title>
     {{if .Description}}
@@ -38,9 +38,10 @@
     {{if .StructuredData}}
     <script type="application/ld+json" nonce="{{.CSPNonce}}">{{.StructuredData}}</script>
     {{end}}
-    <link rel="stylesheet" href="/static/css/vanilla/main.css?v=20260911">
+    <link rel="stylesheet" href="/static/css/vanilla/main.css?v=20260911-palette">
     <link rel="stylesheet" href="/static/css/vanilla/parity.css?v=20260911">
     <script src="/static/scripts/min.htmx.js" defer></script>
+    <script src="/static/scripts/public-ui.js?v=20260911" defer></script>
     <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
 </head>
 <body class="site-shell" hx-indicator="#page-progress">
