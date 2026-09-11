@@ -5,31 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#050b18">
+    <meta name="theme-color" content="#061325">
     <meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"selfRequestsOnly":true,"includeIndicatorStyles":false}'>
-
     <title>{{.Title}}</title>
-
     {{if .Description}}
     <meta name="description" content="{{.Description}}">
     <meta property="og:description" content="{{.Description}}">
     <meta name="twitter:description" content="{{.Description}}">
     {{end}}
-
     {{if .CanonicalURL}}
     <link rel="canonical" href="{{.CanonicalURL}}">
     <meta property="og:url" content="{{.CanonicalURL}}">
     {{end}}
-
     {{if .OGTitle}}
     <meta property="og:title" content="{{.OGTitle}}">
     <meta name="twitter:title" content="{{.OGTitle}}">
     {{end}}
-
-    {{if .OGType}}
-    <meta property="og:type" content="{{.OGType}}">
-    {{end}}
-
+    {{if .OGType}}<meta property="og:type" content="{{.OGType}}">{{end}}
     {{if .OGImage}}
     <meta property="og:image" content="{{.OGImage}}">
     <meta property="og:image:secure_url" content="{{.OGImage}}">
@@ -40,58 +32,37 @@
     <meta name="twitter:image" content="{{.OGImage}}">
     <meta name="twitter:image:alt" content="Daniel J. Manning — Digital Product Designer &amp; Developer">
     {{end}}
-
     <meta property="og:site_name" content="Daniel J. Manning">
     <meta property="og:locale" content="en_GB">
     <meta name="twitter:card" content="summary_large_image">
-
     {{if .StructuredData}}
     <script type="application/ld+json" nonce="{{.CSPNonce}}">{{.StructuredData}}</script>
     {{end}}
-
-    <link rel="stylesheet" href="/static/css/vanilla/main.css?v=3">
-    <link rel="stylesheet" href="/static/css/vanilla/parity.css?v=2">
+    <link rel="stylesheet" href="/static/css/vanilla/main.css?v=20260911">
+    <link rel="stylesheet" href="/static/css/vanilla/parity.css?v=20260911">
     <script src="/static/scripts/min.htmx.js" defer></script>
     <link rel="icon" href="/static/favicon.svg?v=3" type="image/svg+xml" sizes="any">
 </head>
-
-<body
-    class="site-shell"
-    hx-indicator="#page-progress"
->
+<body class="site-shell" hx-indicator="#page-progress">
     <a href="#main-content" class="skip-link">Skip to content</a>
-
-    <div
-        id="page-progress"
-        class="htmx-indicator page-progress"
-        aria-hidden="true"
-    ></div>
-
+    <div id="page-progress" class="htmx-indicator page-progress" aria-hidden="true"></div>
     {{template "header" .}}
-
     <div id="main-content" class="site-main" tabindex="-1">
         {{template "content" .}}
-
         {{with .RelatedLinks}}
         <section class="related-content" aria-labelledby="related-content-title">
             <div class="site-container">
                 <div class="related-content__intro">
                     <p class="eyebrow">Continue exploring</p>
-                    <h2 id="related-content-title" class="related-content__title">
-                        Related work and capabilities.
-                    </h2>
+                    <h2 id="related-content-title" class="related-content__title">Related work and capabilities.</h2>
                 </div>
-
                 <div class="related-content__grid">
                     {{range .}}
                     <a href="{{.URL}}" class="interactive-card related-content__card">
                         <p class="related-content__label">{{.Label}}</p>
                         <h3 class="related-content__card-title">{{.Title}}</h3>
                         <p class="related-content__description">{{.Description}}</p>
-                        <span class="related-content__link">
-                            Explore
-                            <span aria-hidden="true">→</span>
-                        </span>
+                        <span class="related-content__link">Explore <span aria-hidden="true">→</span></span>
                     </a>
                     {{end}}
                 </div>
@@ -99,7 +70,6 @@
         </section>
         {{end}}
     </div>
-
     {{template "footer" .}}
 </body>
 </html>

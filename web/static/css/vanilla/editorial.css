@@ -1,0 +1,119 @@
+/* Public editorial foundations. The private workspace retains its own system.
+   Palette foundations remain in tokens.css; these are repeated visual roles. */
+.site-shell {
+    --color-shell-background: var(--color-ink-850);
+    --color-text-subtle: var(--color-mist-300);
+    --color-text-faint: var(--color-mist-300);
+    --editorial-width: 72rem;
+    --editorial-reading-width: 66ch;
+    --editorial-title: clamp(2.25rem, 4.8vw, 4.5rem);
+    --editorial-heading: clamp(1.75rem, 3.2vw, 3rem);
+    --editorial-subheading: clamp(1.125rem, 1.8vw, 1.5rem);
+    --editorial-section: clamp(var(--space-12), 6vw, var(--space-24));
+    --editorial-gap: clamp(var(--space-6), 4vw, var(--space-16));
+    --editorial-radius: var(--space-1);
+    --editorial-rule: 1px solid var(--color-border-strong);
+    --editorial-heading-leading: 1.12;
+    --editorial-label-tracking: 0.08em;
+}
+.site-shell .site-container { max-width: var(--editorial-width); }
+.site-shell :where(h1, h2, h3, h4, h5, h6, p, dt, dd, a) { overflow-wrap: anywhere; }
+.site-shell :where(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
+.site-shell :where(p) { text-wrap: pretty; }
+.site-shell :where(section[id], h2[id], h3[id], #main-content) {
+    scroll-margin-top: calc(var(--site-header-height) + var(--space-6));
+}
+.site-shell :where(.eyebrow, .metric-label, .service-kicker__text) {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-body);
+    letter-spacing: var(--editorial-label-tracking);
+    text-transform: uppercase;
+}
+/* Real links have feedback; descriptive articles must not look clickable. */
+:where(.site-shell) .interactive-card,
+:where(.site-shell) .glass-panel {
+    background: transparent;
+    border: 0;
+    border-radius: var(--editorial-radius);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+:where(.site-shell) .interactive-card:hover { background: transparent; transform: none; }
+.site-shell :where(a, button, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-signal-300);
+    outline-offset: var(--space-1);
+    box-shadow: none;
+}
+.site-shell :where(.button-primary, .button-secondary, .button-quiet) {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid transparent;
+    border-radius: var(--editorial-radius);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    line-height: var(--leading-body);
+    text-decoration: none;
+}
+.site-shell .button-primary {
+    background: var(--color-signal-300);
+    border-color: var(--color-signal-300);
+    color: var(--color-ink-950);
+}
+.site-shell .button-primary:hover {
+    background: var(--color-signal-200);
+    border-color: var(--color-signal-200);
+    color: var(--color-ink-950);
+}
+.site-shell :where(.button-secondary, .button-quiet) {
+    background: transparent;
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.35em;
+}
+.site-shell :where(.button-secondary, .button-quiet):hover {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-accent-light);
+    text-decoration-color: currentColor;
+}
+.site-shell :where(.button-quiet) { padding-inline: 0; justify-content: start; }
+/* A blue-ink bar, not an unrelated pure-black strip. */
+.site-header { border-color: var(--color-border-strong); }
+.site-header .header-project-link { border-color: var(--color-accent-border); }
+.site-header .header-project-link:hover { border-color: var(--color-accent-light); }
+.site-shell .mobile-nav-panel { background: var(--color-shell-background); }
+.site-shell .footer-link { display: inline-flex; min-height: 2.75rem; align-items: center; }
+.site-shell .footer-logo-link { min-height: 2.75rem; }
+.site-shell .editorial-contact h2 {
+    font-size: var(--editorial-title);
+    line-height: var(--editorial-heading-leading);
+    max-width: 20ch;
+}
+/* Keep the approved hero composition, but avoid a forced full-screen intro
+   on short laptop windows and landscape phones (audit UI-001 / UI-003). */
+@media (max-height: 48rem) and (min-width: 48rem) {
+    .site-shell .editorial-hero { min-height: auto; padding-block: var(--space-12); }
+    .site-shell .editorial-hero__title { font-size: clamp(2.5rem, 4.6vw, 4rem); }
+    .site-shell .editorial-hero__facts { margin-top: var(--space-8); }
+}
+@media (max-width: 39.999rem) {
+    .site-shell { --editorial-section: var(--space-12); }
+    .site-shell .editorial-hero { padding-block: var(--space-12); }
+    .site-shell .editorial-contact__inner { padding-block: var(--space-16); }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .site-shell :where(a, button, summary, img, .interactive-card) { transition: none; animation: none; }
+}
+@media (forced-colors: active) {
+    .site-shell :where(.button-primary, .button-secondary, .header-project-link) { border: 1px solid ButtonText; }
+}

@@ -4,12 +4,11 @@
 @import url("/static/css/vanilla/layout.css");
 @import url("/static/css/vanilla/components.css");
 @import url("/static/css/vanilla/shell.css");
+@import url("/static/css/vanilla/editorial.css?v=20260911");
 @import url("/static/css/vanilla/pages/home.css");
 @import url("/static/css/vanilla/pages/home-polish.css");
-@import url("/static/css/vanilla/pages/portfolio.css");
-@import url("/static/css/vanilla/pages/service.css");
-@import url("/static/css/vanilla/pages/service-polish.css");
-@import url("/static/css/vanilla/pages/journal.css");
-@import url("/static/css/vanilla/pages/related.css");
+@import url("/static/css/vanilla/pages/portfolio.css?v=20260911");
+@import url("/static/css/vanilla/pages/service.css?v=20260911");
+@import url("/static/css/vanilla/pages/journal.css?v=20260911");
+@import url("/static/css/vanilla/pages/related.css?v=20260911");
 @import url("/static/css/vanilla/pages/error.css");
-@import url("/static/css/vanilla/pages/case-study-polish.css");
