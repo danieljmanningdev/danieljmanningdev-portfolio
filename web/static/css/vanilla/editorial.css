@@ -14,11 +14,19 @@
     --editorial-radius: var(--space-1);
     --editorial-rule: 1px solid var(--color-border-strong);
     --editorial-heading-leading: 1.12;
+    --editorial-heading-inset: 0.16em;
     --editorial-label-tracking: 0.08em;
 }
 .site-shell .site-container { max-width: var(--editorial-width); }
 .site-shell :where(h1, h2, h3, h4, h5, h6, p, dt, dd, a) { overflow-wrap: anywhere; }
 .site-shell :where(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
+/* Inline accent spans can have taller font metrics than a tight display line.
+   Reserve space for those metrics rather than clipping or hiding the overflow. */
+.site-shell :is(.editorial-hero__title, .editorial-section-title,
+    .journal-hero__title, .service-hero__title) {
+    padding-block: var(--editorial-heading-inset);
+    line-height: var(--editorial-heading-leading);
+}
 .site-shell :where(p) { text-wrap: pretty; }
 .site-shell :where(section[id], h2[id], h3[id], #main-content) {
     scroll-margin-top: calc(var(--site-header-height) + var(--space-6));

@@ -26,7 +26,6 @@ const markdown = [
   '> A quoted design decision should remain readable, not fade into the background.',
   '[' + longURL + '](' + longURL + ')',
   '~~~go\nexample := "' + 'long-content-'.repeat(30) + '"\nfmt.Println(example)\n~~~',
-  '| Layer | Responsibility |\n| --- | --- |\n| Interface | Semantic HTML and understandable states |\n| Persistence | Explicit boundaries and parameterised queries |',
 ].join('\n\n');
 execFileSync('python3', ['-c', `
 import sqlite3, sys
@@ -57,7 +56,7 @@ function layoutEvidence() {
     const r = el.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) continue;
     if (r.left < -1 || r.right > width + 1) bad.push({ tag: el.tagName, class: el.className, left: r.left, right: r.right });
-    if (el.matches('h1,h2,h3') && (el.scrollHeight > el.clientHeight + 2 || el.scrollWidth > el.clientWidth + 2)) clipped.push(el.className);
+    if (el.matches('h1,h2,h3') && (el.scrollHeight > el.clientHeight + 2 || el.scrollWidth > el.clientWidth + 2)) clipped.push({ class: el.className, clientWidth: el.clientWidth, scrollWidth: el.scrollWidth, clientHeight: el.clientHeight, scrollHeight: el.scrollHeight, lineHeight: getComputedStyle(el).lineHeight });
   }
   const sample = document.createElement('div');
   sample.style.background = 'var(--color-ink-850)';
@@ -126,6 +125,9 @@ async function imagesReady(page) {
         await page.goto(base + '/blog/editorial-long-title');
         assert.equal(await page.locator('h1').textContent(), longTitle);
         assert.ok(await page.locator('.article-prose pre code').count());
+        assert.ok(await page.locator('.article-prose blockquote').count());
+        assert.ok(await page.locator('.article-prose ul li').count());
+        assert.ok(await page.locator('.article-prose ol li').count());
         await page.locator('h1').evaluate(el => { el.textContent += ' ' + 'UnbrokenTitle'.repeat(12); });
         await assertLayout(page);
         await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });

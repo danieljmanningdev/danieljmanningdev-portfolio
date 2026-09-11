@@ -45,7 +45,9 @@ meets AAA. Automated checks are not a formal accessibility certification.
 runs only in CI against the fixed localhost origin and an isolated temporary
 SQLite database. It never writes production articles or contacts production
 services. The fixture is deliberately long and includes lists, a quote, a long
-URL, code and a table.
+URL and code. Native table styles are covered by the offline HTML fixture;
+the existing Markdown renderer does not enable pipe-table syntax, and this
+visual change does not alter its Markdown dialect.
 
 The workflow runs Chromium, Firefox and WebKit, retains full-page screenshots
 at 390px and 1440px, and checks layout, image proportions, semantic landmarks,
