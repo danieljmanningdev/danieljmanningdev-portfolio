@@ -64,7 +64,7 @@ async function decodeVisibleImage(page, image) {
 function overflowInPage() {
   const width = document.documentElement.clientWidth;
   const bad = [];
-  for (const el of document.querySelectorAll('h1,h2,h3,p,a,button,input,textarea,label,img,pre,ul,ol,dl')) {
+  for (const el of document.querySelectorAll('h1,h2,h3,h4,p,a,button,input,textarea,label,img,pre,ul,ol,dl')) {
     const box = el.getBoundingClientRect();
     if (el.matches('.skip-link:not(:focus)')) continue;
     if (box.width < 1 || box.height < 1 || el.closest('[aria-hidden="true"]') ||
@@ -151,23 +151,34 @@ function overflowInPage() {
     });
     await check(`${engine} images decode and use responsive sources`, async () => {
       await page.goto(base + '/');
-      for (const selector of ['.editorial-feature__media img', '.editorial-project--lead .editorial-project__media img']) {
-        const image = page.locator(selector);
-        await decodeVisibleImage(page, image);
-        const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
-        assert.ok(info.width > 0 && info.height > 0);
-        assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
-        results.push({ name: `${engine} responsive image selected: ${selector}`, ...info, passed: true });
+      const image = page.locator('.editorial-project--lead .editorial-project__media img');
+      await decodeVisibleImage(page, image);
+      const info = await image.evaluate(el => ({ source: el.currentSrc, width: el.naturalWidth, height: el.naturalHeight }));
+      assert.ok(info.width > 0 && info.height > 0);
+      assert.match(info.source, /salon-rebuild-home-(480|960|1600)\.(avif|webp)$/);
+      results.push({ name: `${engine} responsive case-study image selected`, ...info, passed: true });
+      // Both real interfaces must be shown whole, including their hover state.
+      for (const screenshot of await page.locator('.editorial-project__media img').all()) {
+        await decodeVisibleImage(page, screenshot);
+        await screenshot.hover();
+        const style = await screenshot.evaluate(el => ({ fit: getComputedStyle(el).objectFit, transform: getComputedStyle(el).transform }));
+        assert.equal(style.fit, 'contain', 'Do not crop interface evidence');
+        assert.equal(style.transform, 'none', 'Do not zoom screenshots on hover');
       }
     });
     for (const width of widths) {
-      await check(`${engine} dark homepage ending ${width}px`, async () => {
+      await check(`${engine} dark editorial homepage and ending ${width}px`, async () => {
         await page.setViewportSize({ width, height: 900 });
         await page.goto(base + '/', { waitUntil: 'load' });
-        assert.equal(await page.locator('main[data-theme="light"]').count(), 1);
+        assert.equal(await page.locator('main[data-theme="dark"]').count(), 1);
+        assert.equal(await page.locator('main[data-theme="light"]').count(), 0);
         assert.equal(await page.locator('.editorial-hero__avatar').count(), 0, 'Removed avatar must not return');
         assert.equal(await page.locator('.footer-cta').count(), 0, 'Removed duplicate CTA must not return');
         assert.equal(await page.locator('#contact').count(), 1);
+        const brand = await page.locator('.brand-link').boundingBox();
+        const header = await page.locator('.site-header').boundingBox();
+        assert.ok(brand && header && brand.y >= header.y && brand.y + brand.height <= header.y + header.height,
+          'The centred mark must stay inside the header, without a circular hanging tab');
         await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         const ending = await page.evaluate(() => {
@@ -183,7 +194,7 @@ function overflowInPage() {
             colours: [header, panel, document.querySelector('#contact'), footer].map(el => getComputedStyle(el).backgroundColor),
           };
         });
-        assert.ok(ending.panelTop <= ending.headerBottom + 1, 'Light content must not show between header and ending');
+        assert.ok(ending.panelTop <= ending.headerBottom + 1, 'The contact ending must fill the area below the header');
         assert.ok(Math.abs(ending.footerBottom - ending.viewport) <= 1, 'Footer must reach the viewport bottom');
         assert.ok(ending.footerTop > ending.viewport / 2, 'Footer belongs at the end, below the contact content');
         assert.equal(new Set(ending.colours).size, 1, 'Header, contact and footer must share the shell colour token');

@@ -1,5 +1,5 @@
 {{define "content"}}
-<main class="home-page" data-theme="light">
+<main class="home-page" data-theme="dark">
     <section class="editorial-hero" aria-labelledby="home-title">
         <div class="site-container editorial-hero__inner">
             <div class="editorial-hero__copy">
@@ -14,8 +14,8 @@
                 </p>
 
                 <div class="editorial-hero__actions" aria-label="Homepage actions">
-                    <a href="#work" class="editorial-hero__cta editorial-hero__cta--primary">Explore selected work</a>
-                    <a href="/blog/" class="editorial-hero__cta editorial-hero__cta--secondary">Read the journal</a>
+                    <a href="#work" class="editorial-hero__cta editorial-hero__cta--primary">Explore selected work <span aria-hidden="true">↓</span></a>
+                    <a href="/blog/" class="editorial-hero__cta editorial-hero__cta--secondary">Read the journal <span aria-hidden="true">↗</span></a>
                 </div>
 
                 <dl class="editorial-hero__facts">
@@ -40,10 +40,10 @@
         <div class="site-container">
             <div class="editorial-section-head">
                 <div>
-                    <p class="editorial-kicker editorial-kicker--dark">Selected work</p>
-                    <h2 id="selected-work-title" class="editorial-section-title">Projects that make<br>a difference.</h2>
+                    <p class="editorial-kicker">01 / Selected work</p>
+                    <h2 id="selected-work-title" class="editorial-section-title">Design you can see.<br>Systems you can use.</h2>
                 </div>
-                <a href="https://github.com/danieljmanningdev" class="editorial-text-link">More projects on GitHub <span aria-hidden="true">↗</span></a>
+                <p class="editorial-section-note">From the first interface decision<br>to the code behind it.</p>
             </div>
 
             <div class="editorial-project-grid">
@@ -52,78 +52,65 @@
                         <picture>
                             <source type="image/avif"
                                 srcset="/static/images/salon-rebuild-home-480.avif 480w, /static/images/salon-rebuild-home-960.avif 960w, /static/images/salon-rebuild-home-1600.avif 1600w"
-                                sizes="(min-width: 64rem) 36rem, 92vw">
+                                sizes="(min-width: 80rem) 40rem, (min-width: 64rem) 52vw, 92vw">
                             <source type="image/webp"
                                 srcset="/static/images/salon-rebuild-home-480.webp 480w, /static/images/salon-rebuild-home-960.webp 960w, /static/images/salon-rebuild-home-1600.webp 1600w"
-                                sizes="(min-width: 64rem) 36rem, 92vw">
+                                sizes="(min-width: 80rem) 40rem, (min-width: 64rem) 52vw, 92vw">
                             <img src="/static/images/salon-rebuild-home.png"
                                 alt="Preview of the Salon Rebuild website"
-                                width="2880"
-                                height="1561"
-                                loading="lazy"
-                                decoding="async">
+                                width="2880" height="1561" loading="lazy" decoding="async">
                         </picture>
                     </div>
                     <div class="editorial-project__body">
                         <div>
                             <p class="editorial-project__meta">Product design · Go · 2026</p>
                             <h3>Salon Rebuild</h3>
-                            <p>A cleaner, more considered redesign of an early client project, rebuilt around usability and performance.</p>
+                            <p>A more considered redesign of an early client project, rebuilt around usability and performance.</p>
+                            <span class="editorial-project__link">View case study</span>
                         </div>
                         <span class="editorial-project__arrow" aria-hidden="true">↗</span>
                     </div>
                 </a>
 
-                <div class="editorial-project-stack">
-                    <a href="/work/portfolio/" class="editorial-project editorial-project--compact">
-                        <div class="editorial-project__media editorial-project__media--workspace">
-                            <img src="/static/images/internal-workspace.png"
-                                alt="Preview of the portfolio client workspace"
-                                width="1280"
-                                height="720"
-                                loading="lazy"
-                                decoding="async">
+                <a href="/work/portfolio/" class="editorial-project editorial-project--product">
+                    <div class="editorial-project__media editorial-project__media--workspace">
+                        <img src="/static/images/internal-workspace.png"
+                            alt="Preview of the portfolio client workspace"
+                            width="1280" height="720" loading="lazy" decoding="async">
+                    </div>
+                    <div class="editorial-project__body">
+                        <div>
+                            <p class="editorial-project__meta">Full-stack product · Go · HTMX</p>
+                            <h3>Portfolio &amp; Client Workspace</h3>
+                            <p>One server-rendered application for public work, clients, projects, contracts and publishing.</p>
+                            <span class="editorial-project__link">Explore the application</span>
                         </div>
-                        <div class="editorial-project__body">
-                            <div>
-                                <p class="editorial-project__meta">Full-stack product · Go · HTMX</p>
-                                <h3>Portfolio &amp; Client Workspace</h3>
-                                <p>One server-rendered application for public work, clients, projects, contracts and publishing.</p>
-                            </div>
-                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
-                        </div>
-                    </a>
+                        <span class="editorial-project__arrow" aria-hidden="true">↗</span>
+                    </div>
+                </a>
+            </div>
 
-                    <a href="https://github.com/danieljmanningdev/go-jsonld-schema" class="editorial-project editorial-project--compact">
-                        <div class="editorial-project__media editorial-project__media--code" aria-hidden="true">
-                            <span>schema.NewPerson(...)</span>
-                            <span>schema.NewService(...)</span>
-                            <span>schema.Marshal(...)</span>
+            <div class="editorial-tools" aria-labelledby="open-source-title">
+                <div class="editorial-tools__head">
+                    <h3 id="open-source-title" class="editorial-kicker">Open source / Behind the work</h3>
+                    <a href="https://github.com/danieljmanningdev" class="editorial-text-link">More on GitHub <span aria-hidden="true">↗</span></a>
+                </div>
+                <div class="editorial-tools__grid">
+                    <a href="https://github.com/danieljmanningdev/go-jsonld-schema" class="editorial-tool">
+                        <span class="editorial-tool__sample" aria-hidden="true">schema.NewPerson(...)</span>
+                        <div class="editorial-tool__heading">
+                            <h4>go-jsonld-schema</h4>
+                            <span aria-hidden="true">↗</span>
                         </div>
-                        <div class="editorial-project__body">
-                            <div>
-                                <p class="editorial-project__meta">Open source · Go · Structured data</p>
-                                <h3>go-jsonld-schema</h3>
-                                <p>Typed Go structures for producing Schema.org JSON-LD without hand-writing JSON in templates.</p>
-                            </div>
-                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
-                        </div>
+                        <p>Typed Go structures for producing Schema.org JSON-LD without hand-writing JSON in templates.</p>
                     </a>
-
-                    <a href="https://github.com/danieljmanningdev/djm-cli" class="editorial-project editorial-project--compact">
-                        <div class="editorial-project__media editorial-project__media--terminal" aria-hidden="true">
-                            <span>$ djm new my-app</span>
-                            <span>$ djm check</span>
-                            <span class="editorial-project__terminal-ok">✓ ready</span>
+                    <a href="https://github.com/danieljmanningdev/djm-cli" class="editorial-tool">
+                        <span class="editorial-tool__sample" aria-hidden="true">$ djm new my-app</span>
+                        <div class="editorial-tool__heading">
+                            <h4>djm-cli</h4>
+                            <span aria-hidden="true">↗</span>
                         </div>
-                        <div class="editorial-project__body">
-                            <div>
-                                <p class="editorial-project__meta">Developer tools · Go · CLI</p>
-                                <h3>djm-cli</h3>
-                                <p>A Go CLI for repeatable project setup, checks and UX validation across product delivery workflows.</p>
-                            </div>
-                            <span class="editorial-project__arrow" aria-hidden="true">↗</span>
-                        </div>
+                        <p>A Go CLI for repeatable project setup, checks and UX validation across product delivery workflows.</p>
                     </a>
                 </div>
             </div>
@@ -133,27 +120,39 @@
     <section id="services" class="editorial-strip" aria-labelledby="capabilities-title">
         <div class="site-container editorial-strip__grid">
             <div>
-                <p class="editorial-kicker editorial-kicker--dark">Capabilities</p>
+                <p class="editorial-kicker">02 / Capabilities</p>
                 <h2 id="capabilities-title" class="editorial-section-title">From product thinking<br>to working software.</h2>
             </div>
             <div class="editorial-capabilities">
-                <a href="/ui-ux-design/"><span>01</span><strong>Product &amp; UI/UX design</strong><span aria-hidden="true">↗</span></a>
-                <a href="/web-development/"><span>02</span><strong>Full-stack development</strong><span aria-hidden="true">↗</span></a>
-                <a href="/software-development/"><span>03</span><strong>Secure product systems</strong><span aria-hidden="true">↗</span></a>
+                <a href="/ui-ux-design/">
+                    <span>01</span>
+                    <div><strong>Product &amp; UI/UX design</strong><p>Clearer flows, considered interfaces and useful design systems.</p></div>
+                    <span aria-hidden="true">↗</span>
+                </a>
+                <a href="/web-development/">
+                    <span>02</span>
+                    <div><strong>Full-stack development</strong><p>Responsive interfaces connected to dependable server-side code.</p></div>
+                    <span aria-hidden="true">↗</span>
+                </a>
+                <a href="/software-development/">
+                    <span>03</span>
+                    <div><strong>Secure product systems</strong><p>Authentication, data workflows and maintainable application foundations.</p></div>
+                    <span aria-hidden="true">↗</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="about" class="editorial-about">
+    <section id="about" class="editorial-about" aria-labelledby="about-title">
         <div class="site-container editorial-about__grid">
-            <p class="editorial-kicker editorial-kicker--dark">About</p>
-            <p class="editorial-about__statement">
-                I design interfaces and build the systems behind them. My preference is simple: less visual noise,
-                clearer decisions and software that stays fast and maintainable.
-            </p>
-            <div class="editorial-about__links">
-                <a href="/blog/">Read the journal <span aria-hidden="true">↗</span></a>
-                <a href="https://github.com/danieljmanningdev">Browse GitHub <span aria-hidden="true">↗</span></a>
+            <h2 id="about-title" class="editorial-kicker">03 / About</h2>
+            <div class="editorial-about__content">
+                <p class="editorial-about__statement">I design interfaces.<br><span>And build what makes them work.</span></p>
+                <p class="editorial-about__copy">My preference is simple: less visual noise, clearer decisions and software that stays fast and maintainable.</p>
+                <div class="editorial-about__links">
+                    <a href="/blog/">Read the journal <span aria-hidden="true">↗</span></a>
+                    <a href="https://github.com/danieljmanningdev">Browse GitHub <span aria-hidden="true">↗</span></a>
+                </div>
             </div>
         </div>
     </section>

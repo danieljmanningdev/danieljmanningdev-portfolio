@@ -1,118 +1,550 @@
 /* ========================================================================== 
-   HOME PAGE — FINISHING POLISH
-   Small interaction and readability refinements layered over home.css.
+   HOME PAGE — DARK EDITORIAL POLISH
+   Layout foundations live in home.css. This finish uses only the shared
+   Ink / Mist / Signal / Electric palette; no separate homepage colour system.
    ========================================================================== */
 
-/* Keep in-page navigation clear of the sticky header. */
+.home-page {
+    color-scheme: dark;
+}
+
+.home-page .site-container,
+.site-ending--home .site-container {
+    max-width: 72rem;
+}
+
+.editorial-kicker {
+    color: var(--color-mist-300);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+}
+
 .editorial-work,
 .editorial-strip,
 .editorial-about {
-    scroll-margin-top: calc(var(--site-header-height) + 1rem);
+    scroll-margin-top: calc(var(--site-header-height) + 1.5rem);
 }
 
-/* Hero ------------------------------------------------------------------- */
+/* A centred composition, not centred text. Content can grow with text zoom. */
+.editorial-hero {
+    display: grid;
+    align-items: center;
+    min-height: calc(100svh - var(--site-header-height));
+    padding-block: clamp(4.5rem, 7vw, 7rem);
+}
+
+.editorial-hero__copy {
+    width: 100%;
+}
+
+.editorial-hero__title {
+    max-width: 100%;
+    margin-top: 1.5rem;
+    font-size: clamp(2.75rem, 5.4vw, 5rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.055em;
+}
+
+.editorial-hero__title span {
+    color: var(--color-signal-400);
+}
 
 .editorial-hero__intro {
+    max-width: 43rem;
+    margin-top: 1.75rem;
+    color: var(--color-mist-300);
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    line-height: 1.7;
     text-wrap: pretty;
+}
+
+.editorial-hero__actions {
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.editorial-hero__cta {
+    min-width: 0;
+    min-height: 3.25rem;
+    gap: 1.5rem;
+    padding: 0.8rem 1.35rem;
+    border-radius: 0.35rem;
+    font-size: 0.9375rem;
+}
+
+.editorial-hero__cta--primary {
+    border-color: var(--color-signal-300);
+    background: var(--color-signal-300);
+    color: var(--color-ink-950) !important;
 }
 
 .editorial-hero__cta--secondary {
-    background: var(--color-surface);
+    border-color: transparent;
+    background: transparent;
+    color: var(--color-mist-100) !important;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.35em;
 }
 
-.editorial-hero__cta:active {
-    transform: translateY(0) scale(0.99);
+.editorial-hero__facts {
+    max-width: none;
+    gap: 1.5rem 2.5rem;
+    margin-top: clamp(3rem, 5vw, 4.5rem);
+    padding-top: 1.5rem;
+    border-color: var(--color-border-strong);
+}
+
+.editorial-hero__facts dt {
+    color: var(--color-mist-300);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
 }
 
 .editorial-hero__facts dd {
+    margin-top: 0.5rem;
+    color: var(--color-mist-100);
+    font-size: 0.9375rem;
     text-wrap: pretty;
 }
 
-/* Work ------------------------------------------------------------------- */
+/* Real project imagery provides the visual interest. No ornamental panels. */
+.editorial-work {
+    padding-block: clamp(4rem, 7vw, 6.5rem);
+    background: var(--color-ink-900);
+}
 
-.editorial-project__media {
+.editorial-section-head {
+    align-items: end;
+}
+
+.editorial-section-title {
+    margin-top: 1.25rem;
+    font-size: clamp(2.1rem, 4vw, 3.65rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+}
+
+.editorial-section-note {
+    max-width: 17rem;
+    padding-bottom: 0.25rem;
+    color: var(--color-mist-300);
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+.editorial-project-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.editorial-project--lead {
+    position: static;
+}
+
+.editorial-project__media,
+.editorial-project--lead .editorial-project__media {
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0.25rem;
+    background: var(--color-ink-950);
     transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
+.editorial-project--lead .editorial-project__media {
+    aspect-ratio: 2880 / 1561;
+}
+
+.editorial-project--product .editorial-project__media {
+    aspect-ratio: 16 / 9;
+}
+
+.editorial-project__media img {
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Never zoom or crop interface screenshots, including on hover. */
+.editorial-project:hover .editorial-project__media img {
+    transform: none;
+}
+
+.editorial-project__body {
+    gap: 1rem;
+    padding-top: 1.35rem;
+}
+
+.editorial-project__meta {
+    color: var(--color-mist-300);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+}
+
 .editorial-project__body h3 {
+    margin-top: 0.5rem;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
     transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .editorial-project__body p:not(.editorial-project__meta) {
+    max-width: 34rem;
+    margin-top: 0.65rem;
+    color: var(--color-mist-300);
+    font-size: 0.9375rem;
+    line-height: 1.65;
     text-wrap: pretty;
 }
 
-/* Make the whole project card feel interactive without turning it into a
-   heavy UI card. Keyboard users already receive the global focus ring. */
-@media (hover: hover) {
-    .editorial-project:hover .editorial-project__media {
-        border-color: var(--color-border-strong);
-    }
-
-    .editorial-project:hover .editorial-project__body h3 {
-        color: var(--color-accent);
-    }
+.editorial-project__link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--color-signal-300);
+    font-size: 0.8125rem;
 }
 
-/* Capabilities ------------------------------------------------------------ */
+.editorial-project__arrow {
+    color: var(--color-signal-300);
+    font-size: 1.35rem;
+    line-height: 1.4;
+}
+
+/* Engineering evidence stays visible, but secondary to the case studies. */
+.editorial-tools {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border-strong);
+}
+
+.editorial-tools__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+}
+
+.editorial-tools__head .editorial-text-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    color: var(--color-signal-300);
+    font-size: 0.8125rem;
+}
+
+.editorial-tools__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+}
+
+.editorial-tool {
+    display: block;
+    min-width: 0;
+    padding-block: 0.5rem;
+    text-decoration: none;
+}
+
+.editorial-tool__sample {
+    display: block;
+    color: var(--color-electric-300);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+}
+
+.editorial-tool__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 0.9rem;
+}
+
+.editorial-tool__heading h4 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.editorial-tool__heading > span {
+    color: var(--color-signal-300);
+}
+
+.editorial-tool p {
+    max-width: 31rem;
+    margin-top: 0.6rem;
+    color: var(--color-mist-300);
+    font-size: 0.875rem;
+    line-height: 1.65;
+}
+
+/* Clear service rows, not another collection of cards. */
+.editorial-strip .editorial-section-title {
+    font-size: clamp(2.1rem, 3.4vw, 3rem);
+}
+
+
+.editorial-strip,
+.editorial-about {
+    padding-block: clamp(4rem, 7vw, 6.5rem);
+}
 
 .editorial-capabilities a {
-    margin-inline: -0.6rem;
-    padding-inline: 0.6rem;
-    border-radius: 0.35rem;
-    transition:
-        background-color var(--duration-fast) var(--ease-standard),
-        color var(--duration-fast) var(--ease-standard);
-}
-
-.editorial-capabilities a > span:last-child {
-    transition:
-        transform var(--duration-fast) var(--ease-standard),
-        color var(--duration-fast) var(--ease-standard);
+    grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: baseline;
+    margin-inline: -0.65rem;
+    padding: 1.65rem 0.65rem;
+    border-radius: 0;
+    transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
 .editorial-capabilities a > span:first-child {
+    color: var(--color-signal-300);
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
 }
 
+.editorial-capabilities strong {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    line-height: 1.4;
+}
+
+.editorial-capabilities p {
+    max-width: 31rem;
+    margin-top: 0.65rem;
+    color: var(--color-mist-300);
+    font-size: 0.875rem;
+    line-height: 1.65;
+}
+
+.editorial-capabilities a > span:last-child {
+    color: var(--color-signal-300);
+    transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.editorial-about__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+}
+
+.editorial-about__content {
+    min-width: 0;
+}
+
+.editorial-about__statement {
+    max-width: 50rem;
+    color: var(--color-mist-50);
+    font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+    line-height: 1.16;
+    letter-spacing: -0.045em;
+}
+
+.editorial-about__statement span {
+    color: var(--color-signal-300);
+}
+
+.editorial-about__copy {
+    max-width: 37rem;
+    margin-top: 1.5rem;
+    color: var(--color-mist-300);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.editorial-about__links {
+    gap: 0.5rem 2rem;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.editorial-about__links a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--color-signal-300);
+}
+
+/* Shared, visible keyboard treatment; no JS required for content or links. */
+.home-page a:focus-visible,
+.site-ending--home a:focus-visible {
+    outline: 2px solid var(--color-signal-300);
+    outline-offset: 5px;
+    box-shadow: none;
+}
+
 @media (hover: hover) {
+    .editorial-hero__cta--primary:hover {
+        border-color: var(--color-signal-200);
+        background: var(--color-signal-200);
+    }
+
+    .editorial-hero__cta--secondary:hover {
+        border-color: transparent;
+        background: transparent;
+        text-decoration-color: var(--color-signal-300);
+    }
+
+    .editorial-project:hover .editorial-project__media {
+        border-color: var(--color-signal-300);
+    }
+
+    .editorial-project:hover .editorial-project__body h3,
+    .editorial-tool:hover h4 {
+        color: var(--color-signal-300);
+    }
+
+    .editorial-project:hover .editorial-project__link,
+    .editorial-tools__head .editorial-text-link:hover,
+    .editorial-about__links a:hover {
+        text-decoration: underline;
+        text-underline-offset: 0.3em;
+    }
+
     .editorial-capabilities a:hover {
-        background: var(--color-accent-surface);
+        background: var(--color-surface);
     }
 
     .editorial-capabilities a:hover > span:last-child {
-        transform: translate(0.14rem, -0.14rem);
+        transform: translate(0.12rem, -0.12rem);
     }
 }
 
-/* Mobile ----------------------------------------------------------------- */
+@media (min-width: 48rem) {
+    .editorial-tools__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 3rem;
+    }
+
+    .editorial-tool + .editorial-tool {
+        padding-left: 2rem;
+        border-left: 1px solid var(--color-border-strong);
+    }
+
+    .editorial-about__grid {
+        grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+        gap: 3rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .editorial-project-grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .editorial-project--product {
+        margin-top: 4.5rem;
+    }
+
+    .editorial-strip__grid {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .editorial-hero {
+        min-height: auto;
+        padding-block: 4rem 3.5rem;
+    }
+
+    .editorial-hero__title {
+        font-size: clamp(2rem, 8.8vw, 3.5rem);
+        line-height: 1.08;
+    }
+
+    .editorial-hero__title span {
+        display: block;
+    }
+
+    .editorial-hero__actions {
+        display: flex;
+    }
+
+    .editorial-hero__cta {
+        width: auto;
+    }
+
+    .editorial-section-head {
+        gap: 1.25rem;
+    }
+
+    .editorial-section-note br {
+        display: none;
+    }
+
+    .editorial-tool + .editorial-tool {
+        padding-top: 1.75rem;
+        border-top: 1px solid var(--color-border-strong);
+    }
+}
 
 @media (max-width: 39.999rem) {
-    .editorial-hero {
-        padding-block: clamp(4rem, 15vw, 5.25rem) clamp(3.75rem, 13vw, 4.75rem);
+    .editorial-hero__actions {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .editorial-hero__cta {
+        width: 100%;
     }
 
     .editorial-hero__facts {
         gap: 0;
+        margin-top: 2.25rem;
+        padding-top: 0;
     }
 
     .editorial-hero__facts div {
+        display: grid;
+        grid-template-columns: minmax(5.5rem, 0.6fr) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: baseline;
         padding-block: 1rem;
-    }
-
-    .editorial-hero__facts div:first-child {
-        padding-top: 0;
     }
 
     .editorial-hero__facts div + div {
         border-top: 1px solid var(--color-border-subtle);
     }
 
-    .editorial-project-grid {
-        margin-top: 3rem;
+    .editorial-hero__facts dd {
+        margin: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page a,
+    .home-page img,
+    .editorial-project__body h3,
+    .editorial-project__media,
+    .editorial-project__arrow,
+    .editorial-capabilities a > span:last-child {
+        transition: none;
+        animation: none;
     }
 
-    .editorial-project-stack {
-        gap: 2.75rem;
+    .home-page a:hover,
+    .home-page a:hover .editorial-project__arrow,
+    .editorial-capabilities a:hover > span:last-child {
+        transform: none;
     }
 }

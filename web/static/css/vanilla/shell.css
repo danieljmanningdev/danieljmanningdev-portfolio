@@ -45,10 +45,9 @@
     height: 0.125rem;
     transform-origin: left center;
     background: var(--color-signal-400);
-    box-shadow: 0 0 1.25rem color-mix(in oklab, var(--color-signal-400) 55%, transparent);
 }
 
-/* Header */
+/* Header: the mark stays centred within the bar, with no hanging tab. */
 .site-header {
     position: sticky;
     top: 0;
@@ -73,7 +72,7 @@
     align-items: center;
     gap: 0.7rem;
     color: var(--color-text-muted);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
 }
 
 .nav-status__dot {
@@ -81,22 +80,21 @@
     height: 0.34rem;
     border-radius: 50%;
     background: var(--color-status-available);
-    box-shadow: 0 0 0.8rem color-mix(in oklab, var(--color-status-available) 38%, transparent);
 }
 
 .brand-link {
     display: grid;
-    width: 4rem;
-    height: 4rem;
-    align-self: start;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-self: center;
     place-items: center;
-    margin-bottom: -1rem;
-    border-radius: 0 0 999px 999px;
-    background: var(--color-shell-background);
+    margin: 0;
+    border-radius: 0.25rem;
+    background: transparent;
 }
 
 .brand-logo {
-    width: 2rem;
+    width: 1.75rem;
     height: auto;
 }
 
@@ -109,8 +107,11 @@
 
 .nav-link,
 .header-project-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
     color: var(--color-text-muted);
-    font-size: 0.68rem;
+    font-size: 0.8125rem;
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-standard);
 }
@@ -121,20 +122,21 @@
 .header-project-link {
     padding: 0.45rem 0.95rem;
     border: 1px solid var(--color-accent-light);
-    border-radius: 0.5rem;
+    border-radius: 0.35rem;
 }
 
 .mobile-nav { justify-self: end; position: relative; }
 .mobile-nav summary {
     display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     list-style: none;
     place-items: center;
     border: 1px solid var(--color-border-strong);
-    border-radius: 999px;
+    border-radius: 0.35rem;
     background: var(--color-surface);
     color: var(--color-text-primary);
+    cursor: pointer;
 }
 .mobile-nav summary::-webkit-details-marker { display: none; }
 .mobile-nav-icon { display: grid; gap: 0.35rem; }
@@ -143,12 +145,12 @@
 .mobile-nav[open] .mobile-nav-icon span:last-child { transform: translateY(-0.18rem) rotate(-45deg); }
 .mobile-nav-panel {
     position: absolute;
-    top: 3rem;
+    top: 3.25rem;
     right: 0;
     width: min(18rem, calc(100vw - 2.5rem));
     padding: 0.75rem;
     border: 1px solid var(--color-border-strong);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     background: var(--color-background-elevated);
     box-shadow: var(--shadow-lg);
 }
@@ -156,15 +158,22 @@
 .mobile-nav-link,
 .mobile-nav-cta {
     padding: 0.8rem 0.9rem;
-    border-radius: 0.7rem;
+    border-radius: 0.35rem;
     color: var(--color-text-muted);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     text-decoration: none;
 }
 .mobile-nav-link:hover { background: var(--color-surface-hover); color: var(--color-text-primary); }
 .mobile-nav-cta { margin-top: 0.35rem; background: var(--color-accent); color: var(--color-text-inverse); text-align: center; }
 
-/* The existing homepage contact and footer share one dark viewport.
+.site-header a:focus-visible,
+.mobile-nav summary:focus-visible {
+    outline: 2px solid var(--color-signal-300);
+    outline-offset: 3px;
+    box-shadow: none;
+}
+
+/* Contact and footer share one dark viewport and the header's shell colour.
    A minimum height (not a fixed height) lets zoomed or wrapped text grow. */
 .site-ending {
     background: var(--color-shell-background);
@@ -197,8 +206,8 @@
     max-width: 50rem;
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 400;
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    line-height: 1.04;
+    letter-spacing: -0.05em;
 }
 
 .editorial-contact a {
@@ -209,7 +218,7 @@
     gap: 1rem;
     margin-top: 1rem;
     color: var(--color-accent);
-    font-size: 0.9rem;
+    font-size: 1rem;
     text-decoration: none;
     text-underline-offset: 0.2em;
 }
@@ -246,6 +255,7 @@
 .footer-logo-link { display: inline-flex; width: fit-content; align-items: center; }
 .footer-logo { width: auto; height: 2.25rem; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 0.75rem var(--space-6); }
+.footer-link { display: inline-flex; min-height: 2.75rem; align-items: center; }
 .footer-link:hover { color: var(--color-accent-light); }
 .footer-copyright { color: var(--color-text-muted); font-size: var(--text-xs); }
 
@@ -273,5 +283,12 @@
         white-space: nowrap;
         border: 0;
     }
-    .brand-link { width: 3.75rem; height: 3.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-header a,
+    .skip-link,
+    .editorial-contact a {
+        transition: none;
+    }
 }
