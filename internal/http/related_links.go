@@ -142,3 +142,37 @@ func relatedLinksForJournalPost(slug string) []relatedLink {
 		}
 	}
 }
+
+func relatedLinksForCaseStudy(slug string) []relatedLink {
+	switch slug {
+	case "salon-rebuild":
+		return []relatedLink{
+			pricingLessonsRelatedLink(),
+			webDesignRelatedLink(),
+			uiUXDesignRelatedLink(),
+		}
+
+	case "wireframe-kit":
+		return []relatedLink{
+			uiUXDesignRelatedLink(),
+			portfolioCaseStudyRelatedLink(),
+			webDesignRelatedLink(),
+		}
+
+	default:
+		return []relatedLink{
+			portfolioCaseStudyRelatedLink(),
+			uiUXDesignRelatedLink(),
+			journalRelatedLink(),
+		}
+	}
+}
+
+func wireframeKitRelatedLink() relatedLink {
+	return relatedLink{
+		Label:       "Design resource",
+		Title:       "Wireframe Kit",
+		Description: "Explore a reusable Figma wireframe kit with 40+ components for early-stage product design and rapid prototyping.",
+		URL:         "/work/wireframe-kit/",
+	}
+}
