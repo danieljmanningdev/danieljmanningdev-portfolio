@@ -23,7 +23,11 @@ type CaseStudyMetric struct {
 }
 
 type CaseStudyMedia struct {
-	Src     string
+	Src        string
+	AVIFSrcSet string
+	WebPSrcSet string
+	Sizes      string
+
 	Alt     string
 	Caption string
 	Width   int
@@ -35,6 +39,7 @@ type CaseStudySection struct {
 	Label  string
 	Title  string
 	Type   string
+	Soft   bool
 
 	Paragraphs []string
 	Cards      []CaseStudyCard
@@ -53,10 +58,12 @@ type CaseStudyStep struct {
 	Number string
 	Label  string
 	Value  string
+	Accent bool
 }
 
 type CaseStudyExploreSection struct {
 	Title       string
+	Accent      string
 	Description string
 	Links       []CaseStudyExploreLink
 	Note        string
