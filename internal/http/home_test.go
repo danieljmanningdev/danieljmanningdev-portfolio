@@ -248,38 +248,44 @@ func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
 	// Verify the dark editorial design, canonical project links and real images.
 	// The retired light feature panel must not be reintroduced to satisfy tests.
 	for _, expected := range []string{
-		`href="/work/salon-rebuild/"`, `href="/work/portfolio/"`,
-		`id="selected-work-title"`, `id="capabilities-title"`,
-		`Portfolio &amp; Client Workspace`,
-		`go-jsonld-schema`, `djm-cli`,
+		`href="/work/salon-rebuild/"`,
+		`href="/work/wireframe-kit/"`,
+		`id="selected-work-title"`,
+		`id="capabilities-title"`,
+		`Wireframe Kit`,
+		`go-jsonld-schema`,
+		`djm-cli`,
 		`https://github.com/danieljmanningdev/djm-cli`,
 		`https://github.com/danieljmanningdev/go-jsonld-schema`,
 		`data-theme="dark"`,
 		`class="editorial-project editorial-project--lead"`,
 		`class="editorial-project editorial-project--product"`,
-		`src="/static/images/internal-workspace.png"`,
-		`salon-rebuild-home-480.avif`, `salon-rebuild-home-480.webp`,
+		`src="/static/images/wireframe-kit-cover.png"`,
+		`salon-rebuild-home-480.avif`,
+		`salon-rebuild-home-480.webp`,
 		`site-ending--home`,
 		`aria-labelledby="contact-title"`,
 		`href="mailto:daniel@danieljmanningdev.com"`,
 	} {
-		if !strings.Contains(body, expected) {
-			t.Errorf("missing %q", expected)
+		{
+			if !strings.Contains(body, expected) {
+				t.Errorf("missing %q", expected)
+			}
 		}
-	}
-	for _, removed := range []string{
-		`marquee-track`,
-		`daniel-avatar.svg`,
-		`class="footer-cta"`,
-		`Make the complex feel`,
-		`data-theme="light"`,
-		`class="editorial-feature__media"`,
-	} {
-		if strings.Contains(body, removed) {
-			t.Errorf("homepage must not restore removed content %q", removed)
+		for _, removed := range []string{
+			`marquee-track`,
+			`daniel-avatar.svg`,
+			`class="footer-cta"`,
+			`Make the complex feel`,
+			`data-theme="light"`,
+			`class="editorial-feature__media"`,
+		} {
+			if strings.Contains(body, removed) {
+				t.Errorf("homepage must not restore removed content %q", removed)
+			}
 		}
-	}
-	if count := strings.Count(body, `id="contact"`); count != 1 {
-		t.Errorf("expected one contact section, got %d", count)
+		if count := strings.Count(body, `id="contact"`); count != 1 {
+			t.Errorf("expected one contact section, got %d", count)
+		}
 	}
 }
