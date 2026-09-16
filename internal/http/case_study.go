@@ -58,6 +58,8 @@ func (h *CaseStudyHandler) ServeHTTP(
 				study.Summary,
 				study.Tags...,
 			),
+		).withRelatedLinks(
+			relatedLinksForCaseStudy(study.Slug)...,
 		).withRequest(r),
 
 		CaseStudy: study,
