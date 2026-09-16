@@ -279,13 +279,16 @@ func TestHomeIncludesSelectedWorkAndTooling(t *testing.T) {
 			`Make the complex feel`,
 			`data-theme="light"`,
 			`class="editorial-feature__media"`,
+			`src="/static/images/internal-workspace.png"`,
 		} {
-			if strings.Contains(body, removed) {
-				t.Errorf("homepage must not restore removed content %q", removed)
+			{
+				if strings.Contains(body, removed) {
+					t.Errorf("homepage must not restore removed content %q", removed)
+				}
 			}
-		}
-		if count := strings.Count(body, `id="contact"`); count != 1 {
-			t.Errorf("expected one contact section, got %d", count)
+			if count := strings.Count(body, `id="contact"`); count != 1 {
+				t.Errorf("expected one contact section, got %d", count)
+			}
 		}
 	}
 }
