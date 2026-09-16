@@ -1,0 +1,386 @@
+{{define "content"}}
+
+<main class="portfolio-page">
+
+<section class="portfolio-section portfolio-hero">
+    <div class="site-container portfolio-hero__inner">
+
+        <a href="/#work" class="button-quiet portfolio-back-link">
+            ← Selected work
+        </a>
+
+        <div class="portfolio-hero__grid">
+
+            <div>
+                <p class="eyebrow">
+                    Case study / {{.CaseStudy.Year}}
+                </p>
+
+                <h1 class="portfolio-hero__title">
+                    {{.CaseStudy.Title}}
+                    <span class="portfolio-hero__title-accent">
+                        {{.CaseStudy.Accent}}
+                    </span>
+                </h1>
+            </div>
+
+            <div>
+                <p class="portfolio-hero__summary">
+                    {{.CaseStudy.Summary}}
+                </p>
+
+                <div class="portfolio-tags">
+                    {{range .CaseStudy.Tags}}
+                        <span class="portfolio-tag">{{.}}</span>
+                    {{end}}
+                </div>
+            </div>
+
+        </div>
+
+        <dl class="portfolio-metrics">
+            {{range .CaseStudy.Metrics}}
+                <div class="portfolio-metric">
+                    <dt class="metric-label">
+                        {{.Label}}
+                    </dt>
+
+                    <dd class="portfolio-metric__value">
+                        {{.Value}}
+                    </dd>
+                </div>
+            {{end}}
+        </dl>
+
+    </div>
+</section>
+
+
+<section
+    class="portfolio-section"
+    aria-label="Project preview"
+>
+    <div class="site-container">
+        <figure class="case-media">
+
+            <picture>
+
+                {{if .CaseStudy.Hero.AVIFSrcSet}}
+                    <source
+                        type="image/avif"
+                        srcset="{{.CaseStudy.Hero.AVIFSrcSet}}"
+                        sizes="{{.CaseStudy.Hero.Sizes}}"
+                    >
+                {{end}}
+
+                {{if .CaseStudy.Hero.WebPSrcSet}}
+                    <source
+                        type="image/webp"
+                        srcset="{{.CaseStudy.Hero.WebPSrcSet}}"
+                        sizes="{{.CaseStudy.Hero.Sizes}}"
+                    >
+                {{end}}
+
+                <img
+                    src="{{.CaseStudy.Hero.Src}}"
+                    alt="{{.CaseStudy.Hero.Alt}}"
+                    width="{{.CaseStudy.Hero.Width}}"
+                    height="{{.CaseStudy.Hero.Height}}"
+                    loading="lazy"
+                    decoding="async"
+                >
+
+            </picture>
+
+            {{if .CaseStudy.Hero.Caption}}
+                <figcaption>
+                    {{.CaseStudy.Hero.Caption}}
+                </figcaption>
+            {{end}}
+
+        </figure>
+    </div>
+</section>
+
+
+{{range .CaseStudy.Sections}}
+
+    {{if eq .Type "editorial"}}
+
+        <section class="portfolio-section{{if .Soft}} portfolio-section--soft{{end}}">
+            <div class="site-container portfolio-editorial">
+
+                <div class="portfolio-editorial__label">
+                    <p class="eyebrow">
+                        {{.Number}} / {{.Label}}
+                    </p>
+                </div>
+
+                <div class="portfolio-editorial__content">
+
+                    <h2>
+                        {{.Title}}
+                    </h2>
+
+                    <div class="portfolio-editorial__body">
+                        {{range .Paragraphs}}
+                            <p>{{.}}</p>
+                        {{end}}
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+    {{else if eq .Type "cards"}}
+
+        <section class="portfolio-section{{if .Soft}} portfolio-section--soft{{end}}">
+            <div class="site-container">
+
+                <h2 class="eyebrow">
+                    {{.Number}} / {{.Label}}
+                </h2>
+
+                <div class="portfolio-model__grid">
+
+                    {{range .Cards}}
+                        <article class="portfolio-model__card">
+
+                            <p class="portfolio-model__index">
+                                {{.Index}}
+                            </p>
+
+                            <h3 class="portfolio-model__title">
+                                {{.Title}}
+                            </h3>
+
+                            <p class="portfolio-model__copy">
+                                {{.Copy}}
+                            </p>
+
+                        </article>
+                    {{end}}
+
+                </div>
+
+            </div>
+        </section>
+
+
+    {{else if eq .Type "architecture"}}
+
+        <section class="portfolio-section{{if .Soft}} portfolio-section--soft{{end}}">
+            <div class="site-container portfolio-architecture">
+
+                <div class="portfolio-architecture__copy">
+
+                    <p class="eyebrow">
+                        {{.Number}} / {{.Label}}
+                    </p>
+
+                    <h2 class="portfolio-architecture__title">
+                        {{.Title}}
+                    </h2>
+
+                    {{range .Paragraphs}}
+                        <p>{{.}}</p>
+                    {{end}}
+
+                </div>
+
+                <div
+                    class="portfolio-architecture__diagram"
+                    role="group"
+                    aria-label="Request to response flow"
+                >
+
+                    {{range $index, $step := .Steps}}
+
+                        {{if $index}}
+                            <div
+                                class="portfolio-architecture__connector"
+                                aria-hidden="true"
+                            >
+                                ↓
+                            </div>
+                        {{end}}
+
+                        <div class="portfolio-architecture__layer{{if $step.Accent}} portfolio-architecture__layer--accent{{end}}">
+
+                            <span class="portfolio-architecture__number">
+                                {{$step.Number}}
+                            </span>
+
+                            <div>
+                                <p class="portfolio-architecture__layer-label">
+                                    {{$step.Label}}
+                                </p>
+
+                                <p class="portfolio-architecture__layer-value">
+                                    {{$step.Value}}
+                                </p>
+                            </div>
+
+                        </div>
+
+                    {{end}}
+
+                </div>
+
+            </div>
+        </section>
+
+
+    {{else if eq .Type "list"}}
+
+        <section class="portfolio-section{{if .Soft}} portfolio-section--soft{{end}}">
+            <div class="site-container portfolio-trust">
+
+                <div class="portfolio-trust__label">
+                    <p class="eyebrow">
+                        {{.Number}} / {{.Label}}
+                    </p>
+                </div>
+
+                <div class="portfolio-trust__content">
+
+                    <h2>
+                        {{.Title}}
+                    </h2>
+
+                    <div class="portfolio-trust__list">
+                        {{range .Items}}
+                            <p class="portfolio-trust__item">
+                                {{.}}
+                            </p>
+                        {{end}}
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    {{end}}
+
+{{end}}
+
+
+<section class="portfolio-section">
+    <div class="site-container">
+        <div class="portfolio-explore">
+
+            <div class="portfolio-explore__copy">
+
+                <p class="eyebrow">
+                    06 / Explore
+                </p>
+
+                <h2 class="portfolio-explore__title">
+                    {{.CaseStudy.Explore.Title}}
+
+                    {{if .CaseStudy.Explore.Accent}}
+                        <span>
+                            {{.CaseStudy.Explore.Accent}}
+                        </span>
+                    {{end}}
+                </h2>
+
+                <p class="portfolio-explore__description">
+                    {{.CaseStudy.Explore.Description}}
+                </p>
+
+            </div>
+
+            <div class="portfolio-explore__actions">
+
+                {{range .CaseStudy.Explore.Links}}
+
+                    {{if eq .Style "primary"}}
+
+                        <a
+                            href="{{.URL}}"
+                            class="button-primary portfolio-explore__button"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>{{.Label}}</span>
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                    {{else}}
+
+                        <a
+                            href="{{.URL}}"
+                            class="button-quiet portfolio-explore__button portfolio-explore__button--secondary"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>{{.Label}}</span>
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                    {{end}}
+
+                {{end}}
+
+            </div>
+
+            {{if .CaseStudy.Explore.Note}}
+                <p class="portfolio-explore__note">
+                    {{.CaseStudy.Explore.Note}}
+                </p>
+            {{end}}
+
+        </div>
+    </div>
+</section>
+
+
+<section class="portfolio-outcome">
+    <div class="site-container">
+
+        <div class="portfolio-outcome__panel">
+
+            <div class="portfolio-outcome__grid">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Outcome
+                    </p>
+
+                    <h2 class="portfolio-outcome__title">
+
+                        {{.CaseStudy.Outcome.Title}}
+
+                        {{if .CaseStudy.Outcome.Accent}}
+                            <span class="portfolio-outcome__accent">
+                                {{.CaseStudy.Outcome.Accent}}
+                            </span>
+                        {{end}}
+
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{{.CaseStudy.Outcome.CTAURL}}"
+                    class="button-primary portfolio-outcome__cta"
+                >
+                    {{.CaseStudy.Outcome.CTALabel}}
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+</main>
+
+{{end}}
