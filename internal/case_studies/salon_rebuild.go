@@ -32,7 +32,14 @@ var SalonRebuild = models.CaseStudy{
 	},
 
 	Hero: models.CaseStudyMedia{
-		Src:     "/static/images/salon-rebuild-home.png",
+		Src: "/static/images/salon-rebuild-home.png",
+
+		AVIFSrcSet: "/static/images/salon-rebuild-home-480.avif 480w, /static/images/salon-rebuild-home-960.avif 960w, /static/images/salon-rebuild-home-1600.avif 1600w",
+
+		WebPSrcSet: "/static/images/salon-rebuild-home-480.webp 480w, /static/images/salon-rebuild-home-960.webp 960w, /static/images/salon-rebuild-home-1600.webp 1600w",
+
+		Sizes: "(min-width: 80rem) 72rem, 92vw",
+
 		Alt:     "Homepage of the fictional Salon Rebuild concept",
 		Caption: "Salon Rebuild — a fictional retrospective concept, not a commissioned redesign for the original business.",
 		Width:   2880,
@@ -57,6 +64,7 @@ var SalonRebuild = models.CaseStudy{
 			Number: "02",
 			Label:  "Design direction",
 			Type:   "cards",
+			Soft:   true,
 
 			Cards: []models.CaseStudyCard{
 				{
@@ -108,6 +116,7 @@ var SalonRebuild = models.CaseStudy{
 					Number: "04",
 					Label:  "Response",
 					Value:  "Server-rendered HTML",
+					Accent: true,
 				},
 			},
 		},
@@ -133,6 +142,7 @@ var SalonRebuild = models.CaseStudy{
 			Label:  "Retrospective",
 			Title:  "The rebuild is as much about process as visual improvement.",
 			Type:   "editorial",
+			Soft:   true,
 
 			Paragraphs: []string{
 				"The original salon project came from a point in my career where simply completing a real client website felt like the achievement. I had much less confidence around pricing, scope, design systems and the value of my own time.",
@@ -143,7 +153,8 @@ var SalonRebuild = models.CaseStudy{
 	},
 
 	Explore: models.CaseStudyExploreSection{
-		Title:       "See the finished rebuild and the implementation behind it.",
+		Title:       "See the finished rebuild",
+		Accent:      "and the implementation behind it.",
 		Description: "The complete concept is deployed as a live Go web service, while the public repository exposes the implementation and development history behind the finished design.",
 
 		Links: []models.CaseStudyExploreLink{
