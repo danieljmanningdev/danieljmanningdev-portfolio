@@ -21,8 +21,9 @@ type routerDependencies struct {
 	contractsHandler http.Handler
 	blogAdminHandler http.Handler
 
-	sessionService *auth.SessionService
-	blogHandler    *apphttp.BlogHandler
+	sessionService   *auth.SessionService
+	blogHandler      *apphttp.BlogHandler
+	caseStudyHandler http.Handler
 }
 
 func newRouter(deps routerDependencies) http.Handler {
@@ -217,6 +218,15 @@ func newRouter(deps routerDependencies) http.Handler {
 	mux.HandleFunc(
 		"GET /blog/{slug}",
 		deps.blogHandler.Show,
+	)
+
+	// -------------------------------------------------------------------------
+	// Case Studies
+	// -------------------------------------------------------------------------
+
+	mux.Handle(
+		"GET /work/{slug}/{$}",
+		deps.caseStudyHandler,
 	)
 
 	// -------------------------------------------------------------------------

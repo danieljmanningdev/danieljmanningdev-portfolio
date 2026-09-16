@@ -195,6 +195,18 @@ func run() int {
 		return 1
 	}
 
+	caseStudyHandler, err :=
+		apphttp.NewCaseStudyHandler(
+			cfg.TemplateDir,
+		)
+	if err != nil {
+		logger.Error(
+			"failed to create case study handler",
+			"error", err,
+		)
+		return 1
+	}
+
 	secureCookies :=
 		cfg.Environment == "production"
 
@@ -241,8 +253,9 @@ func run() int {
 		contractsHandler: contractsHandler,
 		blogAdminHandler: blogAdminHandler,
 
-		sessionService: sessionService,
-		blogHandler:    blogHandler,
+		sessionService:   sessionService,
+		blogHandler:      blogHandler,
+		caseStudyHandler: caseStudyHandler,
 	})
 
 	crossOriginProtection :=
