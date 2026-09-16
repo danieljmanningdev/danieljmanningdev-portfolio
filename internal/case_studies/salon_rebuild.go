@@ -1,4 +1,4 @@
-package repository
+package casestudies
 
 import "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/models"
 
