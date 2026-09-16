@@ -138,11 +138,12 @@ func TestSitemapIncludesOnlyPublishedJournalPosts(
 
 	body := recorder.Body.String()
 	for _, expected := range []string{
-		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+		`<?xml version="1.0" encoding="UTF-8"?>`,
 		"https://danieljmanningdev.com/",
 		"https://danieljmanningdev.com/work/portfolio",
 		"https://danieljmanningdev.com/blog/",
 		"https://danieljmanningdev.com/work/salon-rebuild/",
+		"https://danieljmanningdev.com/work/wireframe-kit/",
 		"https://danieljmanningdev.com/blog/published-post",
 		"<lastmod>2026-08-21</lastmod>",
 	} {

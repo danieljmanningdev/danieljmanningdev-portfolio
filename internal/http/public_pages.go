@@ -110,28 +110,9 @@ var PublicPages = []PublicPageDefinition{
 			"United Kingdom",
 		},
 		RelatedLinks: []relatedLink{
+			wireframeKitRelatedLink(),
 			salonCaseStudyRelatedLink(),
-			webDesignRelatedLink(),
-			portfolioCaseStudyRelatedLink(),
-		},
-	},
-	{
-		Path:        "/work/salon-rebuild/",
-		Template:    "public/salon-rebuild.html",
-		Name:        "Salon Rebuild",
-		Title:       "Salon Rebuild | Daniel J. Manning",
-		Description: "Revisiting an early freelance salon project with a modern UI/UX, responsive design and server-rendered Go implementation.",
-		Keywords: []string{
-			"web design",
-			"UI/UX design",
-			"responsive design",
-			"Go",
-			"server-rendered HTML",
-		},
-		RelatedLinks: []relatedLink{
-			pricingLessonsRelatedLink(),
-			webDesignRelatedLink(),
-			uiUXDesignRelatedLink(),
+			webDesignLeedsRelatedLink(),
 		},
 	},
 }
