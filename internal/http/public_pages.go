@@ -110,9 +110,9 @@ var PublicPages = []PublicPageDefinition{
 			"United Kingdom",
 		},
 		RelatedLinks: []relatedLink{
+			wireframeKitRelatedLink(),
 			salonCaseStudyRelatedLink(),
-			webDesignRelatedLink(),
-			portfolioCaseStudyRelatedLink(),
+			webDesignLeedsRelatedLink(),
 		},
 	},
 }
