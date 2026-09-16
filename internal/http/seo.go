@@ -11,6 +11,8 @@ import (
 	"encoding/xml"
 	"net/http"
 	"time"
+
+	casestudies "github.com/danieljmanningdev/danieljmanningdev-portfolio/internal/case_studies"
 )
 
 type sitemapURLSet struct {
@@ -93,6 +95,12 @@ func (h *BlogHandler) Sitemap(
 		}
 
 		urls = append(urls, entry)
+	}
+
+	for _, study := range casestudies.All() {
+		urls = append(urls, sitemapURL{
+			Location: publicSiteURL + "/work/" + study.Slug + "/",
+		})
 	}
 
 	w.Header().Set(

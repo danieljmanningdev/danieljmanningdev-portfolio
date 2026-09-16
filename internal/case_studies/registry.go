@@ -11,3 +11,10 @@ func Get(slug string) (models.CaseStudy, bool) {
 	study, ok := studies[slug]
 	return study, ok
 }
+
+func All() []models.CaseStudy {
+	return []models.CaseStudy{
+		SalonRebuild,
+		WireframeKit,
+	}
+}
