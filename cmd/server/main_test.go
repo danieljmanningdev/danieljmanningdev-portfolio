@@ -128,6 +128,7 @@ func TestNewRouterPublicRoutes(
 	router := newRouter(routerDependencies{
 		homeHandler:               homeHandler,
 		portfolioCaseStudyHandler: caseStudyHandler,
+		caseStudyHandler:          caseStudyHandler,
 		publicPageRoutes:          nil,
 
 		adminAuthHandler: authHandler,
@@ -160,6 +161,10 @@ func TestNewRouterPublicRoutes(
 		{
 			path:     "/logout",
 			wantBody: "auth",
+		},
+		{
+			path:     "/work/wireframe-kit/",
+			wantBody: "case-study",
 		},
 	}
 
