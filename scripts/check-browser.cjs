@@ -209,7 +209,7 @@ function overflowInPage() {
         const noJSPage = await noJS.newPage();
         await noJSPage.goto(base + '/', { waitUntil: 'domcontentloaded' });
         // DOM readiness can precede stylesheet layout, especially in Firefox.
-        await noJSPage.getByRole('heading', { name: 'Portfolio & Client Workspace', exact: true }).waitFor({ state: 'visible' });
+        await noJSPage.getByRole('heading', { name: 'Wireframe Kit', exact: true }).waitFor({ state: 'visible' });
         await noJSPage.getByRole('heading', { name: 'go-jsonld-schema', exact: true }).waitFor({ state: 'visible' });
         await noJSPage.locator('.mobile-nav summary').click();
         await noJSPage.locator('.mobile-nav-link').first().waitFor({ state: 'visible' });
