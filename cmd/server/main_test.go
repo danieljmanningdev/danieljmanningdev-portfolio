@@ -226,6 +226,7 @@ func TestNewRouterProtectsDashboardRoutes(
 	router := newRouter(routerDependencies{
 		homeHandler:               handler,
 		portfolioCaseStudyHandler: handler,
+		caseStudyHandler:          handler,
 		publicPageRoutes:          nil,
 
 		adminAuthHandler: handler,
@@ -374,6 +375,7 @@ func TestNewRouterNoIndexPolicy(
 	router := newRouter(routerDependencies{
 		homeHandler:               handler,
 		portfolioCaseStudyHandler: handler,
+		caseStudyHandler:          handler,
 		publicPageRoutes:          nil,
 
 		adminAuthHandler: handler,
