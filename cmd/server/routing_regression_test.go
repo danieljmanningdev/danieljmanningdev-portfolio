@@ -14,6 +14,7 @@ func TestPublicRoutesAreExactAndOldPortfolioLinkRedirects(t *testing.T) {
 	router := newRouter(routerDependencies{
 		homeHandler: fallback, portfolioCaseStudyHandler: page,
 		publicPageRoutes: []apphttp.PublicPageRoute{{Path: "/web-design/", Handler: page}},
+		caseStudyHandler: page,
 		adminAuthHandler: page, dashboardHandler: page, clientsHandler: page,
 		projectsHandler: page, contractsHandler: page, blogAdminHandler: page,
 		sessionService: newRouterTestSessionService(t), blogHandler: &apphttp.BlogHandler{},
