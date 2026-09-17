@@ -38,7 +38,7 @@ func TestLoadPageTemplateParsesApplicationPages(
 		"public/web-development.html",
 		"public/software-development.html",
 		"public/ui-ux-design.html",
-		"public/salon-rebuild.html",
+		"public/case-study.html",
 		"public/portfolio.html",
 		"public/404.html",
 		"blog.html",
